@@ -54,7 +54,7 @@ const nextConfig = {
     console.log('Default API URL (PROD): ', process.env.NEXT_PUBLIC_API_URL_PRODUCT);
     return [
       {
-        source: process.env.SOURCE_PATH,
+        source: '/api/:path*',
         destination: dev ? process.env.NEXT_PUBLIC_API_URL_DEV : process.env.NEXT_PUBLIC_API_URL_PRODUCT,
       },
       {
