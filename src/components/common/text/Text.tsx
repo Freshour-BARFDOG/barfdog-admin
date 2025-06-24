@@ -7,7 +7,7 @@ import {
   underline, preLineStyles,
 } from "./Text.css";
 
-interface DefaultTextProps {
+interface TextProps {
   type: keyof typeof textStyles;
   color?: keyof typeof fontColors;
   align?: "left" | "center" | "right";
@@ -53,7 +53,7 @@ export default function Text({
   style,
   preLine,
   applyLineHeight = true,
-}: DefaultTextProps) {
+}: TextProps) {
   const textStyle = textStyles[type];
   const colorStyle = fontColors[color];
   const alignStyle = alignStyles[align];
