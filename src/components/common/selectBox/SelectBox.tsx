@@ -1,5 +1,5 @@
 import * as styles from "./SelectBox.css";
-import Arrow from "/public/images/icons/chevron-left-blue.svg";
+import Arrow from "/public/images/icons/chevron-left.svg";
 import SvgIcon from "@/components/common/svgIcon/SvgIcon";
 import { SelectOption } from "@/types/common";
 
