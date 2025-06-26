@@ -3,6 +3,7 @@ import { recipe } from "@vanilla-extract/recipes";
 import { themeVars } from '@/styles/theme.css';
 
 export const tableWrapper = style({
+	width: '100%',
 	overflowX: 'auto',
 	boxShadow: themeVars.shadow.light,
 	borderRadius: '16px',
