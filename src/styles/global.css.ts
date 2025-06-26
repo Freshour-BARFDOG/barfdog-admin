@@ -2,6 +2,7 @@ import { globalStyle } from "@vanilla-extract/css";
 
 globalStyle("*", {
   boxSizing: "border-box",
+  fontFamily: 'inherit',
 });
 
 globalStyle("html, body", {

@@ -1,4 +1,5 @@
-import "../../styles/globals.css";
+import "@/styles/reset.css";
+import "@/styles/global.css";
 import { themeClass } from "@/styles/theme.css";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
