@@ -1,10 +1,10 @@
+import "../../styles/globals.css";
+import { themeClass } from "@/styles/theme.css";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-import "@/styles/reset.css";
-import "@/styles/global.css";
-import localFont from "next/font/local";
-import { AdminLayout } from "@/components/layout/AdminLayout";
-import { themeClass } from "@/styles/theme.css";
+import AdminLayout from "@/components/layout/AdminLayout";
+import localFont from 'next/font/local';
+import ReactQueryProviders from "@/providers/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "바프독",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const pretendard = localFont({
-  src: "../../public/fonts/PretendardVariable.woff2",
+  src: "../../../public/fonts/PretendardVariable.woff2",
   display: "swap",
   variable: "--font-pretendard",
 });
@@ -26,7 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={themeClass}>
       <body className={pretendard.className}>
-        <AdminLayout>{children}</AdminLayout>
+        <ReactQueryProviders>
+          <AdminLayout>
+            {children}
+          </AdminLayout>
+        </ReactQueryProviders>
       </body>
     </html>
   );

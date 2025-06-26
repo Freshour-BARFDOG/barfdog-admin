@@ -12,6 +12,7 @@ export const presetButtonBox = style({
 export const presetButton = recipe({
 	base: {
 		padding: '6px 12px',
+		height: '36px',
 		borderRadius: 4,
 		cursor: 'pointer',
 		backgroundColor: themeVars.colors.gray.gray0,

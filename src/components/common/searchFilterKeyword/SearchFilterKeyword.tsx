@@ -11,6 +11,8 @@ interface SearchFilterKeywordProps<T extends string | number = string> {
 	onChangeKeyword: (value: string) => void;
 	placeholder?: string;
 	disabled?: boolean;
+	inputWidth?: string;
+	onSubmit?: () => void;
 };
 
 export default function SearchFilterKeyword<T extends string | number = string>({
@@ -21,6 +23,7 @@ export default function SearchFilterKeyword<T extends string | number = string>(
 	onChangeKeyword,
 	placeholder,
 	disabled = false,
+	onSubmit,
 }: SearchFilterKeywordProps<T>) {
 	return (
 		<div className={styles.searchFilterKeyword}>
@@ -36,6 +39,7 @@ export default function SearchFilterKeyword<T extends string | number = string>(
 					onChange={(e) => onChangeKeyword(e.target.value)}
 					placeholder={placeholder}
 					disabled={disabled}
+					onSubmit={onSubmit}
 				/>
 			</div>
 		</div>
