@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
 import Header from "@/components/layout/header/Header";
 
-export function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
 	const { isMobileWidth: isMobile } = useDeviceState();
 	const {
 		sidebarCollapsed,

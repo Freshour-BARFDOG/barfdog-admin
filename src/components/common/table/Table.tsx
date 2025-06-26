@@ -14,9 +14,9 @@ export default function Table<T>({ data, columns, emptyText = 'No data available
 			<table className={styles.table}>
 				<thead>
 					<tr>
-						{columns.map((col) => (
+						{columns.map((col, colIndex) => (
 							<th
-								key={col.key.toString()}
+								key={`${col.key.toString()}-${colIndex}`}
 								className={styles.tableHead}
 								style={{
 									width: col.width,
@@ -42,15 +42,15 @@ export default function Table<T>({ data, columns, emptyText = 'No data available
 				) : (
 					data.map((item, rowIndex) => (
 						<tr key={rowIndex}>
-							{columns.map((col) => {
+							{columns.map((col, colIndex) => {
 								const isLastRow = rowIndex === data.length - 1;
 								return (
 									<td
-										key={col.key.toString()}
+										key={`${col.key.toString()}-${rowIndex}-${colIndex}`}
 										className={styles.tableCell({ isLastRow })}
 									>
 										<Text type='body3'>
-											{col.render ? col.render(item) : String(item[col.key as keyof T])}
+											{col.render ? col.render(item, rowIndex) : String(item[col.key as keyof T])}
 										</Text>
 									</td>
 								)
