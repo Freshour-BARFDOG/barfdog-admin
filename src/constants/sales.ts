@@ -1,8 +1,8 @@
 import { SelectOption } from "@/types/common";
-import { OrderSearchCategory, OrderStatus, OrderType } from "@/types/orders";
+import { SalesSearchCategory, OrderStatus, OrderType } from "@/types/sales";
 import { format } from "date-fns";
 
-const INITIAL_ORDERS_REQUEST = {
+const INITIAL_SALES_REQUEST = {
   from: "2001-01-01",
   to: format(new Date(), "yyyy-MM-dd"),
   merchantUid: null, // 주문번호
@@ -14,9 +14,9 @@ const INITIAL_ORDERS_REQUEST = {
   orderType: "ALL" as OrderType,
 };
 
-const ORDER_SEARCH_CATEGORY: {
+const SALES_SEARCH_CATEGORY: {
   label: string;
-  value: OrderSearchCategory;
+  value: SalesSearchCategory;
 }[] = [
   { label: "구매자 이름", value: "memberName" },
   { label: "구매자 ID", value: "memberEmail" },
@@ -25,7 +25,16 @@ const ORDER_SEARCH_CATEGORY: {
   { label: "수령자 이름", value: "recipientName" },
 ];
 
-const ORDER_SEARCH_STATUS: SelectOption<OrderStatus>[] = [
+const SALES_ORDER_TYPE: {
+  label: string;
+  value: OrderType;
+}[] = [
+  { label: "전체", value: "ALL" },
+  { label: "일반", value: "GENERAL" },
+  { label: "구독", value: "SUBSCRIBE" },
+];
+
+const SALES_SEARCH_STATUS: SelectOption<OrderStatus>[] = [
   { value: "ALL", label: "전체" },
   { value: "HOLD", label: "구독 보류" },
   { value: "BEFORE_PAYMENT", label: "결제 전" },
@@ -56,13 +65,14 @@ const ORDER_SEARCH_STATUS: SelectOption<OrderStatus>[] = [
   { value: "CONFIRM", label: "구매 확정" },
 ];
 
-const ORDER_STATUS_LABEL_MAP: Record<OrderStatus, string> = Object.fromEntries(
-  ORDER_SEARCH_STATUS.map(({ value, label }) => [value, label])
+const SALES_STATUS_LABEL_MAP: Record<OrderStatus, string> = Object.fromEntries(
+  SALES_SEARCH_STATUS.map(({ value, label }) => [value, label])
 ) as Record<OrderStatus, string>;
 
 export {
-  INITIAL_ORDERS_REQUEST,
-  ORDER_SEARCH_CATEGORY,
-  ORDER_SEARCH_STATUS,
-  ORDER_STATUS_LABEL_MAP,
+  INITIAL_SALES_REQUEST,
+  SALES_SEARCH_CATEGORY,
+  SALES_SEARCH_STATUS,
+  SALES_STATUS_LABEL_MAP,
+  SALES_ORDER_TYPE,
 };

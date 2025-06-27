@@ -9,9 +9,10 @@ const queryKeys = {
     GET_MEMBER_DETAIL: "getMemberDetail",
     GET_MEMBER_SUBSCRIPTION_LIST: "getMemberSubscriptionList",
   },
-  ORDERS: {
-    BASE: "orders",
-    SEARCH_ORDERS: "searchOrders",
+  SALES: {
+    BASE: "sales",
+    GET_SEARCH: "getSearch",
+    GET_DETAIL_GENERAL: "getDetailGeneral",
   },
 } as const;
 

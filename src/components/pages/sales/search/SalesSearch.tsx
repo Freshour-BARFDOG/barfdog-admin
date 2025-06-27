@@ -1,6 +1,7 @@
 "use client";
 
-import { useSearchOrders } from "@/api/orders/mutations/useSearchOrders";
+import { useExcelDownloadSearchSales } from "@/api/sales/mutations/useExcelDownloadSearchSales";
+import { useGetSearchSales } from "@/api/sales/queries/useGetSearchSales";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
@@ -9,30 +10,34 @@ import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchF
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
-import { PAGE_SIZE } from "@/constants/\bcommon";
+import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_ORDERS_REQUEST,
-  ORDER_SEARCH_CATEGORY,
-  ORDER_SEARCH_STATUS,
-  ORDER_STATUS_LABEL_MAP,
-} from "@/constants/orders";
+  INITIAL_SALES_REQUEST,
+  SALES_ORDER_TYPE,
+  SALES_SEARCH_CATEGORY,
+  SALES_SEARCH_STATUS,
+  SALES_STATUS_LABEL_MAP,
+} from "@/constants/sales";
 import useSearchValues from "@/hooks/useSearchValues";
+import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
-  BaseOrderRow,
-  OrderSearchCategory,
+  SalesBaseRow,
+  SalesSearchCategory,
   OrderStatus,
-  SearchOrdersData,
-  SearchOrdersParams,
-  SearchOrdersRequest,
-} from "@/types/orders";
+  OrderTypeRequest,
+  SearchSalesData,
+  SearchSalesParams,
+  SearchSalesRequest,
+} from "@/types/sales";
+import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
-import { Link } from "lucide-react";
-import { useCallback, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 
-export default function OrdersSearch() {
+export default function SalesSearch() {
   const {
     searchValues,
     setSearchValues,
@@ -41,18 +46,39 @@ export default function OrdersSearch() {
     setPage,
     onSubmit,
     onReset,
-  } = useSearchValues<SearchOrdersRequest>(INITIAL_ORDERS_REQUEST);
+  } = useSearchValues<SearchSalesRequest>(INITIAL_SALES_REQUEST);
 
-  const params: SearchOrdersParams = {
-    body: submittedValues ?? INITIAL_ORDERS_REQUEST,
+  const params: SearchSalesParams = {
+    body: submittedValues ?? INITIAL_SALES_REQUEST,
     page,
     size: PAGE_SIZE.ORDERS,
   };
 
-  const { data } = useSearchOrders(params);
+  const { data } = useGetSearchSales(params);
+
+  console.log("data", data);
+
+  const { mutate: excelDownload } = useExcelDownloadSearchSales();
+  const { addToast } = useToastStore();
+
+  const isDisableDownload = submittedValues.orderType === "ALL";
+
+  const today = format(new Date(), "yyyy-MM-dd");
+
+  const handleExcelDownload = () => {
+    excelDownload(submittedValues, {
+      onSuccess: (data) => {
+        downloadBlobFile(data as Blob, `판매 관리_${today}.xlsx`);
+      },
+      onError: (err) => {
+        addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
+        console.log(err);
+      },
+    });
+  };
 
   const [selectedCategory, setSelectedCategory] =
-    useState<OrderSearchCategory>("memberName");
+    useState<SalesSearchCategory>("memberName");
 
   const filters: SearchFilterItem[] = [
     {
@@ -75,7 +101,7 @@ export default function OrdersSearch() {
       label: "조건검색",
       children: (
         <SearchFilterKeyword
-          categoryOptions={ORDER_SEARCH_CATEGORY}
+          categoryOptions={SALES_SEARCH_CATEGORY}
           selectedCategory={selectedCategory}
           keyword={searchValues[selectedCategory] ?? ""}
           onChangeCategory={(category) => setSelectedCategory(category)}
@@ -87,10 +113,10 @@ export default function OrdersSearch() {
       ),
     },
     {
-      label: "주문유형",
+      label: "주문상태",
       children: (
         <SelectBox<OrderStatus>
-          options={ORDER_SEARCH_STATUS}
+          options={SALES_SEARCH_STATUS}
           value={searchValues.statusList?.[0] ?? "ALL"}
           onChange={(value) =>
             setSearchValues({
@@ -101,9 +127,25 @@ export default function OrdersSearch() {
         />
       ),
     },
+    {
+      label: "주문유형",
+      children: (
+        <LabeledRadioButtonGroup<OrderTypeRequest>
+          options={SALES_ORDER_TYPE}
+          value={searchValues.orderType}
+          onChange={(value) =>
+            setSearchValues({
+              ...searchValues,
+              orderType: value as OrderTypeRequest,
+            })
+          }
+          optionType="radio"
+        />
+      ),
+    },
   ];
 
-  const columns: TableColumn<BaseOrderRow>[] = [
+  const columns: TableColumn<SalesBaseRow>[] = [
     {
       key: "id",
       header: "번호",
@@ -120,9 +162,10 @@ export default function OrdersSearch() {
       key: "id",
       header: "상세보기",
       render: (row) => {
-        const memberId = row.id;
+        const orderId = row.id;
+        const orderType = row.orderType;
         return (
-          <Link href={`/member/${memberId}`} target="_blank">
+          <Link href={`/sales/${orderType}/${orderId}`} target="_blank">
             <Text type="body3" color="red">
               상세보기
             </Text>
@@ -135,8 +178,7 @@ export default function OrdersSearch() {
       key: "orderStatus",
       header: "주문상태",
       render: (row) => {
-        // row.orderStatus 는 OrderStatus 타입
-        return ORDER_STATUS_LABEL_MAP[row.orderStatus] ?? row.orderStatus;
+        return SALES_STATUS_LABEL_MAP[row.orderStatus] ?? row.orderStatus;
       },
     },
     { key: "memberEmail", header: "구매자 ID" },
@@ -165,7 +207,7 @@ export default function OrdersSearch() {
         onReset={onReset}
       />
       <TableSection
-        data={data?.orders as SearchOrdersData[]}
+        data={data?.orders as SearchSalesData[]}
         columns={columns}
         page={page}
         onPageChange={setPage}
@@ -173,7 +215,13 @@ export default function OrdersSearch() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={
-          <Button variant="outline" type="assistive" size="sm">
+          <Button
+            variant="outline"
+            type="assistive"
+            size="sm"
+            onClick={handleExcelDownload}
+            disabled={isDisableDownload}
+          >
             엑셀 다운로드
           </Button>
         }

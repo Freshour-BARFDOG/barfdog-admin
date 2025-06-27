@@ -95,39 +95,39 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
   {
-    key: "orders",
+    key: "sales",
     label: "판매 관리",
     icon: SendToBack,
     children: [
       {
         key: "search",
         label: "통합 검색",
-        href: "/orders/search",
+        href: "/sales/search",
       },
       {
-        key: "orders",
+        key: "sales",
         label: "주문 관리",
-        href: "/orders/manage",
+        href: "/sales/orders",
       },
       {
         key: "cancels",
         label: "취소 관리",
-        href: "/orders/cancels",
+        href: "/sales/cancels",
       },
       {
         key: "exchanges",
         label: "교환 관리",
-        href: "/orders/exchanges",
+        href: "/sales/exchanges",
       },
       {
         key: "shipping",
         label: "배송 관리",
-        href: "/orders/shipping",
+        href: "/sales/shipping",
       },
       {
         key: "confirmations",
         label: "구매 확정",
-        href: "/orders/confirmations",
+        href: "/sales/confirmations",
       },
     ],
   },
