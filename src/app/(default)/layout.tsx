@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import AdminLayout from "@/components/layout/AdminLayout";
 import localFont from 'next/font/local';
 import ReactQueryProviders from "@/providers/ReactQueryProvider";
+import Toast from "@/components/common/toast/Toast";
 
 export const metadata: Metadata = {
   title: "바프독",
@@ -30,6 +31,8 @@ export default function RootLayout({
         <ReactQueryProviders>
           <AdminLayout>
             {children}
+            <Toast />
+            <div id="modal-root" />
           </AdminLayout>
         </ReactQueryProviders>
       </body>

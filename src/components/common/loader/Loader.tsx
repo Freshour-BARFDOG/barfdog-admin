@@ -4,22 +4,26 @@ interface LoaderProps {
 	fullscreen?: boolean;
 	height?: number;
 	padding?: 0 | 20;
+	size?: 24 | 48
 }
 
-const Loader = ({
+export default function Loader({
 	fullscreen = false,
 	height,
-	padding = 0
-}: LoaderProps) => {
+	padding = 0,
+	size = 48,
+}: LoaderProps) {
 	return (
 		fullscreen
 			? (
 				<div className={styles.loaderContainer}>
-					<span className={styles.loader} />
+					<span className={styles.loader({})} />
 				</div>
 			)
-			: <div className={styles.loaderBox} style={{ height: height || 'auto', padding: padding }}><span className={styles.loader} /></div>
+			: (
+				<div className={styles.loaderBox} style={{ height: height || 'auto', padding: padding }}>
+					<span className={styles.loader({ size: size })} />
+				</div>
+			)
 	);
 };
-
-export default Loader;

@@ -14,7 +14,7 @@ export const sidebarMobileOverlay = style({
 export const mainContent = style({
 	minHeight: 'calc(100vh - 56px)',
 	marginTop: 56,
-	padding: 16,
+	padding: 20,
 	transition: 'margin-left 0.3s ease',
 	marginLeft: 240,
 	backgroundColor: themeVars.colors.gray.gray50,
