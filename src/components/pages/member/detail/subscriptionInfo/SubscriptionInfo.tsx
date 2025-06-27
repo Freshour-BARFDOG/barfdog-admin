@@ -4,8 +4,8 @@ import Accordion from "@/components/common/accordion/Accordion";
 import Text from "@/components/common/text/Text";
 import InfoList from "@/components/common/infoList/InfoList";
 import { format } from "date-fns";
-import { useGetMemberSubscriptionList } from "@/api/member/queries/useGetMemberDetail";
 import { MemberSubscriptionData } from '@/types/member';
+import { useGetMemberSubscriptionList } from "@/api/member/queries/useGetMemberSubscriptionList";
 
 interface SubscriptionInfoProps {
 	memberId: number;
