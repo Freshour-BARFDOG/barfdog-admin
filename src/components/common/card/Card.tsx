@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { commonWrapper } from "@/styles/common.css";
 
 interface CardProps {
@@ -15,6 +15,7 @@ interface CardProps {
   backgroundColor?: "none" | "gray0" | "gray50" | "gray100" | "transparent";
   borderRadius?: "none" | 8 | 12 | 16;
   gap?: "none" | 4 | 8 | 12 | 16 | 20 | 32 | 40;
+  style?: CSSProperties;
 }
 
 const Card = ({
@@ -31,9 +32,11 @@ const Card = ({
   borderRadius = 8,
   gap,
   className,
+  style,
 }: CardProps) => {
   return (
     <div
+      style={style}
       className={`
         ${commonWrapper({
           direction,

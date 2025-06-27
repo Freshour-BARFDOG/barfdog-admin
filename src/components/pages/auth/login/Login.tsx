@@ -50,7 +50,7 @@ const Login = () => {
 			email: data.email,
 			password: data.password,
 		};
-		console.log("formData", formData);
+
 		// 로그인 호출, 성공 시 nextPath로 풀 리로드
 		emailLogin(formData, {
 			onSuccess: () => {

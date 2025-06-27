@@ -49,5 +49,22 @@ const COLORS: Record<Colors, string> = {
   yellow400: themeVars.colors.yellow.yellow400,
 } as const;
 
+const CHIPS_COLORS = {
+  red: themeVars.colors.red.red,
+  lightPink: themeVars.colors.red.lightPink,
+  pinkWhite: themeVars.colors.red.pinkWhite,
+  gray100: themeVars.colors.gray.gray100,
+  gray200: themeVars.colors.gray.gray200,
+  gray600: themeVars.colors.gray.gray600,
+  gray700: themeVars.colors.gray.gray700,
+  gray800: themeVars.colors.gray.gray800,
+  gray900: themeVars.colors.gray.gray900,
+  blue50: themeVars.colors.blue.blue50,
+  blue500: themeVars.colors.blue.blue500,
+  blue600: themeVars.colors.blue.blue600,
+  green500: themeVars.colors.green.green500,
+  green50: themeVars.colors.green.green50,
+  yellow500: themeVars.colors.yellow.yellow500,
+} as const;
 
-export { COLORS };
+export { COLORS, CHIPS_COLORS };

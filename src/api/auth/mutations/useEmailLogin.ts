@@ -21,6 +21,7 @@ export function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
 					throw new Error("토큰이 제공되지 않았습니다.");
 				}
 				setCookie(AUTH_CONFIG.ACCESS_TOKEN_COOKIE, token);
+				setCookie(AUTH_CONFIG.LOGIN_COOKIE, token);
 
 				return data;
 			} catch(error) {
