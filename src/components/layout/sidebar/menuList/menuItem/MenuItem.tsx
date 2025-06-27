@@ -17,7 +17,12 @@ interface MenuItemProps {
 }
 
 const isActive = (item: MenuItemType, pathname: string): boolean => {
-	if (item.href && pathname === item.href) return true;
+	if (
+		item.href &&
+		(pathname === item.href || pathname.startsWith(item.href + '/'))
+	) {
+		return true;
+	}
 	if (item.children) return item.children.some(child => isActive(child, pathname));
 	return false;
 };
