@@ -6,8 +6,11 @@ const queryKeys = {
   MEMBER: {
     BASE: "member",
     GET_MEMBER_LIST: "getMemberList",
-  }
+  },
+  ORDERS: {
+    BASE: "orders",
+    SEARCH_ORDERS: "searchOrders",
+  },
 } as const;
 
 export { queryKeys };
-

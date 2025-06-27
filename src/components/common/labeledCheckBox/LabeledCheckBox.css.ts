@@ -7,4 +7,5 @@ export const labelCheckedBoxContainer = style({
   alignSelf: "stretch",
   gap: "8px",
   cursor: "pointer",
+  flexShrink: 0,
 });
