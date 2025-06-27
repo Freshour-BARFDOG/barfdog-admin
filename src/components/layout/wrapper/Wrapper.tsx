@@ -1,6 +1,6 @@
+import * as styles from './Wrapper.css';
 import Text from "@/components/common/text/Text";
 import { ReactNode } from "react";
-
 interface WrapperProps {
 	title?: string;
 	children: ReactNode;
@@ -13,7 +13,7 @@ const Wrapper = ({
 	return (
 		<section>
 			{title &&
-				<Text type='title2' style={{ marginBottom: '18px' }}>{title}</Text>
+				<Text type='title2' className={styles.wrapper}>{title}</Text>
 			}
 			{children}
 		</section>

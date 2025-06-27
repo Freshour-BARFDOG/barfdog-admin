@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode, SVGProps } from "react";
-import {QueryKey, UseMutationOptions, UseQueryOptions, UseSuspenseQueryOptions} from "@tanstack/react-query";
+import { QueryKey, UseMutationOptions, UseQueryOptions, UseSuspenseQueryOptions } from "@tanstack/react-query";
 
 interface MenuItem {
 	key: string;
@@ -24,6 +24,12 @@ interface SelectOption<T extends string | number | boolean> {
 interface SearchFilterItem {
 	label: string;
 	children: ReactNode;
+	align?: 'start' | 'center';
+}
+
+interface infoItem {
+	label: string;
+	value: string | ReactNode;
 	align?: 'start' | 'center';
 }
 
@@ -58,6 +64,7 @@ export type {
 	TableColumn,
 	SelectOption,
 	SearchFilterItem,
+	infoItem,
 	Page,
 	UseMutationCustomOptions,
 	UseQueryCustomOptions,

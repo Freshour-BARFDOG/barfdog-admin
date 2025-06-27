@@ -1,5 +1,4 @@
 const INITIAL_SEARCH_VALUES = {
-	size: 10,
 	email: '',
 	name: '',
 	from: '2000-01-01',

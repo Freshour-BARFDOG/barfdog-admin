@@ -13,6 +13,7 @@ export type SelectBoxProps<T extends string | number> = {
   name?: string;
   id?: string;
   className?: string;
+  fullWidth?: boolean;
 };
 
 export default function SelectBox<T extends string | number>({
@@ -25,14 +26,15 @@ export default function SelectBox<T extends string | number>({
   name,
   id,
   className = "",
+  fullWidth = false,
 }: SelectBoxProps<T>) {
   return (
-    <div className={styles.selectBox}>
+    <div className={styles.selectBox({ fullWidth })}>
       <select
         name={name}
         id={id}
         value={value ?? ""}
-        className={`${styles.select} ${className}`}
+        className={`${styles.select({ fullWidth })} ${className}`}
         onChange={(e) => {
           const selectedValue = options.find(
             (opt) => String(opt.value) === e.target.value

@@ -12,11 +12,15 @@ import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/Label
 import SearchFilterGroup from '@/components/common/searchFilterGroup/SearchFilterGroup';
 import TableSection from "@/components/common/tableSection/TableSection";
 import useSearchValues from "@/hooks/useSearchValues";
+import Loader from "@/components/common/loader/Loader";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { GradeType, MemberListData, MemberListSearchParams } from "@/types/member";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 import { INITIAL_SEARCH_VALUES, SEARCH_CATEGORY, SEARCH_GRADE_LIST, SEARCH_STATUS } from "@/constants/member";
+import { useExcelDownloadMemberList } from "@/api/member/mutations/useExcelDownloadMemberList";
+import { downloadBlobFile } from '@/utils/downloadBlobFile';
+import { useToastStore } from "@/store/useToastStore";
 
 const MemberList = () => {
 	const {
@@ -24,14 +28,28 @@ const MemberList = () => {
 		setSearchValues,
 		submittedValues,
 		page,
-		setPage,
+		onChangePage,
 		onSubmit,
 		onReset,
 	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
 
-	const { data } = useGetMemberList(page, submittedValues ?? INITIAL_SEARCH_VALUES);
-
+	const { data } = useGetMemberList(page,submittedValues ?? INITIAL_SEARCH_VALUES);
 	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>('email');
+
+	const { mutate: excelDownload, isPending: isExcelDownloading } = useExcelDownloadMemberList();
+	const { addToast } = useToastStore();
+
+	const handleExcelDownload = () => {
+		excelDownload(submittedValues, {
+			onSuccess: (data) => {
+				downloadBlobFile(data as Blob, '회원목록.xlsx');
+			},
+			onError: (err) => {
+				addToast('엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.')
+				console.log(err)
+			}
+		})
+	}
 
 	const filters: SearchFilterItem[] = [
 		{
@@ -148,12 +166,20 @@ const MemberList = () => {
 				data={data?.memberList as MemberListData[]}
 				columns={columns}
 				page={page}
-				onPageChange={setPage}
+				onPageChange={onChangePage}
 				totalPages={data?.page?.totalPages ?? 0}
 				title='회원 목록'
 				emptyText='회원 목록 데이터가 없습니다.'
 				action={(
-					<Button variant='outline' type='assistive' size='sm'>엑셀 다운로드</Button>
+					<Button
+						onClick={handleExcelDownload}
+						disabled={isExcelDownloading}
+						variant='outline'
+						type='assistive'
+						size='sm'
+					>
+						{isExcelDownloading ? <Loader size={24} /> : '엑셀 다운로드'}
+					</Button>
 				)}
 			/>
 		</div>

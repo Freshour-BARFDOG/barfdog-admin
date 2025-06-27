@@ -47,7 +47,8 @@ const isClient = typeof window !== 'undefined';
   axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
     if (isClient) {
-      const token = getCookie(AUTH_CONFIG.ACCESS_TOKEN_COOKIE);
+      // const token = getCookie(AUTH_CONFIG.ACCESS_TOKEN_COOKIE);
+      const token = getCookie(AUTH_CONFIG.LOGIN_COOKIE);
       console.log("ACCESS_TOKEN_COOKIE", token);
 
       if (token) {
