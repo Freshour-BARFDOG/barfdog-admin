@@ -13,9 +13,10 @@ interface TableSectionProps<T> {
 	emptyText?: string;
 	page: number;
 	totalPages: number;
-	onPageChange: (page: number) => void;
+	onPageChange?: (page: number) => void;
 	action?: ReactNode;
 	className?: string;
+	padding?: 'none' | 20 | 40;
 }
 
 export default function TableSection<T>({
@@ -28,15 +29,22 @@ export default function TableSection<T>({
 	onPageChange,
 	action,
 	className = '',
+	padding = 40,
 }: TableSectionProps<T>) {
 	return (
-		<Card shadow='none' padding={40} align='start' gap={16} className={className}>
-			{title && <Text type='title4'>{title}</Text>}
-			<Divider thickness={1} color='gray300' />
+		<Card shadow='none' padding={padding} align='start' gap={16} className={className}>
+			{title && (
+				<>
+				<Text type='title4'>{title}</Text>
+				<Divider thickness={1} color='gray300' />
+				</>
+			)}
 			{action && action}
 			<div style={{ width: '100%' }}>
 				<Table data={data ?? []} columns={columns} emptyText={emptyText} />
-				<Pagination currentPage={page} onPageChange={onPageChange} totalPages={totalPages} />
+				{onPageChange &&
+					<Pagination currentPage={page} onPageChange={onPageChange} totalPages={totalPages} />
+				}
 			</div>
 		</Card>
 	);

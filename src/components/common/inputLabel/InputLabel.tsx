@@ -16,7 +16,7 @@ const InputLabel = ({
 	className = '',
 }: InputLabelProps) => {
 	return (
-		<Text type='label4' color={labelColor} className={`${styles.labelStyle} ${className}`}>
+		<Text type='label2' color={labelColor} className={`${styles.labelStyle} ${className}`}>
 			{label} {isRequired && <span className={pointColor}>*</span>}
 		</Text>
 	);

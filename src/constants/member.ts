@@ -1,8 +1,10 @@
+import { OLDEST_DATE, TODAY } from "@/constants/common";
+
 const INITIAL_SEARCH_VALUES = {
 	email: '',
 	name: '',
-	from: '2000-01-01',
-	to: '2025-06-25',
+	from: OLDEST_DATE,
+	to: TODAY,
 	subscribing: '',
 	gradeList: [],
 }

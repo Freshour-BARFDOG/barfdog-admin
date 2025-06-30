@@ -2,8 +2,7 @@ import { commonWrapper } from "@/styles/common.css";
 import { SelectOption } from "@/types/common";
 import LabeledRadioButton from "@/components/common/labeledRadioButton/LabeledRadioButton";
 
-
-interface LabeledRadioButtonGroupProps<T extends string = string> {
+interface LabeledRadioButtonGroupProps<T extends string | number | boolean> {
 	options: SelectOption<T>[];
 	value: T;
 	onChange: (value: T) => void;
@@ -12,14 +11,14 @@ interface LabeledRadioButtonGroupProps<T extends string = string> {
 	className?: string;
 }
 
-export default function LabeledRadioButtonGroup<T extends string = string>({
+export default function LabeledRadioButtonGroup<T extends string | number | boolean>({
 	options,
 	value,
 	onChange,
 	optionType = "radio",
 	iconSize = 24,
 	className = '',
-}: LabeledRadioButtonGroupProps) {
+}: LabeledRadioButtonGroupProps<T>) {
 	return (
 		<div className={`${className} ${commonWrapper({
 			direction: 'row',

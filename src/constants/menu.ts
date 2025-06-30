@@ -36,7 +36,7 @@ export const MENU_ITEMS: MenuItem[] = [
 					{
 						key: 'search',
 						label: '쿠폰 조회',
-						href: '/coupons/search',
+						href: '/coupons',
 					},
 					{
 						key: 'release',

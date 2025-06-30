@@ -11,7 +11,6 @@ interface SearchFilterKeywordProps<T extends string | number = string> {
 	onChangeKeyword: (value: string) => void;
 	placeholder?: string;
 	disabled?: boolean;
-	inputWidth?: string;
 	onSubmit?: () => void;
 };
 

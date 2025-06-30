@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 import * as styles from './Accordion.css';
-import AccordionIcon from '/public/images/icons/chevron-left-blue.svg';
+import AccordionIcon from '/public/images/icons/chevron-left.svg';
 import SvgIcon from "@/components/common/svgIcon/SvgIcon";
 
 interface AccordionProps {

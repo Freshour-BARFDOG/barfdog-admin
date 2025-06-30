@@ -11,7 +11,7 @@ interface MenuItem {
 
 interface TableColumn<T> {
 	key: keyof T | string;
-	header: string;
+	header: string | ReactNode;
 	width?: string | number;
 	render?: (value: T, index: number) => ReactNode;
 }
