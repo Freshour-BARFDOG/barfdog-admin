@@ -1,7 +1,14 @@
-export default function OrderInfo() {
+import Card from "@/components/common/card/Card";
+import { OrderInfoDto } from "@/types/sales";
+
+interface OrderInfoProps {
+  orderInfoDto: OrderInfoDto;
+}
+
+export default function OrderInfo({ orderInfoDto }: OrderInfoProps) {
   return (
-    <div>
+    <Card shadow="light">
       <></>
-    </div>
+    </Card>
   );
 }

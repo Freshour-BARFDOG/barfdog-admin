@@ -18,7 +18,7 @@ export default function SalesDetailGeneral({
     <div
       className={commonWrapper({ direction: "col", gap: 20, justify: "start" })}
     >
-      <OrderInfo />
+      <OrderInfo orderInfoDto={data?.orderInfoDto} />
     </div>
   );
 }

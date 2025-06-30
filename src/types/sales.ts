@@ -266,4 +266,10 @@ export type {
   OrderTypeResponse,
   OrderTypeRequest,
   SalesDetailSubscribeResponse,
+  OrderInfoDto,
+  OrderItemAndOptionDto,
+  GeneralPaymentDto,
+  SubscribePaymentDto,
+  DeliveryDto,
+  SubscribeDto,
 };
