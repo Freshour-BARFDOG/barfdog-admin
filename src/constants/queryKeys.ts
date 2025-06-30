@@ -14,6 +14,12 @@ const queryKeys = {
     GET_SEARCH: "getSearch",
     GET_DETAIL_GENERAL: "getDetailGeneral",
   },
+  COUPONS: {
+    BASE: "coupon",
+    GET_COUPON_LIST: 'getCouponList',
+    GET_MEMBER_COUPON_LIST: 'getMemberCouponList',
+    GET_PUBLICATION_COUPON_LIST: 'getPublicationCouponList',
+  }
 } as const;
 
 export { queryKeys };

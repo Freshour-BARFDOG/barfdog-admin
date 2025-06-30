@@ -78,7 +78,7 @@ interface MemberSubscriptionListResponse {
 }
 
 interface MemberListResponse {
-	page: Page;
+	page?: Page;
 	memberList: MemberListData[]
 }
 
