@@ -14,6 +14,10 @@ const queryKeys = {
     GET_SEARCH: "getSearch",
     GET_DETAIL_GENERAL: "getDetailGeneral",
   },
+  GOODSFLOW: {
+    BASE: "goodsflow",
+    GET_TRACE_RESULTS: "getTraceResults",
+  },
 } as const;
 
 export { queryKeys };

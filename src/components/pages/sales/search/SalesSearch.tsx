@@ -12,7 +12,7 @@ import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_SALES_REQUEST,
+  INITIAL_SEARCH_REQUEST,
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS,
@@ -46,10 +46,10 @@ export default function SalesSearch() {
     setPage,
     onSubmit,
     onReset,
-  } = useSearchValues<SearchSalesRequest>(INITIAL_SALES_REQUEST);
+  } = useSearchValues<SearchSalesRequest>(INITIAL_SEARCH_REQUEST);
 
   const params: SearchSalesParams = {
-    body: submittedValues ?? INITIAL_SALES_REQUEST,
+    body: submittedValues ?? INITIAL_SEARCH_REQUEST,
     page,
     size: PAGE_SIZE.ORDERS,
   };

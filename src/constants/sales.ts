@@ -9,7 +9,7 @@ import {
 } from "@/types/sales";
 import { format } from "date-fns";
 
-const INITIAL_SALES_REQUEST = {
+const INITIAL_SEARCH_REQUEST = {
   from: "2001-01-01",
   to: format(new Date(), "yyyy-MM-dd"),
   merchantUid: null, // 주문번호
@@ -18,6 +18,18 @@ const INITIAL_SALES_REQUEST = {
   recipientName: null, // 수령자 이름
   dogName: null, // 반려견 이름
   statusList: null,
+  orderType: "ALL" as OrderTypeRequest,
+};
+
+const INITIAL_ORDERS_REQUEST = {
+  from: "2001-01-01",
+  to: format(new Date(), "yyyy-MM-dd"),
+  merchantUid: null, // 주문번호
+  memberName: null, // 구매자 이름
+  memberEmail: null, // 구매자 이메일(로그인 아이디)
+  recipientName: null, // 수령자 이름
+  dogName: null, // 반려견 이름
+  statusList: ["PAYMENT_DONE"] as OrderStatus[],
   orderType: "ALL" as OrderTypeRequest,
 };
 
@@ -112,7 +124,7 @@ const CANCELED_ORDER_STATUS_SET = new Set<OrderStatus>([
 ]);
 
 export {
-  INITIAL_SALES_REQUEST,
+  INITIAL_SEARCH_REQUEST,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS,
   ORDER_STATUS_LABEL_MAP,
@@ -122,4 +134,5 @@ export {
   CANCELED_ORDER_STATUS_SET,
   ORDERS_ORDER_STATUS,
   PRODUCT_TYPE,
+  INITIAL_ORDERS_REQUEST,
 };

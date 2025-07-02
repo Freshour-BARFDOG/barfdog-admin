@@ -5,15 +5,12 @@ import {
   SalesDetailGeneralResponse,
   SalesDetailSubscribeResponse,
   UpdateSalesDeliveryRequest,
-  OrderTypeRequest,
   OrderTypeResponse,
 } from "@/types/sales";
 import axiosInstance from "../axiosInstance";
 import { AxiosInstance } from "axios";
 import {
   ConfirmOrderRequest,
-  GoodsFlowOrderRegisterRequest,
-  GoodsFlowOrderRegisterResponse,
   RegisterDeliveryInfoResponse,
   RegisterDeliveryRequest,
 } from "@/types/sales/orders";
@@ -127,23 +124,6 @@ const cancelOrderBySeller = async ({
   return data;
 };
 
-const getGoodsFlowContract = async ({ otp }: { otp: string }) => {
-  const { data } = await axiosInstance.post("/api/goodsFlow/contractList", {
-    otp,
-  });
-  return data;
-};
-
-const registerGoodsFlowOrder = async (
-  request: GoodsFlowOrderRegisterRequest
-): Promise<GoodsFlowOrderRegisterResponse> => {
-  const { data } = await axiosInstance.post<GoodsFlowOrderRegisterResponse>(
-    "/api/goodsFlow/orderRegister",
-    request
-  );
-  return data;
-};
-
 export {
   getSearchSales,
   excelDownloadSearchSales,
@@ -154,6 +134,4 @@ export {
   unConfirmOrder,
   registerDeliveryInfo,
   cancelOrderBySeller,
-  getGoodsFlowContract,
-  registerGoodsFlowOrder,
 };

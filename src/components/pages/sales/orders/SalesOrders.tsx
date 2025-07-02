@@ -6,22 +6,22 @@ import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import CancelOrderModal from "@/components/common/modal/cancelOrderModal/CancelOrderModal";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
-import SelectBox from "@/components/common/selectBox/SelectBox";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_SALES_REQUEST,
+  INITIAL_SEARCH_REQUEST,
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
-  ORDER_STATUS,
   ORDER_STATUS_LABEL_MAP,
   ORDERS_ORDER_STATUS,
+  INITIAL_ORDERS_REQUEST,
 } from "@/constants/sales";
+import { useOrderActions } from "@/hooks/useOrderActions";
 import useSearchValues from "@/hooks/useSearchValues";
-import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
@@ -47,23 +47,45 @@ export default function SalesOrders() {
     setPage,
     onSubmit,
     onReset,
-  } = useSearchValues<SearchSalesRequest>(INITIAL_SALES_REQUEST);
+  } = useSearchValues<SearchSalesRequest>(INITIAL_ORDERS_REQUEST);
 
   const params: SearchSalesParams = {
-    body: submittedValues ?? INITIAL_SALES_REQUEST,
+    body: submittedValues ?? INITIAL_ORDERS_REQUEST,
     page,
     size: PAGE_SIZE.ORDERS,
   };
 
+  // 통합 검색 API 훅
   const { data } = useGetSearchSales(params);
 
   const orderData = data?.orders ?? [];
 
-  const isDisableDownload = submittedValues.orderType === "ALL";
+  // 주문유형 전체일때 액션 사용 불가능
+  const isDisableAction = submittedValues.orderType === "ALL";
 
+  // 조건검색 카테고리
   const [selectedCategory, setSelectedCategory] =
     useState<SalesSearchCategory>("memberName");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const {
+    handleConfirm,
+    handleDeny,
+    handleDelivery,
+    handleCancel,
+    handleManage,
+
+    // 모달 관련
+    isCancelModalOpen,
+    cancelReason,
+    setCancelReason,
+    handleCancelConfirm,
+    onCancelModalClose,
+  } = useOrderActions(
+    orderData,
+    selectedIds,
+    searchValues.orderType as OrderTypeRequest
+  );
 
   // → 2) 전체선택 체크박스 상태 계산
   const allSelected = useMemo(
@@ -243,16 +265,82 @@ export default function SalesOrders() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={
-          <div>
+          <div style={{ display: "flex", gap: 8 }}>
             <Button
-              variant="outline"
-              type="assistive"
               size="sm"
-              onClick={() => {}}
-              disabled={isDisableDownload}
+              variant="outline"
+              onClick={() => {
+                handleConfirm();
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
             >
-              주문 확인
+              주문확인
             </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                handleDeny();
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
+            >
+              확인취소
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                handleDelivery();
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
+            >
+              주문발송
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                handleCancel();
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
+            >
+              판매취소
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                handleManage();
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
+            >
+              택배사 관리
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setSelectedIds([]);
+              }}
+              disabled={isDisableAction}
+            >
+              주문상세
+            </Button>
+
+            {/* 판매취소 모달 */}
+            <CancelOrderModal
+              isOpen={isCancelModalOpen}
+              reason={cancelReason}
+              selectedCount={selectedIds.length}
+              onChangeReason={setCancelReason}
+              onConfirm={handleCancelConfirm}
+              onClose={onCancelModalClose}
+            />
           </div>
         }
       />

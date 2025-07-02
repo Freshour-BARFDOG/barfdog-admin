@@ -13,7 +13,9 @@ interface ConfirmOrderRequest {
 interface RegisterDeliveryRequest {
   orderList: Array<{
     orderId: number;
-    selectOptionList: number[] | null;
+    selectOptionList:
+      | { selectOptionId: number; selectOptionAmount: number }[]
+      | null;
   }>;
 }
 
