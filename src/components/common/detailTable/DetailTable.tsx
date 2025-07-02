@@ -1,6 +1,6 @@
 import React from "react";
-import Card from "../card/Card";
 import * as styles from "./DetailTable.css";
+import Text from "../text/Text";
 
 export interface TableItem {
   label: string;
@@ -12,23 +12,29 @@ export interface TableItem {
 interface DetailTableProps {
   items: TableItem[];
   columns?: 1 | 2 | 3;
+  title?: string;
 }
 
-export default function DetailTable({ items, columns = 2 }: DetailTableProps) {
+export default function DetailTable({
+  items,
+  columns = 2,
+  title,
+}: DetailTableProps) {
   return (
-    <Card shadow="light">
+    <section className={styles.tableContainer}>
+      {title && <Text type="title4">{title}</Text>}
       <dl className={styles.table({ columns })}>
         {items.map(({ label, value, fullWidth }) => (
           <React.Fragment key={label}>
-            <dt className={`${styles.label} ${fullWidth && styles.fullRow}`}>
+            <dt className={`${styles.label} ${fullWidth && styles.fullLabel}`}>
               {label}
             </dt>
-            <dd className={`${styles.value}, ${fullWidth && styles.fullRow}`}>
+            <dd className={`${styles.value} ${fullWidth && styles.fullValue}`}>
               {value}
             </dd>
           </React.Fragment>
         ))}
       </dl>
-    </Card>
+    </section>
   );
 }

@@ -4,6 +4,7 @@ import { useExcelDownloadSearchSales } from "@/api/sales/mutations/useExcelDownl
 import { useGetSearchSales } from "@/api/sales/queries/useGetSearchSales";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
+import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
@@ -17,6 +18,7 @@ import {
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS,
   ORDER_STATUS_LABEL_MAP,
+  ORDERS_ORDER_STATUS,
 } from "@/constants/sales";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
@@ -31,13 +33,12 @@ import {
   SearchSalesParams,
   SearchSalesRequest,
 } from "@/types/sales";
-import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export default function SalesSearch() {
+export default function SalesOrders() {
   const {
     searchValues,
     setSearchValues,
@@ -56,29 +57,31 @@ export default function SalesSearch() {
 
   const { data } = useGetSearchSales(params);
 
-  console.log("data", data);
-
-  const { mutate: excelDownload } = useExcelDownloadSearchSales();
-  const { addToast } = useToastStore();
+  const orderData = data?.orders ?? [];
 
   const isDisableDownload = submittedValues.orderType === "ALL";
 
-  const today = format(new Date(), "yyyy-MM-dd");
-
-  const handleExcelDownload = () => {
-    excelDownload(submittedValues, {
-      onSuccess: (data) => {
-        downloadBlobFile(data as Blob, `판매 관리_${today}.xlsx`);
-      },
-      onError: (err) => {
-        addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
-        console.log(err);
-      },
-    });
-  };
-
   const [selectedCategory, setSelectedCategory] =
     useState<SalesSearchCategory>("memberName");
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  // → 2) 전체선택 체크박스 상태 계산
+  const allSelected = useMemo(
+    () => orderData.length > 0 && selectedIds.length === orderData.length,
+    [orderData.length, selectedIds]
+  );
+
+  // → 3) 전체선택 토글
+  const handleSelectAll = (checked: boolean) => {
+    setSelectedIds(checked ? orderData.map((o) => o.id) : []);
+  };
+
+  // → 4) 개별 선택 토글
+  const handleSelectOne = (id: number, checked: boolean) => {
+    setSelectedIds((prev) =>
+      checked ? [...prev, id] : prev.filter((x) => x !== id)
+    );
+  };
 
   const filters: SearchFilterItem[] = [
     {
@@ -115,15 +118,16 @@ export default function SalesSearch() {
     {
       label: "주문상태",
       children: (
-        <SelectBox<OrderStatus>
-          options={ORDER_STATUS}
-          value={searchValues.statusList?.[0] ?? "ALL"}
+        <LabeledRadioButtonGroup<OrderStatus>
+          options={ORDERS_ORDER_STATUS}
+          value={searchValues.statusList?.[0] ?? "PAYMENT_DONE"}
           onChange={(value) =>
             setSearchValues({
               ...searchValues,
-              statusList: value === "ALL" ? null : [value as OrderStatus],
+              statusList: [value as OrderStatus],
             })
           }
+          optionType="radio"
         />
       ),
     },
@@ -146,6 +150,30 @@ export default function SalesSearch() {
   ];
 
   const columns: TableColumn<SalesBaseRow>[] = [
+    {
+      key: "select",
+      // th에 들어갈 ReactNode
+      header: (
+        <LabeledCheckbox<string>
+          value="all"
+          isChecked={allSelected}
+          onToggle={() => handleSelectAll(!allSelected)}
+          iconType="square"
+          iconSize={18}
+        />
+      ),
+      width: "40px",
+      // td에 들어갈 ReactNode
+      render: (row) => (
+        <LabeledCheckbox<number>
+          value={row.id}
+          isChecked={selectedIds.includes(row.id)}
+          onToggle={(id) => handleSelectOne(id, !selectedIds.includes(id))}
+          iconType="square"
+          iconSize={18}
+        />
+      ),
+    },
     {
       key: "id",
       header: "번호",
@@ -215,15 +243,17 @@ export default function SalesSearch() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={
-          <Button
-            variant="outline"
-            type="assistive"
-            size="sm"
-            onClick={handleExcelDownload}
-            disabled={isDisableDownload}
-          >
-            엑셀 다운로드
-          </Button>
+          <div>
+            <Button
+              variant="outline"
+              type="assistive"
+              size="sm"
+              onClick={() => {}}
+              disabled={isDisableDownload}
+            >
+              주문 확인
+            </Button>
+          </div>
         }
       />
     </div>

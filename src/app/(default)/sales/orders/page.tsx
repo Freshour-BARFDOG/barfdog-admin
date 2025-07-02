@@ -2,14 +2,14 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
-import SalesSearch from "@/components/pages/sales/search/SalesSearch";
+import SalesOrders from "@/components/pages/sales/orders/SalesOrders";
 
-export default async function SalesSearchPage() {
+export default async function SalesOrdersPage() {
   return (
     <ErrorBoundary fallback={<div>회원 정보가 없습니다.</div>}>
       <Suspense fallback={<Loader fullscreen />}>
-        <Wrapper title="통합 검색">
-          <SalesSearch />
+        <Wrapper title="주문 관리">
+          <SalesOrders />
         </Wrapper>
       </Suspense>
     </ErrorBoundary>

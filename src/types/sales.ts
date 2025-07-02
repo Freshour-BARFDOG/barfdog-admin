@@ -157,7 +157,7 @@ interface CommonPaymentDto {
   discountCoupon: number;
   overDiscount: number;
   paymentPrice: number;
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
   orderStatus: OrderStatus;
   orderConfirmDate: string | null;
 }
@@ -210,6 +210,19 @@ interface SalesDetailSubscribeResponse {
   subscribeDeliveryDto: DeliveryDto;
 }
 
+interface SalesRecipient {
+  zipcode: string;
+  street: string;
+  detailAddress: string;
+  name: string;
+  phone: string;
+}
+
+interface UpdateSalesDeliveryRequest {
+  recipient: SalesRecipient;
+  request: string | null;
+}
+
 type OrderStatus =
   // — 통합 목록 조회 (status 미포함 검색 시 ALL)
   | "ALL" // 전체
@@ -252,6 +265,8 @@ type OrderStatus =
 
 type OrderTypeResponse = "general" | "subscribe";
 type OrderTypeRequest = "ALL" | "GENERAL" | "SUBSCRIBE";
+type PaymentMethod = "CREDIT_CARD" | "NAVER_PAY" | "KAKAO_PAY";
+type ProductType = Exclude<OrderTypeRequest, "ALL">;
 
 export type {
   OrderStatus,
@@ -272,4 +287,10 @@ export type {
   SubscribePaymentDto,
   DeliveryDto,
   SubscribeDto,
+  CommonPaymentDto,
+  PaymentMethod,
+  SalesRecipient,
+  UpdateSalesDeliveryRequest,
+  DogDto,
+  ProductType,
 };

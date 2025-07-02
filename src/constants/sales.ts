@@ -1,5 +1,12 @@
 import { SelectOption } from "@/types/common";
-import { SalesSearchCategory, OrderStatus, OrderType } from "@/types/sales";
+import {
+  SalesSearchCategory,
+  OrderStatus,
+  OrderTypeRequest,
+  OrderTypeResponse,
+  PaymentMethod,
+  ProductType,
+} from "@/types/sales";
 import { format } from "date-fns";
 
 const INITIAL_SALES_REQUEST = {
@@ -11,7 +18,7 @@ const INITIAL_SALES_REQUEST = {
   recipientName: null, // 수령자 이름
   dogName: null, // 반려견 이름
   statusList: null,
-  orderType: "ALL" as OrderType,
+  orderType: "ALL" as OrderTypeRequest,
 };
 
 const SALES_SEARCH_CATEGORY: {
@@ -27,14 +34,24 @@ const SALES_SEARCH_CATEGORY: {
 
 const SALES_ORDER_TYPE: {
   label: string;
-  value: OrderType;
+  value: OrderTypeRequest;
 }[] = [
   { label: "전체", value: "ALL" },
   { label: "일반", value: "GENERAL" },
   { label: "구독", value: "SUBSCRIBE" },
 ];
 
-const SALES_SEARCH_STATUS: SelectOption<OrderStatus>[] = [
+const ORDER_TYPE_LABEL_MAP: Record<OrderTypeResponse, string> = {
+  general: "일반",
+  subscribe: "구독",
+};
+
+const PRODUCT_TYPE: Record<ProductType, string> = {
+  GENERAL: "general",
+  SUBSCRIBE: "subscribe",
+};
+
+const ORDER_STATUS: SelectOption<OrderStatus>[] = [
   { value: "ALL", label: "전체" },
   { value: "HOLD", label: "구독 보류" },
   { value: "BEFORE_PAYMENT", label: "결제 전" },
@@ -65,14 +82,44 @@ const SALES_SEARCH_STATUS: SelectOption<OrderStatus>[] = [
   { value: "CONFIRM", label: "구매 확정" },
 ];
 
-const SALES_STATUS_LABEL_MAP: Record<OrderStatus, string> = Object.fromEntries(
-  SALES_SEARCH_STATUS.map(({ value, label }) => [value, label])
+const ORDER_STATUS_LABEL_MAP: Record<OrderStatus, string> = Object.fromEntries(
+  ORDER_STATUS.map(({ value, label }) => [value, label])
 ) as Record<OrderStatus, string>;
+
+const ORDERS_ORDER_STATUS: SelectOption<OrderStatus>[] = ORDER_STATUS.filter(
+  (opt) =>
+    ["PAYMENT_DONE", "PRODUCING", "DELIVERY_READY", "FAILED"].includes(
+      opt.value
+    )
+);
+
+const PAYMENT_METHOD_LABEL_MAP: Record<PaymentMethod, string> = {
+  NAVER_PAY: "네이버페이",
+  KAKAO_PAY: "카카오페이",
+  CREDIT_CARD: "신용카드",
+};
+
+const CANCELED_ORDER_STATUS_SET = new Set<OrderStatus>([
+  "CANCEL_REQUEST",
+  "CANCEL_DONE_BUYER",
+  "CANCEL_DONE_SELLER",
+  "RETURN_REQUEST",
+  "RETURN_DONE_SELLER",
+  "RETURN_DONE_BUYER",
+  "EXCHANGE_REQUEST",
+  "EXCHANGE_DONE_SELLER",
+  "EXCHANGE_DONE_BUYER",
+]);
 
 export {
   INITIAL_SALES_REQUEST,
   SALES_SEARCH_CATEGORY,
-  SALES_SEARCH_STATUS,
-  SALES_STATUS_LABEL_MAP,
+  ORDER_STATUS,
+  ORDER_STATUS_LABEL_MAP,
   SALES_ORDER_TYPE,
+  ORDER_TYPE_LABEL_MAP,
+  PAYMENT_METHOD_LABEL_MAP,
+  CANCELED_ORDER_STATUS_SET,
+  ORDERS_ORDER_STATUS,
+  PRODUCT_TYPE,
 };
