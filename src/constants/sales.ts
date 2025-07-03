@@ -123,6 +123,28 @@ const CANCELED_ORDER_STATUS_SET = new Set<OrderStatus>([
   "EXCHANGE_DONE_BUYER",
 ]);
 
+const CANCEL_REASON = {
+  cancelNowOfGeneralOrderByBuyer: "[일반결제] 구매자에 의한 결제 취소",
+  cancelNowOfGeneralOrderByBuyerAsDetailReason:
+    "주문확인 전, 구매자에 의한 모든 일반상품 즉시 결제취소",
+
+  cancelNowOfSubscribeOrderByBuyer: "[정기결제] 구매자에 의한 결제 취소",
+  cancelNowOfSubscribeOrderByBuyerAsDetailReason:
+    "주문확인 전, 구매자에 의한 모든 구독상품 즉시 결제취소",
+
+  cancelNowOfGeneralOrderBySeller:
+    "[일반결제] 관리자에 의한 결제 취소 (관리자 판매 취소)",
+
+  cancelNowOfSubscribeOrderBySeller:
+    "[정기결제] 관리자에 의한 결제 취소 (관리자 판매 취소)",
+
+  // 네이버페이
+  unsubscribeNaverpayByAdmin:
+    "[정기결제] 관리자에 의한 네이버페이 정기결제 해지 (결제 실패)",
+  unsubscribeNaverpayByCustomer:
+    "[정기결제] 구매자에 의한 네이버페이 정기결제 해지 (결제 실패)",
+};
+
 export {
   INITIAL_SEARCH_REQUEST,
   SALES_SEARCH_CATEGORY,
@@ -135,4 +157,5 @@ export {
   ORDERS_ORDER_STATUS,
   PRODUCT_TYPE,
   INITIAL_ORDERS_REQUEST,
+  CANCEL_REASON,
 };

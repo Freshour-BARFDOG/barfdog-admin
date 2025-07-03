@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
       "dlvmgr.aspx",
       qs.stringify({
         OTP: otp,
-        responseURL: `${process.env.NEXT_PUBLIC_API_URL_PRODUCT}/api/goodsFlow/traceResults`,
+        responseURL: `${process.env.NEXT_PUBLIC_API_URL_PRODUCT}/api/goodsFlow/postTraceResult`,
         id,
       }),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }

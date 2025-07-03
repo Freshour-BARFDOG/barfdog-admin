@@ -23,12 +23,19 @@ export default function SalesDetailGeneral({
   const isCanceled = CANCELED_ORDER_STATUS_SET.has(
     data.orderInfoDto.orderStatus
   );
+  console.log(isCanceled);
+
   const orderStatus = ORDER_STATUS_LABEL_MAP[data.orderInfoDto.orderStatus];
 
   return (
     <div className={salesDetailGridWrapper}>
       <OrderInfo orderInfoDto={data.orderInfoDto} />
-      <CancelInfo orderInfoDto={data.orderInfoDto} orderStatus={orderStatus} />
+      {isCanceled && (
+        <CancelInfo
+          orderInfoDto={data.orderInfoDto}
+          orderStatus={orderStatus}
+        />
+      )}
       <OrderItemsInfo
         orderItemAndOptionDtoList={data.orderItemAndOptionDtoList}
         title={isCanceled ? "취소상품" : "주문상품"}

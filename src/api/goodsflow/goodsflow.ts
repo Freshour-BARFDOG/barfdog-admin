@@ -9,7 +9,7 @@ const getGoodsFlowOtp = async () => {
   return data.data;
 };
 
-const getContractList = async (otp: string) => {
+const getContractList = async (otp: string): Promise<string> => {
   const { data } = await axios.post("/api/goodsflow/contractList", { otp });
   return data;
 };
@@ -29,11 +29,6 @@ const goodsFlowPrint = async (params: { otp: string; id?: string }) => {
   return data;
 };
 
-const getTraceResults = async () => {
-  const { data } = await axios.get("/api/goodsflow/traceResults");
-  return data;
-};
-
 const cancelGoodsFlowOrder = async (transUniqueCd: string) => {
   const { data } = await axios.post("/api/goodsflow/cancelOrder", {
     transUniqueCd,
@@ -44,7 +39,6 @@ const cancelGoodsFlowOrder = async (transUniqueCd: string) => {
 export {
   getGoodsFlowOtp,
   getContractList,
-  getTraceResults,
   registerGoodsFlowOrder,
   goodsFlowPrint,
   cancelGoodsFlowOrder,

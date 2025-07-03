@@ -1,19 +1,16 @@
 "use client";
 
-import { useExcelDownloadSearchSales } from "@/api/sales/mutations/useExcelDownloadSearchSales";
 import { useGetSearchSales } from "@/api/sales/queries/useGetSearchSales";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
-import CancelOrderModal from "@/components/common/modal/cancelOrderModal/CancelOrderModal";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_SEARCH_REQUEST,
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS_LABEL_MAP,
@@ -37,6 +34,8 @@ import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import CancelOrderModal from "../modal/CancelOrderModal";
+import OrderDetailModal from "../modal/OrderDetailModal";
 
 export default function SalesOrders() {
   const {
@@ -75,7 +74,12 @@ export default function SalesOrders() {
     handleCancel,
     handleManage,
 
-    // 모달 관련
+    // 주문 상세 모달
+    handleDetail,
+    isDetailModalOpen,
+    onCloseDetailModal,
+    detailData,
+    // 판매 취소 모달
     isCancelModalOpen,
     cancelReason,
     setCancelReason,
@@ -84,6 +88,7 @@ export default function SalesOrders() {
   } = useOrderActions(
     orderData,
     selectedIds,
+    setSelectedIds,
     searchValues.orderType as OrderTypeRequest
   );
 
@@ -269,10 +274,7 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                handleConfirm();
-                setSelectedIds([]);
-              }}
+              onClick={handleConfirm}
               disabled={isDisableAction}
             >
               주문확인
@@ -280,10 +282,7 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                handleDeny();
-                setSelectedIds([]);
-              }}
+              onClick={handleDeny}
               disabled={isDisableAction}
             >
               확인취소
@@ -291,10 +290,7 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                handleDelivery();
-                setSelectedIds([]);
-              }}
+              onClick={handleDelivery}
               disabled={isDisableAction}
             >
               주문발송
@@ -302,10 +298,7 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                handleCancel();
-                setSelectedIds([]);
-              }}
+              onClick={handleCancel}
               disabled={isDisableAction}
             >
               판매취소
@@ -313,10 +306,7 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                handleManage();
-                setSelectedIds([]);
-              }}
+              onClick={handleManage}
               disabled={isDisableAction}
             >
               택배사 관리
@@ -324,12 +314,10 @@ export default function SalesOrders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={() => {
-                setSelectedIds([]);
-              }}
+              onClick={handleDetail}
               disabled={isDisableAction}
             >
-              주문상세
+              일반주문상세
             </Button>
 
             {/* 판매취소 모달 */}
@@ -340,6 +328,11 @@ export default function SalesOrders() {
               onChangeReason={setCancelReason}
               onConfirm={handleCancelConfirm}
               onClose={onCancelModalClose}
+            />
+            <OrderDetailModal
+              isOpen={isDetailModalOpen}
+              detailData={detailData}
+              onClose={onCloseDetailModal}
             />
           </div>
         }

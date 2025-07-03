@@ -24,8 +24,8 @@ export default function DetailTable({
     <section className={styles.tableContainer}>
       {title && <Text type="title4">{title}</Text>}
       <dl className={styles.table({ columns })}>
-        {items.map(({ label, value, fullWidth }) => (
-          <React.Fragment key={label}>
+        {items.map(({ label, value, fullWidth }, idx) => (
+          <React.Fragment key={`${label}-${idx}`}>
             <dt className={`${styles.label} ${fullWidth && styles.fullLabel}`}>
               {label}
             </dt>

@@ -1,15 +1,17 @@
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import {
   SalesBaseRow,
   OrderTypeResponse,
   OrderTypeRequest,
+  SalesDetailGeneralResponse,
 } from "@/types/sales";
+import { format, parseISO } from "date-fns";
 
 import { useConfirmOrder } from "@/api/sales/mutations/useConfirmOrder";
 import { useUnConfirmOrder } from "@/api/sales/mutations/useUnConfirmOrder";
 import { useRegisterDeliveryInfo } from "@/api/sales/mutations/useRegisterDeliveryInfo";
 import { useCancelOrderBySeller } from "@/api/sales/mutations/useCancelOrderBySeller";
-import { PRODUCT_TYPE } from "@/constants/sales";
+import { CANCEL_REASON, PRODUCT_TYPE } from "@/constants/sales";
 import { useToastStore } from "@/store/useToastStore";
 import { useGoodsFlowOrderRegister } from "@/api/goodsflow/mutations/useOrderRegister";
 import { useGoodsFlowContractList } from "@/api/goodsflow/mutations/useContractList";
@@ -19,10 +21,12 @@ import { useGoodsFlowCancelOrder } from "@/api/goodsflow/mutations/useCancelOrde
 import useModal from "./useModal";
 import { getSalesDetailGeneral } from "@/api/sales/sales";
 import openPopup from "@/utils/openPopup";
+import { TableItem } from "@/components/common/detailTable/DetailTable";
 
 export function useOrderActions(
   allOrders: SalesBaseRow[],
   selectedIds: number[],
+  setSelectedIds: Dispatch<SetStateAction<number[]>>,
   orderTypeReq: OrderTypeRequest
 ) {
   const { addToast } = useToastStore();
@@ -31,6 +35,16 @@ export function useOrderActions(
     onClose: onCancelModalClose,
     onToggle: onCancelModalToggle,
   } = useModal();
+
+  const {
+    isOpen: isDetailModalOpen,
+    onClose: onCloseDetailModal,
+    onToggle: onToggleDetailModal,
+  } = useModal();
+  const [detailData, setDetailData] = useState<
+    Array<{ orderId: number; items: TableItem[] }>
+  >([]);
+
   const [cancelReason, setCancelReason] = useState("");
   const { mutate: confirmOrder } = useConfirmOrder();
   const { mutate: unConfirmOrder } = useUnConfirmOrder();
@@ -42,6 +56,7 @@ export function useOrderActions(
   const { mutateAsync: getContractList } = useGoodsFlowContractList();
   const { mutateAsync: registerGoodsFlowOrder } = useGoodsFlowOrderRegister();
   const { mutateAsync: printGoodsFlow } = useGoodsFlowPrint();
+  const { mutateAsync: contractList } = useGoodsFlowContractList();
   // 재발송 처리시에 사용
   const { mutateAsync: cancelGoodsFlowOrder } = useGoodsFlowCancelOrder();
 
@@ -69,6 +84,7 @@ export function useOrderActions(
     );
     if (invalid.length) {
       addToast("결제완료 상태가 아닌 상품이 포함되어 있습니다.");
+      setSelectedIds([]);
       return;
     }
     if (!confirm(`선택하신 ${selectedIds.length}개를 주문확인 하시겠습니까?`)) {
@@ -97,7 +113,18 @@ export function useOrderActions(
           ? { orderItemIdList: confirmList }
           : { orderIdList: confirmList };
 
-      confirmOrder({ orderType, body });
+      confirmOrder(
+        { orderType, body },
+        {
+          onSuccess: () => {
+            addToast("주문확인 처리되었습니다.");
+            setSelectedIds([]);
+          },
+          onError: () => {
+            addToast("주문확인에 실패했습니다.");
+          },
+        }
+      );
     } catch (err: any) {
       addToast("주문확인 중 오류가 발생했습니다.");
     }
@@ -111,13 +138,27 @@ export function useOrderActions(
         ? i.orderStatus !== "DELIVERY_READY"
         : i.orderStatus !== "PRODUCING"
     );
-    if (invalid.length)
-      return addToast("취소 가능 상태가 아닌 상품이 포함되어 있습니다");
+    if (invalid.length) {
+      addToast("취소 가능 상태가 아닌 상품이 포함되어 있습니다");
+      setSelectedIds([]);
+      return;
+    }
 
     if (!confirm(`선택하신 ${selectedIds.length}개를 확인취소 하시겠습니까?`))
       return;
 
-    unConfirmOrder({ orderType, orderIdList: selectedIds });
+    unConfirmOrder(
+      { orderType, orderIdList: selectedIds },
+      {
+        onSuccess: () => {
+          addToast("확인취소 처리되었습니다");
+          setSelectedIds([]);
+        },
+        onError: () => {
+          addToast("확인취소에 실패했습니다");
+        },
+      }
+    );
   };
 
   // 3) 주문발송
@@ -133,6 +174,7 @@ export function useOrderActions(
     );
     if (invalid.length) {
       addToast("발송 준비 상태가 아닌 상품이 포함되어 있습니다.");
+      setSelectedIds([]);
       return;
     }
     if (
@@ -202,6 +244,7 @@ export function useOrderActions(
       if (printRes) {
         openPopup(`/sales/delivery/print?data=${encodeURIComponent(printRes)}`);
       }
+      setSelectedIds([]);
     } catch (err: any) {
       addToast(`발송 처리 중 오류가 발생했습니다.\n${err.message || err}`);
     }
@@ -217,49 +260,67 @@ export function useOrderActions(
   };
 
   // 4-2) 모달에서 ‘판매 취소’ 클릭
-  const handleCancelConfirm = () => {
+  const handleCancelConfirm = async () => {
     if (!cancelReason.trim()) {
       addToast("사유를 입력해주세요.");
       return;
     }
 
-    const body =
-      orderType === PRODUCT_TYPE.GENERAL
-        ? {
-            orderItemIdList: selectedIds,
-            reason: "SELLER_CANCEL_GENERAL",
-            detailReason: cancelReason,
-          }
-        : {
-            orderIdList: selectedIds,
-            reason: "SELLER_CANCEL_SUBSCRIBE",
-            detailReason: cancelReason,
-          };
+    try {
+      let body: any;
 
-    cancelOrderBySeller(
-      { orderType, body },
-      {
-        onSuccess: () => {
-          addToast("판매취소 처리되었습니다.");
-          onCancelModalClose();
-          setCancelReason("");
-        },
-        onError: (err: any) => {
-          addToast(`판매취소에 실패했습니다.\n${err.message || err}`);
-        },
+      if (orderTypeReq === "GENERAL") {
+        // GENERAL: orderItemIdList 생성
+        const itemList: number[] = [];
+        for (const orderId of selectedIds) {
+          const detail = await getSalesDetailGeneral(orderId);
+          detail.orderItemAndOptionDtoList.forEach((o) =>
+            itemList.push(o.orderItemDto.orderItemId)
+          );
+        }
+        body = {
+          orderItemIdList: itemList,
+          reason: CANCEL_REASON.cancelNowOfGeneralOrderBySeller,
+          detailReason: cancelReason,
+        };
+      } else {
+        // SUBSCRIBE: orderIdList 그대로
+        body = {
+          orderIdList: [...selectedIds],
+          reason: CANCEL_REASON.cancelNowOfSubscribeOrderBySeller,
+          detailReason: cancelReason,
+        };
       }
-    );
+
+      // 2-2) API 호출
+      cancelOrderBySeller(
+        { orderType, body },
+        {
+          onSuccess: () => {
+            addToast("판매취소 처리되었습니다.");
+            onCancelModalClose();
+            setCancelReason("");
+            setSelectedIds([]);
+          },
+          onError: (err: any) =>
+            addToast(`판매취소에 실패했습니다.\n${err.message || err}`),
+        }
+      );
+    } catch (err: any) {
+      console.error(err);
+      addToast(`판매취소 중 오류가 발생했습니다.\n${err.message || err}`);
+    }
   };
 
   // 5) 굿스플로 택배사 관리
   const handleManage = async () => {
     try {
       const otp = await getOtp();
-      await getContractList(otp);
-      const printRes = await printGoodsFlow({ otp });
+      const printRes = await contractList(otp);
       if (printRes) {
         openPopup(`/sales/delivery/print?data=${encodeURIComponent(printRes)}`);
       }
+      setSelectedIds([]);
     } catch {
       addToast("굿스플로 호출 오류");
     }
@@ -330,6 +391,76 @@ export function useOrderActions(
   //   }
   // };
 
+  // 7) 일반 주문 상세 조회
+  const handleDetail = async () => {
+    if (selectedIds.length === 0) {
+      addToast("주문을 선택해주세요");
+      return;
+    }
+
+    if (orderType === "subscribe") {
+      addToast("일반 주문 확인만 가능합니다");
+      setSelectedIds([]);
+      return;
+    }
+    try {
+      const results: typeof detailData = [];
+
+      for (const orderId of selectedIds) {
+        const detail: SalesDetailGeneralResponse = await getSalesDetailGeneral(
+          orderId
+        );
+
+        const { orderInfoDto, orderItemAndOptionDtoList, deliveryDto } = detail;
+        const items: TableItem[] = [
+          {
+            label: "주문일시",
+            value: format(parseISO(orderInfoDto.orderDate), "yyyy-MM-dd HH:mm"),
+          },
+          { label: "주문자", value: orderInfoDto.memberName },
+          {
+            label: "주소",
+            value: `${deliveryDto.street} ${deliveryDto.detailAddress}`,
+          },
+          {
+            label: "전화번호",
+            value: deliveryDto.recipientPhone,
+          },
+        ];
+
+        orderItemAndOptionDtoList.forEach(
+          ({ orderItemDto, selectOptionDtoList }) => {
+            items.push(
+              { label: "상품명", value: orderItemDto.itemName },
+              { label: "수량", value: orderItemDto.amount.toString() }
+            );
+            selectOptionDtoList.forEach((opt) =>
+              items.push({
+                label: `옵션`,
+                value: `옵션명: ${
+                  opt.optionName
+                } / 수량: ${opt.amount.toString()}개`,
+                fullWidth: true,
+              })
+            );
+          }
+        );
+
+        results.push({
+          orderId,
+          items,
+        });
+      }
+
+      setDetailData(results);
+      onToggleDetailModal();
+      setSelectedIds([]);
+    } catch (err) {
+      console.error(err);
+      addToast("상세 조회 중 오류가 발생했습니다.");
+    }
+  };
+
   return {
     handleConfirm,
     handleDeny,
@@ -338,6 +469,13 @@ export function useOrderActions(
     handleManage,
     // handleReprintInvoice,
 
+    //일반 주문 상세 모달
+    handleDetail,
+    detailData,
+    isDetailModalOpen,
+    onCloseDetailModal,
+
+    // 판매 취소 모달
     isCancelModalOpen,
     handleCancelConfirm,
     cancelReason,
