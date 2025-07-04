@@ -51,7 +51,7 @@ export default function SalesOrders() {
   const params: SearchSalesParams = {
     body: submittedValues ?? INITIAL_ORDERS_REQUEST,
     page,
-    size: PAGE_SIZE.ORDERS,
+    size: PAGE_SIZE.SALES.ORDERS,
   };
 
   // 통합 검색 API 훅

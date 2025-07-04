@@ -3,11 +3,11 @@ import { UseMutationCustomOptions } from "@/types/common";
 import { getContractList, registerGoodsFlowOrder } from "../goodsflow";
 import {
   GoodsFlowOrderRegisterRequest,
-  GoodsFlowOrderRegisterResponse,
+  GoodsFlowResponse,
 } from "@/types/sales/orders";
 
 export function useGoodsFlowOrderRegister(
-  mutationOptions?: UseMutationCustomOptions<GoodsFlowOrderRegisterResponse>
+  mutationOptions?: UseMutationCustomOptions<GoodsFlowResponse>
 ) {
   return useMutation({
     mutationFn: (body: GoodsFlowOrderRegisterRequest) =>

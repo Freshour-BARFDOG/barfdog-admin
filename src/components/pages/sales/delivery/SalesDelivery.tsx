@@ -1,25 +1,25 @@
 "use client";
 
-import { useExcelDownloadSearchSales } from "@/api/sales/mutations/useExcelDownloadSearchSales";
 import { useGetSearchSales } from "@/api/sales/queries/useGetSearchSales";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
+import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
-import SelectBox from "@/components/common/selectBox/SelectBox";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_SEARCH_REQUEST,
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
-  ORDER_STATUS,
   ORDER_STATUS_LABEL_MAP,
+  ORDERS_ORDER_STATUS,
+  INITIAL_ORDERS_REQUEST,
+  INITIAL_DELIVERY_REQUEST,
 } from "@/constants/sales";
+import { useOrderActions } from "@/hooks/useOrderActions";
 import useSearchValues from "@/hooks/useSearchValues";
-import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
@@ -31,13 +31,14 @@ import {
   SearchSalesParams,
   SearchSalesRequest,
 } from "@/types/sales";
-import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import CancelOrderModal from "../modal/CancelOrderModal";
+import OrderDetailModal from "../modal/OrderDetailModal";
 
-export default function SalesSearch() {
+export default function SalesDelivery() {
   const {
     searchValues,
     setSearchValues,
@@ -46,39 +47,69 @@ export default function SalesSearch() {
     setPage,
     onSubmit,
     onReset,
-  } = useSearchValues<SearchSalesRequest>(INITIAL_SEARCH_REQUEST);
+  } = useSearchValues<SearchSalesRequest>(INITIAL_DELIVERY_REQUEST);
 
   const params: SearchSalesParams = {
-    body: submittedValues ?? INITIAL_SEARCH_REQUEST,
+    body: submittedValues ?? INITIAL_DELIVERY_REQUEST,
     page,
-    size: PAGE_SIZE.SALES.ORDERS,
+    size: PAGE_SIZE.SALES.DELIVERY,
   };
 
+  // 통합 검색 API 훅
   const { data } = useGetSearchSales(params);
 
-  console.log("data", data);
+  const orderData = data?.orders ?? [];
 
-  const { mutate: excelDownload } = useExcelDownloadSearchSales();
-  const { addToast } = useToastStore();
+  // 주문유형 전체일때 액션 사용 불가능
+  const isDisableAction = submittedValues.orderType === "ALL";
 
-  const isDisableDownload = submittedValues.orderType === "ALL";
-
-  const today = format(new Date(), "yyyy-MM-dd");
-
-  const handleExcelDownload = () => {
-    excelDownload(submittedValues, {
-      onSuccess: (data) => {
-        downloadBlobFile(data as Blob, `판매 관리_${today}.xlsx`);
-      },
-      onError: (err) => {
-        addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
-        console.log(err);
-      },
-    });
-  };
-
+  // 조건검색 카테고리
   const [selectedCategory, setSelectedCategory] =
     useState<SalesSearchCategory>("memberName");
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const {
+    handleConfirm,
+    handleDeny,
+    handleDelivery,
+    handleCancel,
+    handleManage,
+
+    // 주문 상세 모달
+    handleDetail,
+    isDetailModalOpen,
+    onCloseDetailModal,
+    detailData,
+    // 판매 취소 모달
+    isCancelModalOpen,
+    cancelReason,
+    setCancelReason,
+    handleCancelConfirm,
+    onCancelModalClose,
+  } = useOrderActions(
+    orderData,
+    selectedIds,
+    setSelectedIds,
+    searchValues.orderType as OrderTypeRequest
+  );
+
+  // → 2) 전체선택 체크박스 상태 계산
+  const allSelected = useMemo(
+    () => orderData.length > 0 && selectedIds.length === orderData.length,
+    [orderData.length, selectedIds]
+  );
+
+  // → 3) 전체선택 토글
+  const handleSelectAll = (checked: boolean) => {
+    setSelectedIds(checked ? orderData.map((o) => o.id) : []);
+  };
+
+  // → 4) 개별 선택 토글
+  const handleSelectOne = (id: number, checked: boolean) => {
+    setSelectedIds((prev) =>
+      checked ? [...prev, id] : prev.filter((x) => x !== id)
+    );
+  };
 
   const filters: SearchFilterItem[] = [
     {
@@ -115,15 +146,16 @@ export default function SalesSearch() {
     {
       label: "주문상태",
       children: (
-        <SelectBox<OrderStatus>
-          options={ORDER_STATUS}
-          value={searchValues.statusList?.[0] ?? "ALL"}
+        <LabeledRadioButtonGroup<OrderStatus>
+          options={ORDERS_ORDER_STATUS}
+          value={searchValues.statusList?.[0] ?? "PAYMENT_DONE"}
           onChange={(value) =>
             setSearchValues({
               ...searchValues,
-              statusList: value === "ALL" ? null : [value as OrderStatus],
+              statusList: [value as OrderStatus],
             })
           }
+          optionType="radio"
         />
       ),
     },
@@ -146,6 +178,30 @@ export default function SalesSearch() {
   ];
 
   const columns: TableColumn<SalesBaseRow>[] = [
+    {
+      key: "select",
+      // th에 들어갈 ReactNode
+      header: (
+        <LabeledCheckbox<string>
+          value="all"
+          isChecked={allSelected}
+          onToggle={() => handleSelectAll(!allSelected)}
+          iconType="square"
+          iconSize={18}
+        />
+      ),
+      width: "40px",
+      // td에 들어갈 ReactNode
+      render: (row) => (
+        <LabeledCheckbox<number>
+          value={row.id}
+          isChecked={selectedIds.includes(row.id)}
+          onToggle={(id) => handleSelectOne(id, !selectedIds.includes(id))}
+          iconType="square"
+          iconSize={18}
+        />
+      ),
+    },
     {
       key: "id",
       header: "번호",
@@ -215,15 +271,71 @@ export default function SalesSearch() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={
-          <Button
-            variant="outline"
-            type="assistive"
-            size="sm"
-            onClick={handleExcelDownload}
-            disabled={isDisableDownload}
-          >
-            엑셀 다운로드
-          </Button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleConfirm}
+              disabled={isDisableAction}
+            >
+              주문확인
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleDeny}
+              disabled={isDisableAction}
+            >
+              확인취소
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleDelivery}
+              disabled={isDisableAction}
+            >
+              주문발송
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleCancel}
+              disabled={isDisableAction}
+            >
+              판매취소
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleManage}
+              disabled={isDisableAction}
+            >
+              택배사 관리
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleDetail}
+              disabled={isDisableAction}
+            >
+              일반주문상세
+            </Button>
+
+            {/* 판매취소 모달 */}
+            <CancelOrderModal
+              isOpen={isCancelModalOpen}
+              reason={cancelReason}
+              selectedCount={selectedIds.length}
+              onChangeReason={setCancelReason}
+              onConfirm={handleCancelConfirm}
+              onClose={onCancelModalClose}
+            />
+            <OrderDetailModal
+              isOpen={isDetailModalOpen}
+              detailData={detailData}
+              onClose={onCloseDetailModal}
+            />
+          </div>
         }
       />
     </div>

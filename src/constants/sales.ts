@@ -33,6 +33,22 @@ const INITIAL_ORDERS_REQUEST = {
   orderType: "ALL" as OrderTypeRequest,
 };
 
+const INITIAL_DELIVERY_REQUEST = {
+  from: "2001-01-01",
+  to: format(new Date(), "yyyy-MM-dd"),
+  merchantUid: null, // 주문번호
+  memberName: null, // 구매자 이름
+  memberEmail: null, // 구매자 이메일(로그인 아이디)
+  recipientName: null, // 수령자 이름
+  dogName: null, // 반려견 이름
+  statusList: [
+    "DELIVERY_BEFORE_COLLECTION",
+    "DELIVERY_START",
+    "DELIVERY_DONE",
+  ] as OrderStatus[],
+  orderType: "ALL" as OrderTypeRequest,
+};
+
 const SALES_SEARCH_CATEGORY: {
   label: string;
   value: SalesSearchCategory;
@@ -158,4 +174,5 @@ export {
   PRODUCT_TYPE,
   INITIAL_ORDERS_REQUEST,
   CANCEL_REASON,
+  INITIAL_DELIVERY_REQUEST,
 };

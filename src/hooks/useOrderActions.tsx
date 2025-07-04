@@ -22,6 +22,7 @@ import useModal from "./useModal";
 import { getSalesDetailGeneral } from "@/api/sales/sales";
 import openPopup from "@/utils/openPopup";
 import { TableItem } from "@/components/common/detailTable/DetailTable";
+import axiosInstance from "@/api/axiosInstance";
 
 export function useOrderActions(
   allOrders: SalesBaseRow[],
@@ -327,69 +328,69 @@ export function useOrderActions(
   };
 
   // 6) 송장 재출력 // 필터 추가
-  // const handleReprintInvoice = async () => {
-  //   if (!selectedIds.length) return addToast("선택된 상품이 없습니다.");
-  //   if (
-  //     !window.confirm(
-  //       `선택하신 ${selectedIds.length}개 송장을 재출력 하시겠습니까?`
-  //     )
-  //   )
-  //     return;
+  const handleReprintInvoice = async () => {
+    if (!selectedIds.length) return addToast("선택된 상품이 없습니다.");
+    if (
+      !window.confirm(
+        `선택하신 ${selectedIds.length}개 송장을 재출력 하시겠습니까?`
+      )
+    )
+      return;
 
-  //   try {
-  //     // 6-1) BE: 배송정보 조회
-  //     const orderListReq = selectedIds.map((id) => ({
-  //       orderId: id,
-  //       selectOptionList: null,
-  //     }));
-  //     const infos = await registerDeliveryInfo({ orderList: orderListReq });
+    try {
+      // 6-1) BE: 배송정보 조회
+      const orderListReq = selectedIds.map((id) => ({
+        orderId: id,
+        selectOptionList: null,
+      }));
+      const infos = await registerDeliveryInfo({ orderList: orderListReq });
 
-  //     // 6-2) 기존 GoodsFlow 주문 취소
-  //     for (const info of infos) {
-  //       const cancelRes = await cancelGoodsFlowOrder(info.transUniqueCd);
-  //       if (!cancelRes.success) {
-  //         console.error(`송장취소 실패: ${cancelRes.error?.message}`);
-  //       }
-  //     }
+      // 6-2) 기존 GoodsFlow 주문 취소
+      for (const info of infos) {
+        const cancelRes = await cancelGoodsFlowOrder(info.transUniqueCd);
+        if (!cancelRes.success) {
+          console.error(`송장취소 실패: ${cancelRes.error?.message}`);
+        }
+      }
 
-  //     // 6-3) GoodsFlow 재등록
-  //     const gfOrderRes = await registerGoodsFlowOrder({
-  //       items: infos.map((info) => ({
-  //         transUniqueCd: info.transUniqueCd,
-  //         sndName: info.sndName,
-  //         sndZipCode: info.sndZipCode,
-  //         sndAddr1: info.sndAddr1,
-  //         sndAddr2: info.sndAddr2,
-  //         sndTel1: info.sndTel1,
-  //         rcvName: info.rcvName,
-  //         rcvZipCode: info.rcvZipCode,
-  //         rcvAddr1: info.rcvAddr1,
-  //         rcvAddr2: info.rcvAddr2,
-  //         rcvTel1: info.rcvTel1,
-  //         mallId: info.mallId,
-  //         msgToTrans: info.request,
-  //         orderItems: info.orderItems,
-  //         status: "N",
-  //         paymentTypeCode: "SH",
-  //       })),
-  //     });
-  //     if (!gfOrderRes.success)
-  //       throw new Error(
-  //         gfOrderRes.error?.message ?? "송장 재출력에 실패했습니다"
-  //       );
+      // 6-3) GoodsFlow 재등록
+      const gfOrderRes = await registerGoodsFlowOrder({
+        items: infos.map((info) => ({
+          transUniqueCd: info.transUniqueCd,
+          sndName: info.sndName,
+          sndZipCode: info.sndZipCode,
+          sndAddr1: info.sndAddr1,
+          sndAddr2: info.sndAddr2,
+          sndTel1: info.sndTel1,
+          rcvName: info.rcvName,
+          rcvZipCode: info.rcvZipCode,
+          rcvAddr1: info.rcvAddr1,
+          rcvAddr2: info.rcvAddr2,
+          rcvTel1: info.rcvTel1,
+          mallId: info.mallId,
+          msgToTrans: info.request,
+          orderItems: info.orderItems,
+          status: "N",
+          paymentTypeCode: "SH",
+        })),
+      });
+      if (!gfOrderRes.success)
+        throw new Error(
+          gfOrderRes.error?.message ?? "송장 재출력에 실패했습니다"
+        );
 
-  //     // 6-4) 인쇄 팝업
-  //     const otp = await getOtp();
-  //     const printData = await printGoodsFlow({ otp, id: gfOrderRes.id });
-  //     if (printData) {
-  //       openPopup(
-  //         `/bf-admin/sell/delivery/print?data=${encodeURIComponent(printData)}`
-  //       );
-  //     }
-  //   } catch (err: any) {
-  //     addToast(`송장 재출력 중 오류가 발생했습니다.\n${err.message}`);
-  //   }
-  // };
+      // 6-4) 인쇄 팝업
+      const otp = await getOtp();
+      const printData = await printGoodsFlow({ otp, id: gfOrderRes.id });
+      if (printData) {
+        openPopup(
+          `/bf-admin/sell/delivery/print?data=${encodeURIComponent(printData)}`
+        );
+      }
+    } catch (err: any) {
+      addToast(`송장 재출력 중 오류가 발생했습니다.\n${err.message}`);
+    }
+  };
 
   // 7) 일반 주문 상세 조회
   const handleDetail = async () => {

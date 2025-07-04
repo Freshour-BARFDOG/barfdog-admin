@@ -1,6 +1,6 @@
 import {
   GoodsFlowOrderRegisterRequest,
-  GoodsFlowOrderRegisterResponse,
+  GoodsFlowResponse,
 } from "@/types/sales/orders";
 import axios from "axios";
 
@@ -16,11 +16,10 @@ const getContractList = async (otp: string): Promise<string> => {
 
 const registerGoodsFlowOrder = async (
   body: GoodsFlowOrderRegisterRequest
-): Promise<GoodsFlowOrderRegisterResponse> => {
-  const { data } = await axios.post<GoodsFlowOrderRegisterResponse>(
-    "/api/goodsflow/orderRegister",
-    { data: body }
-  );
+): Promise<GoodsFlowResponse> => {
+  const { data } = await axios.post("/api/goodsflow/orderRegister", {
+    data: body,
+  });
   return data;
 };
 
@@ -29,7 +28,9 @@ const goodsFlowPrint = async (params: { otp: string; id?: string }) => {
   return data;
 };
 
-const cancelGoodsFlowOrder = async (transUniqueCd: string) => {
+const cancelGoodsFlowOrder = async (
+  transUniqueCd: string
+): Promise<GoodsFlowResponse> => {
   const { data } = await axios.post("/api/goodsflow/cancelOrder", {
     transUniqueCd,
   });

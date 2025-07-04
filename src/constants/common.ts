@@ -1,5 +1,8 @@
 const PAGE_SIZE = {
-  ORDERS: 50,
+  SALES: {
+    ORDERS: 50,
+    DELIVERY: 10,
+  },
 };
 
 export { PAGE_SIZE };

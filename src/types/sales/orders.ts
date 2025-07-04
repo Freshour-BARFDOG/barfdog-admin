@@ -61,7 +61,7 @@ interface GoodsFlowOrderRegisterRequest {
   items: GoodsFlowOrderItem[];
 }
 
-interface GoodsFlowOrderRegisterResponse {
+interface GoodsFlowResponse {
   apiVersion: string;
   method: string;
   success: boolean;
@@ -81,5 +81,5 @@ export type {
   ConfirmOrderBody,
   ConfirmOrderRequest,
   GoodsFlowOrderRegisterRequest,
-  GoodsFlowOrderRegisterResponse,
+  GoodsFlowResponse,
 };
