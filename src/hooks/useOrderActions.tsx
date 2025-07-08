@@ -187,27 +187,12 @@ export function useOrderActions(
     }
 
     try {
-      // --- 누락된 부분: selectOptionList 채워서 BE 주문발송 API에 넘기기 ---
-      const orderListReq = await Promise.all(
-        selectedIds.map(async (orderId) => {
-          if (orderTypeReq === "GENERAL") {
-            const detail = await getSalesDetailGeneral(orderId);
-            const selectOptionList = detail.orderItemAndOptionDtoList.flatMap(
-              (item) =>
-                item.selectOptionDtoList.map((opt) => ({
-                  selectOptionId: opt.optionId,
-                  selectOptionAmount: opt.amount,
-                }))
-            );
-            return { orderId, selectOptionList };
-          } else {
-            // SUBSCRIBE
-            return { orderId, selectOptionList: null };
-          }
-        })
-      );
+      // 3-1) BE: 배송정보 조회, BE에서 orderId만 이용해서 조회함
+      const orderListReq = selectedIds.map((orderId) => ({
+        orderId,
+        selectOptionList: null,
+      }));
 
-      // 3-1) BE에서 배송정보 조회
       const deliveryInfos = await registerDeliveryInfo({
         orderList: orderListReq,
       });
@@ -327,26 +312,40 @@ export function useOrderActions(
     }
   };
 
-  // 6) 송장 재출력 // 필터 추가
+  // 6) 송장 재출력
   const handleReprintInvoice = async () => {
-    if (!selectedIds.length) return addToast("선택된 상품이 없습니다.");
+    if (!selectedIds.length) {
+      addToast("선택된 상품이 없습니다.");
+      return;
+    }
     if (
       !window.confirm(
         `선택하신 ${selectedIds.length}개 송장을 재출력 하시겠습니까?`
       )
-    )
+    ) {
       return;
+    }
 
     try {
-      // 6-1) BE: 배송정보 조회
-      const orderListReq = selectedIds.map((id) => ({
-        orderId: id,
+      // 6-1) BE: 배송정보 조회 — BE에서 orderId만 이용해서 조회함
+      const orderListReq = selectedIds.map((orderId) => ({
+        orderId,
         selectOptionList: null,
       }));
-      const infos = await registerDeliveryInfo({ orderList: orderListReq });
+      const deliveryInfos = await registerDeliveryInfo({
+        orderList: orderListReq,
+      });
 
-      // 6-2) 기존 GoodsFlow 주문 취소
-      for (const info of infos) {
+      // 6-2) GoodsFlow 기존 주문 취소
+      for (const info of deliveryInfos) {
+        const cancelRes = await cancelGoodsFlowOrder(info.transUniqueCd);
+        if (!cancelRes.success) {
+          console.error(`송장취소 실패: ${cancelRes.error?.message}`);
+        }
+      }
+
+      // 6-2) GoodsFlow 기존 주문 취소
+      for (const info of deliveryInfos) {
         const cancelRes = await cancelGoodsFlowOrder(info.transUniqueCd);
         if (!cancelRes.success) {
           console.error(`송장취소 실패: ${cancelRes.error?.message}`);
@@ -355,7 +354,7 @@ export function useOrderActions(
 
       // 6-3) GoodsFlow 재등록
       const gfOrderRes = await registerGoodsFlowOrder({
-        items: infos.map((info) => ({
+        items: deliveryInfos.map((info) => ({
           transUniqueCd: info.transUniqueCd,
           sndName: info.sndName,
           sndZipCode: info.sndZipCode,
@@ -374,21 +373,27 @@ export function useOrderActions(
           paymentTypeCode: "SH",
         })),
       });
-      if (!gfOrderRes.success)
+      if (!gfOrderRes.success) {
         throw new Error(
-          gfOrderRes.error?.message ?? "송장 재출력에 실패했습니다"
+          gfOrderRes.error?.message ?? "송장 재출력에 실패했습니다."
         );
+      }
 
       // 6-4) 인쇄 팝업
       const otp = await getOtp();
-      const printData = await printGoodsFlow({ otp, id: gfOrderRes.id });
+      const printData = await printGoodsFlow({
+        otp,
+        id: gfOrderRes.id,
+      });
       if (printData) {
         openPopup(
           `/bf-admin/sell/delivery/print?data=${encodeURIComponent(printData)}`
         );
       }
+
+      setSelectedIds([]);
     } catch (err: any) {
-      addToast(`송장 재출력 중 오류가 발생했습니다.\n${err.message}`);
+      addToast(`송장 재출력 중 오류가 발생했습니다.\n${err.message || err}`);
     }
   };
 
@@ -468,7 +473,7 @@ export function useOrderActions(
     handleDelivery,
     handleCancel,
     handleManage,
-    // handleReprintInvoice,
+    handleReprintInvoice,
 
     //일반 주문 상세 모달
     handleDetail,

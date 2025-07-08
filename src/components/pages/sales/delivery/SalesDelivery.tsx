@@ -15,8 +15,8 @@ import {
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS_LABEL_MAP,
   ORDERS_ORDER_STATUS,
-  INITIAL_ORDERS_REQUEST,
   INITIAL_DELIVERY_REQUEST,
+  ORDERS_DELIVERY_STATUS,
 } from "@/constants/sales";
 import { useOrderActions } from "@/hooks/useOrderActions";
 import useSearchValues from "@/hooks/useSearchValues";
@@ -35,8 +35,6 @@ import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import CancelOrderModal from "../modal/CancelOrderModal";
-import OrderDetailModal from "../modal/OrderDetailModal";
 
 export default function SalesDelivery() {
   const {
@@ -68,31 +66,12 @@ export default function SalesDelivery() {
     useState<SalesSearchCategory>("memberName");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const {
-    handleConfirm,
-    handleDeny,
-    handleDelivery,
-    handleCancel,
-    handleManage,
-
-    // 주문 상세 모달
-    handleDetail,
-    isDetailModalOpen,
-    onCloseDetailModal,
-    detailData,
-    // 판매 취소 모달
-    isCancelModalOpen,
-    cancelReason,
-    setCancelReason,
-    handleCancelConfirm,
-    onCancelModalClose,
-  } = useOrderActions(
+  const { handleReprintInvoice } = useOrderActions(
     orderData,
     selectedIds,
     setSelectedIds,
     searchValues.orderType as OrderTypeRequest
   );
-
   // → 2) 전체선택 체크박스 상태 계산
   const allSelected = useMemo(
     () => orderData.length > 0 && selectedIds.length === orderData.length,
@@ -147,8 +126,8 @@ export default function SalesDelivery() {
       label: "주문상태",
       children: (
         <LabeledRadioButtonGroup<OrderStatus>
-          options={ORDERS_ORDER_STATUS}
-          value={searchValues.statusList?.[0] ?? "PAYMENT_DONE"}
+          options={ORDERS_DELIVERY_STATUS}
+          value={searchValues.statusList?.[0] ?? "DELIVERY_BEFORE_COLLECTION"}
           onChange={(value) =>
             setSearchValues({
               ...searchValues,
@@ -275,66 +254,19 @@ export default function SalesDelivery() {
             <Button
               size="sm"
               variant="outline"
-              onClick={handleConfirm}
+              onClick={handleReprintInvoice}
               disabled={isDisableAction}
             >
-              주문확인
+              송장 재출력
             </Button>
             <Button
               size="sm"
               variant="outline"
-              onClick={handleDeny}
+              onClick={() => {}}
               disabled={isDisableAction}
             >
-              확인취소
+              강제 배송완료
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleDelivery}
-              disabled={isDisableAction}
-            >
-              주문발송
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleCancel}
-              disabled={isDisableAction}
-            >
-              판매취소
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleManage}
-              disabled={isDisableAction}
-            >
-              택배사 관리
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleDetail}
-              disabled={isDisableAction}
-            >
-              일반주문상세
-            </Button>
-
-            {/* 판매취소 모달 */}
-            <CancelOrderModal
-              isOpen={isCancelModalOpen}
-              reason={cancelReason}
-              selectedCount={selectedIds.length}
-              onChangeReason={setCancelReason}
-              onConfirm={handleCancelConfirm}
-              onClose={onCancelModalClose}
-            />
-            <OrderDetailModal
-              isOpen={isDetailModalOpen}
-              detailData={detailData}
-              onClose={onCloseDetailModal}
-            />
           </div>
         }
       />

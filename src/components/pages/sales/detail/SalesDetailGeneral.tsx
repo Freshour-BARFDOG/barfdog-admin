@@ -23,7 +23,7 @@ export default function SalesDetailGeneral({
   const isCanceled = CANCELED_ORDER_STATUS_SET.has(
     data.orderInfoDto.orderStatus
   );
-  console.log(isCanceled);
+  console.log("data", data);
 
   const orderStatus = ORDER_STATUS_LABEL_MAP[data.orderInfoDto.orderStatus];
 

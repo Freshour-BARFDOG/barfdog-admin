@@ -110,25 +110,25 @@ export const MENU_ITEMS: MenuItem[] = [
         href: "/sales/orders",
       },
       {
-        key: "cancels",
-        label: "취소 관리",
-        href: "/sales/cancels",
-      },
-      {
-        key: "exchanges",
-        label: "교환 관리",
-        href: "/sales/exchanges",
-      },
-      {
-        key: "shipping",
+        key: "delivery",
         label: "배송 관리",
-        href: "/sales/shipping",
+        href: "/sales/delivery",
       },
-      {
-        key: "confirmations",
-        label: "구매 확정",
-        href: "/sales/confirmations",
-      },
+      // {
+      //   key: "cancels",
+      //   label: "취소 관리",
+      //   href: "/sales/cancels",
+      // },
+      // {
+      //   key: "exchanges",
+      //   label: "교환 관리",
+      //   href: "/sales/exchanges",
+      // },
+      // {
+      //   key: "confirmations",
+      //   label: "구매 확정",
+      //   href: "/sales/confirmations",
+      // },
     ],
   },
   {
