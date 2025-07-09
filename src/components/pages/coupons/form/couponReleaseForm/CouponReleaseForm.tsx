@@ -1,0 +1,245 @@
+'use client';
+import * as styles from './CouponReleaseForm.css';
+import * as yup from 'yup';
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Controller } from "react-hook-form";
+import Card from "@/components/common/card/Card";
+import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import DatePicker from "@/components/common/datePicker/DatePicker";
+import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
+import SelectBox from "@/components/common/selectBox/SelectBox";
+import GroupTarget from "@/components/pages/coupons/form/couponReleaseForm/groupTarget/GroupTarget";
+import PersonalTarget from "@/components/pages/coupons/form/couponReleaseForm/personalTarget/PersonalTarget";
+import Button from "@/components/common/button/Button";
+import { useFormHandler } from "@/hooks/useFormHandler";
+import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/coupons";
+import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/coupons";
+import { useGetPublicationCouponList } from "@/api/coupons/queries/useGetPublicationCouponList";
+import { useReleaseCoupon } from "@/api/coupons/mutations/useReleaseCoupon";
+
+const baseCouponSchema = {
+	couponType: yup.string().oneOf(['CODE_PUBLISHED', 'GENERAL_PUBLISHED']).required(),
+	couponId: yup.number().required(),
+	expiredDate: yup.string().required(),
+	alimTalk: yup.boolean().required(),
+};
+
+const getCouponSchemaByTarget = (type: ReleaseCouponTarget) => {
+	switch (type) {
+		case 'PERSONAL':
+			return yup.object({
+				...baseCouponSchema,
+				memberIdList: yup
+					.array()
+					.of(yup.number())
+					.min(1, '최소 한 명 이상의 회원을 선택해주세요.')
+					.required(),
+			});
+
+		case 'GROUP':
+			return yup.object({
+				...baseCouponSchema,
+				subscribe: yup.boolean().required(),
+				longUnconnected: yup.boolean().required(),
+				gradeList: yup
+					.array()
+					.of(yup.string())
+					.min(1, '등급을 선택해주세요.'),
+				area: yup.string().required('지역을 선택해주세요.'),
+				birthYearFrom: yup.string().required(),
+				birthYearTo: yup.string().required(),
+			});
+
+		case 'ALL':
+		default:
+			return yup.object({
+				...baseCouponSchema,
+			});
+	}
+};
+
+const defaultValues: ReleaseCouponFormValues = {
+	couponType: 'CODE_PUBLISHED',
+	couponId: null,
+	expiredDate: '',
+	alimTalk: true,
+	memberIdList: [],
+	subscribe: false,
+	longUnconnected: false,
+	gradeList: [],
+	area: 'ALL',
+	birthYearFrom: '',
+	birthYearTo: '',
+};
+
+export default function CouponReleaseForm() {
+	const router = useRouter();
+
+	const [couponTarget, setCouponTarget] = useState<ReleaseCouponTarget>('ALL');
+	const schema = useMemo(() => getCouponSchemaByTarget(couponTarget), [couponTarget]);
+	const {
+		control,
+		handleSubmit,
+		watch,
+		setValue,
+		getValues,
+		isValid,
+		trigger,
+	} = useFormHandler<ReleaseCouponFormValues>(schema, defaultValues, 'all');
+	
+
+	const { data: publicationCouponList } = useGetPublicationCouponList(getValues('couponType'));
+	const { mutate } = useReleaseCoupon();
+
+	useEffect(() => {
+		trigger(); // schema가 바뀌었을 때 강제 유효성 검사
+	}, [schema]);
+
+	const onSubmit = (data: ReleaseCouponFormValues) => {
+		const common = {
+			couponType: data.couponType,
+			couponId: data.couponId,
+			expiredDate: data.expiredDate,
+			alimTalk: data.alimTalk,
+		};
+
+		let targetData = {};
+		switch (couponTarget) {
+			case 'PERSONAL':
+				targetData = { memberIdList: data.memberIdList };
+				break;
+
+			case 'GROUP':
+				targetData = {
+					subscribe: data.subscribe,
+					longUnconnected: data.longUnconnected,
+					gradeList: data.gradeList,
+					area: data.area,
+					birthYearFrom: data.birthYearFrom,
+					birthYearTo: data.birthYearTo,
+				};
+				break;
+
+			case 'ALL':
+			default:
+				break;
+		}
+
+		const requestBody = {
+			...common,
+			...targetData,
+		};
+
+		console.log('requestBody', requestBody);
+		mutate({
+			couponTarget: couponTarget,
+			body: requestBody,
+		}, {
+			onSuccess: () => {
+
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		})
+	};
+
+	return (
+		<>
+			<Card shadow='none' padding={20}>
+				<form className={styles.couponReleaseForm}>
+					<InputFieldGroup label='발행 대상'>
+						<LabeledRadioButtonGroup
+							options={RELEASE_COUPON_TARGET_LIST}
+							value={couponTarget}
+							onChange={(value) => {
+								setCouponTarget(value as ReleaseCouponTarget);
+								if (value !== 'GROUP') {
+									setValue('gradeList', []);
+									setValue('birthYearFrom', '');
+									setValue('birthYearTo', '');
+									setValue('area', 'ALL');
+									setValue('subscribe', false);
+									setValue('longUnconnected', false);
+								}
+								if (value !== 'PERSONAL') {
+									setValue('memberIdList', []);
+								}
+							}}
+						/>
+					</InputFieldGroup>
+					{couponTarget === 'GROUP' &&
+						<GroupTarget control={control} setValue={setValue} trigger={trigger} />
+					}
+					{couponTarget === 'PERSONAL' &&
+						<PersonalTarget setValue={setValue} trigger={trigger} />
+					}
+					<Controller
+						control={control}
+						name='expiredDate'
+						render={({ field }) => (
+							<InputFieldGroup label='유효기간'>
+								<DatePicker
+									{...field}
+								/>
+							</InputFieldGroup>
+						)}
+					/>
+					<Controller
+						control={control}
+						name='couponType'
+						render={({ field }) => (
+							<InputFieldGroup label='쿠폰 타입'>
+								<LabeledRadioButtonGroup
+									options={RELEASE_COUPON_TYPE_LIST}
+									onChange={(value) => {
+										setValue('couponId', null);
+										field.onChange(value);
+									}}
+									value={field.value}
+								/>
+							</InputFieldGroup>
+						)}
+					/>
+					<Controller
+						control={control}
+						name='couponId'
+						render={({ field }) => (
+							<InputFieldGroup label='쿠폰 선택'>
+								<SelectBox
+									options={
+										publicationCouponList?.map(coupon => ({
+											label: `[할인: ${coupon.discount}] ${coupon.name}`,
+											value: coupon.couponId,
+										})) ?? []
+									}
+									{...field}
+								/>
+							</InputFieldGroup>
+						)}
+					/>
+					<Controller
+						control={control}
+						name='alimTalk'
+						render={({ field }) => (
+							<InputFieldGroup label='알림톡 발송' divider={false}>
+								<LabeledRadioButtonGroup
+									options={[
+										{ label: 'Y', value: true },
+										{ label: 'N', value: false },
+									]}
+									{...field}
+								/>
+							</InputFieldGroup>
+						)}
+					/>
+				</form>
+			</Card>
+			<div className={styles.couponReleaseControls}>
+				<Button onClick={() => router.back()} variant='outline' type='assistive'>취소</Button>
+				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 발행</Button>
+			</div>
+		</>
+	);
+}

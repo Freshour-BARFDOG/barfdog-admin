@@ -2,20 +2,18 @@
 import * as styles from './MemberList.css';
 import { useState } from "react";
 import { format } from "date-fns";
-import Link from "next/link";
-import Text from "@/components/common/text/Text";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/LabeledCheckBoxGroup";
 import SearchFilterGroup from '@/components/common/searchFilterGroup/SearchFilterGroup';
-import TableSection from "@/components/common/tableSection/TableSection";
 import useSearchValues from "@/hooks/useSearchValues";
 import Loader from "@/components/common/loader/Loader";
+import MemberTable from "@/components/pages/member/table/MemberTable";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
-import { GradeType, MemberListData, MemberListSearchParams } from "@/types/member";
-import { SearchFilterItem, TableColumn } from "@/types/common";
+import { GradeType, MemberListSearchParams } from "@/types/member";
+import { SearchFilterItem } from "@/types/common";
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 import { INITIAL_SEARCH_VALUES, SEARCH_CATEGORY, SEARCH_GRADE_LIST, SEARCH_STATUS } from "@/constants/member";
 import { useExcelDownloadMemberList } from "@/api/member/mutations/useExcelDownloadMemberList";
@@ -53,7 +51,7 @@ const MemberList = () => {
 
 	const filters: SearchFilterItem[] = [
 		{
-			label: '조회기간',
+			label: '조회 기간',
 			children: (
 				<DateRangeFilter
 					onChangeRange={(value) => {
@@ -69,7 +67,7 @@ const MemberList = () => {
 			align: 'start'
 		},
 		{
-			label: '회원검색',
+			label: '회원 검색',
 			children: (
 				<SearchFilterKeyword
 					categoryOptions={SEARCH_CATEGORY}
@@ -84,7 +82,7 @@ const MemberList = () => {
 			),
 		},
 		{
-			label: '구독여부',
+			label: '구독 여부',
 			children: (
 				<LabeledRadioButtonGroup
 					options={SEARCH_STATUS}
@@ -111,50 +109,7 @@ const MemberList = () => {
 		},
 	]
 
-	const columns: TableColumn<MemberListData>[] = [
-		{ key: 'id', header: '번호', width: '60px',
-			render: (row, index) =>
-				getTableRowNumber({
-					totalElements: data?.page.totalElements as number,
-					currentPage: data?.page.number as number,
-					pageSize: data?.page.size as number,
-					index,
-				}).toString(),
-		},
-		{
-			key: 'id',
-			header: '상세보기',
-			render: (row) => {
-				const memberId = row.id;
-				return <Link href={`/member/${memberId}`} target='_blank'><Text type='body3' color='red'>상세보기</Text></Link>;
-			},
-		},
-		{ key: 'grade', header: '등급' },
-		{ key: 'name', header: '이름' },
-		{ key: 'email', header: '이메일' },
-		{ key: 'phoneNumber', header: '연락처' },
-		{
-			key: 'dogName',
-			header: '반려견 이름',
-			render: (row) => row.dogName ? row.dogName : '-',
-		},
-		{
-			key: 'subscribe',
-			header: '정기구독 여부',
-			render: (row) => row.subscribe ? 'Y' : 'N',
-		},
-		{
-			key: 'accumulatedAmount',
-			header: '누적구매금액',
-			render: (row) => `${row.accumulatedAmount.toLocaleString()}원`,
-		},
-		{
-			key: 'longUnconnected',
-			header: '장기미접속',
-			render: (row) => row.longUnconnected ? 'Y' : 'N',
-		},
-	]
-
+	if(!data) return null
 	return (
 		<div className={styles.memberListContainer}>
 			<SearchFilterGroup
@@ -162,14 +117,22 @@ const MemberList = () => {
 				onSubmit={onSubmit}
 				onReset={onReset}
 			/>
-			<TableSection
-				data={data?.memberList as MemberListData[]}
-				columns={columns}
+			<MemberTable
+				data={data}
+				firstRow={{
+					key: 'id',
+					header: '번호',
+					width: '60px',
+					render: (row, index) =>
+						data?.page && getTableRowNumber({
+							totalElements: data?.page.totalElements as number,
+							currentPage: data?.page.number as number,
+							pageSize: data?.page.size as number,
+							index,
+						}).toString(),
+				}}
 				page={page}
-				onPageChange={onChangePage}
-				totalPages={data?.page?.totalPages ?? 0}
-				title='회원 목록'
-				emptyText='회원 목록 데이터가 없습니다.'
+				onChangePage={onChangePage}
 				action={(
 					<Button
 						onClick={handleExcelDownload}

@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 export const MENU_ITEMS: MenuItem[] = [
-  {
+	{
     key: "dashboard",
     label: "대시보드",
     href: "/",
@@ -41,7 +41,7 @@ export const MENU_ITEMS: MenuItem[] = [
           {
             key: "search",
             label: "쿠폰 조회",
-            href: "/coupons/search",
+            href: "/coupons",
           },
           {
             key: "release",

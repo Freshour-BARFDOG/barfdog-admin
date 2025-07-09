@@ -18,6 +18,12 @@ const queryKeys = {
     BASE: "goodsflow",
     GET_TRACE_RESULTS: "getTraceResults",
   },
+  COUPONS: {
+    BASE: "coupon",
+    GET_COUPON_LIST: "getCouponList",
+    GET_MEMBER_COUPON_LIST: "getMemberCouponList",
+    GET_PUBLICATION_COUPON_LIST: "getPublicationCouponList",
+  },
 } as const;
 
 export { queryKeys };

@@ -2,8 +2,7 @@ import * as styles from './DateRangeFilter.css';
 import { ChangeEvent, useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import DatePicker from "@/components/common/datePicker/DatePicker";
-
-const OLD_DATE = new Date('2000-01-01');
+import { OLDEST_DATE } from "@/constants/common";
 
 const PRESETS = [
 	{ label: '전체', days: null },
@@ -42,7 +41,7 @@ export default function DateRangeFilter({ onChangeRange }: DateRangeFilterProps)
 		let endDate: Date | null = today;
 
 		if (days === null) {
-			startDate = OLD_DATE;
+			startDate = OLDEST_DATE;
 		} else if (days === 0) {
 			startDate = today;
 			endDate = today;
