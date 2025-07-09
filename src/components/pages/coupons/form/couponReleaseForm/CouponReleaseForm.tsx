@@ -17,6 +17,7 @@ import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/coupons";
 import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/coupons";
 import { useGetPublicationCouponList } from "@/api/coupons/queries/useGetPublicationCouponList";
 import { useReleaseCoupon } from "@/api/coupons/mutations/useReleaseCoupon";
+import { useToastStore } from "@/store/useToastStore";
 
 const baseCouponSchema = {
 	couponType: yup.string().oneOf(['CODE_PUBLISHED', 'GENERAL_PUBLISHED']).required(),
@@ -81,16 +82,16 @@ export default function CouponReleaseForm() {
 	const {
 		control,
 		handleSubmit,
-		watch,
 		setValue,
 		getValues,
 		isValid,
 		trigger,
+		reset
 	} = useFormHandler<ReleaseCouponFormValues>(schema, defaultValues, 'all');
-	
 
 	const { data: publicationCouponList } = useGetPublicationCouponList(getValues('couponType'));
 	const { mutate } = useReleaseCoupon();
+	const { addToast } = useToastStore();
 
 	useEffect(() => {
 		trigger(); // schema가 바뀌었을 때 강제 유효성 검사
@@ -131,16 +132,18 @@ export default function CouponReleaseForm() {
 			...targetData,
 		};
 
-		console.log('requestBody', requestBody);
 		mutate({
 			couponTarget: couponTarget,
 			body: requestBody,
 		}, {
 			onSuccess: () => {
-
+				reset(defaultValues);
+				setCouponTarget('ALL');
+				addToast('쿠폰 발행이 완료되었습니다!');
 			},
 			onError: (error) => {
 				console.log(error);
+				addToast('쿠폰 발행에 실패했습니다.\n관리자에게의 문의해주세요.')
 			}
 		})
 	};

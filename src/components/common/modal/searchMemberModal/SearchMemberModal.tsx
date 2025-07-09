@@ -46,8 +46,16 @@ export default function SearchMemberModal({
 		toggleSelect,
 		selectAll,
 		isSelected,
-		allSelected,
 	} = useItemSelection(data?.memberList ?? [], (member) => member.id,defaultSelected?.map((member) => member.id) ?? [] );
+
+	const currentPageIds = data?.memberList.map((m) => m.id) ?? [];
+	const allSelected = currentPageIds.length > 0 &&
+		currentPageIds.every((id) => selectedIds.includes(id));
+
+	const handleClose = () => {
+		onClose();
+		onReset();
+	};
 
 	const handleSelect = () => {
 		if (selectedIds.length < 1) return;
@@ -63,21 +71,21 @@ export default function SearchMemberModal({
 		);
 
 		onSelect(uniqueById);
-		onClose();
+		handleClose();
 	}
 
 	if (!data) return null;
 	return (
 		<ModalBackground
 			isVisible={isOpen}
-			onClose={onClose}
+			onClose={handleClose}
 			isDimmed
 			closeOnBackgroundClick={false}
 		>
 			<Card shadow='none' width='auto' justify='start' className={styles.searchMemberModalContainer}>
 				<div className={styles.searchMemberHeader}>
 					<Text type='title2' color='white'>회원 검색</Text>
-					<button onClick={onClose}><SvgIcon src={CloseIcon} color='white' /></button>
+					<button onClick={handleClose}><SvgIcon src={CloseIcon} color='white' /></button>
 				</div>
 				<div className={styles.searchMemberContent}>
 					<InputFieldGroup label='회원 검색' divider={false}>

@@ -20,7 +20,7 @@ export default function PersonalTarget({
 	setValue,
 	trigger,
 }: PersonalTargetProps) {
-	const { isOpen, onClose, onToggle } = useModal();
+	const { isOpen: isOpenSearchMemberModal, onClose: onCloseSearchMemberModal, onToggle: onToggleSearchMemberModal } = useModal();
 	const [selectedMember, setSelectedMember] = useState<MemberListData[]>([]);
 
 	const {
@@ -46,40 +46,40 @@ export default function PersonalTarget({
 	}
 	return (
 		<>
-		<Card shadow='none' backgroundColor='gray100' borderRadius='none' padding={20}>
-			<div className={styles.personalTargetControls}>
-				<Button onClick={onToggle} size='sm'>회원 검색</Button>
-				<Button onClick={handleDeleteSelectedIds} disabled={deleteSelectedIds.length < 1} size='sm' variant='outline' type='assistive'>선택 삭제</Button>
-				<Button size='sm' variant='outline' type='assistive'>엑셀 업로드</Button>
-			</div>
-			<div className={styles.personalTargetTable}>
-				<MemberTable
-					data={{ memberList: selectedMember }}
-					showTitle={false}
-					padding={20}
-					firstRow={{
-						key: 'id',
-						header: (
-							<LabeledCheckbox
-								value={allSelected}
-								isChecked={allSelected}
-								onToggle={(value) => selectAll(!value)}
-							/>
-						),
-						width: '60px',
-						render: (row) => (
-							<LabeledCheckbox
-								value={row.id}
-								isChecked={isSelected(row.id)}
-								onToggle={() => toggleSelect(row.id)}
-							/>
-						),
-					}}
-				/>
-			</div>
-		</Card>
-			{isOpen &&
-				<SearchMemberModal isOpen={isOpen} onClose={onClose} onSelect={handleSelect} defaultSelected={selectedMember} />
+			<Card shadow='none' backgroundColor='gray100' borderRadius='none' padding={20}>
+				<div className={styles.personalTargetControls}>
+					<Button onClick={onToggleSearchMemberModal} size='sm'>회원 검색</Button>
+					<Button onClick={handleDeleteSelectedIds} disabled={deleteSelectedIds.length < 1} size='sm' variant='outline' type='assistive'>선택 삭제</Button>
+					<Button size='sm' variant='outline' type='assistive'>엑셀 업로드</Button>
+				</div>
+				<div className={styles.personalTargetTable}>
+					<MemberTable
+						data={{ memberList: selectedMember }}
+						showTitle={false}
+						padding={20}
+						firstRow={{
+							key: 'id',
+							header: (
+								<LabeledCheckbox
+									value={allSelected}
+									isChecked={allSelected}
+									onToggle={(value) => selectAll(!value)}
+								/>
+							),
+							width: '60px',
+							render: (row) => (
+								<LabeledCheckbox
+									value={row.id}
+									isChecked={isSelected(row.id)}
+									onToggle={() => toggleSelect(row.id)}
+								/>
+							),
+						}}
+					/>
+				</div>
+			</Card>
+			{isOpenSearchMemberModal &&
+				<SearchMemberModal isOpen={isOpenSearchMemberModal} onClose={onCloseSearchMemberModal} onSelect={handleSelect} defaultSelected={selectedMember} />
 			}
 		</>
 	);

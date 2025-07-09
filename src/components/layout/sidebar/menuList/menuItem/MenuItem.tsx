@@ -78,11 +78,11 @@ const MenuItem = ({
 			</div>
 			{item.children && isOpen && (
 				<ul className={styles.submenu}>
-					{item.children.map((child) => (
-						<Fragment key={child.key}>
+					{item.children.map((child, index) => (
+						<Fragment key={`${child.key}-${index}`}>
 							{!child.children ? (
 								<li>
-									<Link href={child.href ?? '#'}>
+									<Link href={child.href ?? '#'} className={styles.subMenuLink}>
 										<MenuLabel
 											active={pathname === child.href}
 											label={child.label}

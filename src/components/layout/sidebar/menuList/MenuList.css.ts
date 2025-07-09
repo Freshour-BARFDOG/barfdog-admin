@@ -49,6 +49,10 @@ export const submenu = style({
 	marginTop: '8px',
 });
 
+export const subMenuLink = style({
+	width: '100%',
+});
+
 export const submenuChildrenList = style({
 	display: 'flex',
 	flexDirection: 'column',
