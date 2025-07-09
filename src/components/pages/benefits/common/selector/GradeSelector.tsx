@@ -2,7 +2,7 @@ import * as styles from './Selector.css';
 import { useEffect, useState } from "react";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import { SEARCH_GRADE_LIST } from "@/constants/member";
-import { GradeType } from "@/types/member";
+import { GradeType } from "@/types/common";
 
 interface GradeSelectorProps {
 	onChange: (range: GradeType[]) => void;
@@ -30,7 +30,7 @@ export default function GradeSelector ({ onChange }: GradeSelectorProps) {
 
 	useEffect(() => {
 		if (selectedRange.length > 0) {
-			onChange(selectedRange);
+			onChange(selectedRange as GradeType[]);
 		} else {
 			onChange([]);
 		}

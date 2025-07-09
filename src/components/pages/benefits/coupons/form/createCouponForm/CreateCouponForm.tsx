@@ -1,5 +1,5 @@
 'use client';
-import * as styles from '../CouponForm.css';
+import * as styles from '../../../Benefits.css';
 import { discountUnitButton } from "@/styles/common.css";
 import { ChangeEvent, ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -18,10 +18,10 @@ import { unformatCommaNumber, formatNumberWithComma } from "@/utils/formatNumber
 import { useCreateCoupon } from "@/api/coupons/mutations/useCreateCoupon";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
-import { CreateCouponFormValues } from "@/types/coupons";
-import { CREATE_COUPON_TARGET_LIST, CREATE_COUPON_TYPE_LIST } from "@/constants/coupons";
+import { CreateCouponFormValues } from "@/types/benefits/coupons";
+import { CREATE_COUPON_TARGET_LIST, CREATE_COUPON_TYPE_LIST } from "@/constants/benefits/coupons";
 import { DISCOUNT_UNIT_TYPE, DISCOUNT_UNIT_TYPE_LIST, UNLIMITED_VALUE } from "@/constants/common";
-import { createCouponSchema, defaultCreateCouponValues } from "@/utils/validation/coupon/createCoupon";
+import { createCouponSchema, defaultCreateCouponValues } from "@/utils/validation/benefits/coupon/createCoupon";
 
 type CreateCouponFieldName = keyof CreateCouponFormValues;
 
@@ -31,7 +31,7 @@ interface InputFieldItem {
 	render: (field: ControllerRenderProps<CreateCouponFormValues, CreateCouponFieldName>) => ReactNode;
 }
 
-export default function CouponCreateForm() {
+export default function CreateCouponForm() {
 	const router = useRouter();
 	const {
 		control,
@@ -145,8 +145,8 @@ export default function CouponCreateForm() {
 			name: 'code',
 			label: '쿠폰 코드',
 			render: (field) => (
-				<div className={styles.couponInputBox}>
-					<div className={styles.couponInput}>
+				<div className={styles.benefitInputBox}>
+					<div className={styles.benefitInput}>
 						<InputField
 							value={field.value}
 							onChange={field.onChange}
@@ -160,8 +160,8 @@ export default function CouponCreateForm() {
 			name: 'discountDegree',
 			label: '할인율',
 			render: (field) => (
-				<div className={styles.couponInputBox}>
-					<div className={styles.couponInput}>
+				<div className={styles.benefitInputBox}>
+					<div className={styles.benefitInput}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -188,8 +188,8 @@ export default function CouponCreateForm() {
 			name: 'availableMaxDiscount',
 			label: '최대 할인 금액',
 			render: (field) => (
-				<div className={styles.couponInputBox}>
-					<div className={styles.couponInput}>
+				<div className={styles.benefitInputBox}>
+					<div className={styles.benefitInput}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -203,8 +203,8 @@ export default function CouponCreateForm() {
 			name: 'availableMinPrice',
 			label: '최소 사용 금액',
 			render: (field) => (
-				<div className={styles.couponInputBox}>
-					<div className={styles.couponInput}>
+				<div className={styles.benefitInputBox}>
+					<div className={styles.benefitInput}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -218,8 +218,8 @@ export default function CouponCreateForm() {
 			name: 'amount',
 			label: '사용한도(횟수)',
 			render: (field) => (
-				<div className={styles.couponInputBox}>
-					<div className={styles.couponInput}>
+				<div className={styles.benefitInputBox}>
+					<div className={styles.benefitInput}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -240,7 +240,7 @@ export default function CouponCreateForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.couponForm}>
+				<form className={styles.benefitForm}>
 					{InputFieldList.map((input, index) => (
 						<Controller
 							control={control}
@@ -258,7 +258,7 @@ export default function CouponCreateForm() {
 					))}
 				</form>
 			</Card>
-			<div className={styles.couponControls}>
+			<div className={styles.benefitControls}>
 				<Button onClick={() => router.push('/coupons')} variant='outline' type='assistive'>목록</Button>
 				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 등록</Button>
 			</div>

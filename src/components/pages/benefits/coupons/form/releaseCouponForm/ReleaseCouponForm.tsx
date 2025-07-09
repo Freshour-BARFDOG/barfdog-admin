@@ -1,5 +1,5 @@
 'use client';
-import * as styles from '../CouponForm.css';
+import * as styles from '../../../Benefits.css';
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
@@ -8,18 +8,19 @@ import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup
 import DatePicker from "@/components/common/datePicker/DatePicker";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import SelectBox from "@/components/common/selectBox/SelectBox";
-import GroupTarget from "@/components/pages/coupons/form/couponReleaseForm/groupTarget/GroupTarget";
-import PersonalTarget from "@/components/pages/coupons/form/couponReleaseForm/personalTarget/PersonalTarget";
+import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTarget";
+import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
 import Button from "@/components/common/button/Button";
 import { useFormHandler } from "@/hooks/useFormHandler";
-import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/coupons";
-import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/coupons";
+import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/benefits/coupons";
+import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/benefits/coupons";
 import { useGetPublicationCouponList } from "@/api/coupons/queries/useGetPublicationCouponList";
 import { useReleaseCoupon } from "@/api/coupons/mutations/useReleaseCoupon";
 import { useToastStore } from "@/store/useToastStore";
-import { defaultValues, getCouponSchemaByTarget } from "@/utils/validation/coupon/releaseCoupon";
+import { defaultValues, getCouponSchemaByTarget } from "@/utils/validation/benefits/coupon/releaseCoupon";
+import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
 
-export default function CouponReleaseForm() {
+export default function ReleaseCouponForm() {
 	const router = useRouter();
 
 	const [couponTarget, setCouponTarget] = useState<ReleaseCouponTarget>('ALL');
@@ -96,32 +97,20 @@ export default function CouponReleaseForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.couponForm}>
+				<form className={styles.benefitForm}>
 					<InputFieldGroup label='발행 대상'>
-						<LabeledRadioButtonGroup
+						<BenefitTargetSelector<ReleaseCouponFormValues, ReleaseCouponTarget>
+							targetValue={couponTarget}
+							setTargetValue={setCouponTarget}
 							options={RELEASE_COUPON_TARGET_LIST}
-							value={couponTarget}
-							onChange={(value) => {
-								setCouponTarget(value as ReleaseCouponTarget);
-								if (value !== 'GROUP') {
-									setValue('gradeList', []);
-									setValue('birthYearFrom', '');
-									setValue('birthYearTo', '');
-									setValue('area', 'ALL');
-									setValue('subscribe', false);
-									setValue('longUnconnected', false);
-								}
-								if (value !== 'PERSONAL') {
-									setValue('memberIdList', []);
-								}
-							}}
+							setValue={setValue}
 						/>
 					</InputFieldGroup>
 					{couponTarget === 'GROUP' &&
-						<GroupTarget control={control} setValue={setValue} trigger={trigger} />
+						<GroupTarget<ReleaseCouponFormValues> control={control} setValue={setValue} trigger={trigger} />
 					}
 					{couponTarget === 'PERSONAL' &&
-						<PersonalTarget setValue={setValue} trigger={trigger} />
+						<PersonalTarget<ReleaseCouponFormValues> setValue={setValue} trigger={trigger} />
 					}
 					<Controller
 						control={control}
@@ -184,7 +173,7 @@ export default function CouponReleaseForm() {
 					/>
 				</form>
 			</Card>
-			<div className={styles.couponControls}>
+			<div className={styles.benefitControls}>
 				<Button onClick={() => router.back()} variant='outline' type='assistive'>취소</Button>
 				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 발행</Button>
 			</div>

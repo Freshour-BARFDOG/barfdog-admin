@@ -4,7 +4,7 @@ import { UseQueryCustomOptions } from "@/types/common";
 import {
 	MemberCouponListBody,
 	MemberCouponListResponse
-} from "@/types/coupons";
+} from "@/types/benefits/coupons";
 import { getMemberCouponList } from "@/api/coupons/coupons";
 
 export function useGetMemberCouponList(

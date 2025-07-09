@@ -24,6 +24,10 @@ const queryKeys = {
     GET_MEMBER_COUPON_LIST: "getMemberCouponList",
     GET_PUBLICATION_COUPON_LIST: "getPublicationCouponList",
   },
+  REWARDS: {
+    BASE: "reward",
+    GET_REWARD_LIST: "getRewardList",
+  },
 } as const;
 
 export { queryKeys };

@@ -15,7 +15,7 @@ import useSearchValues from "@/hooks/useSearchValues";
 import { useGetMemberCouponList } from "@/api/coupons/queries/useGetMemberCouponList";
 import { useUpdateMemberCoupon } from "@/api/coupons/mutations/useUpdateMemberCoupon";
 import { SearchFilterItem, TableColumn } from "@/types/common";
-import { MemberCouponListBody, MemberCouponListData } from "@/types/coupons";
+import { MemberCouponListBody, MemberCouponListData } from "@/types/benefits/coupons";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
@@ -24,7 +24,7 @@ import {
 	MEMBER_COUPON_ROLE,
 	MEMBER_COUPON_ROLE_LIST,
 	MEMBER_COUPON_SEARCH_CATEGORY
-} from "@/constants/coupons";
+} from "@/constants/benefits/coupons";
 
 export default function MemberCouponList() {
 	const queryClient = useQueryClient();

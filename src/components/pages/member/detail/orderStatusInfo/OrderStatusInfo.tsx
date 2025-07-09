@@ -7,8 +7,8 @@ import useModal from "@/hooks/useModal";
 import UpdateGradeModal from "@/components/common/modal/updateGradeModal/UpdateGradeModal";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
-import { GradeType } from "@/types/member";
 import { useUpdateMemberGrade } from "@/api/member/mutations/useUpdateMemberGrade";
+import { GradeType } from "@/types/common";
 
 interface SubscriptionInfoData {
 	accumulatedAmount: number;

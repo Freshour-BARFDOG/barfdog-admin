@@ -2,9 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { createSSRRequest } from "@/api/withAuthSSR";
 import { queryKeys } from "@/constants/queryKeys";
 import { AxiosInstance } from "axios";
-import { MEMBER_COUPON_LIST_INITIAL_SEARCH_VALUES } from "@/constants/coupons";
+import { MEMBER_COUPON_LIST_INITIAL_SEARCH_VALUES } from "@/constants/benefits/coupons";
 import { getMemberCouponList } from "@/api/coupons/coupons";
-import { MemberCouponListResponse } from "@/types/coupons";
+import { MemberCouponListResponse } from "@/types/benefits/coupons";
 
 export async function prefetchGetMemberCouponList(queryClient: QueryClient) {
 	const ssrAxios = await createSSRRequest();

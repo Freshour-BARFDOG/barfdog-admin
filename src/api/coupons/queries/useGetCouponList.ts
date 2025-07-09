@@ -1,7 +1,7 @@
 import { queryKeys } from "@/constants/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 import { UseQueryCustomOptions } from "@/types/common";
-import { CouponListResponse, CouponListSearchParams } from "@/types/coupons";
+import { CouponListResponse, CouponListSearchParams } from "@/types/benefits/coupons";
 import { getCouponList } from "@/api/coupons/coupons";
 
 export function useGetCouponList(

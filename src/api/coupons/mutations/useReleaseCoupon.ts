@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { UseMutationCustomOptions } from "@/types/common";
 import { releaseCoupon } from "@/api/coupons/coupons";
-import { ReleaseCouponRequestBody, ReleaseCouponTarget } from "@/types/coupons";
+import { ReleaseCouponRequestBody, ReleaseCouponTarget } from "@/types/benefits/coupons";
 
 export function useReleaseCoupon(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({

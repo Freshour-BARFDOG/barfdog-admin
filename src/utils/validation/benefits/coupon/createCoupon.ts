@@ -1,6 +1,6 @@
 import { DISCOUNT_UNIT_TYPE } from "@/constants/common";
-import { COUPON_TARGET } from "@/constants/coupons";
-import { CreateCouponType } from "@/types/coupons";
+import { COUPON_TARGET } from "@/constants/benefits/coupons";
+import { CreateCouponType } from "@/types/benefits/coupons";
 import * as yup from "yup";
 
 export const createCouponSchema = yup.object().shape({

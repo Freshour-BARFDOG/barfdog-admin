@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { createSSRRequest } from "@/api/withAuthSSR";
 import { queryKeys } from "@/constants/queryKeys";
 import { getPublicationCouponList } from "@/api/coupons/coupons";
-import { PublicationCouponListData } from "@/types/coupons";
+import { PublicationCouponListData } from "@/types/benefits/coupons";
 
 export async function prefetchGetPublicationCouponList(queryClient: QueryClient) {
 	const ssrAxios = await createSSRRequest();

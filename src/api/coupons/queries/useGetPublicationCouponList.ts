@@ -4,7 +4,7 @@ import { UseQueryCustomOptions } from "@/types/common";
 import {
 	PublicationCouponListData,
 	ReleaseCouponType
-} from "@/types/coupons";
+} from "@/types/benefits/coupons";
 import { getPublicationCouponList } from "@/api/coupons/coupons";
 
 export function useGetPublicationCouponList(

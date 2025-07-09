@@ -9,11 +9,6 @@ const INITIAL_SEARCH_VALUES = {
 	gradeList: [],
 }
 
-const SEARCH_CATEGORY = [
-	{ label: '아이디', value: 'email' },
-	{ label: '이름', value: 'name' },
-]
-
 const SEARCH_STATUS = [
 	{ label: '전체', value: '' },
 	{ label: '구독', value: 'true' },
@@ -24,8 +19,6 @@ const SEARCH_GRADE_LIST = ['브론즈', '실버', '골드', '플래티넘', '다
 
 export {
 	INITIAL_SEARCH_VALUES,
-	SEARCH_CATEGORY,
 	SEARCH_STATUS,
 	SEARCH_GRADE_LIST,
-
 }

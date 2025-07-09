@@ -6,7 +6,7 @@ import Text from "@/components/common/text/Text";
 import Button from "@/components/common/button/Button";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import { SEARCH_GRADE_LIST } from "@/constants/member";
-import { GradeType } from "@/types/member";
+import { GradeType } from "@/types/common";
 
 interface UpdateGradeModalProps {
 	isOpen: boolean;

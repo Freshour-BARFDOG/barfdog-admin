@@ -67,12 +67,12 @@ export const MENU_ITEMS: MenuItem[] = [
           {
             key: "search",
             label: "적립금 조회",
-            href: "/reward/search",
+            href: "/rewards",
           },
           {
             key: "release",
             label: "적립금 발행",
-            href: "/reward/release",
+            href: "/rewards/release",
           },
         ],
       },

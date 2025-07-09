@@ -1,10 +1,10 @@
 import Wrapper from "@/components/layout/wrapper/Wrapper";
-import CouponCreateForm from "@/components/pages/coupons/form/couponCreateForm/CouponCreateForm";
+import CreateCouponForm from "@/components/pages/benefits/coupons/form/createCouponForm/CreateCouponForm";
 
-export default function CouponCreatePage() {
+export default function CreateCouponPage() {
 	return (
 		<Wrapper title='쿠폰 생성'>
-			<CouponCreateForm />
+			<CreateCouponForm />
 		</Wrapper>
 	);
 }

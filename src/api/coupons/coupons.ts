@@ -10,8 +10,8 @@ import {
 	ReleaseCouponTarget,
 	ReleaseCouponType,
 	UpdateMemberCoupon
-} from "@/types/coupons";
-import { COUPON_LIST_INITIAL_SEARCH_VALUES } from "@/constants/coupons";
+} from "@/types/benefits/coupons";
+import { COUPON_LIST_INITIAL_SEARCH_VALUES } from "@/constants/benefits/coupons";
 
 const getCouponList = async (
 	page: number,
@@ -88,7 +88,6 @@ const releaseCoupon = async (couponTarget: ReleaseCouponTarget, body: ReleaseCou
 		throw error;
 	}
 }
-
 
 const createCoupon = async (body: CreateCouponFormValues) => {
 	try {

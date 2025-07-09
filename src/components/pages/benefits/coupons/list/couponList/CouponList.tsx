@@ -14,11 +14,11 @@ import useSearchValues from "@/hooks/useSearchValues";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
-import { COUPON_LIST_INITIAL_SEARCH_VALUES, COUPON_TARGET, COUPON_TYPE, COUPON_TYPE_LIST } from "@/constants/coupons";
+import { COUPON_LIST_INITIAL_SEARCH_VALUES, COUPON_TARGET, COUPON_TYPE, COUPON_TYPE_LIST } from "@/constants/benefits/coupons";
 import { useGetCouponList } from "@/api/coupons/queries/useGetCouponList";
 import { useUpdateCouponInactive } from "@/api/coupons/mutations/useUpdateCouponInactive";
 import { SearchFilterItem, TableColumn } from "@/types/common";
-import { CouponListData, CouponListSearchParams } from "@/types/coupons";
+import { CouponListData, CouponListSearchParams } from "@/types/benefits/coupons";
 
 export default function CouponList() {
 	const queryClient = useQueryClient();

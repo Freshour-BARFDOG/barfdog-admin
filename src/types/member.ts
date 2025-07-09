@@ -1,6 +1,5 @@
 import { Page } from "@/types/common";
-
-type GradeType = '브론즈' | '실버' | '골드' | '플래티넘' | '다이아몬드' | '더 바프';
+import { GradeType } from "@/types/common";
 
 interface MemberListSearchParams {
 	email: string;

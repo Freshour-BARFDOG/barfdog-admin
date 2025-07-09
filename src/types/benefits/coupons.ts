@@ -2,12 +2,12 @@ import { Page } from "@/types/common";
 import {
 	COUPON_TARGET,
 	COUPON_TYPE,
-	MEMBER_COUPON_ROLE, RELEASE_COUPON_AREA,
+	MEMBER_COUPON_ROLE,
 	RELEASE_COUPON_TARGET,
 	RELEASE_COUPON_TYPE
-} from "@/constants/coupons";
+} from "@/constants/benefits/coupons";
 import { DISCOUNT_UNIT_TYPE } from "@/constants/common";
-import { GradeType } from "@/types/member";
+import { FormValueFilter, GroupFilter, PersonalFilter } from "@/types/benefits/common";
 
 interface CouponListData {
 	id: number;
@@ -87,7 +87,6 @@ interface PublicationCouponListData {
 
 type ReleaseCouponTarget = keyof typeof RELEASE_COUPON_TARGET;
 type ReleaseCouponType = keyof typeof RELEASE_COUPON_TYPE;
-type ReleaseCouponArea = keyof typeof RELEASE_COUPON_AREA;
 
 interface ReleaseCouponBaseFormValues {
 	couponType: ReleaseCouponType;
@@ -96,38 +95,14 @@ interface ReleaseCouponBaseFormValues {
 	alimTalk: boolean;
 }
 
-type ReleaseCouponFormValues = ReleaseCouponBaseFormValues & {
-	// PERSONAL
-	memberIdList?: number[];
+interface ReleaseCouponFormValues extends ReleaseCouponBaseFormValues, FormValueFilter {}
 
-	// GROUP
-	subscribe?: boolean;
-	longUnconnected?: boolean;
-	gradeList?: GradeType[];
-	area?: ReleaseCouponArea;
-	birthYearFrom?: string;
-	birthYearTo?: string;
-}
-
-type PersonalCouponBody = ReleaseCouponBaseFormValues & {
-	memberIdList: number[];
-};
-
-type GroupCouponBody = ReleaseCouponBaseFormValues & {
-	subscribe: boolean;
-	longUnconnected: boolean;
-	gradeList: string[];
-	area: string;
-	birthYearFrom: string;
-	birthYearTo: string;
-};
-
+type PersonalCouponBody = ReleaseCouponBaseFormValues & PersonalFilter;
+type GroupCouponBody = ReleaseCouponBaseFormValues & GroupFilter;
 type AllCouponBody = ReleaseCouponBaseFormValues;
 
-type ReleaseCouponRequestBody =
-	| PersonalCouponBody
-	| GroupCouponBody
-	| AllCouponBody;
+type ReleaseCouponRequestBody = PersonalCouponBody | GroupCouponBody | AllCouponBody;
+// --------------------------------------------------
 
 // AUTO_PUBLISHED 제외
 type CreateCouponType = Exclude<keyof typeof COUPON_TYPE, 'AUTO_PUBLISHED'>;

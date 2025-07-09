@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-export const couponForm = style({
+export const benefitForm = style({
 	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
@@ -8,7 +8,7 @@ export const couponForm = style({
 	gap: '20px',
 })
 
-export const couponControls = style({
+export const benefitControls = style({
 	width: '100%',
 	display: 'flex',
 	justifyContent: 'center',
@@ -17,13 +17,13 @@ export const couponControls = style({
 	marginTop: '20px'
 })
 
-export const couponInputBox = style({
+export const benefitInputBox = style({
 	width: '100%',
 	display: 'flex',
 	gap: '10px',
 	alignItems: 'center',
 })
 
-export const couponInput = style({
+export const benefitInput = style({
 	width: '15%',
 })

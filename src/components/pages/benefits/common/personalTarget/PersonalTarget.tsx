@@ -8,18 +8,17 @@ import MemberTable from "@/components/pages/member/table/MemberTable";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import useItemSelection from "@/hooks/useItemSelection";
 import { MemberListData } from "@/types/member";
-import { UseFormSetValue, UseFormTrigger } from "react-hook-form";
-import { ReleaseCouponFormValues } from "@/types/coupons";
+import { FieldValues, Path, PathValue, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 
-interface PersonalTargetProps {
-	setValue: UseFormSetValue<ReleaseCouponFormValues>;
-	trigger: UseFormTrigger<ReleaseCouponFormValues>;
+interface PersonalTargetProps<TFormValues extends FieldValues> {
+	setValue: UseFormSetValue<TFormValues>;
+	trigger: UseFormTrigger<TFormValues>;
 }
 
-export default function PersonalTarget({
+export default function PersonalTarget<TFormValues extends FieldValues>({
 	setValue,
 	trigger,
-}: PersonalTargetProps) {
+}: PersonalTargetProps<TFormValues>) {
 	const { isOpen: isOpenSearchMemberModal, onClose: onCloseSearchMemberModal, onToggle: onToggleSearchMemberModal } = useModal();
 	const [selectedMember, setSelectedMember] = useState<MemberListData[]>([]);
 
@@ -33,7 +32,7 @@ export default function PersonalTarget({
 
 	const handleSelect = async (memberList: MemberListData[]) => {
 		setSelectedMember(memberList)
-		setValue('memberIdList', memberList.map(member => member.id));
+		setValue('memberIdList' as Path<TFormValues>, memberList.map(member => member.id) as PathValue<TFormValues, Path<TFormValues>>);
 		selectAll(false);
 		await trigger();
 	}
@@ -41,7 +40,7 @@ export default function PersonalTarget({
 	const handleDeleteSelectedIds = async () => {
 		const newSelectedMember = selectedMember.filter(member => !deleteSelectedIds.includes(member.id));
 		setSelectedMember(newSelectedMember);
-		setValue('memberIdList', newSelectedMember.map(member => member.id));
+		setValue('memberIdList' as Path<TFormValues>, newSelectedMember.map(member => member.id) as PathValue<TFormValues, Path<TFormValues>>);
 		await trigger();
 	}
 	return (

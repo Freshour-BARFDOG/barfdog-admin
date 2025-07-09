@@ -3,7 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
-import CouponList from "@/components/pages/coupons/list/couponList/CouponList";
+import CouponList from "@/components/pages/benefits/coupons/list/couponList/CouponList";
 import { prefetchGetCouponList } from "@/api/coupons/queries/usePrefetchGetCouponList";
 
 export default async function CouponsPage() {

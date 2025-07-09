@@ -13,7 +13,8 @@ import MemberTable from "@/components/pages/member/table/MemberTable";
 import useItemSelection from "@/hooks/useItemSelection";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
-import { INITIAL_SEARCH_VALUES, SEARCH_CATEGORY } from "@/constants/member";
+import { INITIAL_SEARCH_VALUES } from "@/constants/member";
+import { SEARCH_CATEGORY } from "@/constants/common";
 import { MemberListData, MemberListSearchParams} from "@/types/member";
 
 interface SearchMemberModalProps {
