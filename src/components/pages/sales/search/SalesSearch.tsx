@@ -12,11 +12,11 @@ import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import { PAGE_SIZE } from "@/constants/common";
 import {
-  INITIAL_SALES_REQUEST,
+  INITIAL_SEARCH_REQUEST,
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
-  SALES_SEARCH_STATUS,
-  SALES_STATUS_LABEL_MAP,
+  ORDER_STATUS,
+  ORDER_STATUS_LABEL_MAP,
 } from "@/constants/sales";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
@@ -46,12 +46,12 @@ export default function SalesSearch() {
     setPage,
     onSubmit,
     onReset,
-  } = useSearchValues<SearchSalesRequest>(INITIAL_SALES_REQUEST);
+  } = useSearchValues<SearchSalesRequest>(INITIAL_SEARCH_REQUEST);
 
   const params: SearchSalesParams = {
-    body: submittedValues ?? INITIAL_SALES_REQUEST,
+    body: submittedValues ?? INITIAL_SEARCH_REQUEST,
     page,
-    size: PAGE_SIZE.ORDERS,
+    size: PAGE_SIZE.SALES.ORDERS,
   };
 
   const { data } = useGetSearchSales(params);
@@ -116,7 +116,7 @@ export default function SalesSearch() {
       label: "주문상태",
       children: (
         <SelectBox<OrderStatus>
-          options={SALES_SEARCH_STATUS}
+          options={ORDER_STATUS}
           value={searchValues.statusList?.[0] ?? "ALL"}
           onChange={(value) =>
             setSearchValues({
@@ -178,7 +178,7 @@ export default function SalesSearch() {
       key: "orderStatus",
       header: "주문상태",
       render: (row) => {
-        return SALES_STATUS_LABEL_MAP[row.orderStatus] ?? row.orderStatus;
+        return ORDER_STATUS_LABEL_MAP[row.orderStatus] ?? row.orderStatus;
       },
     },
     { key: "memberEmail", header: "구매자 ID" },

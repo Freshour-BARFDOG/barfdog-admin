@@ -1,30 +1,31 @@
-import { styleVariants } from "@vanilla-extract/css";
 import { themeVars } from "@/styles/theme.css";
+import { recipe } from "@vanilla-extract/recipes";
 
-export const dividerBase = styleVariants({
-  horizontal: {
+export const divider = recipe({
+  base: {
     width: "100%",
+    borderStyle: "solid", // 기본 border 스타일
+    borderBottomStyle: "solid",
   },
-  vertical: {
-    height: "70%",
-    marginTop: "auto",
-    marginBottom: "auto",
+  variants: {
+    thickness: {
+      1: { borderBottomWidth: "1px" },
+      2: { borderBottomWidth: "2px" },
+      4: { borderBottomWidth: "4px" },
+      8: { borderBottomWidth: "8px" },
+      12: { borderBottomWidth: "12px" },
+    },
+    color: {
+      gray50: { borderBottomColor: themeVars.colors.gray.gray50 },
+      gray100: { borderBottomColor: themeVars.colors.gray.gray100 },
+      gray200: { borderBottomColor: themeVars.colors.gray.gray200 },
+      gray300: { borderBottomColor: themeVars.colors.gray.gray300 },
+      gray700: { borderBottomColor: themeVars.colors.gray.gray700 },
+      // 필요한 색상 키를 모두 추가…
+    },
+  },
+  defaultVariants: {
+    thickness: 8,
+    color: "gray50",
   },
 });
-
-export const thicknessVariants = {
-  horizontal: styleVariants({
-    1: { borderBottom: `1px solid ${themeVars.colors.gray.gray50}` },
-    2: { borderBottom: `2px solid ${themeVars.colors.gray.gray50}` },
-    4: { borderBottom: `4px solid ${themeVars.colors.gray.gray50}` },
-    8: { borderBottom: `8px solid ${themeVars.colors.gray.gray50}` },
-    12: { borderBottom: `12px solid ${themeVars.colors.gray.gray50}` },
-  }),
-  vertical: styleVariants({
-    1: { borderLeft: `1px solid ${themeVars.colors.gray.gray50}` },
-    2: { borderLeft: `2px solid ${themeVars.colors.gray.gray50}` },
-    4: { borderLeft: `4px solid ${themeVars.colors.gray.gray50}` },
-    8: { borderLeft: `8px solid ${themeVars.colors.gray.gray50}` },
-    12: { borderLeft: `12px solid ${themeVars.colors.gray.gray50}` },
-  }),
-};

@@ -8,7 +8,7 @@ export default async function SalesSearchPage() {
   return (
     <ErrorBoundary fallback={<div>회원 정보가 없습니다.</div>}>
       <Suspense fallback={<Loader fullscreen />}>
-        <Wrapper title="회원 관리">
+        <Wrapper title="통합 검색">
           <SalesSearch />
         </Wrapper>
       </Suspense>

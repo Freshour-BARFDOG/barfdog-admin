@@ -1,7 +1,6 @@
 import { style } from "@vanilla-extract/css";
 import { themeVars } from "@/styles/theme.css";
 
-
 export const baseStyle = style({
   display: "inline-flex",
   justifyContent: "center",
@@ -10,7 +9,7 @@ export const baseStyle = style({
 });
 
 export const textStyle = style({
-  fontFamily: 'var(--font-pretendard)',
+  fontFamily: "var(--font-pretendard)",
   display: "inline-flex",
   justifyContent: "center",
   alignItems: "center",
@@ -20,7 +19,7 @@ export const textStyle = style({
 
 export const boxShadowStyle = style({
   boxShadow: themeVars.shadow.light,
-})
+});
 
 // 버튼 크기
 export const buttonSizes = {
@@ -52,14 +51,14 @@ export const buttonSizes = {
     letterSpacing: themeVars.typography.headline.headline3.letterSpacing,
   }),
   inputButton: style({
-    padding: "12px 30px",
-    width: "84px",
-    height: "48px",
+    padding: "6px 16px",
+    height: "36px",
+    minWidth: "84px",
     borderRadius: "8px",
-    fontWeight: themeVars.typography.headline.headline3.fontWeight,
-    fontSize: themeVars.typography.headline.headline3.fontSize,
-    lineHeight: themeVars.typography.headline.headline3.lineHeight,
-    letterSpacing: themeVars.typography.headline.headline3.letterSpacing,
+    fontWeight: themeVars.typography.headline.headline4.fontWeight,
+    fontSize: themeVars.typography.headline.headline4.fontSize,
+    lineHeight: themeVars.typography.headline.headline4.lineHeight,
+    letterSpacing: themeVars.typography.headline.headline4.letterSpacing,
   }),
 };
 

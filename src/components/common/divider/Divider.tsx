@@ -1,36 +1,16 @@
-import React from 'react';
-import * as styles from './Divider.css';
-import { COLORS } from '@/constants/style';
-
+import React from "react";
+import { divider } from "./Divider.css";
 
 interface DividerProps {
+  /** 1,2,4,8,12 중 하나 */
   thickness?: 1 | 2 | 4 | 8 | 12;
-  color?: keyof typeof COLORS;
-  direction?: 'horizontal' | 'vertical';
-  style?: React.CSSProperties;
+  /** CSS 변수에 매핑된 색상 키 */
+  color?: "gray50" | "gray100" | "gray200" | "gray300" | "gray700"; // css.ts 에 등록한 키와 일치
 }
-
 
 export default function Divider({
   thickness = 8,
   color = "gray50",
-  direction = 'horizontal',
-  style,
 }: DividerProps) {
-  const overrideColorStyle =
-    direction === 'horizontal'
-      ? { borderBottomColor: COLORS[color] }
-      : { borderLeftColor: COLORS[color] };
-
-  const dividerStyle = { ...style, ...overrideColorStyle };
-
-  return (
-    <div
-      className={`
-        ${styles.dividerBase[direction]} 
-        ${styles.thicknessVariants[direction][thickness]}
-      `}
-      style={dividerStyle}
-    />
-  );
+  return <div className={divider({ thickness, color })} />;
 }

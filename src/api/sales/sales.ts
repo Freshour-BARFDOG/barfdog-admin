@@ -4,8 +4,16 @@ import {
   SearchSalesRequest,
   SalesDetailGeneralResponse,
   SalesDetailSubscribeResponse,
+  UpdateSalesDeliveryRequest,
+  OrderTypeResponse,
 } from "@/types/sales";
 import axiosInstance from "../axiosInstance";
+import { AxiosInstance } from "axios";
+import {
+  ConfirmOrderRequest,
+  RegisterDeliveryInfoResponse,
+  RegisterDeliveryRequest,
+} from "@/types/sales/orders";
 
 const getSearchSales = async ({
   body,
@@ -36,22 +44,83 @@ const excelDownloadSearchSales = async (
 };
 
 const getSalesDetailGeneral = async (
-  orderId: number
+  orderId: number,
+  instance: AxiosInstance = axiosInstance
 ): Promise<SalesDetailGeneralResponse> => {
-  const { data } = await axiosInstance.get(
-    `/api/admin/orders/${orderId}/general`
-  );
+  const { data } = await instance.get(`/api/admin/orders/${orderId}/general`);
 
   return data;
 };
 
 const getSalesDetailSubscribe = async (
-  orderId: number
+  orderId: number,
+  instance: AxiosInstance = axiosInstance
 ): Promise<SalesDetailSubscribeResponse> => {
-  const { data } = await axiosInstance.get(
-    `/api/admin/orders/${orderId}/subscribe`
-  );
+  const { data } = await instance.get(`/api/admin/orders/${orderId}/subscribe`);
 
+  return data;
+};
+
+interface UpdateSalesDeliveryParams {
+  body: UpdateSalesDeliveryRequest;
+  orderId: number;
+}
+
+const updateSalesDelivery = async ({
+  body,
+  orderId,
+}: UpdateSalesDeliveryParams): Promise<any> => {
+  const { data } = await axiosInstance.put(
+    `/api/admin/deliveries/${orderId}/recipientAndRequest`,
+    body
+  );
+  console.log("data", data);
+
+  return data;
+};
+
+// ------- 주문 관리 ---------
+
+const confirmOrder = async ({ orderType, body }: ConfirmOrderRequest) => {
+  const { data } = await axiosInstance.post(
+    `/api/admin/orders/${orderType}/orderConfirm`,
+    body
+  );
+  return data;
+};
+
+const unConfirmOrder = async ({
+  orderType,
+  orderIdList,
+}: {
+  orderType: OrderTypeResponse;
+  orderIdList: number[];
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/admin/orders/${orderType}/orderConfirmCancel`,
+    { orderIdList }
+  );
+  return data;
+};
+
+const registerDeliveryInfo = async (
+  body: RegisterDeliveryRequest
+): Promise<RegisterDeliveryInfoResponse> => {
+  const { data } = await axiosInstance.post("/api/admin/deliveries/info", body);
+  return data._embedded.queryOrderInfoForDeliveryList;
+};
+
+const cancelOrderBySeller = async ({
+  orderType,
+  body,
+}: {
+  orderType: string;
+  body: any;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/admin/orders/${orderType}/orderCancel`,
+    body
+  );
   return data;
 };
 
@@ -60,4 +129,9 @@ export {
   excelDownloadSearchSales,
   getSalesDetailGeneral,
   getSalesDetailSubscribe,
+  updateSalesDelivery,
+  confirmOrder,
+  unConfirmOrder,
+  registerDeliveryInfo,
+  cancelOrderBySeller,
 };
