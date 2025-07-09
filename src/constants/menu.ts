@@ -44,14 +44,14 @@ export const MENU_ITEMS: MenuItem[] = [
             href: "/coupons",
           },
           {
-            key: "release",
-            label: "쿠폰 발행",
-            href: "/coupons/release",
-          },
-          {
             key: "create",
             label: "쿠폰 생성",
             href: "/coupons/create",
+          },
+          {
+            key: "release",
+            label: "쿠폰 발행",
+            href: "/coupons/release",
           },
           {
             key: "usage",

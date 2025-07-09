@@ -269,3 +269,40 @@ export const commonWrapper = recipe({
     wrap: "nowrap",
   },
 });
+
+export const discountUnitButton = recipe({
+  base: {
+    borderRadius: 'unset',
+    border: `1px solid ${themeVars.colors.gray.gray200}`,
+    padding: '8px 12px',
+    transition: 'all .35s',
+    cursor: 'pointer',
+    selectors: {
+      '&:first-child': {
+        borderRight: 0,
+        borderTopLeftRadius: '8px',
+        borderBottomLeftRadius: '8px',
+      },
+      '&:last-child': {
+        borderTopRightRadius: '8px',
+        borderBottomRightRadius: '8px',
+      },
+    }
+  },
+  variants: {
+    active: {
+      true: {
+        border: `1px solid ${themeVars.colors.red.red}`,
+        color: themeVars.colors.red.red,
+        '&:first-child': {
+          borderRight: `1px solid ${themeVars.colors.red.red}`,
+        },
+      },
+      false: {
+        '&:last-child': {
+          borderLeft: 0,
+        },
+      },
+    }
+  }
+})

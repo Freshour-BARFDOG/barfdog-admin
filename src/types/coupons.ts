@@ -129,6 +129,22 @@ type ReleaseCouponRequestBody =
 	| GroupCouponBody
 	| AllCouponBody;
 
+// AUTO_PUBLISHED 제외
+type CreateCouponType = Exclude<keyof typeof COUPON_TYPE, 'AUTO_PUBLISHED'>;
+
+interface CreateCouponFormValues {
+	name: string;
+	description: string;
+	couponTarget: keyof typeof COUPON_TARGET;
+	code: string;
+	couponType: CreateCouponType;
+	discountDegree: number;
+	discountType: keyof typeof DISCOUNT_UNIT_TYPE;
+	availableMaxDiscount: number;
+	availableMinPrice: number;
+	amount: number;
+}
+
 export type {
 	CouponListData,
 	CouponListResponse,
@@ -143,4 +159,6 @@ export type {
 	ReleaseCouponType,
 	ReleaseCouponRequestBody,
 	PublicationCouponListData,
+	CreateCouponType,
+	CreateCouponFormValues,
 }

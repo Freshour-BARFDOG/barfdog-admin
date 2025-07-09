@@ -65,6 +65,13 @@ const RELEASE_COUPON_AREA = {
 	NON_METRO: '비수도권',
 }
 const RELEASE_COUPON_AREA_LIST = Object.entries(RELEASE_COUPON_AREA).map(([value, label]) => ({label, value}));
+// --------------------------------------------------
+
+const CREATE_COUPON_TYPE_LIST = Object.entries(COUPON_TYPE)
+	.filter(([key]) => key !== 'AUTO_PUBLISHED')
+	.map(([value, label]) => ({ label, value }));
+
+const CREATE_COUPON_TARGET_LIST = Object.entries(COUPON_TARGET).map(([value, label]) => ({label, value}));
 
 export {
 	COUPON_TYPE,
@@ -81,4 +88,6 @@ export {
 	RELEASE_COUPON_TYPE_LIST,
 	RELEASE_COUPON_AREA,
 	RELEASE_COUPON_AREA_LIST,
+	CREATE_COUPON_TYPE_LIST,
+	CREATE_COUPON_TARGET_LIST,
 }

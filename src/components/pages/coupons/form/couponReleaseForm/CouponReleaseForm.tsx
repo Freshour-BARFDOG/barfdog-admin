@@ -1,6 +1,5 @@
 'use client';
-import * as styles from './CouponReleaseForm.css';
-import * as yup from 'yup';
+import * as styles from '../CouponForm.css';
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
@@ -18,61 +17,7 @@ import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants
 import { useGetPublicationCouponList } from "@/api/coupons/queries/useGetPublicationCouponList";
 import { useReleaseCoupon } from "@/api/coupons/mutations/useReleaseCoupon";
 import { useToastStore } from "@/store/useToastStore";
-
-const baseCouponSchema = {
-	couponType: yup.string().oneOf(['CODE_PUBLISHED', 'GENERAL_PUBLISHED']).required(),
-	couponId: yup.number().required(),
-	expiredDate: yup.string().required(),
-	alimTalk: yup.boolean().required(),
-};
-
-const getCouponSchemaByTarget = (type: ReleaseCouponTarget) => {
-	switch (type) {
-		case 'PERSONAL':
-			return yup.object({
-				...baseCouponSchema,
-				memberIdList: yup
-					.array()
-					.of(yup.number())
-					.min(1, '최소 한 명 이상의 회원을 선택해주세요.')
-					.required(),
-			});
-
-		case 'GROUP':
-			return yup.object({
-				...baseCouponSchema,
-				subscribe: yup.boolean().required(),
-				longUnconnected: yup.boolean().required(),
-				gradeList: yup
-					.array()
-					.of(yup.string())
-					.min(1, '등급을 선택해주세요.'),
-				area: yup.string().required('지역을 선택해주세요.'),
-				birthYearFrom: yup.string().required(),
-				birthYearTo: yup.string().required(),
-			});
-
-		case 'ALL':
-		default:
-			return yup.object({
-				...baseCouponSchema,
-			});
-	}
-};
-
-const defaultValues: ReleaseCouponFormValues = {
-	couponType: 'CODE_PUBLISHED',
-	couponId: null,
-	expiredDate: '',
-	alimTalk: true,
-	memberIdList: [],
-	subscribe: false,
-	longUnconnected: false,
-	gradeList: [],
-	area: 'ALL',
-	birthYearFrom: '',
-	birthYearTo: '',
-};
+import { defaultValues, getCouponSchemaByTarget } from "@/utils/validation/coupon/releaseCoupon";
 
 export default function CouponReleaseForm() {
 	const router = useRouter();
@@ -151,7 +96,7 @@ export default function CouponReleaseForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.couponReleaseForm}>
+				<form className={styles.couponForm}>
 					<InputFieldGroup label='발행 대상'>
 						<LabeledRadioButtonGroup
 							options={RELEASE_COUPON_TARGET_LIST}
@@ -239,7 +184,7 @@ export default function CouponReleaseForm() {
 					/>
 				</form>
 			</Card>
-			<div className={styles.couponReleaseControls}>
+			<div className={styles.couponControls}>
 				<Button onClick={() => router.back()} variant='outline' type='assistive'>취소</Button>
 				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 발행</Button>
 			</div>

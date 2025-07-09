@@ -3,10 +3,10 @@ import axiosInstance from "@/api/axiosInstance";
 import { cleanQueryParams } from "@/utils/cleanQueryParams";
 import {
 	CouponListResponse,
-	CouponListSearchParams,
-	MemberCouponListBody, 
-	MemberCouponListResponse, 
-	ReleaseCouponRequestBody, 
+	CouponListSearchParams, CreateCouponFormValues,
+	MemberCouponListBody,
+	MemberCouponListResponse,
+	ReleaseCouponRequestBody,
 	ReleaseCouponTarget,
 	ReleaseCouponType,
 	UpdateMemberCoupon
@@ -89,6 +89,16 @@ const releaseCoupon = async (couponTarget: ReleaseCouponTarget, body: ReleaseCou
 	}
 }
 
+
+const createCoupon = async (body: CreateCouponFormValues) => {
+	try {
+		const { data } = await axiosInstance.post(`/api/admin/coupons`, body);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
 export {
 	getCouponList,
 	updateCouponInactive,
@@ -96,4 +106,5 @@ export {
 	updateMemberCoupon,
 	getPublicationCouponList,
 	releaseCoupon,
+	createCoupon,
 }
