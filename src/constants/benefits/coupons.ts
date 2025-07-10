@@ -1,4 +1,6 @@
 import { OLDEST_DATE, TODAY } from "@/constants/common";
+import { ReleaseCouponTarget } from "@/types/benefits/coupons";
+import { SelectOption } from "@/types/common";
 
 const COUPON_TYPE = {
 	AUTO_PUBLISHED: '자동 발행',
@@ -49,7 +51,11 @@ const RELEASE_COUPON_TARGET = {
 	PERSONAL: '개인',
 } as const;
 
-const RELEASE_COUPON_TARGET_LIST = Object.entries(RELEASE_COUPON_TARGET).map(([value, label]) => ({label, value}));
+
+const RELEASE_COUPON_TARGET_LIST: SelectOption<ReleaseCouponTarget>[] =
+  (Object.entries(RELEASE_COUPON_TARGET) as [ReleaseCouponTarget, string][]).map(
+    ([value, label]) => ({ label, value })
+  );
 
 
 const RELEASE_COUPON_TYPE = {
@@ -58,13 +64,6 @@ const RELEASE_COUPON_TYPE = {
 } as const;
 
 const RELEASE_COUPON_TYPE_LIST = Object.entries(RELEASE_COUPON_TYPE).map(([value, label]) => ({label, value}));
-
-const RELEASE_COUPON_AREA = {
-	ALL: '전체',
-	METRO: '수도권',
-	NON_METRO: '비수도권',
-}
-const RELEASE_COUPON_AREA_LIST = Object.entries(RELEASE_COUPON_AREA).map(([value, label]) => ({label, value}));
 // --------------------------------------------------
 
 const CREATE_COUPON_TYPE_LIST = Object.entries(COUPON_TYPE)
@@ -86,8 +85,6 @@ export {
 	RELEASE_COUPON_TARGET_LIST,
 	RELEASE_COUPON_TYPE,
 	RELEASE_COUPON_TYPE_LIST,
-	RELEASE_COUPON_AREA,
-	RELEASE_COUPON_AREA_LIST,
 	CREATE_COUPON_TYPE_LIST,
 	CREATE_COUPON_TARGET_LIST,
 }
