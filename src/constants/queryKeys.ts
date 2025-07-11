@@ -28,6 +28,13 @@ const queryKeys = {
     BASE: "reward",
     GET_REWARD_LIST: "getRewardList",
   },
+  PROMOTIONS: {
+    BASE: "promotion",
+    GET_PROMOTION_LIST: "getPromotionList",
+    GET_PROMOTION_DETAIL: "getPromotionDetail",
+    GET_PROMOTION_MEMBER_LIST: "getPromotionMemberList",
+    GET_PROMOTION_COUPON_LIST: "getPromotionCouponList",
+  },
 } as const;
 
 export { queryKeys };
