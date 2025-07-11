@@ -35,6 +35,10 @@ const queryKeys = {
     GET_PROMOTION_MEMBER_LIST: "getPromotionMemberList",
     GET_PROMOTION_COUPON_LIST: "getPromotionCouponList",
   },
+  BANNERS: {
+    BASE: "BANNERS",
+    GET_MYPAGE_BANNER: "getMyPageBanner",
+  }
 } as const;
 
 export { queryKeys };
