@@ -10,3 +10,7 @@ globalStyle("html, body", {
   padding: 0,
   width: "100%",
 });
+
+globalStyle("button", {
+  cursor: 'pointer',
+});

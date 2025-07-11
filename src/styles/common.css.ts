@@ -219,6 +219,9 @@ export const commonWrapper = recipe({
       full: {
         width: "100%",
       },
+      half: {
+        width: "50%",
+      },
       auto: {
         width: "auto",
       },

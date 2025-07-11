@@ -102,7 +102,7 @@ export default function ReleaseRewardForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm}>
+				<form className={styles.benefitForm({})}>
 					<Controller
 						control={control}
 						name='name'
@@ -134,7 +134,7 @@ export default function ReleaseRewardForm() {
 								label='발행 적립금'
 							>
 								<div className={styles.benefitInputBox}>
-								<div className={styles.benefitInput}>
+									<div className={styles.benefitInput({})}>
 										<InputField
 											value={formatNumberWithComma(field.value)}
 											onChange={(e) => {
