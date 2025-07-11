@@ -6,6 +6,10 @@ export const tableContainer = style({
   width: "100%",
 });
 
+export const tableTitle = style({
+  marginBottom: '8px',
+});
+
 export const table = recipe({
   base: {
     display: "grid",

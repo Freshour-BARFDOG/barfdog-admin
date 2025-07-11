@@ -24,6 +24,10 @@ export const modalContentWrapper = style({
   gap: '8px',
 })
 
+export const modalContent = style({
+  width: '100%',
+})
+
 export const modalButtonWrapper = style({
     display: "flex",
     justifyContent: 'flex-end',

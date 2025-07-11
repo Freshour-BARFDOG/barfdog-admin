@@ -40,6 +40,7 @@ export const tableCell = recipe({
 		padding: '14px 12px',
 		whiteSpace: 'nowrap',
 		textAlign: 'center',
+		verticalAlign: 'middle',
 		borderBottom: `1px solid ${themeVars.colors.gray.gray300}`,
 		selectors: {
 			'&:not(:last-child)': {
