@@ -11,8 +11,9 @@ import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTar
 import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTarget";
 import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
 import Text from "@/components/common/text/Text";
-import Button from "@/components/common/button/Button";
 import InputField from "@/components/common/inputField/InputField";
+import FormControls from "@/components/common/formContorls/FormControls";
+import Form from "@/components/common/form/Form";
 import { useToastStore } from "@/store/useToastStore";
 import { defaultValues, getRewardSchemaByTarget } from "@/utils/validation/benefits/reward/releaseReward";
 import { REWARD_LIST_INITIAL_SEARCH_VALUES, REWARD_TARGET_LIST } from "@/constants/benefits/rewards";
@@ -102,7 +103,7 @@ export default function ReleaseRewardForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm({})}>
+				<Form>
 					<Controller
 						control={control}
 						name='name'
@@ -164,12 +165,15 @@ export default function ReleaseRewardForm() {
 							</InputFieldGroup>
 						)}
 					/>
-				</form>
+				</Form>
 			</Card>
-			<div className={styles.benefitControls}>
-				<Button onClick={() => router.push('/rewards')} variant='outline' type='assistive'>목록</Button>
-				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >적립금 발행</Button>
-			</div>
+			<FormControls
+				cancelText='목록'
+				confirmText='적립금 발행'
+				onCancel={() => router.push('/rewards')}
+				onConfirm={handleSubmit(onSubmit)}
+				isConfirmDisabled={!isValid}
+			/>
 		</>
 	);
 }

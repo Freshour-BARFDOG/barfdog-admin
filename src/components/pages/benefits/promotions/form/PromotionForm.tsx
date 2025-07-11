@@ -13,6 +13,8 @@ import LabeledRadioButton from "@/components/common/labeledRadioButton/LabeledRa
 import DateTimePicker from "@/components/common/dateTimePicker/DateTimePicker";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import InputField from "@/components/common/inputField/InputField";
+import Form from "@/components/common/form/Form";
+import FormControls from "@/components/common/formContorls/FormControls";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
 import useModal from "@/hooks/useModal";
 import { useFormHandler } from "@/hooks/useFormHandler";
@@ -58,7 +60,7 @@ export default function PromotionForm({
 	return (
 		<>
 			<Card shadow='none' padding={20} backgroundColor={backgroundColor}>
-				<form className={styles.benefitForm({ gap: 12 })}>
+				<Form gap={12}>
 					<Controller
 						control={control}
 						name='promotionType'
@@ -139,10 +141,10 @@ export default function PromotionForm({
 									</div>
 									<Text type='body3'>개</Text>
 									{couponDetail?.quantity && couponDetail?.remaining &&
-										<>
-											<Text type='caption2'>발행됨 <span className={pointColor}>{couponDetail.quantity - couponDetail.remaining}</span>개</Text>
-											<Text type='caption2'>잔여수량 <span className={pointColor}>{couponDetail.remaining}</span>개</Text>
-										</>
+                  <>
+                    <Text type='caption2'>발행됨 <span className={pointColor}>{couponDetail.quantity - couponDetail.remaining}</span>개</Text>
+                    <Text type='caption2'>잔여수량 <span className={pointColor}>{couponDetail.remaining}</span>개</Text>
+                  </>
 									}
 								</div>
 							</InputFieldGroup>
@@ -160,22 +162,20 @@ export default function PromotionForm({
 							</InputFieldGroup>
 						)}
 					/>
-				</form>
+				</Form>
 			</Card>
-			<div className={styles.benefitControls}>
-				<Button onClick={onClose} variant='outline' type='assistive'>{defaultUpdateFormValue ? '취소' : '목록'}</Button>
-				<Button
-					onClick={() => {
-						handleSubmit(onSubmit)();
-						if (!defaultUpdateFormValue) {
-							reset();
-						}
-					}}
-					disabled={!isValid}
-				>
-					{defaultUpdateFormValue ? '수정' : '생성'}
-				</Button>
-			</div>
+			<FormControls
+				cancelText={defaultUpdateFormValue ? '취소' : '목록'}
+				confirmText={defaultUpdateFormValue ? '수정' : '생성'}
+				onCancel={onClose}
+				onConfirm={() => {
+					handleSubmit(onSubmit)();
+					if (!defaultUpdateFormValue) {
+						reset();
+					}
+				}}
+				isConfirmDisabled={!isValid}
+			/>
 			{isOpenConfirmModal &&
 				<AlertModal
 					content={`프로모션을 생성하기 위한 쿠폰이 없습니다.\n쿠폰 생성 페이지에서 프로모션 쿠폰을 생성해주세요.`}

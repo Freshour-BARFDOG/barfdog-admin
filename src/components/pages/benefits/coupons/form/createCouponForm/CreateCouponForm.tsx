@@ -7,12 +7,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from 'axios';
 import { Controller, ControllerRenderProps } from "react-hook-form";
 import Card from "@/components/common/card/Card";
-import Button from "@/components/common/button/Button";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import Text from "@/components/common/text/Text";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import InputField from "@/components/common/inputField/InputField";
+import Form from "@/components/common/form/Form";
+import FormControls from "@/components/common/formContorls/FormControls";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { unformatCommaNumber, formatNumberWithComma } from "@/utils/formatNumber";
 import { useCreateCoupon } from "@/api/coupons/mutations/useCreateCoupon";
@@ -240,7 +241,7 @@ export default function CreateCouponForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm({})}>
+				<Form>
 					{InputFieldList.map((input, index) => (
 						<Controller
 							control={control}
@@ -256,12 +257,15 @@ export default function CreateCouponForm() {
 							)}
 						/>
 					))}
-				</form>
+				</Form>
 			</Card>
-			<div className={styles.benefitControls}>
-				<Button onClick={() => router.push('/coupons')} variant='outline' type='assistive'>목록</Button>
-				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 등록</Button>
-			</div>
+			<FormControls
+				cancelText='목록'
+				confirmText='쿠폰 등록'
+				onCancel={() => router.push('/coupons')}
+				onConfirm={handleSubmit(onSubmit)}
+				isConfirmDisabled={!isValid}
+			/>
 		</>
 	);
 }
