@@ -89,7 +89,7 @@ export default function PromotionForm({
 						name='startDate'
 						render={({ field }) => (
 							<InputFieldGroup label='시작 일시'>
-								<DateTimePicker value={new Date(field.value)} onChange={field.onChange} />
+								<DateTimePicker value={defaultUpdateFormValue ? new Date(field.value) : null} onChange={field.onChange} />
 							</InputFieldGroup>
 						)}
 					/>
@@ -98,7 +98,7 @@ export default function PromotionForm({
 						name='expiredDate'
 						render={({ field }) => (
 							<InputFieldGroup label='종료 일시'>
-								<DateTimePicker value={new Date(field.value)} onChange={field.onChange} />
+								<DateTimePicker value={defaultUpdateFormValue ? new Date(field.value) : null} onChange={field.onChange} />
 							</InputFieldGroup>
 						)}
 					/>
