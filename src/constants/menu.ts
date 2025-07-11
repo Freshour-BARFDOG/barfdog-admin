@@ -77,18 +77,18 @@ export const MENU_ITEMS: MenuItem[] = [
         ],
       },
       {
-        key: "promotion",
+        key: "promotions",
         label: "프로모션 관리",
         children: [
           {
             key: "search",
             label: "프로모션 관리",
-            href: "/promotion",
+            href: "/promotions",
           },
           {
             key: "create",
             label: "프로모션 생성",
-            href: "/promotion/create",
+            href: "/promotions/create",
           },
         ],
       },
