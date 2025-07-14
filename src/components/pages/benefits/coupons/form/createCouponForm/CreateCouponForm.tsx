@@ -146,7 +146,7 @@ export default function CreateCouponForm() {
 			label: '쿠폰 코드',
 			render: (field) => (
 				<div className={styles.benefitInputBox}>
-					<div className={styles.benefitInput}>
+					<div className={styles.benefitInput({})}>
 						<InputField
 							value={field.value}
 							onChange={field.onChange}
@@ -161,7 +161,7 @@ export default function CreateCouponForm() {
 			label: '할인율',
 			render: (field) => (
 				<div className={styles.benefitInputBox}>
-					<div className={styles.benefitInput}>
+					<div className={styles.benefitInput({})}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -189,7 +189,7 @@ export default function CreateCouponForm() {
 			label: '최대 할인 금액',
 			render: (field) => (
 				<div className={styles.benefitInputBox}>
-					<div className={styles.benefitInput}>
+					<div className={styles.benefitInput({})}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -204,7 +204,7 @@ export default function CreateCouponForm() {
 			label: '최소 사용 금액',
 			render: (field) => (
 				<div className={styles.benefitInputBox}>
-					<div className={styles.benefitInput}>
+					<div className={styles.benefitInput({})}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -219,7 +219,7 @@ export default function CreateCouponForm() {
 			label: '사용한도(횟수)',
 			render: (field) => (
 				<div className={styles.benefitInputBox}>
-					<div className={styles.benefitInput}>
+					<div className={styles.benefitInput({})}>
 						<InputField
 							value={formatNumberWithComma(field.value)}
 							onChange={(e) => handleChangeNumberType(e, field)}
@@ -240,7 +240,7 @@ export default function CreateCouponForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm}>
+				<form className={styles.benefitForm({})}>
 					{InputFieldList.map((input, index) => (
 						<Controller
 							control={control}

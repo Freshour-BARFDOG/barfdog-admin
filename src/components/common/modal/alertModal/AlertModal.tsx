@@ -5,7 +5,7 @@ import Button from "../../button/Button";
 import Text from "@/components/common/text/Text";
 
 interface ModalProps {
-  title: string;
+  title?: string;
   content: string;
   buttonType?: "default" | "text";
   confirmText?: string;
@@ -63,8 +63,8 @@ export default function AlertModal({
     <ModalBackground isVisible={isOpen} onClose={onClose}>
       <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalContentWrapper}>
-          <Text type="title4">{title}</Text>
-          <Text type="body2">{content}</Text>
+          {title && <Text type="title4">{title}</Text>}
+          <Text type="body2" align='center' className={styles.modalContent}>{content}</Text>
         </div>
         <div className={styles.modalButtonWrapper}>
           {cancelText && (

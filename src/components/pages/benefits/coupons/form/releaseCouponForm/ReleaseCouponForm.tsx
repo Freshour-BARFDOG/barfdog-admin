@@ -97,7 +97,7 @@ export default function ReleaseCouponForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm}>
+				<form className={styles.benefitForm({})}>
 					<InputFieldGroup label='발행 대상'>
 						<BenefitTargetSelector<ReleaseCouponFormValues, ReleaseCouponTarget>
 							targetValue={couponTarget}

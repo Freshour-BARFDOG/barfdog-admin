@@ -3,7 +3,7 @@ import { themeVars } from "@/styles/theme.css";
 
 export const toastContainer = style({
   position: "fixed",
-  zIndex: 1000,
+  zIndex: 10000,
   left: "50%",
   transform: "translateX(-50%)",
 })

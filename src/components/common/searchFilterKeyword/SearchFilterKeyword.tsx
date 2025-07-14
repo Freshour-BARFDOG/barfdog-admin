@@ -12,7 +12,8 @@ interface SearchFilterKeywordProps<T extends string | number = string> {
 	placeholder?: string;
 	disabled?: boolean;
 	onSubmit?: () => void;
-};
+	showConfirmButton?: boolean;
+}
 
 export default function SearchFilterKeyword<T extends string | number = string>({
 	categoryOptions,
@@ -23,6 +24,7 @@ export default function SearchFilterKeyword<T extends string | number = string>(
 	placeholder,
 	disabled = false,
 	onSubmit,
+	showConfirmButton = false,
 }: SearchFilterKeywordProps<T>) {
 	return (
 		<div className={styles.searchFilterKeyword}>
@@ -39,6 +41,10 @@ export default function SearchFilterKeyword<T extends string | number = string>(
 					placeholder={placeholder}
 					disabled={disabled}
 					onSubmit={onSubmit}
+					confirmButton={showConfirmButton}
+					confirmButtonDisabled={disabled}
+					confirmButtonText='검색'
+					confirmButtonVariant='solid'
 				/>
 			</div>
 		</div>
