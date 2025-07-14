@@ -1,134 +1,38 @@
 import { AxiosInstance } from "axios";
 import axiosInstance from "@/api/axiosInstance";
 import {
-	BannerLeakedOrderDirection, MainBannerFormValues,
-	MainBannerListrData,
-	MyPageBannerData,
-	MyPageBannerFormValues,
+	BannerLeakedOrderDirection,
 	TopBannerData,
 	TopBannerFormValues,
 } from "@/types/banners";
 
-const getMyPageBanner = async (instance: AxiosInstance = axiosInstance): Promise<MyPageBannerData> => {
-	try {
-		const { data } = await instance.get(`/api/banners/myPage`);
-		return {
-			id: data.id,
-			name: data.name,
-			status: data.status,
-			filenamePc: data.filenamePc,
-			filenameMobile: data.filenameMobile,
-			pcLinkUrl: data.pcLinkUrl,
-			mobileLinkUrl: data.mobileLinkUrl,
-			thumbnail_pc: data?._links.thumbnail_pc.href,
-			thumbnail_mobile: data?._links.thumbnail_mobile.href,
-		};
-	} catch (error) {
-		throw error;
-	}
-}
+type BannerType = 'main' | 'popup' | 'myPage' | 'top';
 
-const updateMyPageBanner = async (bannerId: number, body: MyPageBannerFormValues, pcFile: File | null, mobileFile: File | null) => {
+// 파일 + JSON 데이터 FormData 로 변환
+const createBannerFormData = (
+	body: object,
+	pcFile: File | null,
+	mobileFile: File | null
+): FormData => {
 	const formData = new FormData();
 	formData.append('requestDto', new Blob([JSON.stringify(body)], { type: 'application/json' }));
-
 	if (pcFile) formData.append('pcFile', pcFile);
 	if (mobileFile) formData.append('mobileFile', mobileFile);
-	try {
-		const { data } = await axiosInstance.post(`/api/banners/myPage/${bannerId}`, formData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		});
-		return data;
-	} catch (error) {
-		throw error;
-	}
+	return formData;
 }
 
-const getTopBanner = async (instance: AxiosInstance = axiosInstance): Promise<TopBannerData> => {
-	try {
-		const { data } = await instance.get(`/api/banners/top`);
-		return data;
-	} catch (error) {
-		throw error;
-	}
-}
-
-const updateTopBanner = async (bannerId: number, body: TopBannerFormValues) => {
-	try {
-		const { data } = await axiosInstance.put(`/api/banners/top/${bannerId}`, body);
-		return data;
-	} catch (error) {
-		throw error;
-	}
-}
-
-const getMainBannerList = async (instance: AxiosInstance = axiosInstance): Promise<MainBannerListrData[]> => {
-	try {
-		const { data } = await instance.get(`/api/banners/main`);
-		return data._embedded?.mainBannerListResponseDtoList
-			.sort((a: MainBannerListrData, b: MainBannerListrData) => a.leakedOrder - b.leakedOrder)
-			.map((banner: MainBannerListrData) => ({
-				id: banner.id,
-				leakedOrder: banner.leakedOrder,
-				name: banner.name,
-				targets: banner.targets,
-				createdDate: banner.createdDate,
-				modifiedDate: banner.modifiedDate,
-				filenamePc: banner.filenamePc,
-				filenameMobile: banner.filenameMobile,
-				thumbnail_pc: banner._links.thumbnail_pc.href,
-				thumbnail_mobile: banner._links.thumbnail_mobile.href,
-			})) ?? [];
-	} catch (error) {
-		throw error;
-	}
-}
-
-const updateMainBannerLeakedOrder = async (bannerId: number, direction: BannerLeakedOrderDirection) => {
-	try {
-		const { data } = await axiosInstance.put(`/api/banners/main/${bannerId}/${direction}`);
-		return data;
-	} catch (error) {
-		throw error;
-	}
-}
-
-const getMainBannerDetail = async (bannerId: number, instance: AxiosInstance = axiosInstance): Promise<MainBannerFormValues> => {
-	try {
-		const { data } = await instance.get(`/api/banners/main/${bannerId}`);
-		return {
-			id: data.id,
-			name: data.name,
-			targets: data.targets,
-			status: data.status,
-			filenamePc: data.filenamePc,
-			filenameMobile: data.filenameMobile,
-			pcLinkUrl: data.pcLinkUrl,
-			mobileLinkUrl: data.mobileLinkUrl,
-			thumbnail_pc: data?._links.thumbnail_pc.href,
-			thumbnail_mobile: data?._links.thumbnail_mobile.href,
-		};
-	} catch (error) {
-		throw error;
-	}
-}
-
-const submitMainBanner = async (
-	body: MainBannerFormValues,
+// multipart/form-data 요청 (등록/수정)
+const submitBanner = async (
+	type: Extract<BannerType, 'main' | 'popup' | 'myPage'>,
+	body: object,
 	pcFile: File | null,
 	mobileFile: File | null,
-	bannerId?: number
+	id?: number
 ) => {
-	const formData = new FormData();
-	formData.append('requestDto', new Blob([JSON.stringify(body)], { type: 'application/json' }));
-
-	if (pcFile) formData.append('pcFile', pcFile);
-	if (mobileFile) formData.append('mobileFile', mobileFile);
-
-	const url = bannerId
-		? `/api/banners/main/${bannerId}`  // 수정
-		: `/api/banners/main`;            // 등록
-
+	const formData = createBannerFormData(body, pcFile, mobileFile);
+	console.log('type', type)
+	console.log('id', id)
+	const url = `/api/banners/${type as string}${id ? `/${id}` : ''}`;
 	try {
 		const { data } = await axiosInstance.post(url, formData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
@@ -139,9 +43,85 @@ const submitMainBanner = async (
 	}
 };
 
-const deleteMainBanner = async (bannerId: number) => {
+// 목록 조회 (Main / Popup)
+const getBannerList = async <T>(
+	type: Extract<BannerType, 'main' | 'popup'>,
+	key: string,
+	instance: AxiosInstance = axiosInstance
+): Promise<T[]> => {
 	try {
-		const { data } = await axiosInstance.delete(`/api/banners/main/${bannerId}`);
+		const { data } = await instance.get(`/api/banners/${type}`);
+		return (
+			data._embedded?.[key]
+				?.sort((a: any, b: any) => a.leakedOrder - b.leakedOrder)
+				.map((item: any) => ({
+					...item,
+					thumbnail_pc: item._links?.thumbnail_pc?.href ?? '',
+					thumbnail_mobile: item._links?.thumbnail_mobile?.href ?? '',
+				})) ?? []
+		);
+	} catch (error) {
+		throw error;
+	}
+};
+
+// 상세 조회
+const getBannerDetail = async <T>(
+	type: Extract<BannerType, 'main' | 'popup' | 'myPage'>,
+	id?: number,
+	instance: AxiosInstance = axiosInstance
+): Promise<T> => {
+	const url = `/api/banners/${type}${id ? `/${id}` : ''}`;
+	try {
+		const { data } = await instance.get(url);
+		return {
+			...data,
+			thumbnail_pc: data._links?.thumbnail_pc?.href ?? '',
+			thumbnail_mobile: data._links?.thumbnail_mobile?.href ?? '',
+		};
+	} catch (error) {
+		throw error;
+	}
+};
+
+// 정렬 순서 변경 (up / down)
+const updateBannerLeakedOrder = async (
+	type: Extract<BannerType, 'main' | 'popup'>,
+	id: number,
+	direction: BannerLeakedOrderDirection
+) => {
+	try {
+		const { data } = await axiosInstance.put(`/api/banners/${type}/${id}/${direction}`);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+// 삭제
+const deleteBanner = async (type: Extract<BannerType, 'main' | 'popup'>, id: number) => {
+	try {
+		const { data } = await axiosInstance.delete(`/api/banners/${type}/${id}`);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+// TopBanner 조회
+const getTopBanner = async (instance: AxiosInstance = axiosInstance): Promise<TopBannerData> => {
+	try {
+		const { data } = await instance.get(`/api/banners/top`);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
+// TopBanner 수정
+const updateTopBanner = async (bannerId: number, body: TopBannerFormValues) => {
+	try {
+		const { data } = await axiosInstance.put(`/api/banners/top/${bannerId}`, body);
 		return data;
 	} catch (error) {
 		throw error;
@@ -149,13 +129,11 @@ const deleteMainBanner = async (bannerId: number) => {
 }
 
 export {
-	getMyPageBanner,
-	updateMyPageBanner,
+	submitBanner,
+	getBannerDetail,
+	getBannerList,
+	updateBannerLeakedOrder,
+	deleteBanner,
 	getTopBanner,
 	updateTopBanner,
-	getMainBannerList,
-	updateMainBannerLeakedOrder,
-	getMainBannerDetail,
-	submitMainBanner,
-	deleteMainBanner,
 }

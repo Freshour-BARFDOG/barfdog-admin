@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { UseMutationCustomOptions } from "@/types/common";
 import { deleteBanner } from "@/api/banners/banners";
 
-export function useDeleteMainBanner(mutationOptions?: UseMutationCustomOptions) {
+export function useDeletePopup(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
-		mutationFn: async ({ bannerId }: {
-			bannerId: number,
-		}) => await deleteBanner('main', bannerId),
+		mutationFn: async ({ popupId }: {
+			popupId: number,
+		}) => await deleteBanner('popup', popupId),
 		...mutationOptions,
 	})
 }
