@@ -1,4 +1,5 @@
-import {BannerStatus, BannerTarget, PopupPosition} from "@/types/banners";
+import { StatusType } from "@/types/common";
+import { BannerTarget, PopupPosition } from "@/types/banners";
 import * as yup from "yup";
 
 export const bannerSchema = yup.object().shape({
@@ -16,7 +17,7 @@ export const bannerSchema = yup.object().shape({
 });
 
 export const defaultMyPageBannerFormValues = {
-	status: "LEAKED" as BannerStatus,
+	status: "LEAKED" as StatusType,
 	name: "",
 	pcLinkUrl: "",
 	mobileLinkUrl: "",
@@ -41,7 +42,7 @@ export const mainBannerSchema = yup.object().shape({
 });
 
 export const defaultMainBannerFormValues = {
-	status: "LEAKED" as BannerStatus,
+	status: "LEAKED" as StatusType,
 	targets: "ALL" as BannerTarget,
 	name: "",
 	pcLinkUrl: "",
@@ -67,7 +68,7 @@ export const popupSchema = yup.object().shape({
 });
 
 export const defaultPopupFormValues = {
-	status: "LEAKED" as BannerStatus,
+	status: "LEAKED" as StatusType,
 	position: "LEFT" as PopupPosition,
 	name: "",
 	pcLinkUrl: "",

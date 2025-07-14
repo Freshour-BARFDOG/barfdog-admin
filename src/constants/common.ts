@@ -36,6 +36,16 @@ const AREA = {
 }
 const AREA_LIST = Object.entries(AREA).map(([value, label]) => ({label, value}));
 
+
+const STATUS = {
+	LEAKED: 'Y',
+	HIDDEN: 'N',
+} as const;
+
+const STATUS_LIST = (Object.entries(STATUS)).map(
+	([value, label]) => ({ label, value })
+);
+
 export {
 	PAGE_SIZE,
 	OLDEST_DATE,
@@ -46,4 +56,6 @@ export {
 	SEARCH_CATEGORY,
 	AREA,
 	AREA_LIST,
+	STATUS,
+	STATUS_LIST,
 }

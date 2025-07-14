@@ -13,7 +13,8 @@ import FileUpload from "@/components/common/fileUpload/FileUpload";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { MainBannerFormValues } from "@/types/banners";
 import { defaultMainBannerFormValues, mainBannerSchema } from "@/utils/validation/banners/banners";
-import { BANNER_STATUS_LIST, BANNER_TARGET_LIST } from "@/constants/banners";
+import { BANNER_TARGET_LIST } from "@/constants/banners";
+import { STATUS_LIST } from "@/constants/common";
 
 interface MainBannerFormProps {
 	onSubmit: (data: MainBannerFormValues) => void;
@@ -95,7 +96,7 @@ export default function MainBannerForm({
 						render={({ field }) => (
 							<InputFieldGroup label='노출 여부'>
 								<LabeledRadioButtonGroup
-									options={BANNER_STATUS_LIST}
+									options={STATUS_LIST}
 									{...field}
 								/>
 							</InputFieldGroup>

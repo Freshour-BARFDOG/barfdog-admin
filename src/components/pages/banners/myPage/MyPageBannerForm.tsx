@@ -10,7 +10,7 @@ import Text from "@/components/common/text/Text";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import FormControls from "@/components/common/formContorls/FormControls";
 import InputField from "@/components/common/inputField/InputField";
-import { BANNER_STATUS_LIST } from "@/constants/banners";
+import { STATUS_LIST } from "@/constants/common";
 import { bannerSchema, defaultMyPageBannerFormValues } from "@/utils/validation/banners/banners";
 import { MyPageBannerFormValues } from "@/types/banners";
 
@@ -80,7 +80,7 @@ export default function MyPageBannerForm({
 						render={({ field }) => (
 							<InputFieldGroup label='노출 여부'>
 								<LabeledRadioButtonGroup
-									options={BANNER_STATUS_LIST}
+									options={STATUS_LIST}
 									{...field}
 								/>
 							</InputFieldGroup>

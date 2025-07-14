@@ -5,7 +5,7 @@ import {
   UseQueryOptions,
   UseSuspenseQueryOptions,
 } from "@tanstack/react-query";
-import { AREA } from "@/constants/common";
+import { AREA, STATUS } from "@/constants/common";
 
 interface MenuItem {
   key: string;
@@ -73,6 +73,8 @@ type AreaType = keyof typeof AREA;
 
 type GradeType = '브론즈' | '실버' | '골드' | '플래티넘' | '다이아몬드' | '더 바프';
 
+type StatusType = keyof typeof STATUS;
+
 export type {
   MenuItem,
   TableColumn,
@@ -85,4 +87,5 @@ export type {
   UseSuspenseQueryCustomOptions,
   AreaType,
   GradeType,
+  StatusType,
 };

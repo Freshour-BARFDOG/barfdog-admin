@@ -2,7 +2,7 @@
 import BannerDetail from "@/components/pages/banners/common/BannerDetail";
 import MainBannerForm from "@/components/pages/banners/main/form/MainBannerForm";
 import { queryKeys } from "@/constants/queryKeys";
-import { BannerStatus } from "@/types/banners";
+import { StatusType } from "@/types/common";
 import { useGetMainBannerDetail } from "@/api/banners/queries/useGetMainBannerDetail";
 import { useUpdateMainBanner } from "@/api/banners/mutations/useUpdateMainBanner";
 
@@ -22,7 +22,7 @@ export default function MainBannerDetail({ bannerId }: MainBannerDetailProps) {
 			defaultFormValues={(data) => ({
 				name: data?.name ?? '',
 				targets: data?.targets ?? 'ALL',
-				status: data?.status ?? 'LEAKED' as BannerStatus,
+				status: data?.status ?? 'LEAKED' as StatusType,
 				pcLinkUrl: data?.pcLinkUrl ?? '',
 				mobileLinkUrl: data?.mobileLinkUrl ?? '',
 				thumbnail_pc: data?.thumbnail_pc ?? '',

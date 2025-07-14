@@ -10,12 +10,13 @@ import FormControls from "@/components/common/formContorls/FormControls";
 import PreviewBanner from "@/components/pages/banners/top/previewBanner/PreviewBanner";
 import SimpleTextEditor from "@/components/pages/banners/top/simpleTextEditor/SimpleTextEditor";
 import InputField from "@/components/common/inputField/InputField";
-import { BANNER_STATUS_LIST } from "@/constants/banners";
+import { STATUS_LIST } from "@/constants/common";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { bannerSchema } from "@/utils/validation/banners/banners";
-import { BannerStatus, TopBannerFormValues } from "@/types/banners";
+import { TopBannerFormValues } from "@/types/banners";
+import { StatusType } from "@/types/common";
 import { useGetTopBanner } from "@/api/banners/queries/useGetTopBanner";
 import { useUpdateTopBanner } from "@/api/banners/mutations/useUpdateTopBanner";
 
@@ -27,7 +28,7 @@ export default function TopBanner() {
 
 	const defaultBannerFormValues = {
 		name: data?.name ?? '',
-		status: data?.status ?? 'LEAKED' as BannerStatus,
+		status: data?.status ?? 'LEAKED' as StatusType,
 		backgroundColor: data?.backgroundColor ?? '',
 		fontColor: data?.fontColor ?? '',
 		mobileLinkUrl: data?.mobileLinkUrl ?? '',
@@ -131,7 +132,7 @@ export default function TopBanner() {
 						render={({ field }) => (
 							<InputFieldGroup label='노출 여부'>
 								<LabeledRadioButtonGroup
-									options={BANNER_STATUS_LIST}
+									options={STATUS_LIST}
 									{...field}
 								/>
 							</InputFieldGroup>

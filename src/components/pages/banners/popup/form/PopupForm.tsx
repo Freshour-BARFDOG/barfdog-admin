@@ -16,7 +16,8 @@ import {
 	defaultPopupFormValues,
 	popupSchema
 } from "@/utils/validation/banners/banners";
-import { BANNER_STATUS_LIST, POPUP_POSITION_LIST } from "@/constants/banners";
+import { STATUS_LIST } from "@/constants/common";
+import { POPUP_POSITION_LIST } from "@/constants/banners";
 
 interface PopupFormProps {
 	onSubmit: (data: PopupFormValues) => void;
@@ -98,7 +99,7 @@ export default function PopupForm({
 						render={({ field }) => (
 							<InputFieldGroup label='노출 여부'>
 								<LabeledRadioButtonGroup
-									options={BANNER_STATUS_LIST}
+									options={STATUS_LIST}
 									{...field}
 								/>
 							</InputFieldGroup>

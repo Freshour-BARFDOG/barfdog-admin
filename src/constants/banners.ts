@@ -1,13 +1,3 @@
-
-const BANNER_STATUS = {
-	LEAKED: 'Y',
-	HIDDEN: 'N',
-} as const;
-
-const BANNER_STATUS_LIST = (Object.entries(BANNER_STATUS)).map(
-	([value, label]) => ({ label, value })
-);
-
 const BANNER_TARGET = {
 	ALL: '전체',
 	SUBSCRIBER: '구독회원',
@@ -30,8 +20,6 @@ const POPUP_POSITION_LIST = (Object.entries(POPUP_POSITION)).map(
 );
 
 export {
-	BANNER_STATUS,
-	BANNER_STATUS_LIST,
 	BANNER_TARGET,
 	BANNER_TARGET_LIST,
 	POPUP_POSITION,

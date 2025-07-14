@@ -1,6 +1,6 @@
 'use client';
 import { queryKeys } from "@/constants/queryKeys";
-import { BannerStatus } from "@/types/banners";
+import { StatusType } from "@/types/common";
 import { useGetMyPageBanner } from "@/api/banners/queries/useGetMyPageBanner";
 import { useUpdateMyPageBanner } from "@/api/banners/mutations/useUpdateMyPageBanner";
 import BannerDetail from "@/components/pages/banners/common/BannerDetail";
@@ -18,7 +18,7 @@ export default function MyPageBanner() {
 			data={data}
 			defaultFormValues={(data) => ({
 				name: data?.name ?? '',
-				status: data?.status ?? 'LEAKED' as BannerStatus,
+				status: data?.status ?? 'LEAKED' as StatusType,
 				pcLinkUrl: data?.pcLinkUrl ?? '',
 				mobileLinkUrl: data?.mobileLinkUrl ?? '',
 				thumbnail_pc: data?.thumbnail_pc ?? '',

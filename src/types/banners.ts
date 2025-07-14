@@ -1,6 +1,6 @@
-import { BANNER_STATUS, BANNER_TARGET, POPUP_POSITION } from "@/constants/banners";
-
-type BannerStatus = keyof typeof BANNER_STATUS;
+import { BANNER_TARGET, POPUP_POSITION } from "@/constants/banners";
+import { STATUS } from "@/constants/common";
+import { StatusType } from "@/types/common";
 
 type BannerTarget = keyof typeof BANNER_TARGET;
 
@@ -9,7 +9,7 @@ type BannerLeakedOrderDirection = 'up' | 'down';
 interface BaseBannerData {
 	id: number;
 	name: string;
-	status: BannerStatus;
+	status: StatusType;
 	filenamePc: string;
 	filenameMobile: string;
 	pcLinkUrl: string;
@@ -20,7 +20,7 @@ interface BaseBannerData {
 
 interface BaseBannerFormValues {
 	name: string;
-	status: BannerStatus;
+	status: StatusType;
 	pcLinkUrl: string;
 	mobileLinkUrl: string;
 	filenamePc?: string;
@@ -71,7 +71,6 @@ interface PopupFormValues extends BaseBannerFormValues {
 }
 
 export type {
-	BannerStatus,
 	MyPageBannerData,
 	MyPageBannerFormValues,
 	TopBannerData,
