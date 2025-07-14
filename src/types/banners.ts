@@ -1,74 +1,73 @@
-import { BANNER_STATUS, BANNER_TARGET } from "@/constants/banners";
+import { BANNER_STATUS, BANNER_TARGET, POPUP_POSITION } from "@/constants/banners";
 
 type BannerStatus = keyof typeof BANNER_STATUS;
-
-interface MyPageBannerData {
-	id: number;
-	name: string;
-	status: BannerStatus;
-	filenamePc: string;
-	filenameMobile: string;
-	pcLinkUrl: string;
-	mobileLinkUrl: string;
-	thumbnail_pc: string;
-	thumbnail_mobile: string;
-}
-
-interface MyPageBannerFormValues {
-	name: string;
-	status: BannerStatus;
-	pcLinkUrl: string;
-	mobileLinkUrl: string;
-}
-
-interface TopBannerData {
-	id: number;
-	name: string;
-	status: string;
-	backgroundColor: string;
-	fontColor: string;
-	pcLinkUrl: string;
-	mobileLinkUrl: string;
-}
-
-interface TopBannerFormValues {
-	name: string;
-	status: BannerStatus;
-	backgroundColor: string;
-	fontColor: string;
-	mobileLinkUrl: string;
-	pcLinkUrl: string;
-}
 
 type BannerTarget = keyof typeof BANNER_TARGET;
 
 type BannerLeakedOrderDirection = 'up' | 'down';
 
-interface MainBannerListrData {
+interface BaseBannerData {
 	id: number;
-	leakedOrder: number;
 	name: string;
+	status: BannerStatus;
+	filenamePc: string;
+	filenameMobile: string;
+	pcLinkUrl: string;
+	mobileLinkUrl: string;
+	thumbnail_pc: string;
+	thumbnail_mobile?: string;
+}
+
+interface BaseBannerFormValues {
+	name: string;
+	status: BannerStatus;
+	pcLinkUrl: string;
+	mobileLinkUrl: string;
+	filenamePc?: string;
+	filenameMobile?: string;
+	thumbnail_pc?: string;
+	thumbnail_mobile?: string;
+}
+
+type MyPageBannerData = BaseBannerData
+type MyPageBannerFormValues = BaseBannerFormValues
+
+interface TopBannerData extends BaseBannerData {
+	backgroundColor: string;
+	fontColor: string;
+}
+
+interface TopBannerFormValues extends BaseBannerFormValues {
+	backgroundColor: string;
+	fontColor: string;
+}
+
+interface MainBannerListrData extends Omit<BaseBannerData, 'status'> {
+	leakedOrder: number;
 	targets: BannerTarget;
 	createdDate: string;
 	modifiedDate: string;
-	filenamePc: string;
-	filenameMobile: string;
-	thumbnail_pc: string;
-	thumbnail_mobile: string;
 	_links?: any;
 }
 
-interface MainBannerFormValues {
+interface MainBannerFormValues extends BaseBannerFormValues {
 	id?: number;
-	name: string;
 	targets: BannerTarget;
-	status: BannerStatus;
-	filenamePc?: string;
-	filenameMobile?: string;
-	pcLinkUrl: string;
-	mobileLinkUrl: string;
-	thumbnail_pc?: string;
-	thumbnail_mobile?: string;
+}
+
+type PopupPosition = keyof typeof POPUP_POSITION;
+
+interface PopupListData extends BaseBannerData {
+	leakedOrder: number;
+	position: PopupPosition;
+	createdDate: string;
+	modifiedDate: string;
+	_links?: any;
+}
+
+interface PopupFormValues extends BaseBannerFormValues {
+	id?: number;
+	position: PopupPosition;
 }
 
 export type {
@@ -81,4 +80,7 @@ export type {
 	MainBannerListrData,
 	BannerLeakedOrderDirection,
 	MainBannerFormValues,
+	PopupPosition,
+	PopupListData,
+	PopupFormValues,
 }

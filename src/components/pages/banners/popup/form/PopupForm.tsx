@@ -11,32 +11,35 @@ import Form from "@/components/common/form/Form";
 import FormControls from "@/components/common/formContorls/FormControls";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import { useFormHandler } from "@/hooks/useFormHandler";
-import { MainBannerFormValues } from "@/types/banners";
-import { defaultMainBannerFormValues, mainBannerSchema } from "@/utils/validation/banners/banners";
-import { BANNER_STATUS_LIST, BANNER_TARGET_LIST } from "@/constants/banners";
+import { MainBannerFormValues, PopupFormValues } from "@/types/banners";
+import {
+	defaultPopupFormValues,
+	popupSchema
+} from "@/utils/validation/banners/banners";
+import { BANNER_STATUS_LIST, POPUP_POSITION_LIST } from "@/constants/banners";
 
-interface MainBannerFormProps {
-	onSubmit: (data: MainBannerFormValues) => void;
-	defaultUpdateFormValue?: MainBannerFormValues | null;
+interface PopupFormProps {
+	onSubmit: (data: PopupFormValues) => void;
+	defaultUpdateFormValue?: PopupFormValues | null;
 	setPcFile: (file: File | null) => void;
 	setMobileFile: (file: File | null) => void;
 	isValidFiles: boolean;
 }
 
-export default function MainBannerForm({
+export default function PopupForm({
 	onSubmit,
 	defaultUpdateFormValue = null,
 	setPcFile,
 	setMobileFile,
 	isValidFiles = false,
-}: MainBannerFormProps) {
+}: PopupFormProps) {
 	const router = useRouter();
 
 	const {
 		control,
 		handleSubmit,
 		isValid,
-	} = useFormHandler<MainBannerFormValues>(mainBannerSchema, defaultUpdateFormValue ?? defaultMainBannerFormValues, 'all');
+	} = useFormHandler<PopupFormValues>(popupSchema, defaultUpdateFormValue ?? defaultPopupFormValues, 'all');
 
 	const imageList = [
 		{
@@ -45,9 +48,9 @@ export default function MainBannerForm({
 			linkName: 'pcLinkUrl',
 			defaultImageUrl: defaultUpdateFormValue?.thumbnail_pc ?? '',
 			imageName: defaultUpdateFormValue?.filenamePc ?? '',
-			caption: 'PC 이미지 권장사이즈: 1920 x 400',
-			width: 1920,
-			height: 400,
+			caption: 'PC 이미지 권장사이즈: 600 x 600',
+			width: 300,
+			height: 300,
 			onFileChange: setPcFile,
 		},
 		{
@@ -56,7 +59,7 @@ export default function MainBannerForm({
 			linkName: 'mobileLinkUrl',
 			defaultImageUrl: defaultUpdateFormValue?.thumbnail_mobile ?? '',
 			imageName: defaultUpdateFormValue?.filenameMobile ?? '',
-			caption: 'PC 이미지 권장사이즈: 600 x 600',
+			caption: 'PC 이미지 권장사이즈: 560 x 560',
 			width: 300,
 			height: 300,
 			onFileChange: setMobileFile,
@@ -70,7 +73,7 @@ export default function MainBannerForm({
 						control={control}
 						name='name'
 						render={({ field }) => (
-							<InputFieldGroup label='배너 이름'>
+							<InputFieldGroup label='팝업 이름'>
 								<InputField
 									{...field}
 								/>
@@ -79,11 +82,11 @@ export default function MainBannerForm({
 					/>
 					<Controller
 						control={control}
-						name='targets'
+						name='position'
 						render={({ field }) => (
-							<InputFieldGroup label='노출 대상'>
+							<InputFieldGroup label='팝업 위치'>
 								<LabeledRadioButtonGroup
-									options={BANNER_TARGET_LIST}
+									options={POPUP_POSITION_LIST}
 									{...field}
 								/>
 							</InputFieldGroup>
@@ -110,7 +113,6 @@ export default function MainBannerForm({
 									onFileChange={image.onFileChange}
 									defaultImageUrl={image.defaultImageUrl}
 									imageName={image.imageName}
-									fullWidth={image.title === 'PC'}
 									width={image.width}
 									height={image.height}
 									objectFit='contain'
@@ -119,7 +121,7 @@ export default function MainBannerForm({
 							</InputFieldGroup>
 							<Controller
 								control={control}
-								name={image.linkName as keyof MainBannerFormValues}
+								name={image.linkName as keyof PopupFormValues}
 								render={({ field }) => (
 									<>
 										<InputFieldGroup label='연결 링크' isLabelRequired={false} divider={index === 0}>
@@ -128,7 +130,6 @@ export default function MainBannerForm({
 													placeholder='ex: https://barfdog.co.kr/path/1'
 													{...field}
 												/>
-												<Text type='caption' color='gray500'>* 링크가 없을 경우, 배너 클릭 이벤트가 발생하지 않습니다.</Text>
 											</div>
 										</InputFieldGroup>
 									</>

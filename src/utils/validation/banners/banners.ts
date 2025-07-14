@@ -1,4 +1,4 @@
-import { BannerStatus, BannerTarget } from "@/types/banners";
+import {BannerStatus, BannerTarget, PopupPosition} from "@/types/banners";
 import * as yup from "yup";
 
 export const bannerSchema = yup.object().shape({
@@ -15,11 +15,10 @@ export const bannerSchema = yup.object().shape({
 		.required('상태는 필수입니다.'),
 });
 
-
 export const mainBannerSchema = yup.object().shape({
 	name: yup
 		.string()
-		.required('프로모션 이름은 필수입니다.'),
+		.required('배너 이름은 필수입니다.'),
 	pcLinkUrl: yup
 		.string(),
 	mobileLinkUrl: yup
@@ -37,6 +36,32 @@ export const mainBannerSchema = yup.object().shape({
 export const defaultMainBannerFormValues = {
 	status: "LEAKED" as BannerStatus,
 	targets: "ALL" as BannerTarget,
+	name: "",
+	pcLinkUrl: "",
+	mobileLinkUrl: "",
+}
+
+export const popupSchema = yup.object().shape({
+	name: yup
+		.string()
+		.required('팝업 이름은 필수입니다.'),
+	pcLinkUrl: yup
+		.string(),
+	mobileLinkUrl: yup
+		.string(),
+	position: yup
+		.string()
+		.oneOf(['LEFT', 'MID', 'RIGHT'], '유효한 팝업 위치여야 합니다.')
+		.required('팝업 위치는 필수입니다.'),
+	status: yup
+		.string()
+		.oneOf(['LEAKED', 'HIDDEN'], '유효한 팝업 상태여야 합니다.')
+		.required('상태는 필수입니다.'),
+});
+
+export const defaultPopupFormValues = {
+	status: "LEAKED" as BannerStatus,
+	position: "LEFT" as PopupPosition,
 	name: "",
 	pcLinkUrl: "",
 	mobileLinkUrl: "",

@@ -17,34 +17,34 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
 import { TableColumn } from "@/types/common";
-import { BannerLeakedOrderDirection, MainBannerListrData } from "@/types/banners";
-import { BANNER_TARGET } from "@/constants/banners";
-import { useGetMainBannerList } from "@/api/banners/queries/useGetMainBannerList";
-import { useUpdateMainBannerLeakedOrder } from "@/api/banners/mutations/useUpdateMainBannerLeakedOrder";
-import { useDeleteMainBanner } from "@/api/banners/mutations/useDeleteMainBanner";
+import { BannerLeakedOrderDirection, PopupListData } from "@/types/banners";
+import { POPUP_POSITION } from "@/constants/banners";
+import { useGetPopupList } from "@/api/banners/queries/useGetPopupList";
+import { useUpdatePopupLeakedOrder } from "@/api/banners/mutations/useUpdatePopupLeakedOrder";
+import { useDeletePopup } from "@/api/banners/mutations/useDeletePopup";
 
-export default function MainBannerList() {
+export default function PopupList() {
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const { data } = useGetMainBannerList();
+	const { data } = useGetPopupList();
 
 	const [editMode, setEditMode] = useState<boolean>(false);
-	const { mutate: updateLeakedOrder } = useUpdateMainBannerLeakedOrder();
+	const { mutate: updateLeakedOrder } = useUpdatePopupLeakedOrder();
 	
-	const [deleteBanner, setDeleteBanner] = useState<MainBannerListrData | null>(null);
+	const [deletePopup, setDeletePopup] = useState<PopupListData | null>(null);
 	const { isOpen: isOpenDeleteConfirmModal, onClose: onCloseDeleteConfirmModal, onToggle: onToggleDeleteConfirmModal } = useModal();
-	const { mutate: deleteMainBanner } = useDeleteMainBanner();
+	const { mutate: deletePopupMutate } = useDeletePopup();
 
 	const { addToast } = useToastStore();
 
-	const handleUpdateLeakedOrder = (bannerId: number, direction: BannerLeakedOrderDirection) => {
+	const handleUpdateLeakedOrder = (popupId: number, direction: BannerLeakedOrderDirection) => {
 		updateLeakedOrder({
-			bannerId,
+			popupId,
 			direction,
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({
-					queryKey: [queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_LIST],
+					queryKey: [queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_LIST],
 				});
 			},
 			onError: (error) => {
@@ -53,37 +53,37 @@ export default function MainBannerList() {
 		})
 	}
 
-	const handleDeleteConfirm = (row: MainBannerListrData) => {
+	const handleDeleteConfirm = (row: PopupListData) => {
 		onToggleDeleteConfirmModal();
-		setDeleteBanner(row)
+		setDeletePopup(row)
 	}
 
 	const handleDelete = () => {
-		if(!deleteBanner) return;
+		if(!deletePopup) return;
 
-		deleteMainBanner({
-			bannerId: deleteBanner?.id,
+		deletePopupMutate({
+			popupId: deletePopup?.id,
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({
-					queryKey: [queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_LIST],
+					queryKey: [queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_LIST],
 				});
-				addToast('메인 배너 삭제가 완료되었습니다!');
-				setDeleteBanner(null);
+				addToast('팝업 삭제가 완료되었습니다!');
+				setDeletePopup(null);
 			},
 			onError: (error) => {
 				console.log(error)
-				addToast('메인 배너 삭제에 실패했습니다.\n관리자에게 문의해주세요.');
+				addToast('팝업 삭제에 실패했습니다.\n관리자에게 문의해주세요.');
 			}
 		})
 	}
 
-	const columns: TableColumn<MainBannerListrData>[] = [
+	const columns: TableColumn<PopupListData>[] = [
 		{
 			key: 'leakedOrder',
 			header: '순서',
 			width: '60px',
-			render: (row: MainBannerListrData) => {
+			render: (row: PopupListData) => {
 				if (editMode) {
 					return (
 						<div className={commonWrapper({ align: 'center', gap: 4 })}>
@@ -100,16 +100,17 @@ export default function MainBannerList() {
 		{
 			key: 'thumbnail_pc',
 			header: '이미지',
-			render: (row: MainBannerListrData) => <Image src={row.thumbnail_pc} alt={row.name} width={279} height={49} />
+			render: (row: PopupListData) => <Image src={row.thumbnail_pc} alt={row.name} width={60} height={60} />
 		},
-		{ key: 'targets', header: '노출 대상', render: (row: MainBannerListrData) => BANNER_TARGET[row.targets] },
-		{ key: 'createdDate', header: '등록일', render: (row: MainBannerListrData) => format(new Date(row.createdDate), 'yyyy-MM-dd') },
+		{ key: 'position', header: '위치', render: (row: PopupListData) => POPUP_POSITION[row.position] },
+		{ key: 'createdDate', header: '등록일', render: (row: PopupListData) => format(new Date(row.createdDate), 'yyyy-MM-dd') },
 		{
 			key: 'edit',
 			header: '수정',
-			render: (row: MainBannerListrData) => (
+			width: 80,
+			render: (row: PopupListData) => (
 				<Button
-					onClick={() => router.push(`/banners/main/${row.id}`)}
+					onClick={() => router.push(`/banners/popup/${row.id}`)}
 					size='sm'
 				>
 					수정
@@ -119,7 +120,8 @@ export default function MainBannerList() {
 		{
 			key: 'delete',
 			header: '삭제',
-			render: (row: MainBannerListrData) => (
+			width: 80,
+			render: (row: PopupListData) => (
 				<Button
 					variant='outline'
 					type='assistive'
@@ -136,16 +138,16 @@ export default function MainBannerList() {
 			<Card shadow='none' padding={20} gap={16}>
 				<div className={commonWrapper({ justify: 'between', align: 'center'})}>
 					<Text type='title4'>목록</Text>
-					<Button onClick={() => router.push('/banners/main/create')} variant='solid'>배너 등록</Button>
+					<Button onClick={() => router.push('/banners/popup/create')} variant='solid'>팝업 등록</Button>
 				</div>
 				<Divider thickness={1} color='gray300' />
 				<TableSection
-					data={data as MainBannerListrData[]}
+					data={data as PopupListData[]}
 					columns={columns}
 					page={0}
 					totalPages={0}
 					padding='none'
-					emptyText='메인 배너 목록 데이터가 없습니다.'
+					emptyText='팝업 목록 데이터가 없습니다.'
 					action={
 						<>
 						<Button
@@ -163,7 +165,7 @@ export default function MainBannerList() {
 			{isOpenDeleteConfirmModal && 
 				<AlertModal
 					title='정말 삭제하시겠습니까?'
-					content={`배너 이름: ${deleteBanner?.name}`}
+					content={`팝업 이름: ${deletePopup?.name}`}
 					isOpen={isOpenDeleteConfirmModal}
 					onClose={onCloseDeleteConfirmModal}
 					cancelText='취소'

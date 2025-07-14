@@ -41,6 +41,8 @@ const queryKeys = {
     GET_TOP_BANNER: "getTopBanner",
     GET_MAIN_BANNER_LIST: "getMainBannerList",
     GET_MAIN_BANNER_DETAIL: "getMainBannerDetail",
+    GET_POPUP_LIST: "getPopupList",
+    GET_POPUP_DETAIL: "getPopupDetail",
   }
 } as const;
 
