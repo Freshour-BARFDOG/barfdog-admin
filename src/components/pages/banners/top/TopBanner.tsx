@@ -67,7 +67,6 @@ export default function TopBanner() {
 		<>
 			<Card shadow='none' padding={20}>
 				<Form>
-
 					<Controller
 						control={control}
 						name="name"

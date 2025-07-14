@@ -15,6 +15,13 @@ export const bannerSchema = yup.object().shape({
 		.required('상태는 필수입니다.'),
 });
 
+export const defaultMyPageBannerFormValues = {
+	status: "LEAKED" as BannerStatus,
+	name: "",
+	pcLinkUrl: "",
+	mobileLinkUrl: "",
+}
+
 export const mainBannerSchema = yup.object().shape({
 	name: yup
 		.string()
