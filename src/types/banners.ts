@@ -21,8 +21,30 @@ interface MyPageBannerFormValues {
 	mobileLinkUrl: string;
 }
 
+
+interface TopBannerData {
+	id: number;
+	name: string;
+	status: string;
+	backgroundColor: string;
+	fontColor: string;
+	pcLinkUrl: string;
+	mobileLinkUrl: string;
+}
+
+interface TopBannerFormValues {
+	name: string;
+	status: BannerStatus;
+	backgroundColor: string;
+	fontColor: string;
+	mobileLinkUrl: string;
+	pcLinkUrl: string;
+}
+
 export type {
 	BannerStatus,
 	MyPageBannerData,
 	MyPageBannerFormValues,
+	TopBannerData,
+	TopBannerFormValues,
 }

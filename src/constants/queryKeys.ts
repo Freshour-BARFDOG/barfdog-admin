@@ -38,6 +38,7 @@ const queryKeys = {
   BANNERS: {
     BASE: "BANNERS",
     GET_MYPAGE_BANNER: "getMyPageBanner",
+    GET_TOP_BANNER: "getTopBanner",
   }
 } as const;
 

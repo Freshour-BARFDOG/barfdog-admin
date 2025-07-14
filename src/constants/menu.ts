@@ -187,7 +187,7 @@ export const MENU_ITEMS: MenuItem[] = [
       },
       {
         key: "top",
-        label: "최상단 배너",
+        label: "최상단 띠 배너",
         href: "/banners/top",
       },
       {

@@ -1,6 +1,11 @@
 import { AxiosInstance } from "axios";
 import axiosInstance from "@/api/axiosInstance";
-import { MyPageBannerData, MyPageBannerFormValues } from "@/types/banners";
+import { 
+	MyPageBannerData, 
+	MyPageBannerFormValues, 
+	TopBannerData, 
+	TopBannerFormValues,
+} from "@/types/banners";
 
 const getMyPageBanner = async (instance: AxiosInstance = axiosInstance): Promise<MyPageBannerData> => {
 	try {
@@ -16,6 +21,15 @@ const getMyPageBanner = async (instance: AxiosInstance = axiosInstance): Promise
 			thumbnail_pc: data?._links.thumbnail_pc.href,
 			thumbnail_mobile: data?._links.thumbnail_mobile.href,
 		};
+	} catch (error) {
+		throw error;
+	}
+}
+
+const getTopBanner = async (instance: AxiosInstance = axiosInstance): Promise<TopBannerData> => {
+	try {
+		const { data } = await instance.get(`/api/banners/top`);
+		return data;
 	} catch (error) {
 		throw error;
 	}
@@ -37,7 +51,18 @@ const updateMyPageBanner = async (bannerId: number, body: MyPageBannerFormValues
 	}
 }
 
+const updateTopBanner = async (bannerId: number, body: TopBannerFormValues) => {
+	try {
+		const { data } = await axiosInstance.put(`/api/banners/top/${bannerId}`, body);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
 export {
 	getMyPageBanner,
 	updateMyPageBanner,
+	getTopBanner,
+	updateTopBanner,
 }
