@@ -28,6 +28,10 @@ const queryKeys = {
     BASE: "reward",
     GET_REWARD_LIST: "getRewardList",
   },
+  PRODUCTS: {
+    BASE: "products",
+    GET_GENERAL_PRODUCT_LIST: "getGeneralProductList",
+  },
 } as const;
 
 export { queryKeys };

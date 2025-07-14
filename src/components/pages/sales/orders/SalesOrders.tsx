@@ -270,7 +270,13 @@ export default function SalesOrders() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={
-          <div style={{ display: "flex", gap: 8 }}>
+          <div
+            className={commonWrapper({
+              gap: 8,
+              wrap: "wrap",
+              justify: "start",
+            })}
+          >
             <Button
               size="sm"
               variant="outline"

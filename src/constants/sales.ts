@@ -7,11 +7,11 @@ import {
   PaymentMethod,
   ProductType,
 } from "@/types/sales";
-import { format } from "date-fns";
+import { TODAY } from "./common";
 
 const INITIAL_SEARCH_REQUEST = {
   from: "2001-01-01",
-  to: format(new Date(), "yyyy-MM-dd"),
+  to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
@@ -23,7 +23,7 @@ const INITIAL_SEARCH_REQUEST = {
 
 const INITIAL_ORDERS_REQUEST = {
   from: "2001-01-01",
-  to: format(new Date(), "yyyy-MM-dd"),
+  to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
@@ -35,7 +35,7 @@ const INITIAL_ORDERS_REQUEST = {
 
 const INITIAL_DELIVERY_REQUEST = {
   from: "2001-01-01",
-  to: format(new Date(), "yyyy-MM-dd"),
+  to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
