@@ -39,6 +39,8 @@ const queryKeys = {
     BASE: "BANNERS",
     GET_MYPAGE_BANNER: "getMyPageBanner",
     GET_TOP_BANNER: "getTopBanner",
+    GET_MAIN_BANNER_LIST: "getMainBannerList",
+    GET_MAIN_BANNER_DETAIL: "getMainBannerDetail",
   }
 } as const;
 

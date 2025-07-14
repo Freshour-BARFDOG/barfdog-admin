@@ -95,18 +95,20 @@ const FileUpload = ({
               alt={imageName}
               width={width ?? 0}
               height={height ?? 0}
-              style={{ width: fullWidth ? '100%' : 'auto' }}
+              style={{ width: fullWidth ? '100%' : 'auto', height: fullWidth ? 'auto' : undefined }}
               className={styles.imageFile({ borderRadius, objectFit })}
             />
           )
         }
-        <Text type='body3' className={styles.fileUploadButton}>파일 선택</Text>
-        <Text type='caption2'>{file?.name || (clearFile ? '' : imageName)}</Text>
-        {showClearButton && !clearFile &&
-          <button onClick={handleClearFile}>
-            <CircleX />
-          </button>
-        }
+        <div>
+          <Text type='body3' className={styles.fileUploadButton}>파일 선택</Text>
+          <Text type='caption2'>{file?.name || (clearFile ? '' : imageName)}</Text>
+          {showClearButton && !clearFile &&
+            <button onClick={handleClearFile}>
+              <CircleX />
+            </button>
+          }
+        </div>
       </label>
       <input
         type="file"

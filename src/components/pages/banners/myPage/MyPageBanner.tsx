@@ -16,7 +16,7 @@ import { BANNER_STATUS_LIST } from "@/constants/banners";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
 import { useQueryClient } from "@tanstack/react-query";
-import { myPageBannerSchema } from "@/utils/validation/banners/myPage/myPage";
+import { bannerSchema } from "@/utils/validation/banners/banners";
 import { BannerStatus, MyPageBannerFormValues } from "@/types/banners";
 import { useGetMyPageBanner } from "@/api/banners/queries/useGetMyPageBanner";
 import { useUpdateMyPageBanner } from "@/api/banners/mutations/useUpdateMyPageBanner";
@@ -44,7 +44,7 @@ export default function MyPageBanner() {
 		control,
 		handleSubmit,
 		isValid,
-	} = useFormHandler<MyPageBannerFormValues>(myPageBannerSchema, defaultBannerFormValues, 'all');
+	} = useFormHandler<MyPageBannerFormValues>(bannerSchema, defaultBannerFormValues, 'all');
 
 	const imageList = [
 		{

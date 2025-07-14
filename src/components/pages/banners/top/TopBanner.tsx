@@ -14,7 +14,7 @@ import { BANNER_STATUS_LIST } from "@/constants/banners";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
 import { useQueryClient } from "@tanstack/react-query";
-import { myPageBannerSchema } from "@/utils/validation/banners/myPage/myPage";
+import { bannerSchema } from "@/utils/validation/banners/banners";
 import { BannerStatus, TopBannerFormValues } from "@/types/banners";
 import { useGetTopBanner } from "@/api/banners/queries/useGetTopBanner";
 import { useUpdateTopBanner } from "@/api/banners/mutations/useUpdateTopBanner";
@@ -39,12 +39,10 @@ export default function TopBanner() {
 		handleSubmit,
 		isValid,
 		watch,
-	} = useFormHandler<TopBannerFormValues>(myPageBannerSchema, defaultBannerFormValues, 'all');
+	} = useFormHandler<TopBannerFormValues>(bannerSchema, defaultBannerFormValues, 'all');
 
 	const { mutate } = useUpdateTopBanner();
 	const { addToast } = useToastStore();
-
-	console.log(watch())
 
 	const onSubmit = (formValues: TopBannerFormValues) => {
 		if(!data) return;
