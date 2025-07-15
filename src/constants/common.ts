@@ -9,6 +9,9 @@ const PAGE_SIZE = {
 		COUPON: 10,
 		REWARD: 10,
 		PROMOTION: 10,
+	},
+	COMMUNITY: {
+		NOTICE: 10,
 	}
 };
 

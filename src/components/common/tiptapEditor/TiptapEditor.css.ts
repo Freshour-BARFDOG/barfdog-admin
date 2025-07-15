@@ -2,13 +2,13 @@ import { style, globalStyle } from '@vanilla-extract/css';
 import { themeVars } from "@/styles/theme.css";
 
 export const tiptapEditorContainer = style({
+	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
 	borderRadius: '12px',
 	overflow: 'hidden',
 	border: `1px solid ${themeVars.colors.gray.gray200}`
 });
-
 
 export const tiptapEditor = style({
 	padding: '16px',
