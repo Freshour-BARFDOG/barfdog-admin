@@ -48,14 +48,9 @@ const GENERAL_PRODUCT_CATEGORY_MAP = {
   ETC: "기타",
 } as const;
 
-/** 2) 맵 키·값을 기반으로 옵션 배열(ALL 포함) 생성 */
-const ALL_CATEGORY_ENTRIES = Object.entries(GENERAL_PRODUCT_CATEGORY_MAP) as [
-  GeneralProductType,
-  string
-][];
-
-const GENERAL_PRODUCT_CATEGORY_OPTIONS: SelectOption<GeneralProductType>[] =
-  ALL_CATEGORY_ENTRIES.map(([value, label]) => ({ value, label }));
+const GENERAL_PRODUCT_CATEGORY_OPTIONS: SelectOption<GeneralProductType>[] = (
+  Object.entries(GENERAL_PRODUCT_CATEGORY_MAP) as [GeneralProductType, string][]
+).map(([value, label]) => ({ value, label }));
 
 /** 3) 등록 페이지에서 쓸 옵션 배열: ALL 제외 */
 const GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE =

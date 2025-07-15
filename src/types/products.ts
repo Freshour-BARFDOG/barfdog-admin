@@ -116,6 +116,12 @@ interface UpdateGeneralProductRequest extends GeneralProductCommonFields {
   itemOptionUpdateDtoList: ItemOptionUpdateDto[];
 }
 
+interface GetAllianceListResponse {
+  allianceId: number;
+  allianceCode: string;
+  allianceName: string;
+}
+
 export type {
   GeneralProductType,
   GeneralProductCreateType,
@@ -129,4 +135,6 @@ export type {
   CreateGeneralProductRequest,
   UpdateGeneralProductRequest,
   ProductVisibilityStatus,
+  AllianceDto,
+  GetAllianceListResponse,
 };

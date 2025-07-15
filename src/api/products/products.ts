@@ -1,7 +1,9 @@
 import {
+  AllianceDto,
   CreateGeneralProductRequest,
   GeneralProductListParams,
   GeneralProductListResponse,
+  GetAllianceListResponse,
 } from "@/types/products";
 import { AxiosInstance } from "axios";
 import axiosInstance from "../axiosInstance";
@@ -24,4 +26,9 @@ const createGeneralProduct = async (body: CreateGeneralProductRequest) => {
   return data;
 };
 
-export { getGeneralProductList, createGeneralProduct };
+const getAllianceList = async (): Promise<GetAllianceListResponse[]> => {
+  const { data } = await axiosInstance.get("/api/admin/alliance");
+  return data?._embedded?.allianceResponseList;
+};
+
+export { getGeneralProductList, createGeneralProduct, getAllianceList };

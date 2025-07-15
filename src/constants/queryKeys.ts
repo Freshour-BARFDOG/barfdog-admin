@@ -31,6 +31,7 @@ const queryKeys = {
   PRODUCTS: {
     BASE: "products",
     GET_GENERAL_PRODUCT_LIST: "getGeneralProductList",
+    GET_ALLIANCE_LIST: "getAllianceList",
   },
   PROMOTIONS: {
     BASE: "promotion",
