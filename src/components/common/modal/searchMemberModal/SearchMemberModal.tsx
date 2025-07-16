@@ -1,17 +1,13 @@
 import * as styles from './SearchMemberModal.css';
 import { useState } from "react";
-import ModalBackground from "@/components/common/modal/modalBackground/ModalBackground";
-import Card from "@/components/common/card/Card";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
-import Text from "@/components/common/text/Text";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Button from "@/components/common/button/Button";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
-import SvgIcon from "@/components/common/svgIcon/SvgIcon";
-import CloseIcon from "/public/images/icons/close.svg";
 import MemberTable from "@/components/pages/member/table/MemberTable";
 import useItemSelection from "@/hooks/useItemSelection";
 import useSearchValues from "@/hooks/useSearchValues";
+import FullModal from "@/components/common/modal/fullModal/FullModal";
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 import { INITIAL_SEARCH_VALUES } from "@/constants/member";
 import { SEARCH_CATEGORY } from "@/constants/common";
@@ -77,65 +73,59 @@ export default function SearchMemberModal({
 
 	if (!data) return null;
 	return (
-		<ModalBackground
+		<FullModal
 			isVisible={isOpen}
-			onClose={handleClose}
-			isDimmed
-			closeOnBackgroundClick={false}
+			handleClose={handleClose}
+			title='회원 검색'
+			className={styles.searchMemberModalContainer}
 		>
-			<Card shadow='none' width='auto' justify='start' className={styles.searchMemberModalContainer}>
-				<div className={styles.searchMemberHeader}>
-					<Text type='title2' color='white'>회원 검색</Text>
-					<button onClick={handleClose}><SvgIcon src={CloseIcon} color='white' /></button>
+			<div className={styles.searchMemberContent}>
+				<InputFieldGroup label='회원 검색' divider={false}>
+					<SearchFilterKeyword
+						categoryOptions={SEARCH_CATEGORY}
+						selectedCategory={selectedCategory}
+						keyword={searchValues[selectedCategory]}
+						onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
+						onChangeKeyword={(keyword) => {
+							setSearchValues({...searchValues, [selectedCategory]: keyword});
+						}}
+						onSubmit={onSubmit}
+					/>
+				</InputFieldGroup>
+				<div className={styles.searchMemberControls}>
+					<Button onClick={onSubmit} size='sm'>검색</Button>
+					<Button onClick={onReset} size='sm' variant='outline'>초기화</Button>
 				</div>
-				<div className={styles.searchMemberContent}>
-					<InputFieldGroup label='회원 검색' divider={false}>
-						<SearchFilterKeyword
-							categoryOptions={SEARCH_CATEGORY}
-							selectedCategory={selectedCategory}
-							keyword={searchValues[selectedCategory]}
-							onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
-							onChangeKeyword={(keyword) => {
-								setSearchValues({...searchValues, [selectedCategory]: keyword});
-							}}
-							onSubmit={onSubmit}
-						/>
-					</InputFieldGroup>
-					<div className={styles.searchMemberControls}>
-						<Button onClick={onSubmit} size='sm'>검색</Button>
-						<Button onClick={onReset} size='sm' variant='outline'>초기화</Button>
-					</div>
-					<div>
-						<MemberTable
-							data={data}
-							firstRow={{
-								key: 'id',
-								header: (
-									<LabeledCheckbox
-										value={allSelected}
-										isChecked={allSelected}
-										onToggle={(value) => selectAll(!value)}
-									/>
-								),
-								width: '60px',
-								render: (row) => (
-									<LabeledCheckbox
-										value={row.id}
-										isChecked={isSelected(row.id)}
-										onToggle={() => toggleSelect(row.id)}
-									/>
-								),
-							}}
-							page={page}
-							onChangePage={onChangePage}
-							padding='none'
-						/>
-						<div className={styles.searchMemberButton}>
-							<Button onClick={handleSelect} disabled={selectedIds.length < 1} fullWidth>고객 추가</Button>
-						</div>
+				<div>
+					<MemberTable
+						data={data}
+						firstRow={{
+							key: 'id',
+							header: (
+								<LabeledCheckbox
+									value={allSelected}
+									isChecked={allSelected}
+									onToggle={(value) => selectAll(!value)}
+								/>
+							),
+							width: '60px',
+							render: (row) => (
+								<LabeledCheckbox
+									value={row.id}
+									isChecked={isSelected(row.id)}
+									onToggle={() => toggleSelect(row.id)}
+								/>
+							),
+						}}
+						page={page}
+						onChangePage={onChangePage}
+						padding='none'
+					/>
+					<div className={styles.searchMemberButton}>
+						<Button onClick={handleSelect} disabled={selectedIds.length < 1} fullWidth>고객 추가</Button>
 					</div>
 				</div>
-			</Card>
-		</ModalBackground>
+			</div>
+		</FullModal>
 	);
 }

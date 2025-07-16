@@ -19,6 +19,7 @@ interface FileUploadProps {
   fullWidth?: boolean;
   objectFit?: ImageFileObjectFit;
   caption?: string;
+  topCaption?: string;
   showClearButton?: boolean;
 }
 
@@ -34,6 +35,7 @@ const FileUpload = ({
   borderRadius = false,
   objectFit = 'cover',
   caption,
+  topCaption,
   showClearButton = false,
 }: FileUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
@@ -86,37 +88,43 @@ const FileUpload = ({
 
   return (
     <div className={styles.fileUploadContainer}>
-      <label htmlFor={inputId} className={styles.fileUploadLabel}>
-        {!previewUrl
-          ? <ImageUp />
-          : (
-            <Image
-              src={previewUrl}
-              alt={imageName}
-              width={width ?? 0}
-              height={height ?? 0}
-              style={{ width: fullWidth ? '100%' : 'auto', height: fullWidth ? 'auto' : undefined }}
-              className={styles.imageFile({ borderRadius, objectFit })}
-            />
-          )
+      <div>
+
+        {topCaption &&
+          <Text type='caption' color='gray500'>* {topCaption}</Text>
         }
-        <div>
-          <Text type='body3' className={styles.fileUploadButton}>파일 선택</Text>
-          <Text type='caption2'>{file?.name || (clearFile ? '' : imageName)}</Text>
-          {showClearButton && !clearFile &&
-            <button onClick={handleClearFile}>
-              <CircleX />
-            </button>
+        <label htmlFor={inputId} className={styles.fileUploadLabel}>
+          {!previewUrl
+            ? <ImageUp />
+            : (
+              <Image
+                src={previewUrl}
+                alt={imageName}
+                width={width ?? 0}
+                height={height ?? 0}
+                style={{ width: fullWidth ? '100%' : width, height: fullWidth ? 'auto' : undefined }}
+                className={styles.imageFile({ borderRadius, objectFit })}
+              />
+            )
           }
-        </div>
-      </label>
-      <input
-        type="file"
-        id={inputId}
-        accept='image/jpeg, image/jpg, image/png, image/gif'
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
+          <div>
+            <Text type='body3' className={styles.fileUploadButton}>파일 선택</Text>
+            <Text type='caption2'>{file?.name || (clearFile ? '' : imageName)}</Text>
+            {showClearButton && !clearFile &&
+              <button onClick={handleClearFile}>
+                <CircleX />
+              </button>
+            }
+          </div>
+        </label>
+        <input
+          type="file"
+          id={inputId}
+          accept='image/jpeg, image/jpg, image/png, image/gif'
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+      </div>
       {caption &&
         <Text type='caption' color='gray500'>* {caption}</Text>
       }

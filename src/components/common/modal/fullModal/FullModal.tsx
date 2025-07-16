@@ -1,7 +1,9 @@
 import * as styles from "./FullModal.css";
 import { ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 import ModalBackground from "@/components/common/modal/modalBackground/ModalBackground";
+import Card from "@/components/common/card/Card";
+import Text from "@/components/common/text/Text";
 
 interface FullModalProps {
   isVisible: boolean;
@@ -9,6 +11,8 @@ interface FullModalProps {
   handleGoBack?: () => void;
   children: ReactNode;
   className?: string;
+  title?: string;
+  padding?: 'none' | 16 | 20;
 }
 
 export default function FullModal({
@@ -17,28 +21,28 @@ export default function FullModal({
   handleGoBack,
   children,
   className,
+  title,
+  padding = 'none',
 }: FullModalProps) {
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <ModalBackground
-          isVisible={isVisible}
-          onClose={handleClose || handleGoBack}
-          closeOnBackgroundClick={false}
-          isDimmed={false}
-        >
-          <motion.div
-            className={`${styles.modalContainer} ${className || ""}`}
-            onClick={(e) => e.stopPropagation()}
-            initial={{ y: "100%" }}
-            animate={{ y: "0%" }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          >
-            <div className={styles.modalContent}>{children}</div>
-          </motion.div>
-        </ModalBackground>
-      )}
-    </AnimatePresence>
+    isVisible && (
+      <ModalBackground
+        isVisible={isVisible}
+        onClose={handleClose || handleGoBack}
+        closeOnBackgroundClick={false}
+      >
+        <Card shadow='none' className={`${styles.modalContainer} ${className || ""}`}>
+          {title &&
+            <div className={styles.modalHeader}>
+              <Text type='title3' color='white'>{title}</Text>
+              <button onClick={handleClose}><X color='white' /></button>
+            </div>
+          }
+          <div className={styles.modalContent({ padding })}>
+            {children}
+          </div>
+        </Card>
+      </ModalBackground>
+    )
   );
 };

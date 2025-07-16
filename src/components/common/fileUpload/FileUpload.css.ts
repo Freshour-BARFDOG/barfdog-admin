@@ -41,6 +41,7 @@ export const imageFile = recipe({
       },
       contain: {
         objectFit: 'contain',
+        objectPosition: 'center',
       }
     },
   }
