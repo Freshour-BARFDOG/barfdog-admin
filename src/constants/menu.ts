@@ -156,29 +156,29 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: CalendarCheck,
   },
   {
-    key: "banner",
+    key: "banners",
     label: "배너 및 팝업 관리",
     icon: GalleryVertical,
     children: [
       {
         key: "main",
         label: "메인 배너",
-        href: "/banner/main",
+        href: "/banners/main",
       },
       {
         key: "mypage",
         label: "마이페이지 배너",
-        href: "/banner/mypage",
+        href: "/banners/mypage",
       },
       {
         key: "top",
-        label: "최상단 배너",
-        href: "/banner/top",
+        label: "최상단 띠 배너",
+        href: "/banners/top",
       },
       {
         key: "popup",
         label: "팝업",
-        href: "/banner/popup",
+        href: "/banners/popup",
       },
     ],
   },

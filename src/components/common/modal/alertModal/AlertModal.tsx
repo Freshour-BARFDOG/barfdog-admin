@@ -71,7 +71,6 @@ export default function AlertModal({
             <Button
               type={cancelType}
               variant={cancelVariant}
-              size="sm"
               onClick={handleCancel}
               fullWidth={buttonPosition === "center"}
             >
@@ -82,7 +81,6 @@ export default function AlertModal({
             <Button
               type={confirmType}
               variant={confirmVariant}
-              size="sm"
               onClick={handleConfirm}
               fullWidth={buttonPosition === "center"}
             >

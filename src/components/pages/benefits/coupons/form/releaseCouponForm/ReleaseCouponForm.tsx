@@ -10,7 +10,9 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTarget";
 import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
-import Button from "@/components/common/button/Button";
+import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
+import FormControls from "@/components/common/formContorls/FormControls";
+import Form from '@/components/common/form/Form';
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/benefits/coupons";
 import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/benefits/coupons";
@@ -18,7 +20,6 @@ import { useGetPublicationCouponList } from "@/api/coupons/queries/useGetPublica
 import { useReleaseCoupon } from "@/api/coupons/mutations/useReleaseCoupon";
 import { useToastStore } from "@/store/useToastStore";
 import { defaultValues, getCouponSchemaByTarget } from "@/utils/validation/benefits/coupon/releaseCoupon";
-import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
 
 export default function ReleaseCouponForm() {
 	const router = useRouter();
@@ -97,7 +98,7 @@ export default function ReleaseCouponForm() {
 	return (
 		<>
 			<Card shadow='none' padding={20}>
-				<form className={styles.benefitForm({})}>
+				<Form>
 					<InputFieldGroup label='발행 대상'>
 						<BenefitTargetSelector<ReleaseCouponFormValues, ReleaseCouponTarget>
 							targetValue={couponTarget}
@@ -171,12 +172,15 @@ export default function ReleaseCouponForm() {
 							</InputFieldGroup>
 						)}
 					/>
-				</form>
+				</Form>
 			</Card>
-			<div className={styles.benefitControls}>
-				<Button onClick={() => router.back()} variant='outline' type='assistive'>취소</Button>
-				<Button onClick={handleSubmit(onSubmit)} disabled={!isValid} >쿠폰 발행</Button>
-			</div>
+			<FormControls
+				cancelText='취소'
+				confirmText='쿠폰 발행'
+				onCancel={() => router.back()}
+				onConfirm={handleSubmit(onSubmit)}
+				isConfirmDisabled={!isValid}
+			/>
 		</>
 	);
 }

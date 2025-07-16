@@ -40,6 +40,20 @@ const queryKeys = {
     GET_PROMOTION_MEMBER_LIST: "getPromotionMemberList",
     GET_PROMOTION_COUPON_LIST: "getPromotionCouponList",
   },
+  BANNERS: {
+    BASE: "banners",
+    GET_MYPAGE_BANNER: "getMyPageBanner",
+    GET_TOP_BANNER: "getTopBanner",
+    GET_MAIN_BANNER_LIST: "getMainBannerList",
+    GET_MAIN_BANNER_DETAIL: "getMainBannerDetail",
+    GET_POPUP_LIST: "getPopupList",
+    GET_POPUP_DETAIL: "getPopupDetail",
+  },
+  COMMUNITY: {
+    BASE: "community",
+    GET_NOTICE_LIST: "getNoticeList",
+    GET_NOTICE_DETAIL: "getNoticeDetail",
+  }
 } as const;
 
 export { queryKeys };

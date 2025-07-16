@@ -6,6 +6,7 @@ export const baseStyle = style({
   justifyContent: "center",
   alignItems: "center",
   cursor: "pointer",
+  borderRadius: "8px",
 });
 
 export const textStyle = style({
@@ -25,7 +26,6 @@ export const boxShadowStyle = style({
 export const buttonSizes = {
   sm: style({
     padding: "6px 16px",
-    height: "36px",
     borderRadius: "8px",
     fontWeight: themeVars.typography.headline.headline4.fontWeight,
     fontSize: themeVars.typography.headline.headline4.fontSize,
@@ -35,7 +35,6 @@ export const buttonSizes = {
   md: style({
     padding: "10px 24px",
     height: "44px",
-    borderRadius: "8px",
     fontWeight: themeVars.typography.headline.headline3.fontWeight,
     fontSize: themeVars.typography.headline.headline3.fontSize,
     lineHeight: themeVars.typography.headline.headline3.lineHeight,
@@ -44,7 +43,6 @@ export const buttonSizes = {
   lg: style({
     padding: "12px 28px",
     height: "48px",
-    borderRadius: "8px",
     fontWeight: themeVars.typography.headline.headline3.fontWeight,
     fontSize: themeVars.typography.headline.headline3.fontSize,
     lineHeight: themeVars.typography.headline.headline3.lineHeight,
@@ -54,7 +52,6 @@ export const buttonSizes = {
     padding: "6px 16px",
     height: "36px",
     minWidth: "84px",
-    borderRadius: "8px",
     fontWeight: themeVars.typography.headline.headline4.fontWeight,
     fontSize: themeVars.typography.headline.headline4.fontSize,
     lineHeight: themeVars.typography.headline.headline4.lineHeight,

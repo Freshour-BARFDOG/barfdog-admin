@@ -9,6 +9,7 @@ interface InputFieldGroupProps {
   divider?: boolean;
   dividerColor?: "gray200" | "gray300";
   isLabelRequired?: boolean;
+  align?: "center" | "start";
 }
 
 export default function InputFieldGroup({
@@ -17,10 +18,11 @@ export default function InputFieldGroup({
   divider = true,
   dividerColor = "gray200",
   isLabelRequired = true,
+  align = "center",
 }: InputFieldGroupProps) {
   return (
     <>
-      <div className={styles.inputFieldGroup}>
+      <div className={styles.inputFieldGroup({ align })}>
         <InputLabel
           label={label}
           isRequired={isLabelRequired}

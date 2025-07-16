@@ -12,6 +12,9 @@ const PAGE_SIZE = {
     REWARD: 10,
     PROMOTION: 10,
   },
+  COMMUNITY: {
+    NOTICE: 10,
+  },
 };
 
 const OLDEST_DATE = format(new Date("2000-01-01"), "yyyy-MM-dd");
@@ -45,6 +48,16 @@ const AREA_LIST = Object.entries(AREA).map(([value, label]) => ({
 
 const NONE_VALUE = "NONE";
 
+const STATUS = {
+  LEAKED: "Y",
+  HIDDEN: "N",
+} as const;
+
+const STATUS_LIST = Object.entries(STATUS).map(([value, label]) => ({
+  label,
+  value,
+}));
+
 export {
   PAGE_SIZE,
   OLDEST_DATE,
@@ -55,5 +68,6 @@ export {
   SEARCH_CATEGORY,
   AREA,
   AREA_LIST,
-  NONE_VALUE,
+  STATUS,
+  STATUS_LIST,
 };

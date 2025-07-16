@@ -5,7 +5,7 @@ import {
   UseQueryOptions,
   UseSuspenseQueryOptions,
 } from "@tanstack/react-query";
-import { AREA } from "@/constants/common";
+import { AREA, STATUS } from "@/constants/common";
 
 interface MenuItem {
   key: string;
@@ -91,6 +91,8 @@ interface ImageFile {
   url: string;
 }
 
+type StatusType = keyof typeof STATUS;
+
 export type {
   MenuItem,
   TableColumn,
@@ -106,4 +108,5 @@ export type {
   PagePrams,
   DiscountUnitType,
   ImageFile,
+  StatusType,
 };
