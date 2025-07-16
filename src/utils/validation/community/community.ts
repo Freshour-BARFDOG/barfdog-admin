@@ -1,11 +1,18 @@
 import * as yup from "yup";
 
 const isContentEmpty = (value: string) => {
+	if (!value) return false;
+
+	// 이미지 태그가 하나라도 있으면 콘텐츠가 있다고 판단
+	const hasImage = /<img\s+[^>]*src=/.test(value);
+	if (hasImage) return true;
+
 	const cleaned = value
 		.replace(/<p><br><\/p>/g, '')
-		.replace(/<[^>]*>/g, '') // 모든 태그 제거
+		.replace(/<[^>]*>/g, '') // 모든 HTML 태그 제거
 		.replace(/&nbsp;/g, '')
 		.trim();
+
 	return cleaned.length > 0;
 };
 
