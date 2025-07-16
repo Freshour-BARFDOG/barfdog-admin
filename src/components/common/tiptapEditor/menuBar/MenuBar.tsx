@@ -8,6 +8,8 @@ import { ChangeEvent, useCallback } from "react";
 import HeadingDropdown from "@/components/common/tiptapEditor/menuBar/headingDropdown/HeadingDropdown";
 import ColorControls from "@/components/common/tiptapEditor/menuBar/colorControls/ColorControls";
 import TextControls from "@/components/common/tiptapEditor/menuBar/textControls/TextControls";
+import AlignControls from "@/components/common/tiptapEditor/menuBar/alignControls/AlignControls";
+import {menuBarContainer} from "./MenuBar.css";
 
 export interface EditorState {
 	backgroundColor?: string;
@@ -32,6 +34,10 @@ export interface EditorState {
 	isOrderedList: boolean;
 	isCodeBlock: boolean;
 	isBlockquote: boolean;
+	isAlignLeft: boolean;
+	isAlignCenter: boolean;
+	isAlignRight: boolean;
+	isAlignJustify: boolean;
 }
 
 interface MenuBarProps {
@@ -64,6 +70,10 @@ export default function MenuBar({ editor, onImageUpload }: MenuBarProps) {
 			isOrderedList: ctx?.editor?.isActive("orderedList"),
 			isCodeBlock: ctx?.editor?.isActive("codeBlock"),
 			isBlockquote: ctx?.editor?.isActive("blockquote"),
+			isAlignLeft: ctx?.editor?.isActive({ textAlign: 'left' }),
+			isAlignCenter: ctx?.editor?.isActive({ textAlign: 'center' }),
+			isAlignRight: ctx?.editor?.isActive({ textAlign: 'right' }),
+			isAlignJustify: ctx?.editor?.isActive({ textAlign: 'justify' }),
 		};
 	}, []);
 
@@ -87,11 +97,18 @@ export default function MenuBar({ editor, onImageUpload }: MenuBarProps) {
 	);
 
 	return (
-		<div className="control-group">
+		<div className={styles.menuBarContainer}>
 			<div className={styles.menuBar}>
 				<ColorControls editor={editor} />
 				<HeadingDropdown editor={editor} />
+			</div>
+			<div className={styles.menuBar}>
 				<TextControls editor={editor} editorState={editorState} />
+			</div>
+			<div className={styles.menuBar}>
+				<AlignControls editor={editor} editorState={editorState} />
+			</div>
+			<div className={styles.menuBar}>
 				<label htmlFor="image" className={styles.menuBarButton({ active: false })}>
 					<input id='image' type="file" accept="image/*" onChange={insertImage} style={{ display: 'none' }} />
 					<ImageIcon size={20} />
