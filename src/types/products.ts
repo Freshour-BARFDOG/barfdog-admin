@@ -96,13 +96,13 @@ interface GeneralProductCommonFields {
   originalPrice: number;
   remaining: number;
   salePrice: number;
+  itemOptionSaveDtoList: ItemOptionSaveDto[];
 }
 
 /** Create 용 추가 필드 */
 interface CreateGeneralProductRequest extends GeneralProductCommonFields {
   contentImageIdList: number[];
   itemImageOrderDtoList: ItemImageOrderDto[];
-  itemOptionSaveDtoList: ItemOptionSaveDto[];
 }
 
 /** Update 용 추가 필드 */
@@ -113,7 +113,6 @@ interface UpdateGeneralProductRequest extends GeneralProductCommonFields {
   deleteImageIdList: number[];
   deleteOptionIdList: number[];
   imageOrderDtoList: ItemImageOrderDto[];
-  itemOptionSaveDtoList: ItemOptionSaveDto[];
   itemOptionUpdateDtoList: ItemOptionUpdateDto[];
 }
 

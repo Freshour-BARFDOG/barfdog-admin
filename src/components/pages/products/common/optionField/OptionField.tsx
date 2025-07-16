@@ -15,7 +15,7 @@ interface OptionFieldProps {
   control: Control<any>;
 }
 
-export function OptionField({ control }: OptionFieldProps) {
+export default function OptionField({ control }: OptionFieldProps) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "itemOptionSaveDtoList",

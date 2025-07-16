@@ -70,4 +70,5 @@ export {
   AREA_LIST,
   STATUS,
   STATUS_LIST,
+  NONE_VALUE,
 };

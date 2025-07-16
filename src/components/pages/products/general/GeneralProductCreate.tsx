@@ -2,7 +2,7 @@
 
 import * as styles from "./GeneralProduct.css";
 import { commonWrapper } from "@/styles/common.css";
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ChangeEvent, ReactNode, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Controller,
@@ -54,8 +54,11 @@ import { useGetAllianceList } from "@/api/products/queries/useGetAllianceList";
 import Textarea from "@/components/common/textarea/Textarea";
 import DiscountField from "../common/discountField/DiscountField";
 import AllianceDiscountField from "../common/discountField/AllianceDiscountField";
-import { OptionField } from "../common/optionField/OptionField";
+import OptionField from "../common/optionField/OptionField";
 import MultiFileUpload from "@/components/common/multiFileUpload/MultiFileUpload";
+import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
+import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
+import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 
 interface InputFieldItem {
   name: CreateGeneralKeys;
@@ -70,9 +73,9 @@ export default function GeneralProductCreate() {
   const { data: allianceData } = useGetAllianceList();
   const { mutate } = useCreateGeneralProduct();
   const { addToast } = useToastStore();
-  const [addImageIdList, setAddImageIdList] = useState<number[]>([]);
-  const [deleteImageIdList, setDeleteImageIdList] = useState<number[]>([]);
-
+  const { mutateAsync: uploadAsync } = useUploadImage(
+    "/api/admin/items/image/upload"
+  );
   const {
     control,
     handleSubmit,
@@ -88,6 +91,7 @@ export default function GeneralProductCreate() {
 
   const originalPrice = useWatch({ control, name: "originalPrice" });
   const inStock = useWatch({ control, name: "inStock" });
+  const contents = useWatch({ control, name: "contents" });
 
   const {
     fields: allianceFields,
@@ -150,6 +154,36 @@ export default function GeneralProductCreate() {
       },
     });
   };
+
+  const onContentChange = useCallback(
+    (html: string) => {
+      // 1) form.contents 업데이트
+      setValue("contents", html, { shouldValidate: true });
+
+      // 2) 본문에 삽입된 이미지 ID만 추출하여 form.contentImageIdList에 설정
+      const ids = parseImageIdsFromContent(html);
+      setValue("contentImageIdList", ids, { shouldValidate: false });
+    },
+    [setValue]
+  );
+
+  // 에디터 내 이미지 업로드 핸들러
+  const handleImageUpload = useCallback(
+    async (file: File): Promise<string | undefined> => {
+      try {
+        const { id, url } = await uploadAsync({ file });
+        // 업로드된 이미지 ID를 contentImageIdList에 추가
+        const prev = watch("contentImageIdList") ?? [];
+        setValue("contentImageIdList", [...prev, id]);
+        // Tiptap에 삽입할 src 리턴 (태그 뒤에 #id=...# 붙여서 관리)
+        return `${url}#id=${id}#`;
+      } catch {
+        addToast("이미지 업로드에 실패했습니다.");
+        return;
+      }
+    },
+    [uploadAsync, watch, setValue, addToast]
+  );
 
   const InputFieldList: InputFieldItem[] = [
     {
@@ -370,6 +404,13 @@ export default function GeneralProductCreate() {
               }}
               title="상품 이미지 업로드"
               subTitle="최대 10장까지 등록 가능합니다."
+            />
+          </InputFieldGroup>
+          <InputFieldGroup label="상세 내용" align="start" divider={false}>
+            <TiptapEditor
+              content={watch("contents")}
+              onUpdate={onContentChange}
+              onImageUpload={handleImageUpload}
             />
           </InputFieldGroup>
           {InputFieldList2.map((input, index) => (
