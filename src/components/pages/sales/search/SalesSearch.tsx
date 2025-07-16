@@ -159,7 +159,7 @@ export default function SalesSearch() {
         }).toString(),
     },
     {
-      key: "id",
+      key: "detail",
       header: "상세보기",
       render: (row) => {
         const orderId = row.id;

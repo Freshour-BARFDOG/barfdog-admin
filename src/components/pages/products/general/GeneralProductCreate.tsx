@@ -1,0 +1,447 @@
+"use client";
+
+import * as styles from "./GeneralProduct.css";
+import { commonWrapper } from "@/styles/common.css";
+import { ChangeEvent, ReactNode, useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Controller,
+  ControllerRenderProps,
+  useFieldArray,
+  useForm,
+  useWatch,
+} from "react-hook-form";
+import Card from "@/components/common/card/Card";
+import Button from "@/components/common/button/Button";
+import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
+import Text from "@/components/common/text/Text";
+import InputField from "@/components/common/inputField/InputField";
+import {
+  unformatCommaNumber,
+  formatNumberWithComma,
+} from "@/utils/formatNumber";
+import { useToastStore } from "@/store/useToastStore";
+import { useCreateGeneralProduct } from "@/api/products/mutations/useCreateGeneralProduct";
+import {
+  CreateGeneralKeys,
+  createGeneralSchema,
+  CreateGeneralValues,
+  defaultCreateGeneralValues,
+} from "@/utils/validation/products/generalProduct";
+import {
+  AllianceDto,
+  GeneralProductCreateType,
+  ItemHealthType,
+  ItemIcons,
+  ProductVisibilityStatus,
+} from "@/types/products";
+import SelectBox from "@/components/common/selectBox/SelectBox";
+import {
+  BOOLEAN_OPTIONS,
+  DELIVERY_FREE_OPTIONS,
+  GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE,
+  ICON_TYPE_OPTIONS,
+  ITEM_HEALTH_TYPE_OPTIONS,
+  ITEM_STATUS_OPTIONS,
+} from "@/constants/products";
+import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/LabeledCheckBoxGroup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import yup from "yup";
+import { buildCreateGeneralPayload } from "@/utils/products/buildCreateGeneralPayload";
+import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import Divider from "@/components/common/divider/Divider";
+import { useGetAllianceList } from "@/api/products/queries/useGetAllianceList";
+import Textarea from "@/components/common/textarea/Textarea";
+import DiscountField from "../common/discountField/DiscountField";
+import AllianceDiscountField from "../common/discountField/AllianceDiscountField";
+import OptionField from "../common/optionField/OptionField";
+import MultiFileUpload from "@/components/common/multiFileUpload/MultiFileUpload";
+import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
+import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
+import { useUploadImage } from "@/api/common/mutations/useUploadImage";
+
+interface InputFieldItem {
+  name: CreateGeneralKeys;
+  label: string;
+  render: (
+    field: ControllerRenderProps<CreateGeneralValues, CreateGeneralKeys>
+  ) => ReactNode;
+}
+
+export default function GeneralProductCreate() {
+  const router = useRouter();
+  const { data: allianceData } = useGetAllianceList();
+  const { mutate } = useCreateGeneralProduct();
+  const { addToast } = useToastStore();
+  const { mutateAsync: uploadAsync } = useUploadImage(
+    "/api/admin/items/image/upload"
+  );
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { isValid, errors },
+  } = useForm<yup.InferType<typeof createGeneralSchema>>({
+    resolver: yupResolver(createGeneralSchema),
+    defaultValues: defaultCreateGeneralValues,
+    mode: "all",
+  });
+  console.log(watch());
+
+  const originalPrice = useWatch({ control, name: "originalPrice" });
+  const inStock = useWatch({ control, name: "inStock" });
+  const contents = useWatch({ control, name: "contents" });
+
+  const {
+    fields: allianceFields,
+    append: appendAlliance,
+    remove: removeAlliance,
+  } = useFieldArray({
+    name: "allianceDtoList",
+    control,
+  });
+  const {
+    fields: optionFields,
+    append: appendOption,
+    remove: removeOption,
+  } = useFieldArray({
+    control,
+    name: "itemOptionSaveDtoList",
+  });
+  const {
+    fields: imageFields,
+    replace: replaceImages,
+    remove: removeImage,
+  } = useFieldArray({
+    name: "itemImageOrderDtoList",
+    control,
+  });
+
+  const allianceOptions = (allianceData ?? []).map((a) => ({
+    value: a.allianceId,
+    label: a.allianceName,
+  }));
+
+  // 제휴사 추가
+  const handleAddAlliance = (allianceId: number) => {
+    if (allianceFields.some((f) => f.allianceId === allianceId)) return;
+    appendAlliance({
+      allianceId,
+      allianceDegree: 0,
+      allianceDiscountType: "FLAT_RATE",
+      allianceSalePrice: originalPrice,
+    });
+  };
+
+  const handleChangeNumberType = (
+    e: ChangeEvent<HTMLInputElement>,
+    field: { onChange: (value: number) => void }
+  ) => {
+    const raw = unformatCommaNumber(e.target.value);
+    field.onChange(raw);
+  };
+
+  const onSubmit = (formValues: CreateGeneralValues) => {
+    const payload = buildCreateGeneralPayload(formValues);
+    mutate(payload, {
+      onSuccess: async () => {
+        addToast("일반 상품 등록이 완료되었습니다");
+        router.push("/products/general");
+      },
+      onError: () => {
+        addToast("일반 상품 등록을 실패했습니다");
+      },
+    });
+  };
+
+  const onContentChange = useCallback(
+    (html: string) => {
+      // 1) form.contents 업데이트
+      setValue("contents", html, { shouldValidate: true });
+
+      // 2) 본문에 삽입된 이미지 ID만 추출하여 form.contentImageIdList에 설정
+      const ids = parseImageIdsFromContent(html);
+      setValue("contentImageIdList", ids, { shouldValidate: false });
+    },
+    [setValue]
+  );
+
+  // 에디터 내 이미지 업로드 핸들러
+  const handleImageUpload = useCallback(
+    async (file: File): Promise<string | undefined> => {
+      try {
+        const { id, url } = await uploadAsync({ file });
+        // 업로드된 이미지 ID를 contentImageIdList에 추가
+        const prev = watch("contentImageIdList") ?? [];
+        setValue("contentImageIdList", [...prev, id]);
+        // Tiptap에 삽입할 src 리턴 (태그 뒤에 #id=...# 붙여서 관리)
+        return `${url}#id=${id}#`;
+      } catch {
+        addToast("이미지 업로드에 실패했습니다.");
+        return;
+      }
+    },
+    [uploadAsync, watch, setValue, addToast]
+  );
+
+  const InputFieldList: InputFieldItem[] = [
+    {
+      name: "itemType",
+      label: "카테고리",
+      render: (field) => (
+        <LabeledRadioButtonGroup<GeneralProductCreateType>
+          options={GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE}
+          value={field.value as GeneralProductCreateType}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "itemHealthType",
+      label: "추천 상품",
+      render: (field) => (
+        <LabeledCheckboxGroup<ItemHealthType>
+          options={ITEM_HEALTH_TYPE_OPTIONS}
+          selectedValues={field.value as ItemHealthType[]}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "name",
+      label: "상품명",
+      render: (field) => (
+        <InputField value={field.value as string} onChange={field.onChange} />
+      ),
+    },
+    {
+      name: "description",
+      label: "상품 설명",
+      render: (field) => (
+        <Textarea
+          value={field.value as string}
+          onChange={field.onChange}
+          error={errors.description?.message}
+        />
+      ),
+    },
+    {
+      name: "originalPrice",
+      label: "상품가격",
+      render: (field) => (
+        <div className={commonWrapper({ gap: 8, justify: "start" })}>
+          <div className={styles.inputFieldStyle}>
+            <InputField
+              value={formatNumberWithComma(field.value as number)}
+              onChange={(e) => handleChangeNumberType(e, field)}
+            />
+          </div>
+          <Text type="body3">원 이상</Text>
+        </div>
+      ),
+    },
+  ];
+
+  const InputFieldList2: InputFieldItem[] = [
+    {
+      name: "itemIcons",
+      label: "상품 아이콘",
+      render: (field) => (
+        <LabeledRadioButtonGroup<ItemIcons>
+          options={ICON_TYPE_OPTIONS}
+          value={field.value as ItemIcons}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "deliveryFree",
+      label: "배송비",
+      render: (field) => (
+        <LabeledRadioButtonGroup<boolean>
+          options={DELIVERY_FREE_OPTIONS}
+          value={field.value as boolean}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "itemStatus",
+      label: "노출여부",
+      render: (field) => (
+        <LabeledRadioButtonGroup<ProductVisibilityStatus>
+          options={ITEM_STATUS_OPTIONS}
+          value={field.value as ProductVisibilityStatus}
+          onChange={field.onChange}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <Card shadow="none" padding={20}>
+        <div className={commonWrapper({ direction: "col", gap: 12 })}>
+          {InputFieldList.map((input, index) => (
+            <Controller
+              control={control}
+              key={input.name}
+              name={input.name}
+              render={({ field }) => (
+                <InputFieldGroup
+                  label={input.label}
+                  divider={index !== InputFieldList.length - 1}
+                >
+                  {input.render(field)}
+                </InputFieldGroup>
+              )}
+            />
+          ))}
+          <Divider thickness={1} color="gray200" />
+          <InputFieldGroup label="할인설정" divider>
+            <DiscountField control={control} originalPrice={originalPrice} />
+          </InputFieldGroup>
+          <InputFieldGroup label="제휴사 추가" divider isLabelRequired={false}>
+            <div
+              className={commonWrapper({
+                direction: "col",
+                gap: 12,
+                align: "start",
+              })}
+            >
+              <SelectBox<number>
+                options={allianceOptions}
+                placeholder="제휴사 선택"
+                onChange={handleAddAlliance}
+              />
+              {allianceFields.map((field, idx) => {
+                const allianceName =
+                  allianceOptions.find((o) => o.value === field.allianceId)
+                    ?.label ?? "";
+                return (
+                  <AllianceDiscountField
+                    key={field.id}
+                    namePrefix={`allianceDtoList.${idx}`}
+                    control={control}
+                    originalPrice={originalPrice}
+                    allianceName={allianceName}
+                    onRemove={() => removeAlliance(idx)}
+                  />
+                );
+              })}
+            </div>
+          </InputFieldGroup>
+          <InputFieldGroup label="재고여부" divider>
+            <div
+              className={commonWrapper({
+                direction: "col",
+                gap: 8,
+                align: "start",
+              })}
+            >
+              <Controller
+                control={control}
+                name="inStock"
+                render={({ field }) => (
+                  <LabeledRadioButtonGroup<boolean>
+                    options={BOOLEAN_OPTIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {inStock && (
+                <Controller
+                  control={control}
+                  name="remaining"
+                  render={({ field }) => (
+                    <div className={styles.inputFieldStyle}>
+                      <InputField
+                        value={formatNumberWithComma(field.value)}
+                        onChange={(e) =>
+                          field.onChange(unformatCommaNumber(e.target.value))
+                        }
+                        unit="개"
+                      />
+                    </div>
+                  )}
+                />
+              )}
+            </div>
+          </InputFieldGroup>
+          <InputFieldGroup label="옵션 추가" divider isLabelRequired={false}>
+            <OptionField control={control} />
+          </InputFieldGroup>
+          <InputFieldGroup label="상품 이미지" divider>
+            <MultiFileUpload
+              uploadApiUrl="/api/admin/items/image/upload"
+              initialImages={imageFields.map((f) => ({
+                id: f.id,
+                filename: "",
+                url: "",
+              }))}
+              onFilesChange={(files) => {
+                if (!files) {
+                  replaceImages([]);
+                  return;
+                }
+                // 1) id가 undefined인 항목을 걸러낸다
+                const withId = files.filter(
+                  (f): f is { id: number; filename: string; url: string } =>
+                    f.id !== undefined
+                );
+                // 2) leakOrder를 idx+1로 정해서 매핑
+                const mapped = withId.map((file, idx) => ({
+                  id: file.id,
+                  leakOrder: idx + 1,
+                }));
+                replaceImages(mapped);
+              }}
+              handleRemove={(id) => {
+                const idx = imageFields.findIndex((f) => f.id === id);
+                if (idx !== -1) removeImage(idx);
+              }}
+              title="상품 이미지 업로드"
+              subTitle="최대 10장까지 등록 가능합니다."
+            />
+          </InputFieldGroup>
+          <InputFieldGroup label="상세 내용" align="start" divider={false}>
+            <TiptapEditor
+              content={watch("contents")}
+              onUpdate={onContentChange}
+              onImageUpload={handleImageUpload}
+            />
+          </InputFieldGroup>
+          {InputFieldList2.map((input, index) => (
+            <Controller
+              control={control}
+              key={input.name}
+              name={input.name}
+              render={({ field }) => (
+                <InputFieldGroup
+                  label={input.label}
+                  divider={index !== InputFieldList.length - 1}
+                >
+                  {input.render(field)}
+                </InputFieldGroup>
+              )}
+            />
+          ))}
+        </div>
+      </Card>
+      <div className={commonWrapper({ gap: 8, padding: 20 })}>
+        <Button
+          onClick={() => router.push("/products/general")}
+          variant="outline"
+          type="assistive"
+        >
+          취소
+        </Button>
+        <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+          등록
+        </Button>
+      </div>
+    </>
+  );
+}

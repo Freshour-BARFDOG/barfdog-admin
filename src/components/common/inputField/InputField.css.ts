@@ -18,6 +18,7 @@ export const inputBaseStyle = style({
   width: "100%",
   padding: "8px 12px",
   color: themeVars.colors.gray.gray900,
+  transition: "all .25s",
 });
 
 export const inputVariants = {

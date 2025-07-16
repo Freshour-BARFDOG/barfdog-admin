@@ -46,6 +46,12 @@ interface Page {
   number: number;
 }
 
+interface PagePrams {
+  page?: number;
+  size?: number;
+}
+type DiscountUnitType = "FLAT_RATE" | "FIXED_RATE";
+
 type UseMutationCustomOptions<
   TData = unknown,
   TVariables = unknown,
@@ -71,7 +77,19 @@ type UseSuspenseQueryCustomOptions<
 
 type AreaType = keyof typeof AREA;
 
-type GradeType = '브론즈' | '실버' | '골드' | '플래티넘' | '다이아몬드' | '더 바프';
+type GradeType =
+  | "브론즈"
+  | "실버"
+  | "골드"
+  | "플래티넘"
+  | "다이아몬드"
+  | "더 바프";
+
+interface ImageFile {
+  id?: number;
+  filename: string;
+  url: string;
+}
 
 type StatusType = keyof typeof STATUS;
 
@@ -87,5 +105,8 @@ export type {
   UseSuspenseQueryCustomOptions,
   AreaType,
   GradeType,
+  PagePrams,
+  DiscountUnitType,
+  ImageFile,
   StatusType,
 };

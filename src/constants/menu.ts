@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 export const MENU_ITEMS: MenuItem[] = [
-	{
+  {
     key: "dashboard",
     label: "대시보드",
     href: "/",
@@ -114,47 +114,32 @@ export const MENU_ITEMS: MenuItem[] = [
         label: "배송 관리",
         href: "/sales/delivery",
       },
-      // {
-      //   key: "cancels",
-      //   label: "취소 관리",
-      //   href: "/sales/cancels",
-      // },
-      // {
-      //   key: "exchanges",
-      //   label: "교환 관리",
-      //   href: "/sales/exchanges",
-      // },
-      // {
-      //   key: "confirmations",
-      //   label: "구매 확정",
-      //   href: "/sales/confirmations",
-      // },
     ],
   },
   {
-    key: "product",
+    key: "products",
     label: "상품 관리",
     icon: ShoppingBasket,
     children: [
       {
         key: "general",
         label: "일반 상품 관리",
-        href: "/product/general",
+        href: "/products/general",
       },
       {
         key: "create",
         label: "일반 상품 등록",
-        href: "/product/general/create",
+        href: "/products/general/create",
       },
       {
-        key: "recipe",
+        key: "raw",
         label: "레시피 관리",
-        href: "/product/recipe",
+        href: "/products/raw",
       },
       {
         key: "create",
         label: "레시피 등록",
-        href: "/product/recipe/create",
+        href: "/products/raw/create",
       },
     ],
   },
