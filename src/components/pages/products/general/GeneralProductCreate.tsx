@@ -2,7 +2,7 @@
 
 import * as styles from "./GeneralProduct.css";
 import { commonWrapper } from "@/styles/common.css";
-import { ChangeEvent, ReactNode, useCallback } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Controller,
@@ -32,11 +32,17 @@ import {
   AllianceDto,
   GeneralProductCreateType,
   ItemHealthType,
+  ItemIcons,
+  ProductVisibilityStatus,
 } from "@/types/products";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import {
+  BOOLEAN_OPTIONS,
+  DELIVERY_FREE_OPTIONS,
   GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE,
+  ICON_TYPE_OPTIONS,
   ITEM_HEALTH_TYPE_OPTIONS,
+  ITEM_STATUS_OPTIONS,
 } from "@/constants/products";
 import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/LabeledCheckBoxGroup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,8 +51,11 @@ import { buildCreateGeneralPayload } from "@/utils/products/buildCreateGeneralPa
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import Divider from "@/components/common/divider/Divider";
 import { useGetAllianceList } from "@/api/products/queries/useGetAllianceList";
-import AllianceDiscountField from "@/components/common/discountField/AllianceDiscountField";
-import { DiscountField } from "@/components/common/discountField/DiscountField";
+import Textarea from "@/components/common/textarea/Textarea";
+import DiscountField from "../common/discountField/DiscountField";
+import AllianceDiscountField from "../common/discountField/AllianceDiscountField";
+import { OptionField } from "../common/optionField/OptionField";
+import MultiFileUpload from "@/components/common/multiFileUpload/MultiFileUpload";
 
 interface InputFieldItem {
   name: CreateGeneralKeys;
@@ -61,13 +70,15 @@ export default function GeneralProductCreate() {
   const { data: allianceData } = useGetAllianceList();
   const { mutate } = useCreateGeneralProduct();
   const { addToast } = useToastStore();
+  const [addImageIdList, setAddImageIdList] = useState<number[]>([]);
+  const [deleteImageIdList, setDeleteImageIdList] = useState<number[]>([]);
 
   const {
     control,
     handleSubmit,
     setValue,
     watch,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<yup.InferType<typeof createGeneralSchema>>({
     resolver: yupResolver(createGeneralSchema),
     defaultValues: defaultCreateGeneralValues,
@@ -76,9 +87,30 @@ export default function GeneralProductCreate() {
   console.log(watch());
 
   const originalPrice = useWatch({ control, name: "originalPrice" });
+  const inStock = useWatch({ control, name: "inStock" });
 
-  const { fields, append, update, remove } = useFieldArray({
+  const {
+    fields: allianceFields,
+    append: appendAlliance,
+    remove: removeAlliance,
+  } = useFieldArray({
     name: "allianceDtoList",
+    control,
+  });
+  const {
+    fields: optionFields,
+    append: appendOption,
+    remove: removeOption,
+  } = useFieldArray({
+    control,
+    name: "itemOptionSaveDtoList",
+  });
+  const {
+    fields: imageFields,
+    replace: replaceImages,
+    remove: removeImage,
+  } = useFieldArray({
+    name: "itemImageOrderDtoList",
     control,
   });
 
@@ -89,8 +121,8 @@ export default function GeneralProductCreate() {
 
   // 제휴사 추가
   const handleAddAlliance = (allianceId: number) => {
-    if (fields.some((f) => f.allianceId === allianceId)) return;
-    append({
+    if (allianceFields.some((f) => f.allianceId === allianceId)) return;
+    appendAlliance({
       allianceId,
       allianceDegree: 0,
       allianceDiscountType: "FLAT_RATE",
@@ -153,7 +185,11 @@ export default function GeneralProductCreate() {
       name: "description",
       label: "상품 설명",
       render: (field) => (
-        <InputField value={field.value as string} onChange={field.onChange} />
+        <Textarea
+          value={field.value as string}
+          onChange={field.onChange}
+          error={errors.description?.message}
+        />
       ),
     },
     {
@@ -169,6 +205,42 @@ export default function GeneralProductCreate() {
           </div>
           <Text type="body3">원 이상</Text>
         </div>
+      ),
+    },
+  ];
+
+  const InputFieldList2: InputFieldItem[] = [
+    {
+      name: "itemIcons",
+      label: "상품 아이콘",
+      render: (field) => (
+        <LabeledRadioButtonGroup<ItemIcons>
+          options={ICON_TYPE_OPTIONS}
+          value={field.value as ItemIcons}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "deliveryFree",
+      label: "배송비",
+      render: (field) => (
+        <LabeledRadioButtonGroup<boolean>
+          options={DELIVERY_FREE_OPTIONS}
+          value={field.value as boolean}
+          onChange={field.onChange}
+        />
+      ),
+    },
+    {
+      name: "itemStatus",
+      label: "노출여부",
+      render: (field) => (
+        <LabeledRadioButtonGroup<ProductVisibilityStatus>
+          options={ITEM_STATUS_OPTIONS}
+          value={field.value as ProductVisibilityStatus}
+          onChange={field.onChange}
+        />
       ),
     },
   ];
@@ -196,7 +268,7 @@ export default function GeneralProductCreate() {
           <InputFieldGroup label="할인설정" divider>
             <DiscountField control={control} originalPrice={originalPrice} />
           </InputFieldGroup>
-          <InputFieldGroup label="제휴사 추가" divider>
+          <InputFieldGroup label="제휴사 추가" divider isLabelRequired={false}>
             <div
               className={commonWrapper({
                 direction: "col",
@@ -209,7 +281,7 @@ export default function GeneralProductCreate() {
                 placeholder="제휴사 선택"
                 onChange={handleAddAlliance}
               />
-              {fields.map((field, idx) => {
+              {allianceFields.map((field, idx) => {
                 const allianceName =
                   allianceOptions.find((o) => o.value === field.allianceId)
                     ?.label ?? "";
@@ -220,12 +292,101 @@ export default function GeneralProductCreate() {
                     control={control}
                     originalPrice={originalPrice}
                     allianceName={allianceName}
-                    onRemove={() => remove(idx)}
+                    onRemove={() => removeAlliance(idx)}
                   />
                 );
               })}
             </div>
           </InputFieldGroup>
+          <InputFieldGroup label="재고여부" divider>
+            <div
+              className={commonWrapper({
+                direction: "col",
+                gap: 8,
+                align: "start",
+              })}
+            >
+              <Controller
+                control={control}
+                name="inStock"
+                render={({ field }) => (
+                  <LabeledRadioButtonGroup<boolean>
+                    options={BOOLEAN_OPTIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {inStock && (
+                <Controller
+                  control={control}
+                  name="remaining"
+                  render={({ field }) => (
+                    <div className={styles.inputFieldStyle}>
+                      <InputField
+                        value={formatNumberWithComma(field.value)}
+                        onChange={(e) =>
+                          field.onChange(unformatCommaNumber(e.target.value))
+                        }
+                        unit="개"
+                      />
+                    </div>
+                  )}
+                />
+              )}
+            </div>
+          </InputFieldGroup>
+          <InputFieldGroup label="옵션 추가" divider isLabelRequired={false}>
+            <OptionField control={control} />
+          </InputFieldGroup>
+          <InputFieldGroup label="상품 이미지" divider>
+            <MultiFileUpload
+              uploadApiUrl="/api/admin/items/image/upload"
+              initialImages={imageFields.map((f) => ({
+                id: f.id,
+                filename: "",
+                url: "",
+              }))}
+              onFilesChange={(files) => {
+                if (!files) {
+                  replaceImages([]);
+                  return;
+                }
+                // 1) id가 undefined인 항목을 걸러낸다
+                const withId = files.filter(
+                  (f): f is { id: number; filename: string; url: string } =>
+                    f.id !== undefined
+                );
+                // 2) leakOrder를 idx+1로 정해서 매핑
+                const mapped = withId.map((file, idx) => ({
+                  id: file.id,
+                  leakOrder: idx + 1,
+                }));
+                replaceImages(mapped);
+              }}
+              handleRemove={(id) => {
+                const idx = imageFields.findIndex((f) => f.id === id);
+                if (idx !== -1) removeImage(idx);
+              }}
+              title="상품 이미지 업로드"
+              subTitle="최대 10장까지 등록 가능합니다."
+            />
+          </InputFieldGroup>
+          {InputFieldList2.map((input, index) => (
+            <Controller
+              control={control}
+              key={input.name}
+              name={input.name}
+              render={({ field }) => (
+                <InputFieldGroup
+                  label={input.label}
+                  divider={index !== InputFieldList.length - 1}
+                >
+                  {input.render(field)}
+                </InputFieldGroup>
+              )}
+            />
+          ))}
         </div>
       </Card>
       <div className={commonWrapper({ gap: 8, padding: 20 })}>

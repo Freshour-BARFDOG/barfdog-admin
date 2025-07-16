@@ -85,6 +85,12 @@ type GradeType =
   | "다이아몬드"
   | "더 바프";
 
+interface ImageFile {
+  id?: number;
+  filename: string;
+  url: string;
+}
+
 export type {
   MenuItem,
   TableColumn,
@@ -99,4 +105,5 @@ export type {
   GradeType,
   PagePrams,
   DiscountUnitType,
+  ImageFile,
 };

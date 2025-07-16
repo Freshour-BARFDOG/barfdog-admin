@@ -2,10 +2,10 @@ import * as styles from "./MultiFileUpload.css";
 import { ChangeEvent, useState } from "react";
 import UploadLabel from "/public/images/icons/upload-label.svg";
 import SvgIcon from "@/components/common/svgIcon/SvgIcon";
-import DefaultText from "@/components/common/defaultText/DefaultText";
-import ImageCarousel from "@/components/common/imageCarousel/ImageCarousel";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
-import { ImageFile } from "@/types";
+import { ImageFile } from "@/types/common";
+import ImageCarousel from "../imageCarousel/ImageCarousel";
+import Text from "../text/Text";
 
 interface InitialImages {
   id?: number;
@@ -124,11 +124,11 @@ const MultiFileUpload = ({
   return (
     <div className={className || ""}>
       <div className={styles.fileUploadTitle}>
-        {title && <DefaultText type="label4">{title}</DefaultText>}
+        {title && <Text type="label4">{title}</Text>}
         {subTitle && (
-          <DefaultText type="caption" color="gray500">
-            포토 후기 작성 시 500원 적립!
-          </DefaultText>
+          <Text type="caption" color="gray500">
+            첫 번째 이미지가 대표 이미지로 노출됩니다.
+          </Text>
         )}
       </div>
       <div>
@@ -160,17 +160,17 @@ const MultiFileUpload = ({
           {errors.length > 0 && (
             <div className={styles.error}>
               {errors.map((error) => (
-                <DefaultText key={error} type="caption" color="red">
+                <Text key={error} type="caption" color="red">
                   {error}
-                </DefaultText>
+                </Text>
               ))}
             </div>
           )}
-          <DefaultText type="caption" color="gray500">
+          <Text type="caption" color="gray500">
             • 파일은 최대 10장 이내로 등록 가능합니다.
-            <br />• 파일크기는 20MB이하 / jpg, jpeg, png, gif 형식만 등록
+            <br />• 파일크기는 10MB이하 / jpg, jpeg, png, gif 형식만 등록
             가능합니다.
-          </DefaultText>
+          </Text>
         </div>
       </div>
     </div>

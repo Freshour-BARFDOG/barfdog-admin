@@ -43,6 +43,8 @@ const AREA_LIST = Object.entries(AREA).map(([value, label]) => ({
   value,
 }));
 
+const NONE_VALUE = "NONE";
+
 export {
   PAGE_SIZE,
   OLDEST_DATE,
@@ -53,4 +55,5 @@ export {
   SEARCH_CATEGORY,
   AREA,
   AREA_LIST,
+  NONE_VALUE,
 };

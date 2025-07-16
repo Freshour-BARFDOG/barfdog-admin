@@ -148,7 +148,7 @@ export const defaultCreateGeneralValues: CreateGeneralValues = {
   discountDegree: 0,
   discountType: "FLAT_RATE",
   inStock: true,
-  itemHealthType: [],
+  itemHealthType: ["NONE"],
   itemIcons: [],
   itemStatus: "LEAKED",
   itemType: "RAW",

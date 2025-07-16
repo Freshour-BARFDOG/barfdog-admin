@@ -1,8 +1,11 @@
+import { label } from "@/components/common/detailTable/DetailTable.css";
 import { SelectOption } from "@/types/common";
 import {
   GeneralProductCreateType,
   GeneralProductType,
   ItemHealthType,
+  ItemIcons,
+  ProductVisibilityStatus,
 } from "@/types/products";
 
 const INITIAL_PRODUCTS_REQUEST = {
@@ -52,11 +55,28 @@ const GENERAL_PRODUCT_CATEGORY_OPTIONS: SelectOption<GeneralProductType>[] = (
   Object.entries(GENERAL_PRODUCT_CATEGORY_MAP) as [GeneralProductType, string][]
 ).map(([value, label]) => ({ value, label }));
 
-/** 3) 등록 페이지에서 쓸 옵션 배열: ALL 제외 */
+/** 등록 페이지에서 쓸 옵션 배열: ALL 제외 */
 const GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE =
   GENERAL_PRODUCT_CATEGORY_OPTIONS.filter(
     (opt): opt is SelectOption<GeneralProductCreateType> => opt.value !== "ALL"
   );
+
+const BOOLEAN_OPTIONS: SelectOption<boolean>[] = [
+  { value: true, label: "Y" },
+  { value: false, label: "N" },
+];
+const ICON_TYPE_OPTIONS: SelectOption<ItemIcons>[] = [
+  { value: "BEST", label: "BEST" },
+  { value: "NEW", label: "NEW" },
+];
+const DELIVERY_FREE_OPTIONS: SelectOption<boolean>[] = [
+  { value: true, label: "유료" },
+  { value: false, label: "무료" },
+];
+const ITEM_STATUS_OPTIONS: SelectOption<ProductVisibilityStatus>[] = [
+  { value: "LEAKED", label: "노출" },
+  { value: "HIDDEN", label: "숨김" },
+];
 
 export {
   INITIAL_PRODUCTS_REQUEST,
@@ -66,4 +86,8 @@ export {
   GENERAL_PRODUCT_CATEGORY_MAP,
   GENERAL_PRODUCT_CATEGORY_OPTIONS_FOR_CREATE,
   ITEM_HEALTH_TYPE_KEYS,
+  BOOLEAN_OPTIONS,
+  ICON_TYPE_OPTIONS,
+  DELIVERY_FREE_OPTIONS,
+  ITEM_STATUS_OPTIONS,
 };

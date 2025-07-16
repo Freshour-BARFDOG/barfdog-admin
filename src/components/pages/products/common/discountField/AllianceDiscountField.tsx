@@ -4,12 +4,12 @@ import React, { useMemo, useCallback } from "react";
 import { useController, Control } from "react-hook-form";
 import { DISCOUNT_UNIT_TYPE_LIST } from "@/constants/common";
 import { DiscountUnitType } from "@/types/common";
-import Text from "../text/Text";
 import { commonWrapper } from "@/styles/common.css";
 import { calculateSalePrice } from "@/utils/discountUtils";
-import { DiscountControl } from "../discountControl/DiscountControl";
-import Button from "../button/Button";
 import * as styles from "./AllianceDiscountField.css";
+import DiscountControl from "@/components/common/discountControl/DiscountControl";
+import Button from "@/components/common/button/Button";
+import Text from "@/components/common/text/Text";
 
 interface AllianceDiscountFieldProps {
   namePrefix: string;

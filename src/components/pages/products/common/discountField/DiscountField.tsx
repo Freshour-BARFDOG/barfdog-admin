@@ -4,17 +4,20 @@ import React, { useMemo, useCallback } from "react";
 import { useController, Control } from "react-hook-form";
 import { DISCOUNT_UNIT_TYPE_LIST } from "@/constants/common";
 import { DiscountUnitType } from "@/types/common";
-import Text from "../text/Text";
 import { commonWrapper } from "@/styles/common.css";
 import { calculateSalePrice } from "@/utils/discountUtils";
-import { DiscountControl } from "../discountControl/DiscountControl";
+import DiscountControl from "@/components/common/discountControl/DiscountControl";
+import Text from "@/components/common/text/Text";
 
 interface DiscountFieldProps {
   control: Control<any>;
   originalPrice: number;
 }
 
-export function DiscountField({ control, originalPrice }: DiscountFieldProps) {
+export default function DiscountField({
+  control,
+  originalPrice,
+}: DiscountFieldProps) {
   const {
     field: { value: degree, onChange: onDegreeChange },
   } = useController({

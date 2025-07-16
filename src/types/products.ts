@@ -7,6 +7,7 @@ import { DiscountUnitType, Page, PagePrams } from "./common";
 type GeneralProductType = keyof typeof GENERAL_PRODUCT_CATEGORY_MAP;
 type GeneralProductCreateType = Exclude<GeneralProductType, "ALL">;
 type ProductVisibilityStatus = "LEAKED" | "HIDDEN";
+type ItemIcons = "NEW" | "BEST";
 
 interface GeneralProductSearchValues {
   itemType: GeneralProductType;
@@ -137,4 +138,5 @@ export type {
   ProductVisibilityStatus,
   AllianceDto,
   GetAllianceListResponse,
+  ItemIcons,
 };
