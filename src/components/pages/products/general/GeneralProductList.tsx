@@ -25,6 +25,7 @@ import {
   GeneralProductType,
 } from "@/types/products";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
+import { truncateText } from "@/utils/truncateText";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -102,6 +103,7 @@ export default function GeneralProductList() {
     {
       key: "name",
       header: "상품명",
+      render: (row) => truncateText(row.name, 10),
     },
     {
       key: "originalPrice",

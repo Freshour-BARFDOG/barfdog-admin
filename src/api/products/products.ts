@@ -4,6 +4,7 @@ import {
   GeneralProductListParams,
   GeneralProductListResponse,
   GetAllianceListResponse,
+  GetRecipeListResponse,
   UpdateGeneralProductRequest,
 } from "@/types/products";
 import { AxiosInstance } from "axios";
@@ -55,6 +56,11 @@ const deleteGeneralProduct = async (itemId: number): Promise<any> => {
   return data;
 };
 
+const getRecipeList = async (): Promise<GetRecipeListResponse> => {
+  const { data } = await axiosInstance.get("/api/recipes");
+  return data._embedded.recipeListResponseDtoList;
+};
+
 export {
   getGeneralProductList,
   createGeneralProduct,
@@ -62,4 +68,5 @@ export {
   getGeneralProductDetail,
   updateGeneralProduct,
   deleteGeneralProduct,
+  getRecipeList,
 };

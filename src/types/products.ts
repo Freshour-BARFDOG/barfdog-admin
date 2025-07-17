@@ -175,6 +175,21 @@ interface GeneralProductDetailResponse {
   itemContentImageDtoList: ItemContentImageDto[];
 }
 
+interface RecipeDto {
+  id: number;
+  name: string;
+  description: string;
+  pricePerGram: number;
+  gramPerKcal: number;
+  imgUrl: string;
+  inStock: boolean;
+  ingredients?: string;
+  leaked?: ProductVisibilityStatus;
+  modifiedDate?: string;
+}
+
+type GetRecipeListResponse = RecipeDto[];
+
 export type {
   GeneralProductType,
   GeneralProductCreateType,
@@ -196,4 +211,6 @@ export type {
   ItemOptionAdminDto,
   ItemImageAdminDto,
   ItemContentImageDto,
+  GetRecipeListResponse,
+  RecipeDto,
 };
