@@ -2,10 +2,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
 import { StatusType } from "@/types/common";
-import { NoticeFormValues } from "@/types/community";
+import { NoticeDetailResponse, NoticeFormValues } from "@/types/community";
 import { queryKeys } from "@/constants/queryKeys";
-import { useGetNoticeDetail } from "@/api/community/queries/useGetNoticeDetail";
-import { useUpdateNotice } from "@/api/community/mutations/useUpdateNotice";
+import { useGetCommunityDetail } from "@/api/community/queries/useGetCommunityDetail";
+import { useUpdateCommunity } from "@/api/community/mutations/useUpdateCommunity";
 import NoticeForm from "@/components/pages/community/notice/form/NoticeForm";
 
 interface NoticeDetailProps {
@@ -15,15 +15,15 @@ interface NoticeDetailProps {
 export default function NoticeDetail({ noticeId }: NoticeDetailProps) {
 	const queryClient = useQueryClient();
 
-	const { data } = useGetNoticeDetail(noticeId);
-	const { mutate } = useUpdateNotice();
+	const { data } = useGetCommunityDetail<NoticeDetailResponse>('notices', noticeId);
+	const { mutate } = useUpdateCommunity<NoticeFormValues>('notices');
 
 	const { addToast } = useToastStore();
 
 	const onSubmit = (data: NoticeFormValues) => {
 		mutate({
 			body: data,
-			noticeId: noticeId,
+			id: noticeId,
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({

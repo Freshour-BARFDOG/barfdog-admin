@@ -4,14 +4,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
 import { ArticleFormValues, CreateArticleFormValues } from "@/types/community";
-import { useCreateArticle } from "@/api/community/mutations/useCreateArticle";
 import ArticleForm from "@/components/pages/community/article/form/ArticleForm";
+import { useCreateCommunity } from "@/api/community/mutations/useCreateCommunity";
 
 export default function CreateArticle() {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const { mutate } = useCreateArticle();
+	const { mutate } = useCreateCommunity<CreateArticleFormValues>('article');
 	const { addToast } = useToastStore();
 
 	const onSubmit = (data: ArticleFormValues) => {

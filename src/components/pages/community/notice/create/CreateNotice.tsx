@@ -4,14 +4,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
 import { CreateNoticeFormValues, NoticeFormValues } from "@/types/community";
-import { useCreateNotice } from "@/api/community/mutations/useCreateNotice";
+import { useCreateCommunity } from "@/api/community/mutations/useCreateCommunity";
 import NoticeForm from "@/components/pages/community/notice/form/NoticeForm";
 
 export default function CreateNotice() {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const { mutate } = useCreateNotice();
+	const { mutate } = useCreateCommunity<CreateNoticeFormValues>('notices');
 	const { addToast } = useToastStore();
 
 	const onSubmit = (data: NoticeFormValues) => {

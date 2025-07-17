@@ -2,10 +2,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
 import { StatusType } from "@/types/common";
-import { ArticleCategory, ArticleFormValues } from "@/types/community";
+import { ArticleCategory, ArticleDetailResponse, ArticleFormValues } from "@/types/community";
 import { queryKeys } from "@/constants/queryKeys";
-import { useGetArticleDetail } from "@/api/community/queries/useGetArticleDetail";
-import { useUpdateArticle } from "@/api/community/mutations/useUpdateArticle";
+import { useGetCommunityDetail } from "@/api/community/queries/useGetCommunityDetail";
+import { useUpdateCommunity } from "@/api/community/mutations/useUpdateCommunity";
 import ArticleForm from "@/components/pages/community/article/form/ArticleForm";
 
 interface NoticeDetailProps {
@@ -15,15 +15,15 @@ interface NoticeDetailProps {
 export default function ArticleDetail({ articleId }: NoticeDetailProps) {
 	const queryClient = useQueryClient();
 
-	const { data } = useGetArticleDetail(articleId);
-	const { mutate } = useUpdateArticle();
+	const { data } = useGetCommunityDetail<ArticleDetailResponse>('article', articleId);
+	const { mutate } = useUpdateCommunity<ArticleFormValues>('article');
 
 	const { addToast } = useToastStore();
 
 	const onSubmit = (data: ArticleFormValues) => {
 		mutate({
 			body: data,
-			articleId: articleId,
+			id: articleId,
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({
