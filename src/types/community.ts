@@ -1,7 +1,7 @@
-import { Page, SelectOption, StatusType } from "@/types/common";
+import { ImageFile, Page, SelectOption, StatusType } from "@/types/common";
 import { ARTICLE_CATEGORY } from "@/constants/community";
 
-type CommunityType = 'notices' | 'event' | 'article';
+type CommunityType = 'notices' | 'events' | 'article';
 
 interface UploadResponse {
 	id: number;
@@ -13,6 +13,9 @@ interface CommunityListData {
 	title: string;
 	createdDate: string;
 	status: StatusType;
+	// event
+	imageUrl?: string;
+	eventsAdminDto?: any;
 }
 
 interface CommunityListResponse {
@@ -26,6 +29,12 @@ interface CommunityImageData {
 	url: string;
 }
 
+interface CommunityImageIdList {
+	addImageIdList: number[];
+	deleteImageIdList: number[];
+}
+
+// ------------------------------------------------------------
 interface NoticeInfoData {
 	id?: number;
 	status: StatusType;
@@ -38,15 +47,13 @@ interface NoticeDetailResponse {
 	noticeInfo: NoticeInfoData;
 }
 
-interface NoticeFormValues extends NoticeInfoData {
-	addImageIdList: number[];
-	deleteImageIdList: number[];
-}
+interface NoticeFormValues extends NoticeInfoData, CommunityImageIdList {}
 
 interface CreateNoticeFormValues extends NoticeInfoData {
 	noticeImageIdList: number[];
 }
 
+// ------------------------------------------------------------
 type ArticleCategory = keyof typeof ARTICLE_CATEGORY;
 
 interface ArticleInfoData {
@@ -65,10 +72,7 @@ interface ArticleDetailResponse {
 	articleInfo: ArticleInfoData;
 }
 
-interface ArticleFormValues extends ArticleInfoData {
-	addImageIdList: number[];
-	deleteImageIdList: number[];
-}
+interface ArticleFormValues extends ArticleInfoData, CommunityImageIdList {}
 
 interface CreateArticleFormValues extends ArticleInfoData {
 	blogImageIdList: number[];
@@ -91,6 +95,55 @@ interface RecommendArticleBody {
 	secondBlogId: number;
 }
 
+// ------------------------------------------------------------
+interface EventListData extends CommunityListData {
+	imageUrl: string;
+}
+
+interface EventImageData extends Omit<CommunityImageData, 'blogImageId'> {
+	id: number
+	leakOrder: number;
+}
+
+interface EventInfoData {
+	id?: number;
+	status: StatusType;
+	title: string;
+	thumbnailId: number | null;
+	filename: string;
+	url: string;
+}
+
+interface EventDetailResponse {
+	eventImageList: EventImageData[];
+	eventInfo: EventInfoData;
+}
+
+type EventImageType = 'image' | 'thumbnail';
+
+interface ImageOrderData extends ImageFile {
+	leakOrder: number;
+}
+
+interface EventFormValues extends CommunityImageIdList {
+	imageOrderDtoList: ImageOrderData[];
+	status: StatusType;
+	title: string;
+	thumbnailId: number | null;
+	thumbnailUrl?: string;
+	filename?: string;
+	url?: string;
+}
+
+
+interface CreateEventFormValues {
+	status: StatusType;
+	title: string;
+	thumbnailId: number;
+	eventImageRequestDtoList: ImageOrderData[];
+}
+
+
 export type {
 	CommunityType,
 	UploadResponse,
@@ -107,4 +160,11 @@ export type {
 	RecommendArticleListData,
 	RecommendArticleResponse,
 	RecommendArticleBody,
+	EventImageData,
+	EventInfoData,
+	EventListData,
+	EventDetailResponse,
+	EventFormValues,
+	CreateEventFormValues,
+	EventImageType,
 }

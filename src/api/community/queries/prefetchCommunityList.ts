@@ -3,7 +3,7 @@ import { createSSRRequest } from "@/api/withAuthSSR";
 import { CommunityListResponse, CommunityType } from "@/types/community";
 import { getCommunityList } from "@/api/community/community";
 
-export async function prefetchGetCommunityList({
+export async function prefetchCommunityList({
 	queryClient,
 	queryKey,
 	type,

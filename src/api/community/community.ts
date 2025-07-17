@@ -2,7 +2,7 @@ import { AxiosInstance } from "axios";
 import axiosInstance from "@/api/axiosInstance";
 import {
 	ArticleDetailResponse,
-	CommunityType,
+	CommunityType, EventDetailResponse, EventImageType,
 	NoticeDetailResponse, RecommendArticleBody,
 	RecommendArticleListData,
 	RecommendArticleResponse
@@ -25,7 +25,7 @@ const createUploadFile = (
 
 // 이미지 업로드
 const uploadCommunityImage = async (
-	// type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
+	// type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
 	file: File | null,
 ) => {
 	const formData = createUploadFile(file);
@@ -43,7 +43,7 @@ const uploadCommunityImage = async (
 
 // 목록 조회
 const getCommunityList = async(
-	type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
 	key: string,
 	page: number,
 	size: number,
@@ -61,7 +61,7 @@ const getCommunityList = async(
 };
 
 // 목록 삭제
-const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'event' | 'article'>, id: number) => {
+const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'events' | 'article'>, id: number) => {
 	try {
 		const { data } = await axiosInstance.delete(`/api/admin/${convertArticleToBlogType(type)}/${id}`);
 		return data;
@@ -72,7 +72,7 @@ const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'event' 
 
 // 등록
 const createCommunity = async (
-	type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
 	body: object,
 ) => {
 	const url = `/api/admin/${convertArticleToBlogType(type)}`;
@@ -86,7 +86,7 @@ const createCommunity = async (
 
 // 수정
 const updateCommunity = async (
-	type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
 	body: object,
 	id: number,
 ) => {
@@ -124,7 +124,18 @@ const getArticleDetail = async (articleId: number, instance: AxiosInstance = axi
 		throw error;
 	}
 }
-
+// 이벤트 상세조회
+const getEventDetail = async (eventId: number, instance: AxiosInstance = axiosInstance): Promise<EventDetailResponse> => {
+	try {
+		const { data } = await instance.get(`/api/admin/events/${eventId}`);
+		return {
+			eventImageList: data?.eventImageDtoList,
+			eventInfo: data?.eventAdminDto,
+		};
+	} catch (error) {
+		throw error;
+	}
+}
 // 아티클 썸네일 업로드
 const uploadThumbnailImage = async (file: File | null) => {
 	const formData = createUploadFile(file);
@@ -170,6 +181,20 @@ const updateRecommendArticle = async (body: RecommendArticleBody) => {
 	}
 };
 
+
+const uploadEventImage = async (type: EventImageType, file: File | null) => {
+	const formData = createUploadFile(file);
+	const url = `/api/admin/events/${type}`;
+	try {
+		const { data } = await axiosInstance.post(url, formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export {
 	uploadCommunityImage,
 	getCommunityList,
@@ -181,4 +206,6 @@ export {
 	uploadThumbnailImage,
 	getRecommendArticle,
 	updateRecommendArticle,
+	getEventDetail,
+	uploadEventImage,
 }
