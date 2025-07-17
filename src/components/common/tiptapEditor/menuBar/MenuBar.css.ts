@@ -2,12 +2,18 @@ import { themeVars } from "@/styles/theme.css";
 import { recipe } from "@vanilla-extract/recipes";
 import { style } from "@vanilla-extract/css";
 
+export const menuBarContainer = style({
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	padding: '16px',
+	background: themeVars.colors.gray.gray0,
+})
+
 export const menuBar = style({
 	display: 'flex',
 	alignItems: 'center',
 	gap: '4px',
-	padding: '16px',
-	background: themeVars.colors.gray.gray0,
 })
 
 export const menuBarButton = recipe({

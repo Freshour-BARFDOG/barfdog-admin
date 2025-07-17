@@ -96,7 +96,10 @@ export default function TextControls({ editor, editorState }: TextControlsProps)
 		controls.map((control) => (
 			<button
 				key={control.key}
-				onClick={control.onClick}
+				onClick={(e) => {
+					e.preventDefault();
+					control.onClick();
+				}}
 				disabled={control.disabled}
 				className={styles.menuBarButton({ active: control.active })}
 			>

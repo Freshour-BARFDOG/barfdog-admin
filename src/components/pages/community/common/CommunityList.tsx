@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {ReactNode, useState} from 'react';
 import { useRouter } from "next/navigation";
 import { commonWrapper } from '@/styles/common.css';
 import Button from "@/components/common/button/Button";
@@ -21,6 +21,7 @@ interface CommunityListProps<T> {
 	createHref: string;
 	onEditClick: (row: T) => void;
 	onDelete: (id: number) => Promise<void>;
+	action?: ReactNode;
 }
 
 export default function CommunityList<T extends { id: number; title: string; }>({
@@ -33,6 +34,7 @@ export default function CommunityList<T extends { id: number; title: string; }>(
 	createHref,
 	onEditClick,
 	onDelete,
+	action,
 }: CommunityListProps<T>) {
 	const router = useRouter();
 	const [deleteTarget, setDeleteTarget] = useState<T | null>(null);
@@ -101,6 +103,7 @@ export default function CommunityList<T extends { id: number; title: string; }>(
 					totalPages={pageData?.totalPages ?? 0}
 					padding="none"
 					emptyText={`${title} 목록 데이터가 없습니다.`}
+					action={action}
 				/>
 			</Card>
 			{isOpenDeleteConfirmModal && (

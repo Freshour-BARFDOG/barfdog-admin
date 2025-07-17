@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css";
 import { themeVars } from "@/styles/theme.css";
+import { recipe } from "@vanilla-extract/recipes";
 
 export const modalContainer = style({
 	display: 'flex',
@@ -8,12 +9,28 @@ export const modalContainer = style({
 	alignItems: 'center',
 	maxWidth: "600px",
 	width: '100%',
-	height: "100vh",
-	backgroundColor: themeVars.colors.gray.gray0,
 	overflowY: 'auto'
 })
 
-export const modalContent = style({
+export const modalHeader = style({
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center',
 	width: '100%',
-	backgroundColor: themeVars.colors.gray.gray50,
+	padding: '10px 20px',
+	backgroundColor: themeVars.colors.gray.gray900,
+	color: themeVars.colors.gray.gray0,
+})
+
+export const modalContent = recipe({
+	base: {
+		width: '100%',
+	},
+	variants: {
+		padding: {
+			'none': {},
+			16: { padding: '16px' },
+			20: { padding: '20px' },
+		}
+	}
 })

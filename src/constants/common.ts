@@ -7,14 +7,15 @@ const PAGE_SIZE = {
     ORDERS: 50,
     DELIVERY: 10,
   },
-  REWARDS: {
-    COUPON: 10,
-    REWARD: 10,
-    PROMOTION: 10,
-  },
-  COMMUNITY: {
-    NOTICE: 10,
-  },
+	REWARDS: {
+		COUPON: 10,
+		REWARD: 10,
+		PROMOTION: 10,
+	},
+	COMMUNITY: {
+		NOTICE: 10,
+		ARTICLE: 10,
+	}
 };
 
 const OLDEST_DATE = format(new Date("2000-01-01"), "yyyy-MM-dd");

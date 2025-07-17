@@ -1,8 +1,18 @@
 import { AxiosInstance } from "axios";
 import axiosInstance from "@/api/axiosInstance";
-import { NoticeDetailResponse } from "@/types/community";
+import {
+	ArticleDetailResponse,
+	CommunityType,
+	NoticeDetailResponse, RecommendArticleBody,
+	RecommendArticleListData,
+	RecommendArticleResponse
+} from "@/types/community";
 
-type CommunityType = 'notices' | 'event' | 'article';
+// 블로그 명칭 convert
+const convertArticleToBlogType = (type: CommunityType) => {
+	if (type === 'article') return 'blogs'
+		else return type;
+}
 
 // 파일 + JSON 데이터 FormData 로 변환
 const createUploadFile = (
@@ -15,11 +25,12 @@ const createUploadFile = (
 
 // 이미지 업로드
 const uploadCommunityImage = async (
-	type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
+	// type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
 	file: File | null,
 ) => {
 	const formData = createUploadFile(file);
-	const url = `/api/admin/${type as string === 'notices' ? 'blogs' : type}/image/upload`;
+	// const url = `/api/admin/${type === 'notices' || type === 'article' ? 'blogs' : type}/image/upload`;
+	const url = `/api/admin/blogs/image/upload`;
 	try {
 		const { data } = await axiosInstance.post(url, formData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
@@ -39,7 +50,7 @@ const getCommunityList = async(
 	instance: AxiosInstance = axiosInstance
 ) => {
 	try {
-		const { data } = await instance.get(`/api/admin/${type}?page=${page}&size=${size}`);
+		const { data } = await instance.get(`/api/admin/${convertArticleToBlogType(type)}?page=${page}&size=${size}`);
 		return {
 			page: data.page,
 			list: data._embedded?.[key] ?? []
@@ -52,7 +63,7 @@ const getCommunityList = async(
 // 목록 삭제
 const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'event' | 'article'>, id: number) => {
 	try {
-		const { data } = await axiosInstance.delete(`/api/admin/${type}/${id}`);
+		const { data } = await axiosInstance.delete(`/api/admin/${convertArticleToBlogType(type)}/${id}`);
 		return data;
 	} catch (error) {
 		throw error;
@@ -64,7 +75,7 @@ const createCommunity = async (
 	type: Extract<CommunityType, 'notices' | 'event' | 'article'>,
 	body: object,
 ) => {
-	const url = `/api/admin/${type as string}`;
+	const url = `/api/admin/${convertArticleToBlogType(type)}`;
 	try {
 		const { data } = await axiosInstance.post(url, body);
 		return data;
@@ -79,7 +90,7 @@ const updateCommunity = async (
 	body: object,
 	id: number,
 ) => {
-	const url = `/api/admin/${type as string}/${id}`;
+	const url = `/api/admin/${convertArticleToBlogType(type)}/${id}`;
 	try {
 		const { data } = await axiosInstance.put(url, body);
 		return data;
@@ -88,6 +99,7 @@ const updateCommunity = async (
 	}
 };
 
+// 공지사항 상세 조회
 const getNoticeDetail = async (noticeId: number, instance: AxiosInstance = axiosInstance): Promise<NoticeDetailResponse> => {
 	try {
 		const { data } = await instance.get(`/api/admin/notices/${noticeId}`);
@@ -100,7 +112,63 @@ const getNoticeDetail = async (noticeId: number, instance: AxiosInstance = axios
 	}
 }
 
+// 아티클 상세 조회
+const getArticleDetail = async (articleId: number, instance: AxiosInstance = axiosInstance): Promise<ArticleDetailResponse> => {
+	try {
+		const { data } = await instance.get(`/api/admin/blogs/${articleId}`);
+		return {
+			articleImageList: data?.adminBlogImageDtos,
+			articleInfo: data?.blogAdminDto,
+		};
+	} catch (error) {
+		throw error;
+	}
+}
 
+// 아티클 썸네일 업로드
+const uploadThumbnailImage = async (file: File | null) => {
+	const formData = createUploadFile(file);
+	const url = `/api/admin/blogs/thumbnail/upload`;
+	try {
+		const { data } = await axiosInstance.post(url, formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+const getRecommendArticle = async (instance: AxiosInstance = axiosInstance): Promise<RecommendArticleResponse> => {
+	try {
+		const { data } = await instance.get(`/api/admin/articles`);
+		return {
+			articleTitleList: data?.blogTitlesDtos.map((article: { blogId: number; title: string; }) => ({ 
+				label: article.title, 
+				value: article.blogId
+			})),
+			selectedArticleList:
+				data?.articlesAdminDtos
+					.filter((article: RecommendArticleListData) => article.blogId !== null)
+					.sort((a: RecommendArticleListData, b: RecommendArticleListData) =>
+						a.articleNumber - b.articleNumber
+					)
+			,
+		};
+	} catch (error) {
+		throw error;
+	}
+}
+
+const updateRecommendArticle = async (body: RecommendArticleBody) => {
+	const url = `/api/admin/articles`;
+	try {
+		const { data } = await axiosInstance.put(url, body);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
 
 export {
 	uploadCommunityImage,
@@ -109,4 +177,8 @@ export {
 	createCommunity,
 	updateCommunity,
 	getNoticeDetail,
+	getArticleDetail,
+	uploadThumbnailImage,
+	getRecommendArticle,
+	updateRecommendArticle,
 }

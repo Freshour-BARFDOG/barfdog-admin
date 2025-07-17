@@ -2,6 +2,7 @@ import * as styles from "./TiptapEditor.css";
 import { useState, useCallback } from "react";
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { Dropcursor } from "@tiptap/extensions";
@@ -34,6 +35,9 @@ export default function TiptapEditor({
       StarterKit,
       Dropcursor,
       TextStyleKit,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Image.configure({ inline: false }),
     ],
     content: initialContent,

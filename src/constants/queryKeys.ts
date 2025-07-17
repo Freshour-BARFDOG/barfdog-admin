@@ -55,6 +55,9 @@ const queryKeys = {
     BASE: "community",
     GET_NOTICE_LIST: "getNoticeList",
     GET_NOTICE_DETAIL: "getNoticeDetail",
+    GET_ARTICLE_LIST: "getArticleList",
+    GET_ARTICLE_DETAIL: "getArticleDetail",
+    GET_RECOMMEND_ARTICLE: "getRecommendArticle",
   },
 } as const;
 
