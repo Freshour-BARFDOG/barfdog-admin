@@ -32,7 +32,7 @@ export default function GeneralProductCreate() {
     mutate(payload, {
       onSuccess: async () => {
         addToast("일반 상품 등록이 완료되었습니다");
-        // router.push("/products/general");
+        router.push("/products/general");
       },
       onError: () => {
         addToast("일반 상품 등록을 실패했습니다");

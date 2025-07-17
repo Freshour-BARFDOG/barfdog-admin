@@ -89,9 +89,12 @@ export default function GeneralProductForm({
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { isValid, errors },
   } = form;
-  console.log(watch());
+  console.log("watch", watch());
+  console.log("errors", errors);
+  console.log("isValid", isValid);
 
   const originalPrice = useWatch({ control, name: "originalPrice" });
   const inStock = useWatch({ control, name: "inStock" });
@@ -131,6 +134,7 @@ export default function GeneralProductForm({
   } = useFieldArray({
     name: "imageOrderDtoList",
     control,
+    keyName: "fieldArrayId",
   });
 
   // 제휴사 추가
@@ -154,7 +158,7 @@ export default function GeneralProductForm({
 
   /** 상품 이미지 핸들러 */
   const handleProductImagesChange = useCallback(
-    (files: { id?: number; filename: string; url: string }[] | null) => {
+    async (files: { id?: number; filename: string; url: string }[] | null) => {
       if (!files) {
         // 전체 삭제
         replaceImages([]);
@@ -163,6 +167,7 @@ export default function GeneralProductForm({
           ...addImageIdList,
         ]);
         setValue("addImageIdList", []);
+        await trigger();
         return;
       }
       // id 있는 파일만
@@ -186,6 +191,7 @@ export default function GeneralProductForm({
         url: v.url,
       }));
       replaceImages(next);
+      await trigger();
     },
     [addImageIdList, deleteImageIdList, replaceImages, setValue]
   );
@@ -306,9 +312,9 @@ export default function GeneralProductForm({
       name: "itemIcons",
       label: "상품 아이콘",
       render: (field) => (
-        <LabeledRadioButtonGroup<ItemIcons>
+        <LabeledCheckboxGroup<ItemIcons>
           options={ICON_TYPE_OPTIONS}
-          value={field.value as ItemIcons}
+          selectedValues={field.value as ItemIcons[]}
           onChange={field.onChange}
         />
       ),

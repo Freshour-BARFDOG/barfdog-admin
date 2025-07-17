@@ -50,10 +50,16 @@ const getGeneralProductDetail = async (
   return data;
 };
 
+const deleteGeneralProduct = async (itemId: number): Promise<any> => {
+  const { data } = await axiosInstance.delete(`/api/admin/items/${itemId}`);
+  return data;
+};
+
 export {
   getGeneralProductList,
   createGeneralProduct,
   getAllianceList,
   getGeneralProductDetail,
   updateGeneralProduct,
+  deleteGeneralProduct,
 };

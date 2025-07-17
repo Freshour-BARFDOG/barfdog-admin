@@ -22,7 +22,7 @@ const ITEM_HEALTH_TYPE_MAP = {
   JOINT_HEALTH: "관절 건강",
   PUPPY_DEVELOPMENT: "자견 발육",
   SENIOR_HEALTH: "노령견 건강",
-  NONE: "없음",
+  // NONE: "없음",
 } as const;
 
 const ITEM_HEALTH_TYPE_KEYS = Object.keys(
@@ -39,7 +39,7 @@ const ITEM_HEALTH_TYPE_OPTIONS: SelectOption<ItemHealthType>[] = [
   { value: "JOINT_HEALTH", label: ITEM_HEALTH_TYPE_MAP.JOINT_HEALTH },
   { value: "PUPPY_DEVELOPMENT", label: ITEM_HEALTH_TYPE_MAP.PUPPY_DEVELOPMENT },
   { value: "SENIOR_HEALTH", label: ITEM_HEALTH_TYPE_MAP.SENIOR_HEALTH },
-  { value: "NONE", label: ITEM_HEALTH_TYPE_MAP.NONE },
+  // { value: "NONE", label: ITEM_HEALTH_TYPE_MAP.NONE },
 ];
 
 const GENERAL_PRODUCT_CATEGORY_MAP = {

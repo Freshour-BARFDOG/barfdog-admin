@@ -1,5 +1,6 @@
 "use client";
 
+import { useDeleteGeneralProduct } from "@/api/products/mutations/useDeleteGeneralProduct";
 import { useGetGeneralProductList } from "@/api/products/queries/useGetGeneralProductList";
 import Button from "@/components/common/button/Button";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
@@ -45,10 +46,20 @@ export default function GeneralProductList() {
   };
 
   const { data } = useGetGeneralProductList(params);
-
+  const { mutate } = useDeleteGeneralProduct();
   console.log("data", data);
 
   const { addToast } = useToastStore();
+  const handleDelete = async (itemId: number) => {
+    mutate(itemId, {
+      onSuccess: async () => {
+        addToast("일반 상품 삭제가 완료되었습니다.");
+      },
+      onError: () => {
+        addToast("일반 상품 삭제를 실패했습니다");
+      },
+    });
+  };
 
   const filters: SearchFilterItem[] = [
     {
@@ -89,14 +100,18 @@ export default function GeneralProductList() {
       },
     },
     {
+      key: "name",
+      header: "상품명",
+    },
+    {
       key: "originalPrice",
       header: "원가",
-      render: (row) => `${row.originalPrice}원`,
+      render: (row) => `${row.originalPrice.toLocaleString()}원`,
     },
     {
       key: "salePrice",
       header: "판매가",
-      render: (row) => `${row.salePrice}원`,
+      render: (row) => `${row.salePrice.toLocaleString()}원`,
     },
     {
       key: "remaining",
@@ -105,10 +120,12 @@ export default function GeneralProductList() {
     {
       key: "discount",
       header: "일반할인",
+      render: (row) => (row.discount === "0원" ? "-" : row.allianceDiscount),
     },
     {
       key: "allianceDiscount",
       header: "제휴사할인",
+      render: (row) => (row.allianceDiscount ? row.allianceDiscount : "-"),
     },
     {
       key: "status",
@@ -140,7 +157,7 @@ export default function GeneralProductList() {
       render: (row) => {
         const itemId = row.id;
         return (
-          <Button size="sm" variant="text" onClick={() => {}}>
+          <Button size="sm" variant="text" onClick={() => handleDelete(itemId)}>
             삭제
           </Button>
         );

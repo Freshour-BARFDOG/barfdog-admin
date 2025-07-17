@@ -52,7 +52,7 @@ export const generalProductFormSchema = yup.object({
         .mixed<ItemHealthType>()
         .oneOf(ITEM_HEALTH_TYPE_KEYS, "유효한 건강 타입이어야 합니다.")
     )
-    .required(),
+    .notRequired(),
   itemIcons: yup.array().of(yup.string()).notRequired(),
   itemStatus: yup
     .mixed<ProductVisibilityStatus>()
@@ -73,12 +73,16 @@ export const generalProductFormSchema = yup.object({
       yup.object({
         id: yup.number().required(),
         leakOrder: yup.number().min(1).required(),
-        url: yup.string().url("유효한 URL이어야 합니다.").required(),
+        url: yup.string().required(),
       })
     )
     .required(),
   // 상품 이미지 추가(수정)
-  addImageIdList: yup.array().of(yup.number().required()).required(),
+  addImageIdList: yup
+    .array()
+    .of(yup.number().required())
+    .min(1, "최소 1개의 상품 이미지를 등록해야 합니다.")
+    .required("상품 이미지를 반드시 등록해야 합니다."),
   // contents 이미지 추가 - contentImageIdList(등록) / addContentImageIdList(수정) => 통일
   addContentImageIdList: yup.array().of(yup.number().required()).notRequired(),
   // 상품 이미지 삭제(수정)
