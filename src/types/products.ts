@@ -122,6 +122,59 @@ interface GetAllianceListResponse {
   allianceName: string;
 }
 
+interface ItemAdminDto {
+  id: number;
+  itemType: GeneralProductCreateType;
+  itemHealthType: string;
+  name: string;
+  description: string;
+  originalPrice: number;
+  discountType: DiscountUnitType;
+  discountDegree: number;
+  salePrice: number;
+  inStock: boolean;
+  remaining: number;
+  contents: string;
+  itemIcons: string;
+  deliveryFree: boolean;
+  status: ProductVisibilityStatus;
+  packageType: string | null;
+  unit: string | null;
+  pricePerUnit: number;
+}
+
+/** 옵션(관리자) 정보 */
+interface ItemOptionAdminDto {
+  id: number;
+  name: string;
+  optionPrice: number;
+  remaining: number;
+}
+
+/** 상품 이미지(관리자) 정보 */
+interface ItemImageAdminDto {
+  id: number;
+  leakOrder: number;
+  filename: string;
+  url: string;
+}
+
+/** 컨텐츠 이미지(관리자) 정보 */
+interface ItemContentImageDto {
+  id: number;
+  filename: string;
+  url: string;
+}
+
+/** 전체 상세 응답 타입 */
+interface GeneralProductDetailResponse {
+  itemAdminDto: ItemAdminDto;
+  allianceDtoList: AllianceDto[];
+  itemOptionAdminDtoList: ItemOptionAdminDto[];
+  itemImageAdminDtoList: ItemImageAdminDto[];
+  itemContentImageDtoList: ItemContentImageDto[];
+}
+
 export type {
   GeneralProductType,
   GeneralProductCreateType,
@@ -138,4 +191,9 @@ export type {
   AllianceDto,
   GetAllianceListResponse,
   ItemIcons,
+  GeneralProductDetailResponse,
+  ItemAdminDto,
+  ItemOptionAdminDto,
+  ItemImageAdminDto,
+  ItemContentImageDto,
 };

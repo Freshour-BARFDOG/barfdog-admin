@@ -1,9 +1,10 @@
 import {
-  AllianceDto,
   CreateGeneralProductRequest,
+  GeneralProductDetailResponse,
   GeneralProductListParams,
   GeneralProductListResponse,
   GetAllianceListResponse,
+  UpdateGeneralProductRequest,
 } from "@/types/products";
 import { AxiosInstance } from "axios";
 import axiosInstance from "../axiosInstance";
@@ -26,9 +27,33 @@ const createGeneralProduct = async (body: CreateGeneralProductRequest) => {
   return data;
 };
 
+const updateGeneralProduct = async ({
+  itemId,
+  body,
+}: {
+  itemId: number;
+  body: UpdateGeneralProductRequest;
+}) => {
+  const { data } = await axiosInstance.put(`/api/admin/items/${itemId}`, body);
+  return data;
+};
+
 const getAllianceList = async (): Promise<GetAllianceListResponse[]> => {
   const { data } = await axiosInstance.get("/api/admin/alliance");
   return data?._embedded?.allianceResponseList;
 };
 
-export { getGeneralProductList, createGeneralProduct, getAllianceList };
+const getGeneralProductDetail = async (
+  itemId: number
+): Promise<GeneralProductDetailResponse> => {
+  const { data } = await axiosInstance.get(`/api/admin/items/${itemId}`);
+  return data;
+};
+
+export {
+  getGeneralProductList,
+  createGeneralProduct,
+  getAllianceList,
+  getGeneralProductDetail,
+  updateGeneralProduct,
+};

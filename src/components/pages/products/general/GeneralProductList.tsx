@@ -126,7 +126,7 @@ export default function GeneralProductList() {
       render: (row) => {
         const itemId = row.id;
         return (
-          <Link href={`/product/general/${itemId}`}>
+          <Link href={`/products/general/${itemId}`}>
             <Text type="body3" color="red">
               수정
             </Text>

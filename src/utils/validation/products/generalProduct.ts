@@ -7,7 +7,7 @@ import {
 } from "@/types/products";
 import { ITEM_HEALTH_TYPE_KEYS } from "@/constants/products";
 
-const baseProductFields = {
+export const generalProductFormSchema = yup.object({
   allianceDtoList: yup
     .array()
     .of(
@@ -66,50 +66,29 @@ const baseProductFields = {
   originalPrice: yup.number().min(0).required(),
   remaining: yup.number().min(0).required(),
   salePrice: yup.number().min(0).required(),
-};
-
-/** 2) 만들기(Create) 전용 스키마 */
-export const createGeneralSchema = yup.object({
-  ...baseProductFields,
-  contentImageIdList: yup.array().of(yup.number().required()).required(),
-  itemImageOrderDtoList: yup
-    .array()
-    .of(
-      yup.object({
-        id: yup.number().required(),
-        leakOrder: yup.number().min(1).required(),
-      })
-    )
-    .required(),
-  itemOptionSaveDtoList: yup
-    .array()
-    .of(
-      yup.object({
-        name: yup.string().required(),
-        price: yup.number().min(0).required(),
-        remaining: yup.number().min(0).required(),
-      })
-    )
-    .required(),
-});
-
-/** 3) 수정(Update) 전용 스키마 */
-export const updateGeneralSchema = yup.object({
-  ...baseProductFields,
-  addContentImageIdList: yup.array().of(yup.number().required()).required(),
-  deleteContentImageIdList: yup.array().of(yup.number().required()).required(),
-  addImageIdList: yup.array().of(yup.number().required()).required(),
-  deleteImageIdList: yup.array().of(yup.number().required()).required(),
-  deleteOptionIdList: yup.array().of(yup.number().required()).required(),
+  // 상품 이미지 추가 - itemImageOrderDtoList(등록) / imageOrderDtoList(수정) => 통일
   imageOrderDtoList: yup
     .array()
     .of(
       yup.object({
         id: yup.number().required(),
         leakOrder: yup.number().min(1).required(),
+        url: yup.string().url("유효한 URL이어야 합니다.").required(),
       })
     )
     .required(),
+  // 상품 이미지 추가(수정)
+  addImageIdList: yup.array().of(yup.number().required()).required(),
+  // contents 이미지 추가 - contentImageIdList(등록) / addContentImageIdList(수정) => 통일
+  addContentImageIdList: yup.array().of(yup.number().required()).notRequired(),
+  // 상품 이미지 삭제(수정)
+  deleteImageIdList: yup.array().of(yup.number().required()).notRequired(),
+  deleteContentImageIdList: yup
+    .array()
+    .of(yup.number().required())
+    .notRequired(),
+
+  // 옵션 추가(등록, 수정)
   itemOptionSaveDtoList: yup
     .array()
     .of(
@@ -120,6 +99,7 @@ export const updateGeneralSchema = yup.object({
       })
     )
     .required(),
+  // 변경되지 않은 옵션(수정)
   itemOptionUpdateDtoList: yup
     .array()
     .of(
@@ -131,36 +111,16 @@ export const updateGeneralSchema = yup.object({
       })
     )
     .required(),
+  // 옵션 삭제(수정)
+  deleteOptionIdList: yup.array().of(yup.number().required()).notRequired(),
 });
 
-export type CreateGeneralValues = yup.InferType<typeof createGeneralSchema>;
-export type CreateGeneralKeys = keyof CreateGeneralValues;
+export type GeneralProductFormValues = yup.InferType<
+  typeof generalProductFormSchema
+>;
+export type GeneralProductFormKeys = keyof GeneralProductFormValues;
 
-export type UpdateGeneralValues = yup.InferType<typeof updateGeneralSchema>;
-export type UpdateGeneralKeys = keyof UpdateGeneralValues;
-
-export const defaultCreateGeneralValues: CreateGeneralValues = {
-  allianceDtoList: [],
-  contentImageIdList: [],
-  contents: "",
-  deliveryFree: true,
-  description: "",
-  discountDegree: 0,
-  discountType: "FLAT_RATE",
-  inStock: true,
-  itemHealthType: ["NONE"],
-  itemIcons: [],
-  itemStatus: "LEAKED",
-  itemType: "RAW",
-  name: "",
-  originalPrice: 0,
-  remaining: 0,
-  salePrice: 0,
-  itemImageOrderDtoList: [],
-  itemOptionSaveDtoList: [],
-};
-
-export const defaultUpdateGeneralValues: UpdateGeneralValues = {
+export const defaultGeneralProductFormValues: GeneralProductFormValues = {
   allianceDtoList: [],
   addContentImageIdList: [],
   deleteContentImageIdList: [],

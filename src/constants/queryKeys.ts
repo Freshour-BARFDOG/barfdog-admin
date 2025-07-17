@@ -32,6 +32,7 @@ const queryKeys = {
     BASE: "products",
     GET_GENERAL_PRODUCT_LIST: "getGeneralProductList",
     GET_ALLIANCE_LIST: "getAllianceList",
+    GET_GENERAL_PRODUCT_DETAIL: "getGeneralProductDetail",
   },
   PROMOTIONS: {
     BASE: "promotion",
@@ -53,7 +54,7 @@ const queryKeys = {
     BASE: "community",
     GET_NOTICE_LIST: "getNoticeList",
     GET_NOTICE_DETAIL: "getNoticeDetail",
-  }
+  },
 } as const;
 
 export { queryKeys };
