@@ -89,9 +89,8 @@ const FileUpload = ({
   return (
     <div className={styles.fileUploadContainer}>
       <div>
-
         {topCaption &&
-          <Text type='caption' color='gray500'>* {topCaption}</Text>
+          <Text type='caption' color='gray500'>{topCaption}</Text>
         }
         <label htmlFor={inputId} className={styles.fileUploadLabel}>
           {!previewUrl
