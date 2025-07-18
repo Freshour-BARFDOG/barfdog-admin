@@ -3,39 +3,37 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
-import { ArticleFormValues, CreateArticleFormValues } from "@/types/community";
-import ArticleForm from "@/components/pages/community/article/form/ArticleForm";
+import { CreateEventFormValues, EventFormValues } from "@/types/community";
+import EventForm from "@/components/pages/community/event/form/EventForm";
 import { useCreateCommunity } from "@/api/community/mutations/useCreateCommunity";
 
-export default function CreateArticle() {
+export default function CreateEvent() {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const { mutate } = useCreateCommunity<CreateArticleFormValues>('article');
+	const { mutate } = useCreateCommunity<CreateEventFormValues>('events');
 	const { addToast } = useToastStore();
 
-	const onSubmit = (data: ArticleFormValues) => {
+	const onSubmit = (data: EventFormValues) => {
 		const body = {
 			status: data.status,
 			title: data.title,
-			contents: data.contents,
-			category: data.category,
 			thumbnailId: data.thumbnailId,
-			blogImageIdList: data.addImageIdList,
+			eventImageRequestDtoList: data.imageOrderDtoList,
 		}
 		mutate({
-			body: body as CreateArticleFormValues,
+			body: body as CreateEventFormValues,
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({
 					queryKey: [
 						queryKeys.COMMUNITY.BASE,
-						queryKeys.COMMUNITY.GET_ARTICLE_LIST,
+						queryKeys.COMMUNITY.GET_EVENT_LIST,
 						0
 					],
 				});
 				addToast('등록이 완료되었습니다!');
-				router.push('/community/article');
+				router.push('/community/event');
 			},
 			onError: (error) => {
 				console.log(error)
@@ -45,16 +43,15 @@ export default function CreateArticle() {
 	}
 
 	return (
-		<ArticleForm
+		<EventForm
 			onSubmit={onSubmit}
 			defaultUpdateFormValue={{
 				title: '',
 				status: 'LEAKED',
-				contents: '',
-				category: null,
 				thumbnailId: null,
 				addImageIdList: [],
 				deleteImageIdList: [],
+				imageOrderDtoList: [],
 			}}
 		/>
 	);

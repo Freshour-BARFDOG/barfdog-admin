@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import NoticeDetail from "@/components/pages/community/notice/detail/NoticeDetail";
-import { prefetchGetNoticeDetail } from "@/api/community/queries/usePrefetchGetNoticeDetail";
+import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
 
 interface UpdateNoticePageProps {
   params: {
@@ -16,7 +16,7 @@ export default async function NoticeDetailPage({ params }: UpdateNoticePageProps
   const noticeId = Number(params.noticeId);
 
   const queryClient = new QueryClient();
-  await prefetchGetNoticeDetail(noticeId, queryClient);
+  await prefetchCommunityDetail('notices', noticeId, queryClient);
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>

@@ -15,6 +15,7 @@ const PAGE_SIZE = {
 	COMMUNITY: {
 		NOTICE: 10,
 		ARTICLE: 10,
+		EVENT: 10,
 	}
 };
 

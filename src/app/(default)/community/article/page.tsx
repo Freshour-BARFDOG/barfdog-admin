@@ -4,13 +4,13 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import ArticleList from "@/components/pages/community/article/list/ArticleList";
-import { prefetchGetCommunityList } from "@/api/community/queries/usePrefetchGetCommunityList";
+import { prefetchCommunityList } from "@/api/community/queries/prefetchCommunityList";
 import { queryKeys } from "@/constants/queryKeys";
 import { PAGE_SIZE } from "@/constants/common";
 
 export default async function ArticlePage() {
   const queryClient = new QueryClient();
-  await prefetchGetCommunityList({
+  await prefetchCommunityList({
     queryClient,
     queryKey: [queryKeys.COMMUNITY.BASE, queryKeys.COMMUNITY.GET_ARTICLE_LIST, 0],
     type: 'article',

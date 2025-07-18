@@ -33,7 +33,6 @@ export const noticeSchema = yup.object().shape({
 		.required('상태는 필수입니다.'),
 });
 
-
 export const articleSchema = yup.object().shape({
 	title: yup
 		.string()
@@ -56,4 +55,21 @@ export const articleSchema = yup.object().shape({
 		.string()
 		.oneOf(['NUTRITION', 'HEALTH', 'LIFE'], '유효한 아티클 카테고리여야 합니다.')
 		.required('상태는 필수입니다.'),
+});
+
+export const eventSchema = yup.object().shape({
+	title: yup
+		.string()
+		.required('제목은 필수입니다.'),
+	thumbnailId: yup
+		.number()
+		.required('썸네일은 필수입니다.'),
+	status: yup
+		.string()
+		.oneOf(['LEAKED', 'HIDDEN'], '유효한 아티클 상태여야 합니다.')
+		.required('상태는 필수입니다.'),
+	imageOrderDtoList: yup
+		.array()
+		.min(1, '최소 1개의 이미지를 등록해야 합니다.')
+		.required('이미지 순서 정보는 필수입니다.'),
 });
