@@ -188,7 +188,38 @@ interface RecipeDto {
   modifiedDate?: string;
 }
 
-type GetRecipeListResponse = RecipeDto[];
+type RecipeListResponse = RecipeDto[];
+
+interface RecipeRequest {
+  name: string;
+  description: string;
+  uiNameKorean: string;
+  uiNameEnglish: string;
+  pricePerGram: number;
+  gramPerKcal: number;
+  ingredients: string;
+  descriptionForSurvey: string;
+  leaked: ProductVisibilityStatus;
+  inStock: boolean;
+}
+
+interface RecipeDetailResponse {
+  id: number;
+  name: string;
+  description: string;
+  uiNameKorean: string;
+  uiNameEnglish: string;
+  pricePerGram: number;
+  gramPerKcal: number;
+  ingredientList: string[];
+  descriptionForSurvey: string;
+  filename1: string;
+  thumbnailUri1: string;
+  filename2: string;
+  thumbnailUri2: string;
+  leaked: ProductVisibilityStatus;
+  inStock: boolean;
+}
 
 export type {
   GeneralProductType,
@@ -211,6 +242,8 @@ export type {
   ItemOptionAdminDto,
   ItemImageAdminDto,
   ItemContentImageDto,
-  GetRecipeListResponse,
+  RecipeListResponse,
   RecipeDto,
+  RecipeDetailResponse,
+  RecipeRequest,
 };

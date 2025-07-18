@@ -3,7 +3,7 @@ import { GeneralProductFormValues } from "@/utils/validation/products/generalPro
 import { DiscountUnitType } from "@/types/common";
 
 // DTO → form defaultValues 로 변환
-export function mapDtoToGeneralProductFormValues(
+export function buildGeneralProductFormValues(
   dto: GeneralProductDetailResponse
 ): GeneralProductFormValues {
   const {

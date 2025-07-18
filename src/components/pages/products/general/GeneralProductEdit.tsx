@@ -1,6 +1,6 @@
 // components/GeneralProductEdit.tsx
 "use client";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useToastStore } from "@/store/useToastStore";
@@ -13,7 +13,7 @@ import {
 } from "@/utils/validation/products/generalProduct";
 import { yupResolver } from "@hookform/resolvers/yup";
 import GeneralProductForm from "./GeneralProductForm";
-import { mapDtoToGeneralProductFormValues } from "@/utils/products/mapDtoToGeneralProductFormValues";
+import { buildGeneralProductFormValues } from "@/utils/products/buildGeneralProductFormValues";
 import { useUpdateGeneralProduct } from "@/api/products/mutations/useUpdateGeneralProduct";
 import { buildUpdateGeneralPayload } from "@/utils/products/buildGeneralProductPayload";
 
@@ -32,15 +32,22 @@ export default function GeneralProductEdit({
   const { mutate } = useUpdateGeneralProduct();
   const { data: allianceData } = useGetAllianceList();
 
-  const initial = data
-    ? mapDtoToGeneralProductFormValues(data)
-    : defaultGeneralProductFormValues;
+  const defaultValues = useMemo<GeneralProductFormValues>(() => {
+    return data
+      ? buildGeneralProductFormValues(data)
+      : defaultGeneralProductFormValues;
+  }, [data]);
 
   const form = useForm<GeneralProductFormValues>({
     resolver: yupResolver(generalProductFormSchema),
-    defaultValues: initial,
+    defaultValues,
     mode: "all",
   });
+
+  // 페이지에 접근했을때 폼 리셋
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [itemId, data, form, defaultValues]);
 
   const onSubmit = async (formValues: GeneralProductFormValues) => {
     const payload = buildUpdateGeneralPayload(formValues);

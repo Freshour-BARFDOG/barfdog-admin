@@ -1,5 +1,6 @@
 "use client";
 
+import { useDeleteRawProduct } from "@/api/products/mutations/useDeleteRawProduct";
 import { useGetRecipeList } from "@/api/products/queries/useGetRecipeList";
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
@@ -7,22 +8,23 @@ import Text from "@/components/common/text/Text";
 import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
 import { TableColumn } from "@/types/common";
-import { GetRecipeListResponse, RecipeDto } from "@/types/products";
+import { RecipeListResponse, RecipeDto } from "@/types/products";
 import { truncateText } from "@/utils/truncateText";
 import Link from "next/link";
 
 export default function RawProductList() {
   const { data } = useGetRecipeList();
   const { addToast } = useToastStore();
-  const handleDelete = async (itemId: number) => {
-    // mutate(itemId, {
-    //   onSuccess: async () => {
-    //     addToast("레시피 삭제가 완료되었습니다.");
-    //   },
-    //   onError: () => {
-    //     addToast("레시피 삭제를 실패했습니다");
-    //   },
-    // });
+  const { mutate } = useDeleteRawProduct();
+  const handleDelete = async (recipeId: number) => {
+    mutate(recipeId, {
+      onSuccess: async () => {
+        addToast("레시피 삭제가 완료되었습니다.");
+      },
+      onError: () => {
+        addToast("레시피 삭제를 실패했습니다");
+      },
+    });
   };
 
   const columns: TableColumn<RecipeDto>[] = [
@@ -67,7 +69,7 @@ export default function RawProductList() {
       render: (row) => {
         const itemId = row.id;
         return (
-          <Link href={`/products/general/${itemId}`}>
+          <Link href={`/products/raw/${itemId}`}>
             <Text type="body3" color="red">
               수정
             </Text>
@@ -79,9 +81,13 @@ export default function RawProductList() {
       key: "delete",
       header: "삭제",
       render: (row) => {
-        const itemId = row.id;
+        const recipeId = row.id;
         return (
-          <Button size="sm" variant="text" onClick={() => handleDelete(itemId)}>
+          <Button
+            size="sm"
+            variant="text"
+            onClick={() => handleDelete(recipeId)}
+          >
             삭제
           </Button>
         );
@@ -91,7 +97,7 @@ export default function RawProductList() {
   return (
     <div className={commonWrapper({ direction: "col", gap: 20 })}>
       <TableSection
-        data={data as GetRecipeListResponse}
+        data={data as RecipeListResponse}
         columns={columns}
         title="레시피 목록"
         emptyText="레시피 데이터가 없습니다."

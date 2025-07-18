@@ -4,7 +4,8 @@ import {
   GeneralProductListParams,
   GeneralProductListResponse,
   GetAllianceListResponse,
-  GetRecipeListResponse,
+  RecipeDetailResponse,
+  RecipeListResponse,
   UpdateGeneralProductRequest,
 } from "@/types/products";
 import { AxiosInstance } from "axios";
@@ -56,9 +57,81 @@ const deleteGeneralProduct = async (itemId: number): Promise<any> => {
   return data;
 };
 
-const getRecipeList = async (): Promise<GetRecipeListResponse> => {
+const getRecipeList = async (): Promise<RecipeListResponse> => {
   const { data } = await axiosInstance.get("/api/recipes");
   return data._embedded.recipeListResponseDtoList;
+};
+
+const getIngredientList = async (): Promise<string[]> => {
+  const { data } = await axiosInstance.get("/api/recipes/ingredients");
+  return data._embedded.stringList;
+};
+
+const getRecipeDetail = async (
+  recipeId: number
+): Promise<RecipeDetailResponse> => {
+  const { data } = await axiosInstance.get(`/api/recipes/${recipeId}`);
+  return data;
+};
+
+const makeRecipeFormData = (
+  body: object,
+  recipeFile: File | null,
+  surveyFile: File | null
+): FormData => {
+  const formData = new FormData();
+  formData.append(
+    "requestDto",
+    new Blob([JSON.stringify(body)], { type: "application/json" })
+  );
+  console.log("surveyFile>>>>>>>>>", surveyFile);
+
+  if (surveyFile) formData.append("file1", surveyFile);
+  if (recipeFile) formData.append("file2", recipeFile);
+  return formData;
+};
+
+const createRecipe = async ({
+  body,
+  recipeFile,
+  surveyFile,
+}: {
+  body: object;
+  recipeFile: File | null;
+  surveyFile: File | null;
+}) => {
+  const formData = makeRecipeFormData(body, recipeFile, surveyFile);
+  const { data } = await axiosInstance.post("/api/recipes", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data;
+};
+
+const updateRecipe = async ({
+  recipeId,
+  body,
+  recipeFile,
+  surveyFile,
+}: {
+  recipeId: number;
+  body: object;
+  recipeFile: File | null;
+  surveyFile: File | null;
+}) => {
+  const formData = makeRecipeFormData(body, recipeFile, surveyFile);
+  const { data } = await axiosInstance.post(
+    `/api/recipes/${recipeId}`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  return data;
+};
+
+const deleteRawProduct = async (recipeId: number): Promise<any> => {
+  const { data } = await axiosInstance.put(`/api/recipes/${recipeId}/inactive`);
+  return data;
 };
 
 export {
@@ -69,4 +142,9 @@ export {
   updateGeneralProduct,
   deleteGeneralProduct,
   getRecipeList,
+  getIngredientList,
+  getRecipeDetail,
+  createRecipe,
+  updateRecipe,
+  deleteRawProduct,
 };

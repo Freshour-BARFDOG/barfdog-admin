@@ -34,6 +34,8 @@ const queryKeys = {
     GET_ALLIANCE_LIST: "getAllianceList",
     GET_GENERAL_PRODUCT_DETAIL: "getGeneralProductDetail",
     GET_RECIPE_LIST: "getRecipeList",
+    GET_INGREDIENT_LIST: "getIngredientList",
+    GET_RECIPE_DETAIL: "getRecipeDetail",
   },
   PROMOTIONS: {
     BASE: "promotion",
