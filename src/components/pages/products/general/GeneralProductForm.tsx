@@ -47,10 +47,10 @@ import Textarea from "@/components/common/textarea/Textarea";
 import DiscountField from "../common/discountField/DiscountField";
 import AllianceDiscountField from "../common/discountField/AllianceDiscountField";
 import OptionField from "../common/optionField/OptionField";
-import MultiFileUpload from "@/components/common/multiFileUpload/MultiFileUpload";
 import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
+import MultiFileUploader from "@/components/common/multiFileUploader/MultiFileUploader";
 
 interface InputFieldItem {
   name: GeneralProductFormKeys;
@@ -81,7 +81,9 @@ export default function GeneralProductForm({
   const { mutateAsync: uploadContentsAsync } = useUploadImage(
     "/api/admin/items/contentImage/upload"
   );
-
+  const { mutateAsync: uploadImage } = useUploadImage(
+    "/api/admin/items/image/upload"
+  );
   const isEdit = mode === "edit";
 
   const {
@@ -158,65 +160,90 @@ export default function GeneralProductForm({
 
   /** 상품 이미지 핸들러 */
   const handleProductImagesChange = useCallback(
-    async (files: { id?: number; filename: string; url: string }[] | null) => {
-      if (!files) {
-        // 전체 삭제
-        replaceImages([]);
-        setValue("deleteImageIdList", [
-          ...deleteImageIdList,
-          ...addImageIdList,
-        ]);
-        setValue("addImageIdList", []);
-        await trigger();
-        return;
+    async (files: File[]) => {
+      // 기존 이미지 순서
+      const current = [...imageFields];
+      try {
+        const results = await Promise.all(
+          files.map((file) =>
+            uploadImage(
+              { file },
+              {
+                onError: () => {
+                  addToast("이미지 업로드에 실패했습니다.");
+                  return null;
+                },
+              }
+            ).then((data: any) => ({
+              id: data.id as number,
+              url: data.url as string,
+              filename: file.name,
+            }))
+          )
+        );
+        // 새로 올라온 ID 목록
+        const newIds = results.map((r) => r.id);
+        // leakOrder 부여
+        const newOrder = results.map((r, idx) => ({
+          id: r.id,
+          url: r.url,
+          leakOrder: current.length + idx + 1,
+        }));
+        // 폼 상태 업데이트
+        setValue(
+          "addImageIdList",
+          Array.from(new Set([...addImageIdList, ...newIds])),
+          { shouldValidate: true }
+        );
+        setValue("imageOrderDtoList", [...current, ...newOrder], {
+          shouldValidate: true,
+        });
+      } catch {
+        addToast("이미지 업로드 중 오류가 발생했습니다.");
       }
-      // id 있는 파일만
-      const valid = files
-        .filter((f) => f.id != null)
-        .map((f) => ({ id: f.id!, url: f.url }));
-      const validIds = valid.map((v) => v.id);
-
-      // 삭제된 ID
-      const deleted = addImageIdList.filter((old) => !validIds.includes(old));
-      setValue(
-        "deleteImageIdList",
-        Array.from(new Set([...deleteImageIdList, ...deleted]))
-      );
-      setValue("addImageIdList", validIds);
-
-      // imageOrderDtoList 를 id, leakOrder, url 로 갱신
-      const next = valid.map((v, i) => ({
-        id: v.id,
-        leakOrder: i + 1,
-        url: v.url,
-      }));
-      replaceImages(next);
-      await trigger();
+      await trigger("imageOrderDtoList");
     },
-    [addImageIdList, deleteImageIdList, replaceImages, setValue]
+    [
+      addImageIdList,
+      addToast,
+      imageFields,
+      replaceImages,
+      setValue,
+      trigger,
+      uploadImage,
+    ]
   );
 
-  /** 개별 삭제 핸들러 */
   const handleProductImageRemove = useCallback(
-    (id: number) => {
-      // 남은 fieldArray 항목 중 id !== 삭제 id
-      const remaining = imageFields.filter((f) => f.id !== id);
-      // 삭제 기록
-      setValue("deleteImageIdList", [...deleteImageIdList, id]);
+    (id?: number, filename?: string) => {
+      // id 가 없으면 filename 으로 찾아낸 뒤
+      let targetId = id;
+      if (targetId == null && filename) {
+        const found = imageFields.find((f) => f.url.endsWith(filename));
+        targetId = found?.id;
+      }
+      if (targetId != null) {
+        // 기존에 저장된 건 삭제 리스트에 추가
+        setValue("deleteImageIdList", [...deleteImageIdList, targetId], {
+          shouldValidate: true,
+        });
+      }
+      // 추가 리스트에서 제거
       setValue(
         "addImageIdList",
-        remaining.map((f) => f.id!)
+        addImageIdList.filter((x) => x !== targetId),
+        { shouldValidate: true }
       );
-      // order 재부여
-      replaceImages(
-        remaining.map((f, i) => ({
-          id: f.id!,
-          leakOrder: i + 1,
-          url: f.url,
-        }))
-      );
+      // 순서 재할당
+      const remaining = imageFields.filter((f) => f.id !== targetId);
+      const reordered = remaining.map((f, idx) => ({
+        id: f.id!,
+        url: f.url,
+        leakOrder: idx + 1,
+      }));
+      setValue("imageOrderDtoList", reordered, { shouldValidate: true });
     },
-    [imageFields, deleteImageIdList, replaceImages, setValue]
+    [addImageIdList, deleteImageIdList, imageFields, setValue]
   );
 
   // --- Tiptap handlers ---
@@ -442,17 +469,22 @@ export default function GeneralProductForm({
             />
           </InputFieldGroup>
           <InputFieldGroup label="상품 이미지" divider>
-            <MultiFileUpload
-              uploadApiUrl="/api/admin/items/image/upload"
-              initialImages={imageFields.map((f) => ({
+            <MultiFileUploader
+              maxFiles={10}
+              // 기존에 불러온 이미지도 보여주기 위해 id,url,filename 형태로 넘깁니다.
+              initialFiles={imageFields.map((f) => ({
                 id: f.id,
-                filename: "",
+                filename: f.url.split("/").pop() || "",
                 url: f.url,
               }))}
-              onFilesChange={handleProductImagesChange}
-              handleRemove={handleProductImageRemove}
-              title="상품 이미지 업로드"
-              subTitle="최대 10장까지 등록 가능합니다."
+              onChange={handleProductImagesChange}
+              onRemove={handleProductImageRemove}
+              width={100}
+              height={100}
+              captions={[
+                "* 이미지는 최소 1장, 최대 10장까지 등록 가능합니다.",
+                "* 파일 크기는 10MB 이하, jpg/jpeg/png/gif만 허용됩니다.",
+              ]}
             />
           </InputFieldGroup>
           <InputFieldGroup label="상세 내용" align="start" divider={false}>

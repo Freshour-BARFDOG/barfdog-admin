@@ -34,7 +34,7 @@ export default function RawProductEdit({ recipeId }: Props) {
     mode: "all",
   });
 
-  const { mutate: updateRecipe } = useUpdateRecipe();
+  const { mutate: updateRecipe } = useUpdateRecipe(recipeId);
   const [surveyFile, setSurveyFile] = useState<File | null>(null);
   const [recipeFile, setRecipeFile] = useState<File | null>(null);
 

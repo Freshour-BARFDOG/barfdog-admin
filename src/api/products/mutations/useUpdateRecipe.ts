@@ -4,7 +4,10 @@ import { RecipeRequest } from "@/types/products";
 import { updateRecipe } from "../products";
 import { queryKeys } from "@/constants/queryKeys";
 
-export function useUpdateRecipe(mutationOptions?: UseMutationCustomOptions) {
+export function useUpdateRecipe(
+  recipeId: number,
+  mutationOptions?: UseMutationCustomOptions
+) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -21,6 +24,13 @@ export function useUpdateRecipe(mutationOptions?: UseMutationCustomOptions) {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: [queryKeys.PRODUCTS.BASE, queryKeys.PRODUCTS.GET_RECIPE_LIST],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: [
+          queryKeys.PRODUCTS.BASE,
+          queryKeys.PRODUCTS.GET_RECIPE_DETAIL,
+          recipeId,
+        ],
       });
     },
     ...mutationOptions,

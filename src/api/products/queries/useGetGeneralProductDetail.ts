@@ -15,6 +15,7 @@ export function useGetGeneralProductDetail(
       itemId,
     ],
     queryFn: () => getGeneralProductDetail(itemId),
+    staleTime: 0,
     ...queryOptions,
   });
 }

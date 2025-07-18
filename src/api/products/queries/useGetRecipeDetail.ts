@@ -9,7 +9,11 @@ export function useGetRecipeDetail(
   queryOptions?: UseSuspenseQueryCustomOptions<RecipeDetailResponse>
 ) {
   return useSuspenseQuery<RecipeDetailResponse>({
-    queryKey: [queryKeys.PRODUCTS.BASE, queryKeys.PRODUCTS.GET_RECIPE_DETAIL],
+    queryKey: [
+      queryKeys.PRODUCTS.BASE,
+      queryKeys.PRODUCTS.GET_RECIPE_DETAIL,
+      recipeId,
+    ],
     queryFn: () => getRecipeDetail(recipeId),
     ...queryOptions,
   });

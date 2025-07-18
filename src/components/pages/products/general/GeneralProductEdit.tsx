@@ -29,7 +29,7 @@ export default function GeneralProductEdit({
   console.log("data", data);
 
   const { addToast } = useToastStore();
-  const { mutate } = useUpdateGeneralProduct();
+  const { mutate } = useUpdateGeneralProduct(itemId);
   const { data: allianceData } = useGetAllianceList();
 
   const defaultValues = useMemo<GeneralProductFormValues>(() => {
