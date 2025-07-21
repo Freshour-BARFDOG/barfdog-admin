@@ -58,6 +58,8 @@ const queryKeys = {
     GET_RECOMMEND_ARTICLE: "getRecommendArticle",
     GET_EVENT_LIST: "getEventList",
     GET_EVENT_DETAIL: "getEventDetail",
+    GET_INQUIRY_LIST: "getInquiryList",
+    GET_INQUIRY_DETAIL: "getInquiryDetail",
   }
 } as const;
 
