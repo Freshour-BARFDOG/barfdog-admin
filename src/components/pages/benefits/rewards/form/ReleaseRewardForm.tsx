@@ -12,7 +12,7 @@ import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTar
 import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
 import Text from "@/components/common/text/Text";
 import InputField from "@/components/common/inputField/InputField";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import Form from "@/components/common/form/Form";
 import { useToastStore } from "@/store/useToastStore";
 import { defaultValues, getRewardSchemaByTarget } from "@/utils/validation/benefits/reward/releaseReward";

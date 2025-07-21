@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { TableColumn } from "@/types/common";
 import Text from "@/components/common/text/Text";
 import Divider from "@/components/common/divider/Divider";
@@ -17,6 +17,7 @@ interface TableSectionProps<T> {
 	action?: ReactNode;
 	className?: string;
 	padding?: 'none' | 20 | 40;
+	getRowStyle?: (row: T, rowIndex: number) => CSSProperties;
 }
 
 export default function TableSection<T>({
@@ -30,6 +31,7 @@ export default function TableSection<T>({
 	action,
 	className = '',
 	padding = 40,
+	getRowStyle,
 }: TableSectionProps<T>) {
 	return (
 		<Card shadow='none' padding={padding} align='start' gap={16} className={className}>
@@ -41,7 +43,7 @@ export default function TableSection<T>({
 			)}
 			{action && action}
 			<div style={{ width: '100%' }}>
-				<Table data={data ?? []} columns={columns} emptyText={emptyText} />
+				<Table data={data ?? []} columns={columns} emptyText={emptyText} getRowStyle={getRowStyle} />
 				{onPageChange &&
 					<Pagination currentPage={page} onPageChange={onPageChange} totalPages={totalPages} />
 				}

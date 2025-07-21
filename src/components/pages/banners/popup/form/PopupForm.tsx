@@ -8,7 +8,7 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import Text from "@/components/common/text/Text";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { PopupFormValues } from "@/types/banners";

@@ -6,7 +6,7 @@ import Card from "@/components/common/card/Card";
 import Form from "@/components/common/form/Form";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import PreviewBanner from "@/components/pages/banners/top/previewBanner/PreviewBanner";
 import SimpleTextEditor from "@/components/pages/banners/top/simpleTextEditor/SimpleTextEditor";
 import InputField from "@/components/common/inputField/InputField";

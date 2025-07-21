@@ -137,7 +137,7 @@ export default function PromotionList() {
 			key: 'id',
 			header: '상세보기',
 			render: (row: PromotionListData) =>
-				<Link href={`/promotion/${row.promotionId}`} target="_blank">
+				<Link href={`/promotions/${row.promotionId}`} target="_blank">
 					<Text type="body3" color="red">상세보기</Text>
 				</Link>
 		},

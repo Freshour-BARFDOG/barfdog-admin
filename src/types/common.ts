@@ -19,6 +19,7 @@ interface TableColumn<T> {
   key: keyof T | string;
   header: ReactNode | string;
   width?: string | number;
+  backgroundColor?: 'gray0' | 'gray50';
   render?: (value: T, index: number) => ReactNode;
 }
 

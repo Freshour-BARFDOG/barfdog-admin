@@ -7,7 +7,7 @@ import Card from "@/components/common/card/Card";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { useContentEditor } from "@/hooks/useContentEditor";
 import { NoticeFormValues, UploadResponse } from "@/types/community";
