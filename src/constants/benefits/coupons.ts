@@ -1,6 +1,7 @@
 import { OLDEST_DATE, TODAY } from "@/constants/common";
 import { ReleaseCouponTarget } from "@/types/benefits/coupons";
 import { SelectOption } from "@/types/common";
+import { toLabelValueList } from "@/utils/toLabelValueList";
 
 const COUPON_TYPE = {
 	AUTO_PUBLISHED: '자동 발행',
@@ -9,7 +10,7 @@ const COUPON_TYPE = {
 	PROMOTION_PUBLISHED: '프로모션',
 } as const;
 
-const COUPON_TYPE_LIST = Object.entries(COUPON_TYPE).map(([value, label]) => ({label, value}));
+const COUPON_TYPE_LIST = toLabelValueList(COUPON_TYPE);
 
 const COUPON_LIST_INITIAL_SEARCH_VALUES = {
 	keyword: '',
@@ -29,7 +30,7 @@ const MEMBER_COUPON_ROLE = {
 	USER: '일반',
 } as const;
 
-const MEMBER_COUPON_ROLE_LIST = Object.entries(MEMBER_COUPON_ROLE).map(([value, label]) => ({label, value}));
+const MEMBER_COUPON_ROLE_LIST = toLabelValueList(MEMBER_COUPON_ROLE);
 
 const MEMBER_COUPON_SEARCH_CATEGORY = [
 	{ label: '아이디', value: 'memberEmail' },
@@ -63,14 +64,14 @@ const RELEASE_COUPON_TYPE = {
 	GENERAL_PUBLISHED: '일반쿠폰',
 } as const;
 
-const RELEASE_COUPON_TYPE_LIST = Object.entries(RELEASE_COUPON_TYPE).map(([value, label]) => ({label, value}));
+const RELEASE_COUPON_TYPE_LIST = toLabelValueList(RELEASE_COUPON_TYPE);
 // --------------------------------------------------
 
 const CREATE_COUPON_TYPE_LIST = Object.entries(COUPON_TYPE)
 	.filter(([key]) => key !== 'AUTO_PUBLISHED')
 	.map(([value, label]) => ({ label, value }));
 
-const CREATE_COUPON_TARGET_LIST = Object.entries(COUPON_TARGET).map(([value, label]) => ({label, value}));
+const CREATE_COUPON_TARGET_LIST = toLabelValueList(COUPON_TARGET);
 
 export {
 	COUPON_TYPE,

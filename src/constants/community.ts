@@ -1,4 +1,5 @@
 import { OLDEST_DATE, TODAY } from "@/constants/common";
+import { toLabelValueList } from "@/utils/toLabelValueList";
 
 const ARTICLE_CATEGORY = {
 	NUTRITION: '영양',
@@ -6,9 +7,7 @@ const ARTICLE_CATEGORY = {
 	LIFE: '생애',
 } as const;
 
-const ARTICLE_CATEGORY_LIST = (Object.entries(ARTICLE_CATEGORY)).map(
-	([value, label]) => ({ label, value })
-);
+const ARTICLE_CATEGORY_LIST = toLabelValueList(ARTICLE_CATEGORY);
 
 const INQUIRY_STATUS = {
 	ALL: '전체',
@@ -17,9 +16,7 @@ const INQUIRY_STATUS = {
 	MULTIPLE_ANSWERED: '추가답변',
 }
 
-const INQUIRY_STATUS_LIST = (Object.entries(INQUIRY_STATUS)).map(
-	([value, label]) => ({ label, value })
-);
+const INQUIRY_STATUS_LIST = toLabelValueList(INQUIRY_STATUS);
 
 const INQUIRY_CATEGORY = {
 	GENERAL: '일반문의',
@@ -27,9 +24,7 @@ const INQUIRY_CATEGORY = {
 	ERROR_REPORTING: '오류보고',
 }
 
-const INQUIRY_CATEGORY_LIST = (Object.entries(INQUIRY_CATEGORY)).map(
-	([value, label]) => ({ label, value })
-);
+const INQUIRY_CATEGORY_LIST = toLabelValueList(INQUIRY_CATEGORY);
 
 const INQUIRY_LIST_INITIAL_SEARCH_VALUES = {
 	type: 'title',

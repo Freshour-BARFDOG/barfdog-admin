@@ -1,3 +1,5 @@
+import { toLabelValueList } from "@/utils/toLabelValueList";
+
 const BANNER_TARGET = {
 	ALL: '전체',
 	SUBSCRIBER: '구독회원',
@@ -5,9 +7,7 @@ const BANNER_TARGET = {
 	GUEST: '비회원',
 } as const;
 
-const BANNER_TARGET_LIST = (Object.entries(BANNER_TARGET)).map(
-	([value, label]) => ({ label, value })
-);
+const BANNER_TARGET_LIST = toLabelValueList(BANNER_TARGET);
 
 const POPUP_POSITION = {
 	LEFT: '왼쪽',
@@ -15,9 +15,7 @@ const POPUP_POSITION = {
 	RIGHT: '오른쪽',
 } as const;
 
-const POPUP_POSITION_LIST = (Object.entries(POPUP_POSITION)).map(
-	([value, label]) => ({ label, value })
-);
+const POPUP_POSITION_LIST = toLabelValueList(POPUP_POSITION);
 
 export {
 	BANNER_TARGET,

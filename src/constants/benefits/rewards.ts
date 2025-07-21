@@ -1,6 +1,7 @@
 import { OLDEST_DATE, TODAY } from "@/constants/common";
 import { RewardTarget } from "@/types/benefits/rewards";
 import { SelectOption } from "@/types/common";
+import { toLabelValueList } from "@/utils/toLabelValueList";
 
 const REWARD_STATUS = {
 	SAVED: '+',
@@ -18,7 +19,7 @@ const REWARD_TYPE = {
 	RECEIVE: '수신동의',
 } as const;
 
-const REWARD_TYPE_LIST = Object.entries(REWARD_TYPE).map(([value, label]) => ({label, value}));
+const REWARD_TYPE_LIST = toLabelValueList(REWARD_TYPE);
 
 const REWARD_LIST_INITIAL_SEARCH_VALUES = {
 	email: '',
