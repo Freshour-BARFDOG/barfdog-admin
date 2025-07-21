@@ -11,7 +11,7 @@ import SelectBox from "@/components/common/selectBox/SelectBox";
 import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTarget";
 import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
 import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import Form from '@/components/common/form/Form';
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/benefits/coupons";

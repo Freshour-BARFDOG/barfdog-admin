@@ -24,7 +24,7 @@ export default function NoticeList() {
 		type: 'notices',
 		key: 'queryBlogsAdminDtoList',
 		page,
-		size: PAGE_SIZE.COMMUNITY.NOTICE,
+		size: PAGE_SIZE.COMMON,
 		queryKey: [
 			queryKeys.COMMUNITY.BASE,
 			queryKeys.COMMUNITY.GET_NOTICE_LIST,

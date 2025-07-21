@@ -2,11 +2,21 @@ import { AxiosInstance } from "axios";
 import axiosInstance from "@/api/axiosInstance";
 import {
 	ArticleDetailResponse,
-	CommunityType, EventDetailResponse, EventImageType,
-	NoticeDetailResponse, RecommendArticleBody,
+	CommunityType,
+	EventDetailResponse,
+	EventImageType,
+	InquiryAnswerData,
+	InquiryQuestionData, InquiryDetailData,
+	InquiryListResponse,
+	InquiryListSearchParams,
+	NoticeDetailResponse,
+	RecommendArticleBody,
 	RecommendArticleListData,
 	RecommendArticleResponse
 } from "@/types/community";
+import { cleanQueryParams } from "@/utils/cleanQueryParams";
+import { INQUIRY_LIST_INITIAL_SEARCH_VALUES } from "@/constants/community";
+import { PAGE_SIZE } from "@/constants/common";
 
 // 블로그 명칭 convert
 const convertArticleToBlogType = (type: CommunityType) => {
@@ -72,7 +82,7 @@ const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'events'
 
 // 등록
 const createCommunity = async (
-	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article' | 'questions'>,
 	body: object,
 ) => {
 	const url = `/api/admin/${convertArticleToBlogType(type)}`;
@@ -195,6 +205,103 @@ const uploadEventImage = async (type: EventImageType, file: File | null) => {
 	}
 };
 
+const getInquiryList = async (
+	page: number,
+	searchParams: InquiryListSearchParams = INQUIRY_LIST_INITIAL_SEARCH_VALUES,
+	instance: AxiosInstance = axiosInstance,
+): Promise<InquiryListResponse> => {
+	const filtered = cleanQueryParams(searchParams);
+
+	const query = new URLSearchParams(filtered).toString();
+
+	try {
+		const { data } = await instance.get(`/api/admin/questions?page=${page}&size=${PAGE_SIZE.COMMON}&${query}`);
+		return {
+			page: data.page,
+			inquiryList: data?._embedded?.questionListSideAdminList || [],
+		};
+	} catch (error) {
+		throw error;
+	}
+};
+
+const getInquiryDetail = async <T extends InquiryQuestionData | InquiryAnswerData> (
+	type: 'question' | 'answer',
+	id: number,
+	instance: AxiosInstance = axiosInstance,
+): Promise<T> => {
+	try {
+		const { data } = await instance.get(`/api/admin/questions/${type === 'question' ? 'member' : 'admin'}/${id}`);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const getInquiryDetailWithAnswers = async (
+	inquiryId: number,
+	instance: AxiosInstance = axiosInstance
+): Promise<InquiryDetailData> => {
+	// 질문 상세 먼저 불러옴
+	const question = await getInquiryDetail<InquiryQuestionData>('question', inquiryId, instance);
+
+	// answerIdList가 없다면 빈 배열
+	const answerIds = (question as InquiryQuestionData).answerIdList ?? [];
+
+	// 모든 답변을 병렬 요청
+	const answers = await Promise.all(
+		answerIds.map(id => getInquiryDetail<InquiryAnswerData>('answer', id, instance))
+	);
+	
+	return { question, answers };
+};
+
+
+const downloadFile = async (
+	fileId: number,
+	fileName: string,
+) => {
+	// base64 문자열을 반환하는 API 호출
+	const response = await axiosInstance.get(`/api/questions/file/${fileId}`);
+
+	// base64 데이터 확인 (예: { imageData: "iVBORw0KGgoAAAANSUhEUgAA..." })
+	const base64Data = response.data?.imageData;
+	if (!base64Data) return;
+
+	// data URL로 변환
+	const downloadUrl = `data:image/png;base64,${base64Data}`;
+
+	// 다운로드 트리거
+	const link = document.createElement('a');
+	link.href = downloadUrl;
+	link.setAttribute('download', fileName);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+};
+
+const uploadCreateAnswerImage = async (file: File | null) => {
+	const formData = createUploadFile(file);
+	const url = `/api/admin/questions/file`;
+	try {
+		const { data } = await axiosInstance.post(url, formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+const deleteInquiry = async (id: number) => {
+	try {
+		const { data } = await axiosInstance.put(`/api/admin/questions`, { id });
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export {
 	uploadCommunityImage,
 	getCommunityList,
@@ -208,4 +315,8 @@ export {
 	updateRecommendArticle,
 	getEventDetail,
 	uploadEventImage,
+	getInquiryList,
+	downloadFile,
+	uploadCreateAnswerImage,
+	deleteInquiry,
 }

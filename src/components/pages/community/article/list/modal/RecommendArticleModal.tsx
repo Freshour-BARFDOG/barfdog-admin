@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { commonWrapper } from "@/styles/common.css";
 import Text from "@/components/common/text/Text";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import FullModal from "@/components/common/modal/fullModal/FullModal";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import { queryKeys } from "@/constants/queryKeys";

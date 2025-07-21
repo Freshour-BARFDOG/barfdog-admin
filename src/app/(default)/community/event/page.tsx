@@ -15,7 +15,7 @@ export default async function EventPage() {
     queryKey: [queryKeys.COMMUNITY.BASE, queryKeys.COMMUNITY.GET_EVENT_LIST, 0],
     type: 'events',
     key: 'queryEventsAdminDtoList',
-    size: PAGE_SIZE.COMMUNITY.EVENT,
+    size: PAGE_SIZE.COMMON,
   });
   const dehydrateState = dehydrate(queryClient);
   return (

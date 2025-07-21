@@ -29,7 +29,6 @@ export default function ImageCarousel({
     width,
     height,
   };
-  console.log('imageList', imageList)
   return (
     <Swiper slidesPerView="auto" className={previewSlider}>
       {imageList.map((preview, index) => {

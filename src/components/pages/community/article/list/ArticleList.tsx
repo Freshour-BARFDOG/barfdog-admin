@@ -28,7 +28,7 @@ export default function ArticleList() {
 		type: 'article',
 		key: 'queryBlogsAdminDtoList',
 		page,
-		size: PAGE_SIZE.COMMUNITY.ARTICLE,
+		size: PAGE_SIZE.COMMON,
 		queryKey: [
 			queryKeys.COMMUNITY.BASE,
 			queryKeys.COMMUNITY.GET_ARTICLE_LIST,
