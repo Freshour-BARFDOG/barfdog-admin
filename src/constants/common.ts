@@ -12,11 +12,6 @@ const PAGE_SIZE = {
 		REWARD: 10,
 		PROMOTION: 10,
 	},
-	COMMUNITY: {
-		NOTICE: 10,
-		ARTICLE: 10,
-		EVENT: 10,
-	}
 };
 
 const OLDEST_DATE = format(new Date("2000-01-01"), "yyyy-MM-dd");

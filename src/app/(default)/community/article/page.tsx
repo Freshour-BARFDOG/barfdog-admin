@@ -15,7 +15,7 @@ export default async function ArticlePage() {
     queryKey: [queryKeys.COMMUNITY.BASE, queryKeys.COMMUNITY.GET_ARTICLE_LIST, 0],
     type: 'article',
     key: 'queryBlogsAdminDtoList',
-    size: PAGE_SIZE.COMMUNITY.ARTICLE,
+    size: PAGE_SIZE.COMMON,
   });
   const dehydrateState = dehydrate(queryClient);
   return (

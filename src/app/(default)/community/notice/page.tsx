@@ -15,7 +15,7 @@ export default async function NoticePage() {
     queryKey: [queryKeys.COMMUNITY.BASE, queryKeys.COMMUNITY.GET_NOTICE_LIST, 0],
     type: 'notices',
     key: 'queryBlogsAdminDtoList',
-    size: PAGE_SIZE.COMMUNITY.NOTICE,
+    size: PAGE_SIZE.COMMON,
   });
   const dehydrateState = dehydrate(queryClient);
   return (

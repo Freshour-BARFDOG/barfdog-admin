@@ -25,7 +25,7 @@ export default function EventList() {
 		type: 'events',
 		key: 'queryEventsAdminDtoList',
 		page,
-		size: PAGE_SIZE.COMMUNITY.EVENT,
+		size: PAGE_SIZE.COMMON,
 		queryKey: [
 			queryKeys.COMMUNITY.BASE,
 			queryKeys.COMMUNITY.GET_EVENT_LIST,
