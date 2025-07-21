@@ -266,7 +266,7 @@ type OrderStatus =
 type OrderTypeResponse = "general" | "subscribe";
 type OrderTypeRequest = "ALL" | "GENERAL" | "SUBSCRIBE";
 type PaymentMethod = "CREDIT_CARD" | "NAVER_PAY" | "KAKAO_PAY";
-type ProductType = Exclude<OrderTypeRequest, "ALL">;
+type PurchaseType = Exclude<OrderTypeRequest, "ALL">;
 
 export type {
   OrderStatus,
@@ -292,5 +292,5 @@ export type {
   SalesRecipient,
   UpdateSalesDeliveryRequest,
   DogDto,
-  ProductType,
+  PurchaseType,
 };

@@ -5,7 +5,7 @@ import {
   OrderTypeRequest,
   OrderTypeResponse,
   PaymentMethod,
-  ProductType,
+  PurchaseType,
 } from "@/types/sales";
 import { TODAY } from "./common";
 
@@ -70,7 +70,7 @@ const ORDER_TYPE_LABEL_MAP: Record<OrderTypeResponse, string> = {
   subscribe: "구독",
 };
 
-const PRODUCT_TYPE: Record<ProductType, string> = {
+const PRODUCT_TYPE: Record<PurchaseType, string> = {
   GENERAL: "general",
   SUBSCRIBE: "subscribe",
 };

@@ -62,7 +62,11 @@ const queryKeys = {
     GET_RECOMMEND_ARTICLE: "getRecommendArticle",
     GET_EVENT_LIST: "getEventList",
     GET_EVENT_DETAIL: "getEventDetail",
-  }
+  },
+  SUBSCRIBE: {
+    BASE: "subscribe",
+    GET_SUBSCRIBE_HISTORY: "getSubscribeHistory",
+  },
 } as const;
 
 export { queryKeys };

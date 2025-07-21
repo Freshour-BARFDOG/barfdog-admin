@@ -1,4 +1,3 @@
-import { label } from "@/components/common/detailTable/DetailTable.css";
 import { SelectOption } from "@/types/common";
 import {
   GeneralProductCreateType,

@@ -150,10 +150,16 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: Dog,
   },
   {
-    key: "subscription",
-    label: "구독 히스토리",
-    href: "/subscription",
+    key: "subscribe",
+    label: "구독 관리",
     icon: CalendarCheck,
+    children: [
+      {
+        key: "history",
+        label: "히스토리",
+        href: "/subscribe/history",
+      },
+    ],
   },
   {
     key: "banners",
