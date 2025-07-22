@@ -115,7 +115,7 @@ interface AllianceDetailResponse {
 
 interface CreateAllianceEvent {
 	allianceEventName: string;
-	allianceId: string;
+	allianceId: number;
 }
 
 export type {
