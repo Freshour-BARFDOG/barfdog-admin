@@ -36,7 +36,7 @@ export default function CreatePromotion() {
 			},
 			onError: (error) => {
 				console.log(error);
-				addToast('프로모션 등록에 실패했습니다.\n관리자에게의 문의해주세요.')
+				addToast('프로모션 등록에 실패했습니다.\n관리자에게 문의해주세요.')
 			}
 		})
 	};

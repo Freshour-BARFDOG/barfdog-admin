@@ -27,12 +27,13 @@ import SearchIcon from "/public/images/icons/search.svg";
 import InputClearIcon from "/public/images/icons/input_clear.svg";
 import VisibilityIcon from "/public/images/icons/visibility.svg";
 import VisibilityOffIcon from "/public/images/icons/visibility_off.svg";
-import ErrorIcon from "/public/images/icons/close_small.svg";
 import SvgIcon from "@/components/common/svgIcon/SvgIcon";
 import Button from "@/components/common/button/Button";
 import InputLabel from "@/components/common/inputLabel/InputLabel";
 import Text from "@/components/common/text/Text";
 import { mergeRefs } from "@/utils/mergeRefs";
+import { X } from "lucide-react";
+import { themeVars } from "@/styles/theme.css";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
@@ -225,7 +226,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         </div>
         {error && (
           <div className={inputStateTextStyle}>
-            <SvgIcon src={ErrorIcon} color="red" size={18} />
+            <X color={themeVars.colors.red.red} size={16} />
             <Text type="caption" color="red" align="left">
               {error}
             </Text>
@@ -233,7 +234,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         )}
         {success && (
           <div className={inputStateTextStyle}>
-            <SvgIcon src={CheckIcon} color="blue500" size={18} />
+            <SvgIcon src={CheckIcon} color="blue500" size={16} />
             <Text type="caption" color="blue500" align="left">
               {success}
             </Text>

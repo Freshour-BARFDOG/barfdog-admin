@@ -1,0 +1,23 @@
+import { OLDEST_DATE, TODAY } from "@/constants/common";
+
+const INITIAL_ALLIANCE_SEARCH_VALUES = {
+	from: OLDEST_DATE,
+	to: TODAY,
+}
+
+const INITIAL_MANAGEMENT_SEARCH_VALUES = {
+	allianceName: '',
+}
+
+const PAYMENT_API_KEY = 'SycrZhi9CuVrHei';
+
+const ALLIANCE_NAMES = {
+	cb: '콕뱅크',
+}
+
+export {
+	INITIAL_ALLIANCE_SEARCH_VALUES,
+	INITIAL_MANAGEMENT_SEARCH_VALUES,
+	PAYMENT_API_KEY,
+	ALLIANCE_NAMES,
+}

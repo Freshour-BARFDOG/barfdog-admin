@@ -69,6 +69,13 @@ const queryKeys = {
     BASE: "subscribe",
     GET_SUBSCRIBE_HISTORY: "getSubscribeHistory",
   },
+  ALLIANCE: {
+    BASE: "alliance",
+    GET_ALLIANCE_MEMBER_LIST: "getAllianceMemberList",
+    GET_ALLIANCE_SALES_LIST: "getAllianceSalesList",
+    GET_ALLIANCE_MANAGEMENT: "getAllianceManagement",
+    GET_ALLIANCE_DETAIL: "getAllianceManagement",
+  },
   
 } as const;
 
