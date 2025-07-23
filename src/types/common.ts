@@ -19,7 +19,7 @@ interface TableColumn<T> {
   key: keyof T | string;
   header: ReactNode | string;
   width?: string | number;
-  backgroundColor?: 'gray0' | 'gray50';
+  backgroundColor?: "gray0" | "gray50";
   render?: (value: T, index: number) => ReactNode;
 }
 
@@ -101,6 +101,7 @@ interface TableItem {
   value: React.ReactNode;
   /** true 면 해당 페어(dt+dd)를 전체 폭으로 차지 */
   fullWidth?: boolean;
+  align?: "center" | "start";
 }
 export type {
   MenuItem,
