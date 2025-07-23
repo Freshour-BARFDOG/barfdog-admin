@@ -3,14 +3,14 @@ import { AxiosInstance } from "axios";
 import { cleanQueryParams } from "@/utils/cleanQueryParams";
 import { INITIAL_ALLIANCE_SEARCH_VALUES, INITIAL_COUPON_SEARCH_VALUES, PAYMENT_API_KEY } from "@/constants/alliance";
 import {
-	AllianceCouponDetailResponse,
+	AllianceCouponDetailResponse, AllianceCouponFormValues,
 	AllianceCouponListResponse,
-	AllianceCouponListSearchParams,
+	AllianceCouponListSearchParams, AllianceCouponSelectOption,
 	AllianceDetailResponse,
 	AllianceListSearchParams, AllianceManagementData, AllianceManagementFormValues, AllianceManagementResponse,
 	AllianceManagementSearchParams,
 	AllianceMemberListResponse,
-	AllianceMemberSalesData, CreateAllianceEvent, ExcelDownloadAllianceCoupon, ExtendedAllianceData
+	AllianceMemberSalesData, CreateAllianceEvent, ExcelDownloadAllianceCoupon, ExcelDownloadCreateAllianceCoupon, ExtendedAllianceData
 } from "@/types/alliance";
 import { PAGE_SIZE } from "@/constants/common";
 
@@ -219,6 +219,51 @@ const excelDownloadAllianceCoupon = async (body: ExcelDownloadAllianceCoupon) =>
 	}
 }
 
+const getAllianceEventList = async (instance: AxiosInstance = axiosInstance): Promise<AllianceCouponSelectOption[]> => {
+	try {
+		const { data } = await instance.get(`/api/admin/alliance/event`);
+		return data?._embedded?.allianceEventResponseList.map((item: ExtendedAllianceData) => ({
+			label: item.allianceName,
+			value: item.allianceId,
+			eventInfoList: item?.eventInfos.map(event => ({ label: event.eventName, value: event.allianceEventId })) || [],
+		})) || [];
+	} catch (error) {
+		throw error;
+	}
+}
+
+const createAllianceCoupon = async (body: AllianceCouponFormValues) => {
+	try {
+		const { data } = await axiosInstance.post('/api/admin/coupons/alliance/create', body, {
+			timeout: 50000
+		});
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
+const excelDownloadCreateAllianceCoupon = async (body: ExcelDownloadCreateAllianceCoupon ) => {
+	const { bundle, couponPublishCount, useExpiredDate, useStartDate } = body;
+	const query = new URLSearchParams({
+		bundle,
+		couponPublishCount: String(couponPublishCount),
+		useExpiredDate: useExpiredDate,
+		useStartDate,
+	}).toString();
+
+	const { data } = await axiosInstance.post(`/api/admin/coupons/excel-download?${query}`, undefined, {
+		responseType: 'blob',
+		timeout: 50000
+	});
+
+	if (data && data instanceof Blob) {
+		return data;
+	} else {
+		console.error('다운로드 응답이 유효하지 않습니다.');
+	}
+}
+
 export {
 	getAllianceMemberList,
 	getAllianceSalesList,
@@ -234,4 +279,7 @@ export {
 	getAllianceCouponDetail,
 	deleteAllianceCouponList,
 	excelDownloadAllianceCoupon,
+	getAllianceEventList,
+	createAllianceCoupon,
+	excelDownloadCreateAllianceCoupon,
 }

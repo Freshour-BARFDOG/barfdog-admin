@@ -1,5 +1,5 @@
 'use client';
-import { commonWrapper } from "@/styles/common.css";
+import { commonWrapper, fullWidth } from "@/styles/common.css";
 import { format } from "date-fns";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
@@ -83,7 +83,7 @@ export default function AllianceCouponList() {
 				onSubmit={onSubmit}
 				onReset={onReset}
 			/>
-			<div>
+			<div className={fullWidth}>
 				<AllianceCouponTab
 					status={searchValues.status}
 					onChangeStatus={(value) => onChangeAndSubmit('status', value)}

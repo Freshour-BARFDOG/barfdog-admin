@@ -1,4 +1,4 @@
-import { GradeType, Page } from "@/types/common";
+import { DiscountUnitType, GradeType, Page } from "@/types/common";
 import { OrderStatus } from "@/types/sales";
 import { ORDER_TYPE_LABEL_MAP } from "@/constants/sales";
 import { ALLIANCE_COUPON_STATUS, ALLIANCE_COUPON_TARGET, ALLIANCE_COUPON_SEARCH_TYPE } from "@/constants/alliance";
@@ -182,6 +182,38 @@ interface ExcelDownloadAllianceCoupon {
 	couponStatus: AllianceCouponStatus;
 }
 
+interface AllianceCouponFormValues {
+	allianceId: number;
+	allianceEventId: number;
+	name: string;
+	description: string;
+	couponTarget: AllianceCouponTarget;
+	discountDegree: number;
+	discountType: DiscountUnitType;
+	availableMaxDiscount: number;
+	availableMinPrice: number;
+	createCouponCount: number;
+	codeLength: number;
+	useStartDate: string;
+	useExpiredDate: string;
+}
+
+interface AllianceCouponSelectOption {
+	label: string;
+	value: number;
+	eventInfoList: {
+		label: string;
+		value: number;
+	}[];
+}
+
+interface ExcelDownloadCreateAllianceCoupon {
+	bundle: string;
+	useStartDate: string;
+	useExpiredDate: string;
+	couponPublishCount: number;
+}
+
 export type {
 	AllianceListSearchParams,
 	AllianceMemberListData,
@@ -205,4 +237,7 @@ export type {
 	AllianceCouponListResponse,
 	AllianceCouponDetailResponse,
 	ExcelDownloadAllianceCoupon,
+	AllianceCouponFormValues,
+	AllianceCouponSelectOption,
+	ExcelDownloadCreateAllianceCoupon,
 }

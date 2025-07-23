@@ -88,7 +88,6 @@ export default function AllianceManagementList() {
 					value={allSelected}
 					isChecked={allSelected}
 					onToggle={(value) => {
-						console.log('value1', value)
 						selectAll(!value)
 					}}
 				/>

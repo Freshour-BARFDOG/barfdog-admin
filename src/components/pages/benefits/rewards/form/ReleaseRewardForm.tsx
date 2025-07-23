@@ -1,5 +1,4 @@
 'use client';
-import * as styles from "@/components/pages/benefits/Benefits.css";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +9,7 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
 import GroupTarget from "@/components/pages/benefits/common/groupTarget/GroupTarget";
 import PersonalTarget from "@/components/pages/benefits/common/personalTarget/PersonalTarget";
-import Text from "@/components/common/text/Text";
+import LabeledInput from "@/components/common/labeledInput/LabeledInput";
 import InputField from "@/components/common/inputField/InputField";
 import FormControls from "@/components/common/formControls/FormControls";
 import Form from "@/components/common/form/Form";
@@ -134,19 +133,17 @@ export default function ReleaseRewardForm() {
 							<InputFieldGroup
 								label='발행 적립금'
 							>
-								<div className={styles.benefitInputBox}>
-									<div className={styles.benefitInput({})}>
-										<InputField
-											value={formatNumberWithComma(field.value)}
-											onChange={(e) => {
-												const raw = unformatCommaNumber(e.target.value);
-												field.onChange(raw);
-											}}
-											name={field.name}
-										/>
-									</div>
-									<Text type='body3'>원 이상</Text>
-								</div>
+								<LabeledInput label='원 이상'>
+									<InputField
+										width={170}
+										value={formatNumberWithComma(field.value)}
+										onChange={(e) => {
+											const raw = unformatCommaNumber(e.target.value);
+											field.onChange(raw);
+										}}
+										name={field.name}
+									/>
+								</LabeledInput>
 							</InputFieldGroup>
 						)}
 					/>

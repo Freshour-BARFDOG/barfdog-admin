@@ -50,14 +50,15 @@ export default function AddEventInput({
           value={eventValue}
           onChange={handleChange}
           width={350}
-          onKeyUp={(e) => {
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
+              e.preventDefault();
               if (!e.currentTarget.value) {
                 setEventError('입력하지 않은 항목이 있습니다.');
                 return;
               }
               handleAddEventName();
-            }
+            }            
           }}
         />
         <Button size='sm' variant='outline' type='assistive' onClick={handleAddEventName}>

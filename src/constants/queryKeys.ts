@@ -77,6 +77,7 @@ const queryKeys = {
     GET_ALLIANCE_DETAIL: "getAllianceDetail",
     GET_ALLIANCE_COUPON_LIST: "getAllianceCouponList",
     GET_ALLIANCE_COUPON_DETAIL: "getAllianceCouponDetail",
+    GET_ALLIANCE_EVENT_LIST: "getAllianceEventList",
   },
   
 } as const;

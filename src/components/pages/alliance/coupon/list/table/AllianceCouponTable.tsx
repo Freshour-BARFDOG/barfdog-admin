@@ -85,9 +85,9 @@ export default function AllianceCouponTable({
 				const filename = `바프독_${row.couponName}_${formatStartDate}_${formatEndDate}_${row.couponCount.toLocaleString()}건.xlsx`;
 				downloadBlobFile(data as Blob, filename);
 			},
-			onError: (err) => {
+			onError: (error) => {
 				addToast('엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.')
-				console.log(err)
+				console.log(error)
 			}
 		})
 	}
