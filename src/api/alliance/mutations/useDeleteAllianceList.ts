@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { UseMutationCustomOptions } from "@/types/common";
-import { deleteAllianceEventIdList } from "@/api/alliance/alliance";
+import { deleteAllianceIdList } from "@/api/alliance/alliance";
 
 export function useDeleteAllianceList(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
-		mutationFn: ({ allianceEventIdList }: {
-			allianceEventIdList: number[],
-		}) => deleteAllianceEventIdList(allianceEventIdList),
+		mutationFn: ({ allianceIdList }: {
+			allianceIdList: number[],
+		}) => deleteAllianceIdList(allianceIdList),
 		...mutationOptions,
 	})
 }

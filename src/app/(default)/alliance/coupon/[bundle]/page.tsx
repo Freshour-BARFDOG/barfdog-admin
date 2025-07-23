@@ -3,26 +3,25 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
-import AllianceDetail from "@/components/pages/alliance/management/detail/AllianceDetail";
-import { prefetchAllianceDetail } from "@/api/alliance/queries/prefetchAllianceDetail";
+import AllianceCouponDetail from "@/components/pages/alliance/coupon/detail/AllianceCouponDetail";
+import { prefetchAllianceCouponDetail } from "@/api/alliance/queries/prefetchAllianceCouponDetail";
 
 interface AllianceDetailPageProps {
   params: {
-    allianceId: string;
+    bundle: string;
   }
 }
 
-export default async function AllianceDetailPage({ params }: AllianceDetailPageProps) {
-  const allianceId = Number(params.allianceId);
+export default async function AllianceCouponDetailPage({ params }: AllianceDetailPageProps) {
   const queryClient = new QueryClient();
-  await prefetchAllianceDetail(allianceId, queryClient)
+  await prefetchAllianceCouponDetail(params.bundle, queryClient)
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>
-      <ErrorBoundary fallback={<div>제휴사 정보가 없습니다.</div>}>
+      <ErrorBoundary fallback={<div>쿠폰 상세 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
-          <Wrapper title='제휴사 상세'>
-            <AllianceDetail allianceId={allianceId} />
+          <Wrapper title='쿠폰 상세'>
+            <AllianceCouponDetail bundle={params.bundle} />
           </Wrapper>
         </Suspense>
       </ErrorBoundary>

@@ -19,6 +19,7 @@ interface TableSectionProps<T> {
 	padding?: 'none' | 20 | 40;
 	getRowStyle?: (row: T, rowIndex: number) => CSSProperties;
 	showDivider?: boolean;
+	borderRadius?: "none" | 8 | 12 | 16;
 }
 
 export default function TableSection<T>({
@@ -34,9 +35,10 @@ export default function TableSection<T>({
 	padding = 40,
 	getRowStyle,
 	showDivider = true,
+	borderRadius = 8,
 }: TableSectionProps<T>) {
 	return (
-		<Card shadow='none' padding={padding} align='start' gap={16} className={className}>
+		<Card shadow='none' padding={padding} align='start' gap={16} borderRadius={borderRadius} className={className}>
 			{title && (
 				<>
 				<Text type='title4'>{title}</Text>

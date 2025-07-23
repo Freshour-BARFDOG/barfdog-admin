@@ -37,7 +37,7 @@ export default function AllianceEventTable({
 
 	const handleDeleteSelectedIds = () => {
 		mutate({
-			allianceEventIdList: deleteSelectedIds
+			allianceEventIdList: deleteSelectedIds as number[]
 		}, {
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({
@@ -75,7 +75,7 @@ export default function AllianceEventTable({
 			),
 		},
 		{ key: 'seq', header: '번호', width: '60px',
-			render: (row, index: number) => index + 1,
+			render: (_, index: number) => index + 1,
 		},
 		{
 			key: 'createdEventDate',

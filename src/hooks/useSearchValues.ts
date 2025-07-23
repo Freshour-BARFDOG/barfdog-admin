@@ -52,6 +52,13 @@ export default function useSearchValues<T extends object>(initialValues: T) {
 		updateQuery({ ...searchValues, page: page });
 	}
 
+	// searchValues에 제외되는 key, value 쿼리 스트링 반영
+	const onChangeAndSubmit = <K extends keyof T>(key: K, value: T[K]) => {
+		setSubmittedValues({ ...initialValues, [key]: value });
+		setPage(0);
+		updateQuery({ ...initialValues, page: 0, [key]: value });
+	};
+
 	return {
 		searchValues,
 		setSearchValues,
@@ -61,5 +68,6 @@ export default function useSearchValues<T extends object>(initialValues: T) {
 		onChangePage,
 		onSubmit,
 		onReset,
+		onChangeAndSubmit,
 	}
 }

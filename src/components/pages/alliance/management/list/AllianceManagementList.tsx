@@ -17,8 +17,8 @@ import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { INITIAL_MANAGEMENT_SEARCH_VALUES } from "@/constants/alliance";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import { AllianceManagementData, AllianceManagementSearchParams } from "@/types/alliance";
-import { useDeleteAllianceEventList } from "@/api/alliance/mutations/useDeleteAllianceEventList";
 import { useGetAllianceManagement } from "@/api/alliance/queries/useGetAllianceManagement";
+import { useDeleteAllianceList } from "@/api/alliance/mutations/useDeleteAllianceList";
 
 export default function AllianceManagementList() {
 	const router = useRouter();
@@ -44,7 +44,7 @@ export default function AllianceManagementList() {
 		allSelected,
 	} = useItemSelection(data?.managementList ?? [], (data) => data.allianceId, [] );
 
-	const { mutate } = useDeleteAllianceEventList();
+	const { mutate } = useDeleteAllianceList();
 
 	const handleDeleteSelectedIds = () => {
 		mutate({
