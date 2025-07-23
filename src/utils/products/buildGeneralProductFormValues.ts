@@ -38,11 +38,14 @@ export function buildGeneralProductFormValues(
 
     // ▶ 이미지
     // 등록·수정 공통으로 쓰는 imageOrderDtoList
-    imageOrderDtoList: itemImageAdminDtoList.map(({ id, leakOrder, url }) => ({
-      id,
-      leakOrder,
-      url,
-    })),
+    imageOrderDtoList: itemImageAdminDtoList.map(
+      ({ id, leakOrder, url, filename }) => ({
+        id,
+        leakOrder,
+        url,
+        filename,
+      })
+    ),
     // 수정 전용 추가/삭제 리스트 초기값
     addImageIdList: itemImageAdminDtoList.map((i) => i.id),
     deleteImageIdList: [],

@@ -51,6 +51,8 @@ import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import MultiFileUploader from "@/components/common/multiFileUploader/MultiFileUploader";
+import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
+import { UploadResponse } from "@/types/community";
 
 interface InputFieldItem {
   name: GeneralProductFormKeys;
@@ -91,12 +93,14 @@ export default function GeneralProductForm({
     handleSubmit,
     setValue,
     trigger,
+    watch,
     formState: { isValid, errors },
   } = form;
 
   const originalPrice = useWatch({ control, name: "originalPrice" });
   const inStock = useWatch({ control, name: "inStock" });
   const contents = useWatch({ control, name: "contents" });
+  const imageOrderDtoList = useWatch({ control, name: "imageOrderDtoList" });
   const addImageIdList =
     useWatch({
       control,
@@ -125,15 +129,6 @@ export default function GeneralProductForm({
     name: "allianceDtoList",
     control,
   });
-  const {
-    fields: imageFields,
-    replace: replaceImages,
-    remove: removeImage,
-  } = useFieldArray({
-    name: "imageOrderDtoList",
-    control,
-    keyName: "fieldArrayId",
-  });
 
   // 제휴사 추가
   const handleAddAlliance = (allianceId: number) => {
@@ -154,93 +149,17 @@ export default function GeneralProductForm({
     field.onChange(raw);
   };
 
-  /** 상품 이미지 핸들러 */
-  const handleProductImagesChange = useCallback(
-    async (files: File[]) => {
-      // 기존 이미지 순서
-      const current = [...imageFields];
-      try {
-        const results = await Promise.all(
-          files.map((file) =>
-            uploadImage(
-              { file },
-              {
-                onError: () => {
-                  addToast("이미지 업로드에 실패했습니다.");
-                  return null;
-                },
-              }
-            ).then((data: any) => ({
-              id: data.id as number,
-              url: data.url as string,
-              filename: file.name,
-            }))
-          )
-        );
-        // 새로 올라온 ID 목록
-        const newIds = results.map((r) => r.id);
-        // leakOrder 부여
-        const newOrder = results.map((r, idx) => ({
-          id: r.id,
-          url: r.url,
-          leakOrder: current.length + idx + 1,
-        }));
-        // 폼 상태 업데이트
-        setValue(
-          "addImageIdList",
-          Array.from(new Set([...addImageIdList, ...newIds])),
-          { shouldValidate: true }
-        );
-        setValue("imageOrderDtoList", [...current, ...newOrder], {
-          shouldValidate: true,
-        });
-      } catch {
-        addToast("이미지 업로드 중 오류가 발생했습니다.");
-      }
-      await trigger("imageOrderDtoList");
-    },
-    [
-      addImageIdList,
-      addToast,
-      imageFields,
-      replaceImages,
+  const { handleFileUpload, handleFileRemove } =
+    useMultiImageUploader<GeneralProductFormValues>({
+      uploadFn: (file: File) =>
+        uploadImage({ file }) as Promise<UploadResponse>,
+      imageOrderKey: "imageOrderDtoList",
+      addImageIdKey: "addImageIdList",
+      deleteImageIdKey: "deleteImageIdList",
       setValue,
-      trigger,
-      uploadImage,
-    ]
-  );
-
-  const handleProductImageRemove = useCallback(
-    (id?: number, filename?: string) => {
-      // id 가 없으면 filename 으로 찾아낸 뒤
-      let targetId = id;
-      if (targetId == null && filename) {
-        const found = imageFields.find((f) => f.url.endsWith(filename));
-        targetId = found?.id;
-      }
-      if (targetId != null) {
-        // 기존에 저장된 건 삭제 리스트에 추가
-        setValue("deleteImageIdList", [...deleteImageIdList, targetId], {
-          shouldValidate: true,
-        });
-      }
-      // 추가 리스트에서 제거
-      setValue(
-        "addImageIdList",
-        addImageIdList.filter((x) => x !== targetId),
-        { shouldValidate: true }
-      );
-      // 순서 재할당
-      const remaining = imageFields.filter((f) => f.id !== targetId);
-      const reordered = remaining.map((f, idx) => ({
-        id: f.id!,
-        url: f.url,
-        leakOrder: idx + 1,
-      }));
-      setValue("imageOrderDtoList", reordered, { shouldValidate: true });
-    },
-    [addImageIdList, deleteImageIdList, imageFields, setValue]
-  );
+      watch,
+      imageList: imageOrderDtoList,
+    });
 
   // --- Tiptap handlers ---
   const onContentChange = useCallback(
@@ -468,13 +387,9 @@ export default function GeneralProductForm({
             <MultiFileUploader
               maxFiles={10}
               // 기존에 불러온 이미지도 보여주기 위해 id,url,filename 형태로 넘깁니다.
-              initialFiles={imageFields.map((f) => ({
-                id: f.id,
-                filename: f.url.split("/").pop() || "",
-                url: f.url,
-              }))}
-              onChange={handleProductImagesChange}
-              onRemove={handleProductImageRemove}
+              onChange={(files) => handleFileUpload(files)}
+              onRemove={handleFileRemove}
+              initialFiles={imageOrderDtoList}
               width={100}
               height={100}
               captions={[

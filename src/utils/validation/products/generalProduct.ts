@@ -74,6 +74,7 @@ export const generalProductFormSchema = yup.object({
         id: yup.number().required(),
         leakOrder: yup.number().min(1).required(),
         url: yup.string().required(),
+        filename: yup.string().required(),
       })
     )
     .required(),
