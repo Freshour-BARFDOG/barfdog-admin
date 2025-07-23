@@ -13,7 +13,7 @@ import Text from "@/components/common/text/Text";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import {
   unformatCommaNumber,

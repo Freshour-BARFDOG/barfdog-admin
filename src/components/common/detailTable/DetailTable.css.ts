@@ -63,3 +63,15 @@ export const fullValue = style({
   // 두 번째 컬럼부터 끝까지
   gridColumn: "2 / -1",
 });
+
+// dd, dt align 추가
+export const align = recipe({
+  base: { display: 'flex' },
+  variants: {
+    align: {
+      center: { alignItems: 'center' },
+      start: { alignItems: 'flex-start' }
+    }
+  }
+
+});

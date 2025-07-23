@@ -36,6 +36,21 @@ export const tableBody = style({
   backgroundColor: themeVars.colors.gray.gray0,
 });
 
+export const tableRow = recipe({
+	base: {},
+	variants: {
+		backgroundColor: {
+			'gray0': {
+				backgroundColor: themeVars.colors.gray.gray0,
+			},
+			'gray50': {
+				backgroundColor: themeVars.colors.gray.gray50,
+			},
+		}
+	}
+	
+});
+
 export const tableCell = recipe({
   base: {
     padding: "14px 12px",

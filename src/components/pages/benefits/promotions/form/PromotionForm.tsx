@@ -14,7 +14,7 @@ import DateTimePicker from "@/components/common/dateTimePicker/DateTimePicker";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
 import useModal from "@/hooks/useModal";
 import { useFormHandler } from "@/hooks/useFormHandler";

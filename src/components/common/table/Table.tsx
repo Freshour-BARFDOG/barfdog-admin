@@ -1,18 +1,20 @@
 import * as styles from "./Table.css";
 import Text from "@/components/common/text/Text";
 import { TableColumn } from "@/types/common";
-import React from "react";
+import { CSSProperties, isValidElement } from "react";
 
 type TableProps<T> = {
   data: T[];
   columns: TableColumn<T>[];
   emptyText?: string;
+  getRowStyle?: (row: T, rowIndex: number) => CSSProperties;
 };
 
 export default function Table<T>({
   data,
   columns,
   emptyText = "No data available",
+  getRowStyle,
 }: TableProps<T>) {
   return (
     <div className={styles.tableWrapper}>
@@ -30,7 +32,7 @@ export default function Table<T>({
                 }}
               >
                 {/* ReactNode 헤더를 바로 렌더, 아니면 Text로 감싸기 */}
-                {React.isValidElement(col.header) ? (
+                {isValidElement(col.header) ? (
                   col.header
                 ) : (
                   <Text type="headline2">{col.header}</Text>
@@ -51,7 +53,10 @@ export default function Table<T>({
             </tr>
           ) : (
             data.map((item, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr 
+                key={rowIndex}
+                style={getRowStyle ? getRowStyle(item, rowIndex) : undefined}
+              >
                 {columns.map((col, colIndex) => {
                   const isLastRow = rowIndex === data.length - 1;
                   return (

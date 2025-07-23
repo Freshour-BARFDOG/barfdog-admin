@@ -1,7 +1,7 @@
 import { ImageFile, Page, SelectOption, StatusType } from "@/types/common";
-import { ARTICLE_CATEGORY } from "@/constants/community";
+import { ARTICLE_CATEGORY, INQUIRY_CATEGORY, INQUIRY_STATUS } from "@/constants/community";
 
-type CommunityType = 'notices' | 'events' | 'article';
+type CommunityType = 'notices' | 'events' | 'article' | 'questions';
 
 interface UploadResponse {
 	id: number;
@@ -135,7 +135,6 @@ interface EventFormValues extends CommunityImageIdList {
 	url?: string;
 }
 
-
 interface CreateEventFormValues {
 	status: StatusType;
 	title: string;
@@ -143,28 +142,122 @@ interface CreateEventFormValues {
 	eventImageRequestDtoList: ImageOrderData[];
 }
 
+type InquiryStatus = keyof typeof INQUIRY_STATUS;
+type InquiryCategory = keyof typeof INQUIRY_CATEGORY;
+type InquirySearchType = 'title' | 'name' | 'email';
+
+interface InquiryListSearchParams {
+	type: InquirySearchType;
+	value: string;
+	answerStatus: InquiryStatus;
+	from: string;
+	to: string;
+}
+
+interface AnswerData {
+	id: number;
+	title: string;
+	createdDate: string;
+}
+
+interface InquiryListData {
+	id: number;
+	title: string;
+	name: string;
+	email: string;
+	createdDate: string;
+	answerStatus: InquiryStatus;
+	category: InquiryCategory;
+	type: string;
+	answerList: AnswerData[];
+}
+
+interface InquiryListResponse {
+	page: Page;
+	inquiryList: InquiryListData[];
+}
+
+interface InquiryImageData {
+	questionImageId: number;
+	filename: string;
+	url: string;
+}
+
+interface InquiryQuestionData {
+	id: number;
+	name: string;
+	email: string;
+	title: string;
+	contents: string;
+	createdDate: string;
+	answerStatus: InquiryStatus;
+	category: InquiryCategory;
+	questionImgDtoList: InquiryImageData[];
+	answerIdList: number[];
+}
+
+interface InquiryAnswerData {
+	id: number;
+	targetId: number;
+	title: string;
+	contents: string;
+	createdDate: string;
+	questionImgDtoList: InquiryImageData[];
+}
+
+interface InquiryDetailData {
+	question: InquiryQuestionData;
+	answers: InquiryAnswerData[];
+}
+
+interface CreateAnswerFormValues {
+	contents: string;
+	questionImgIdList: ImageOrderData[];
+	targetId: number;
+	title: string;
+}
+
+interface CreateAnswerBody extends Omit<CreateAnswerFormValues, 'questionImgIdList'> {
+	questionImgIdList: number[];
+}
 
 export type {
 	CommunityType,
 	UploadResponse,
 	CommunityListData,
 	CommunityListResponse,
+	ImageOrderData,
+	// -----------------------------
 	NoticeInfoData,
 	NoticeDetailResponse,
 	NoticeFormValues,
 	CreateNoticeFormValues,
+	// -----------------------------
 	ArticleCategory,
 	ArticleDetailResponse,
 	ArticleFormValues,
 	CreateArticleFormValues,
+	// -----------------------------
 	RecommendArticleListData,
 	RecommendArticleResponse,
 	RecommendArticleBody,
+	// -----------------------------
+	EventImageType,
 	EventImageData,
 	EventInfoData,
 	EventListData,
 	EventDetailResponse,
 	EventFormValues,
 	CreateEventFormValues,
-	EventImageType,
+	CreateAnswerBody,
+	// -----------------------------
+	InquiryStatus,
+	AnswerData,
+	InquiryListSearchParams,
+	InquiryListData,
+	InquiryListResponse,
+	InquiryQuestionData,
+	InquiryAnswerData,
+	InquiryDetailData,
+	CreateAnswerFormValues,
 }

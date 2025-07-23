@@ -73,3 +73,13 @@ export const eventSchema = yup.object().shape({
 		.min(1, '최소 1개의 이미지를 등록해야 합니다.')
 		.required('이미지 순서 정보는 필수입니다.'),
 });
+
+export const createAnswerSchema = yup.object().shape({
+	title: yup
+		.string()
+		.required('제목은 필수입니다.'),
+	contents: yup
+		.string()
+		.min(10)
+		.required('답글 내용은 필수입니다.'),
+});

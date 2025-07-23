@@ -8,7 +8,7 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import TiptapEditor from "@/components/common/tiptapEditor/TiptapEditor";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { useContentEditor } from "@/hooks/useContentEditor";
 import { ArticleFormValues, UploadResponse } from "@/types/community";

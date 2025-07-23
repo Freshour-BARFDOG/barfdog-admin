@@ -8,7 +8,7 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import Text from "@/components/common/text/Text";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
-import FormControls from "@/components/common/formContorls/FormControls";
+import FormControls from "@/components/common/formControls/FormControls";
 import InputField from "@/components/common/inputField/InputField";
 import { STATUS_LIST } from "@/constants/common";
 import { bannerSchema, defaultMyPageBannerFormValues } from "@/utils/validation/banners/banners";
