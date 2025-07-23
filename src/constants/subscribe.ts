@@ -1,4 +1,5 @@
-import { SubscribeHistoryRequest } from "@/types/subscribe";
+import { SelectOption } from "@/types/common";
+import { Plan, SubscribeHistoryRequest } from "@/types/subscribe";
 
 const INITIAL_SUBSCRIBE_HISTORY_REQUEST = {
   memberName: "", // 견주 이름
@@ -26,8 +27,15 @@ const SUBSCRIBE_STATUS = {
   SUBSCRIBE_PENDING: "구독 보류",
 };
 
+const PLAN_OPTIONS: SelectOption<Plan>[] = [
+  { value: "FULL", label: "풀 플랜" },
+  { value: "HALF", label: "하프 플랜" },
+  { value: "TOPPING", label: "토핑 플랜" },
+];
+
 export {
   INITIAL_SUBSCRIBE_HISTORY_REQUEST,
   SUBSCRIBE_HISTORY_CATEGORY,
   SUBSCRIBE_STATUS,
+  PLAN_OPTIONS,
 };

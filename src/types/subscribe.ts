@@ -52,7 +52,63 @@ interface SubscribeHistoryParams {
   size?: number;
 }
 
+interface SubscribeDto {
+  id: number;
+  subscribeStatus: keyof typeof SUBSCRIBE_STATUS;
+  dogId: number;
+  dogName: string;
+  cancelReason: string | null;
+  subscribeCount: number;
+  plan: Plan;
+  oneMealGramsPerRecipe: string;
+  oneDayRecommendKcal: number;
+  nextPaymentDate: string;
+  countSkipOneTime: number;
+  countSkipOneWeek: number;
+  nextPaymentPrice: number;
+  discountCoupon: number;
+  discountGrade: number;
+  overDiscount: number;
+  nextDeliveryDate: string;
+  usingMemberCouponId: number | null;
+  couponName: string | null;
+}
+
+interface SubscribeRecipeDto {
+  recipeId: number;
+  recipeName: string;
+}
+
+interface MemberCouponDto {
+  // 추후에 추가
+}
+
+interface RecipeDto {
+  id: number;
+  name: string;
+  description: string;
+  pricePerGram: number;
+  gramPerKcal: number;
+  inStock: boolean;
+  imgUrl: string;
+}
+
+interface SubscribeDetailResponse {
+  subscribeDto: SubscribeDto;
+  subscribeRecipeDtoList: SubscribeRecipeDto[];
+  memberCouponDtoList: MemberCouponDto[];
+  recipeDtoList: RecipeDto[];
+}
+
 type SubscribeStatus = keyof typeof SUBSCRIBE_STATUS;
+
+type Plan = "FULL" | "HALF" | "TOPPING";
+
+interface UpdatePlanAndRecipeRequest {
+  plan: Plan;
+  recipeIds: number[];
+  nextPaymentPrice: number;
+}
 
 export type {
   SubscribeHistoryDto,
@@ -61,4 +117,7 @@ export type {
   SubscribeHistoryRequest,
   SubscribeHistoryParams,
   SubscribeStatus,
+  SubscribeDetailResponse,
+  Plan,
+  UpdatePlanAndRecipeRequest,
 };

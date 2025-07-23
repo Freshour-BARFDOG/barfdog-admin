@@ -11,6 +11,7 @@ interface TextProps {
   className?: string;
   preLine?: boolean;
   applyLineHeight?: boolean;
+  noShrink?: boolean;
   style?: CSSProperties;
 }
 
@@ -46,6 +47,7 @@ export default function Text({
   className,
   preLine,
   applyLineHeight = true,
+  noShrink = false,
   style,
 }: TextProps) {
   const textStyle = textStyles[type];
@@ -61,6 +63,7 @@ export default function Text({
         underLine,
         preLine,
         applyLineHeight,
+        noShrink,
       })} ${className || ""}`}
       {...(style && { style })}
     >

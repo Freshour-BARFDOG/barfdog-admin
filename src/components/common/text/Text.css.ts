@@ -174,6 +174,11 @@ export const textRecipe = recipe({
         lineHeight: "normal",
       },
     },
+    noShrink: {
+      true: {
+        flexShrink: 0,
+      },
+    },
   },
   defaultVariants: {
     align: "left",

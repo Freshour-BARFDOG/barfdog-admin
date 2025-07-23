@@ -66,6 +66,12 @@ const queryKeys = {
   SUBSCRIBE: {
     BASE: "subscribe",
     GET_SUBSCRIBE_HISTORY: "getSubscribeHistory",
+    GET_SUBSCRIBE_DETAIL: "getSubscribeDetail",
+  },
+  DOGS: {
+    BASE: "dogs",
+    GET_DOG_LIST: "getDogList",
+    GET_DOG_DETAIL: "getDogDetail",
   },
 } as const;
 

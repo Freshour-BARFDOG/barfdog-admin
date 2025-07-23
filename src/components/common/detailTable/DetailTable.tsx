@@ -1,13 +1,7 @@
 import React from "react";
 import * as styles from "./DetailTable.css";
 import Text from "../text/Text";
-
-export interface TableItem {
-  label: string;
-  value: React.ReactNode;
-  /** true 면 해당 페어(dt+dd)를 전체 폭으로 차지 */
-  fullWidth?: boolean;
-}
+import { TableItem } from "@/types/common";
 
 interface DetailTableProps {
   items: TableItem[];
@@ -22,7 +16,11 @@ export default function DetailTable({
 }: DetailTableProps) {
   return (
     <section className={styles.tableContainer}>
-      {title && <Text type="title4" block className={styles.tableTitle}>{title}</Text>}
+      {title && (
+        <Text type="title4" block className={styles.tableTitle}>
+          {title}
+        </Text>
+      )}
       <dl className={styles.table({ columns })}>
         {items.map(({ label, value, fullWidth }, idx) => (
           <React.Fragment key={`${label}-${idx}`}>

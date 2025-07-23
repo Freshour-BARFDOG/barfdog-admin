@@ -22,7 +22,7 @@ interface TableColumn<T> {
   render?: (value: T, index: number) => ReactNode;
 }
 
-interface SelectOption<T extends string | number | boolean> {
+interface SelectOption<T extends string | number | boolean | null> {
   label: string;
   value: T;
 }
@@ -93,6 +93,14 @@ interface ImageFile {
 
 type StatusType = keyof typeof STATUS;
 
+type DogGender = "MALE" | "FEMALE";
+
+interface TableItem {
+  label: string;
+  value: React.ReactNode;
+  /** true 면 해당 페어(dt+dd)를 전체 폭으로 차지 */
+  fullWidth?: boolean;
+}
 export type {
   MenuItem,
   TableColumn,
@@ -109,4 +117,6 @@ export type {
   DiscountUnitType,
   ImageFile,
   StatusType,
+  DogGender,
+  TableItem,
 };

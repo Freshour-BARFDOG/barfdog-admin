@@ -90,13 +90,9 @@ export default function GeneralProductForm({
     control,
     handleSubmit,
     setValue,
-    watch,
     trigger,
     formState: { isValid, errors },
   } = form;
-  console.log("watch", watch());
-  console.log("errors", errors);
-  console.log("isValid", isValid);
 
   const originalPrice = useWatch({ control, name: "originalPrice" });
   const inStock = useWatch({ control, name: "inStock" });

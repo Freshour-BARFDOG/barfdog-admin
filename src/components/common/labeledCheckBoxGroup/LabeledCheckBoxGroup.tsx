@@ -1,9 +1,8 @@
 import { commonWrapper } from "@/styles/common.css";
 import { SelectOption } from "@/types/common";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
-import { NONE_VALUE } from "@/constants/common";
 
-interface LabeledCheckboxGroupProps<T extends string = string> {
+interface LabeledCheckboxGroupProps<T extends string | number = string> {
   options: SelectOption<T>[];
   selectedValues: T[];
   onChange: (selected: T[]) => void;
@@ -11,29 +10,21 @@ interface LabeledCheckboxGroupProps<T extends string = string> {
   className?: string;
 }
 
-export default function LabeledCheckboxGroup<T extends string = string>({
+export default function LabeledCheckboxGroup<
+  T extends string | number = string
+>({
   options,
   selectedValues,
   onChange,
   iconType = "square",
   className = "",
-}: LabeledCheckboxGroupProps) {
+}: LabeledCheckboxGroupProps<T>) {
   const handleToggle = (value: T) => {
-    if (value === NONE_VALUE) {
-      onChange([NONE_VALUE]);
-      return;
+    if (selectedValues.includes(value)) {
+      onChange(selectedValues.filter((v) => v !== value));
+    } else {
+      onChange([...selectedValues, value]);
     }
-
-    const currentSelection = selectedValues.includes(NONE_VALUE)
-      ? selectedValues.filter((v) => v !== NONE_VALUE)
-      : selectedValues;
-
-    if (currentSelection.includes(value)) {
-      onChange(currentSelection.filter((v) => v !== value));
-      return;
-    }
-
-    onChange([...currentSelection, value]);
   };
 
   return (

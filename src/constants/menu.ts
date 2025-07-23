@@ -144,9 +144,9 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
   {
-    key: "dog",
+    key: "dogs",
     label: "반려견 관리",
-    href: "/dog",
+    href: "/dogs",
     icon: Dog,
   },
   {
