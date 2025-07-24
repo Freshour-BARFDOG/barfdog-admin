@@ -9,6 +9,7 @@ import TableSection from "@/components/common/tableSection/TableSection";
 import useItemSelection from "@/hooks/useItemSelection";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Button from "@/components/common/button/Button";
+import Tooltip from "@/components/common/tooltip/Tooltip";
 import useSearchValues from "@/hooks/useSearchValues";
 import { queryKeys } from "@/constants/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -126,13 +127,17 @@ export default function AllianceManagementList() {
 			header: '행사',
 			render: (row) => {
 				return (
-					<div className={commonWrapper({ direction: 'col', gap: 8, align: 'start' })}>
+					<div className={commonWrapper({ gap: 8, align: 'center' })}>
 						<Text type='label4'>{`${row.eventCount}건`}</Text>
-						<div>
-							{row.eventInfos.length > 0 && row.eventInfos.map(event => (
-								<Text key={event.allianceEventId} type='caption' block>-{event.eventName}</Text>
-							))}
-						</div>
+						{row.eventInfos.length > 0 &&
+							<Tooltip
+                position="bottom"
+							>
+								{row.eventInfos.map(event => (
+									<span key={event.allianceEventId}>- {event.eventName}</span>
+								))}
+							</Tooltip>
+						}
 					</div>
 				)
 			}

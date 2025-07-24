@@ -7,7 +7,7 @@ import Pagination from "@/components/common/pagination/Pagination";
 import Card from "@/components/common/card/Card";
 
 interface TableSectionProps<T> {
-	title?: string;
+	title?: string | ReactNode;
 	data: T[];
 	columns: TableColumn<T>[];
 	emptyText?: string;

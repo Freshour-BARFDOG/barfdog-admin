@@ -1,5 +1,5 @@
 'use client';
-import { commonWrapper } from "@/styles/common.css";
+import { commonWrapper, pointColor } from "@/styles/common.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormHandler } from "@/hooks/useFormHandler";
@@ -11,6 +11,7 @@ import Form from "@/components/common/form/Form";
 import FormControls from "@/components/common/formControls/FormControls";
 import AddEventInput from "@/components/pages/alliance/common/addEventInput/AddEventInput";
 import Text from "@/components/common/text/Text";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { queryKeys } from "@/constants/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
@@ -95,26 +96,30 @@ export default function CreateAlliance() {
 							control={control}
 							name='allianceCode'
 							render={({ field }) => (
-								<InputFieldGroup label='Prefix' align='start'>
-									<div className={commonWrapper({ direction: 'col', gap: 8, align: 'start' })}>
-										<InputField
-											error={errors.allianceCode?.message ?? ''}
-											value={field.value}
-											onChange={(e) => {
-												const filtered = e.target.value.replace(/[^a-zA-Z]/g, '').slice(0, 2);
-												field.onChange(filtered);
-											}}
-											placeholder="영문 2자 입력"
-										/>
-										<div>
-											<Text type='caption' block>
-												- 입력한 항목이 쿠폰 코드의 앞자리에 기입되어 난수쿠폰이 생성됩니다.
-											</Text>
-											<Text type='caption' block>
-												- Prefix는 영문만 입력이 가능합니다. 예) TU 입력 시 난수쿠폰 코드 : TUOOOOOOOO
-											</Text>
-										</div>
-									</div>
+								<InputFieldGroup
+									label={
+										<TooltipInfo
+											title={(
+												<>Prefix <span className={pointColor}>*</span></>
+											)}
+										>
+											- 입력한 항목이 쿠폰 코드의 앞자리에 기입되어 난수쿠폰이 생성됩니다.<br/>
+											- Prefix는 영문만 입력이 가능합니다.<br/>
+											예) TU 입력 시 → 난수쿠폰 코드 : TUOOOOOOOO
+										</TooltipInfo>
+									}
+									isLabelRequired={false}
+									align='start'
+								>
+									<InputField
+										error={errors.allianceCode?.message ?? ''}
+										value={field.value}
+										onChange={(e) => {
+											const filtered = e.target.value.replace(/[^a-zA-Z]/g, '').slice(0, 2);
+											field.onChange(filtered);
+										}}
+										placeholder="영문 2자 입력"
+									/>
 								</InputFieldGroup>
 							)}
 						/>
@@ -122,7 +127,17 @@ export default function CreateAlliance() {
 							control={control}
 							name='eventNameList'
 							render={({ field }) => (
-								<InputFieldGroup label='행사' align='start' isLabelRequired={false} divider={false}>
+								<InputFieldGroup
+									label={
+										<TooltipInfo title='행사'>
+											제휴사마다 행사를 여러 개 등록할 수 있습니다.<br/>
+											행사 추가 및 삭제는 제휴사 상세보기에서 가능합니다.
+										</TooltipInfo>
+									}
+									isLabelRequired={false}
+									align='start'
+									divider={false}
+								>
 									<AddEventInput
 										eventNameList={field.value}
 										setEventNameList={field.onChange}

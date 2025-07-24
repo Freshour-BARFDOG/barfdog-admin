@@ -69,6 +69,7 @@ export default function AllianceSalesList() {
 	return (
 		<div>
 			<AllianceSearchFilterGroup
+				type='sales'
 				searchValues={searchValues}
 				setSearchValues={setSearchValues}
 				onSubmit={onSubmit}

@@ -1,11 +1,12 @@
-import { format } from "date-fns";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { SearchFilterItem } from "@/types/common";
 import { AllianceListSearchParams } from "@/types/alliance";
 
 interface AllianceSearchFilterGroupProps {
+	type: 'member' | 'sales';
 	searchValues: AllianceListSearchParams;
 	setSearchValues:  (value: AllianceListSearchParams) => void;
 	onSubmit: () => void;
@@ -13,6 +14,7 @@ interface AllianceSearchFilterGroupProps {
 }
 
 export default function AllianceSearchFilterGroup({
+	type,
 	searchValues,
 	setSearchValues,
 	onSubmit,
@@ -20,16 +22,26 @@ export default function AllianceSearchFilterGroup({
 }: AllianceSearchFilterGroupProps) {
 	const filters: SearchFilterItem[] = [
 		{
-			label: '조회 기간',
+			label: (
+				<TooltipInfo title='조회 기간'>
+					{type === 'member'
+						? '좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.'
+						: '결제일 기준 조회 기간입니다. 좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.'
+					}
+				</TooltipInfo>
+			),
 			children: (
 				<DateRangeFilter
-					initialRange={{ startDate: new Date(searchValues.from), endDate: new Date(searchValues.to) }}
-					onChangeRange={(value) => {
-						const { startDate, endDate } = value;
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
+					onChangeRange={(range) => {
+						const { startDate, endDate } = range;
 						setSearchValues({
 							...searchValues,
-							from: format(startDate as Date, 'yyyy-MM-dd'),
-							to: format(endDate as Date, 'yyyy-MM-dd'),
+							from: startDate as string,
+							to: endDate as string,
 						})
 					}}
 				/>

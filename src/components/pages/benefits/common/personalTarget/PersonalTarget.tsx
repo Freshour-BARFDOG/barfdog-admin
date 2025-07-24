@@ -6,6 +6,7 @@ import useModal from "@/hooks/useModal";
 import SearchMemberModal from "@/components/common/modal/searchMemberModal/SearchMemberModal";
 import MemberTable from "@/components/pages/member/table/MemberTable";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
+import Tooltip from "@/components/common/tooltip/Tooltip";
 import useItemSelection from "@/hooks/useItemSelection";
 import { MemberListData } from "@/types/member";
 import { FieldValues, Path, PathValue, UseFormSetValue, UseFormTrigger } from "react-hook-form";
@@ -50,6 +51,11 @@ export default function PersonalTarget<TFormValues extends FieldValues>({
 					<Button onClick={onToggleSearchMemberModal} size='sm'>회원 검색</Button>
 					<Button onClick={handleDeleteSelectedIds} disabled={deleteSelectedIds.length < 1} size='sm' variant='outline' type='assistive'>선택 삭제</Button>
 					<Button size='sm' variant='outline' type='assistive'>엑셀 업로드</Button>
+					<Tooltip position='right'>
+						1. 아래에 추가된 모든 회원에게 쿠폰이 발급됩니다.<br/>
+						2. 체크박스는 발행할 회원목록을 삭제하는데 사용됩니다.<br/>
+						3. 엑셀 업로드는 첫 번째 열의 숫자로 검색합니다.
+					</Tooltip>
 				</div>
 				<div className={styles.personalTargetTable}>
 					<MemberTable

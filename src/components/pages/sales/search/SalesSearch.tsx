@@ -85,12 +85,16 @@ export default function SalesSearch() {
       label: "조회기간",
       children: (
         <DateRangeFilter
+          value={{
+            startDate: searchValues.from,
+            endDate: searchValues.to,
+          }}
           onChangeRange={(value) => {
             const { startDate, endDate } = value;
             setSearchValues({
               ...searchValues,
-              from: format(startDate as Date, "yyyy-MM-dd"),
-              to: format(endDate as Date, "yyyy-MM-dd"),
+              from: startDate as string,
+							to: endDate as string,
             });
           }}
         />

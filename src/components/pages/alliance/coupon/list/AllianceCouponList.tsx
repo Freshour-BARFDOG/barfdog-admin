@@ -1,12 +1,12 @@
 'use client';
 import { commonWrapper, fullWidth } from "@/styles/common.css";
-import { format } from "date-fns";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import AllianceCouponTable from "@/components/pages/alliance/coupon/list/table/AllianceCouponTable";
 import AllianceCouponTab from "@/components/pages/alliance/coupon/list/tab/AllianceCouponTab";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import useSearchValues from "@/hooks/useSearchValues";
 import { AllianceCouponListResponse, AllianceCouponListSearchParams, AllianceCouponSearchType, AllianceCouponTarget } from "@/types/alliance";
 import {
@@ -33,15 +33,23 @@ export default function AllianceCouponList() {
 
 	const filters: SearchFilterItem[] = [
 		{
-			label: '조회 기간',
+			label: (
+				<TooltipInfo title='조회 기간'>
+					좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.
+				</TooltipInfo>
+			),
 			children: (
 				<DateRangeFilter
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
 					onChangeRange={(value) => {
 						const { startDate, endDate } = value;
 						setSearchValues({
 							...searchValues,
-							from: format(startDate as Date, 'yyyy-MM-dd'),
-							to: format(endDate as Date, 'yyyy-MM-dd'),
+							from: startDate as string,
+							to: endDate as string,
 						})
 					}}
 				/>

@@ -31,7 +31,6 @@ import {
   SearchSalesRequest,
 } from "@/types/sales";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
-import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import CancelOrderModal from "../modal/CancelOrderModal";
@@ -115,12 +114,16 @@ export default function SalesOrders() {
       label: "조회기간",
       children: (
         <DateRangeFilter
+          value={{
+            startDate: searchValues.from,
+            endDate: searchValues.to,
+          }}
           onChangeRange={(value) => {
             const { startDate, endDate } = value;
             setSearchValues({
               ...searchValues,
-              from: format(startDate as Date, "yyyy-MM-dd"),
-              to: format(endDate as Date, "yyyy-MM-dd"),
+              from: startDate as string,
+							to: endDate as string,
             });
           }}
         />

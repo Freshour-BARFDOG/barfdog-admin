@@ -1,5 +1,5 @@
 "use client";
-import { commonWrapper } from "@/styles/common.css";
+import { commonWrapper, pointColor } from "@/styles/common.css";
 import { ChangeEvent, ReactNode } from "react";
 import { format } from "date-fns";
 import {
@@ -22,6 +22,7 @@ import DateTimePicker from "@/components/common/dateTimePicker/DateTimePicker";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import LabeledInput from "@/components/common/labeledInput/LabeledInput";
 import InputField from "@/components/common/inputField/InputField";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { unformatCommaNumber, formatNumberWithComma } from "@/utils/formatNumber";
 import { DISCOUNT_UNIT_TYPE_LIST } from "@/constants/common";
 import { ALLIANCE_COUPON_TARGET_LIST } from "@/constants/alliance";
@@ -32,7 +33,8 @@ type AllianceCouponFieldName = keyof AllianceCouponFormValues;
 
 interface InputFieldItem<TFormValues extends FieldValues> {
   name: AllianceCouponFieldName;
-  label: string;
+  label: string | ReactNode;
+  isRequired?: boolean;
   render: (
     field: ControllerRenderProps<TFormValues, Path<TFormValues>>
   ) => ReactNode;
@@ -95,7 +97,7 @@ export default function CreateAllianceCouponForm<TFormValues extends FieldValues
             onChange={(value) => setValue('allianceEventId' as Path<TFormValues> , value as PathValue<TFormValues, Path<TFormValues>>, { shouldValidate: true })}
             disabled={allianceEventList.length === 0}
           />
-          <Text type="caption" color='gray500' block>- 제휴사의 행사가 등록되어야 쿠폰 발급이 가능합니다.</Text>
+          <Text type="caption" color='red' block>* 제휴사의 행사가 등록되어야 쿠폰 발급이 가능합니다.</Text>
         </div>
       ),
     },
@@ -168,9 +170,18 @@ export default function CreateAllianceCouponForm<TFormValues extends FieldValues
     },
     {
       name: "createCouponCount",
-      label: "쿠폰 개수",
+      label: (
+        <TooltipInfo
+          title={(
+            <>쿠폰 개수 <span className={pointColor}>*</span></>
+          )}
+        >
+          입력한 개수만큼 난수쿠폰이 생성됩니다.
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
-        <LabeledInput label='개' caption='- 입력한 개수만큼 난수 쿠폰이 생성됩니다.'>
+        <LabeledInput label='개'>
           <InputField
             width={170}
             value={formatNumberWithComma(field.value)}
@@ -181,9 +192,18 @@ export default function CreateAllianceCouponForm<TFormValues extends FieldValues
     },
     {
       name: "codeLength",
-      label: "쿠폰 코드 자릿수",
+      label: (
+        <TooltipInfo
+          title={(
+            <>쿠폰 코드 자릿수 <span className={pointColor}>*</span></>
+          )}
+        >
+          선택한 자릿수만큼 쿠폰 코드가 생성됩니다.
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
-        <LabeledInput label='자리' caption='- 선택한 자리수만큼 쿠폰 코드가 생성됩니다.'>
+        <LabeledInput label='자리'>
           <SelectBox
             value={field.value ?? undefined}
             options={couponLengthOptions}
@@ -203,7 +223,7 @@ export default function CreateAllianceCouponForm<TFormValues extends FieldValues
             key={input.name}
             name={input.name as Path<TFormValues>}
             render={({ field }) => (
-              <InputFieldGroup label={input.label}>
+              <InputFieldGroup label={input.label} isLabelRequired={input.isRequired === undefined}>
                 {input.render(field)}
               </InputFieldGroup>
             )}

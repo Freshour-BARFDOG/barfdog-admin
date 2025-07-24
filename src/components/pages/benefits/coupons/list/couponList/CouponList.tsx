@@ -8,6 +8,7 @@ import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilte
 import Text from "@/components/common/text/Text";
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
 import useModal from "@/hooks/useModal";
 import useSearchValues from "@/hooks/useSearchValues";
@@ -152,7 +153,16 @@ export default function CouponList() {
 				page={page}
 				onPageChange={onChangePage}
 				totalPages={data?.page?.totalPages ?? 0}
-				title='쿠폰 목록'
+				title={(
+					<TooltipInfo title='쿠폰 목록'>
+						<div>
+							1. 자동발행쿠폰은 생성 및 삭제할 수 없습니다.<br/>
+							2. 자동발행쿠폰 중 등급별 쿠폰은 매달 1일, 생일 쿠폰은 해당 월 1일에 자동발급됩니다.<br/>
+							3. 직접발행 쿠폰은 유효기간이 존재하는 항목만 목록에 나타납니다.<br/>
+							4. 직접발행 쿠폰의 만료일자는 동일한 쿠폰을 2회 이상 발급했을 시, 가장 늦은 만료일자를 기준으로 표기됩니다.
+						</div>
+					</TooltipInfo>
+				)}
 				emptyText='쿠폰 목록 데이터가 없습니다.'
 			/>
 			{isOpenDeleteConfirmModal &&
