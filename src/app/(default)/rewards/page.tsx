@@ -6,7 +6,7 @@ import Loader from "@/components/common/loader/Loader";
 import RewardList from "@/components/pages/benefits/rewards/list/RewardList";
 import { prefetchGetRewardList } from "@/api/rewards/queries/usePrefetchGetRewardList";
 
-export default async function CouponsPage() {
+export default async function RewardPage() {
   const queryClient = new QueryClient();
   await prefetchGetRewardList(queryClient);
   const dehydrateState = dehydrate(queryClient);

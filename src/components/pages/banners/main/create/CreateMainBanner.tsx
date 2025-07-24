@@ -1,14 +1,14 @@
 'use client';
-import BannerCreate from "@/components/pages/banners/common/BannerCreate";
+import CreateBanner from "@/components/pages/banners/common/CreateBanner";
 import MainBannerForm from "@/components/pages/banners/main/form/MainBannerForm";
 import { queryKeys } from "@/constants/queryKeys";
 import { useCreateMainBanner } from "@/api/banners/mutations/useCreateMainBanner";
 
-export default function MainBannerCreate() {
+export default function CreateMainBanner() {
 	const { mutate } = useCreateMainBanner();
 
 	return (
-		<BannerCreate
+		<CreateBanner
 			title='메인 배너'
 			FormComponent={MainBannerForm}
 			mutationFn={mutate}
