@@ -1,4 +1,5 @@
 import { PromotionStatus, PromotionType } from "@/types/benefits/promotions";
+import { toLabelValueList } from "@/utils/toLabelValueList";
 
 const PROMOTION_STATUS = {
 	PAUSED: '대기',
@@ -6,9 +7,7 @@ const PROMOTION_STATUS = {
 	INACTIVE: '종료',
 } as const;
 
-const PROMOTION_STATUS_LIST = (Object.entries(PROMOTION_STATUS)).map(
-	([value, label]) => ({ label, value })
-);
+const PROMOTION_STATUS_LIST = toLabelValueList(PROMOTION_STATUS);
 
 const PROMOTION_LIST_INITIAL_SEARCH_VALUES = {
 	promotionType: 'COUPON' as PromotionType,

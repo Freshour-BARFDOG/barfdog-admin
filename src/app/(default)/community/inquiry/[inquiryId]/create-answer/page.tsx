@@ -22,7 +22,7 @@ export default async function CreateAnswerPage({ params }: CreateAnswerPageProps
     <HydrationBoundary state={dehydrateState}>
       <ErrorBoundary fallback={<div>1:1문의 상세 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
-          <Wrapper title='1:1 문의 답글 작성'>
+          <Wrapper>
             <CreateAnswer inquiryId={inquiryId} />
           </Wrapper>
         </Suspense>

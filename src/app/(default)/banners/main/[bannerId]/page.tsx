@@ -6,13 +6,13 @@ import Loader from "@/components/common/loader/Loader";
 import MainBannerDetail from "@/components/pages/banners/main/detail/MainBannerDetail";
 import { prefetchGetMainBannerDetail } from "@/api/banners/queries/usePrefetchGetMainBannerDetail";
 
-interface UpdateMainBannerPageProps {
+interface MainBannerDetailPageProps {
   params: {
     bannerId: string;
   }
 }
 
-export default async function UpdateMainBannerPage({ params }: UpdateMainBannerPageProps) {
+export default async function MainBannerDetailPage({ params }: MainBannerDetailPageProps) {
   const bannerId = Number(params.bannerId);
 
   const queryClient = new QueryClient();

@@ -25,7 +25,7 @@ interface DiscountControlProps {
   onToggleChange: (next: DiscountUnitType) => void;
   /** discountType 에 해당하는 DiscountUnitType */
   discountType: DiscountUnitType;
-  originalPrice: number;
+  originalPrice?: number;
 }
 
 export default function DiscountControl<T extends string>({

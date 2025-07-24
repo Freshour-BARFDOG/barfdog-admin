@@ -29,7 +29,7 @@ interface SelectOption<T extends string | number | boolean | null> {
 }
 
 interface SearchFilterItem {
-  label: string;
+  label: string | ReactNode;
   children: ReactNode;
   align?: "start" | "center";
 }

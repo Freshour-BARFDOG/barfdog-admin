@@ -1,5 +1,4 @@
 'use client';
-import * as styles from '../../../Benefits.css';
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
@@ -99,14 +98,12 @@ export default function ReleaseCouponForm() {
 		<>
 			<Card shadow='none' padding={20}>
 				<Form>
-					<InputFieldGroup label='발행 대상'>
-						<BenefitTargetSelector<ReleaseCouponFormValues, ReleaseCouponTarget>
-							targetValue={couponTarget}
-							setTargetValue={setCouponTarget}
-							options={RELEASE_COUPON_TARGET_LIST}
-							setValue={setValue}
-						/>
-					</InputFieldGroup>
+					<BenefitTargetSelector<ReleaseCouponFormValues, ReleaseCouponTarget>
+						targetValue={couponTarget}
+						setTargetValue={setCouponTarget}
+						options={RELEASE_COUPON_TARGET_LIST}
+						setValue={setValue}
+					/>
 					{couponTarget === 'GROUP' &&
 						<GroupTarget<ReleaseCouponFormValues> control={control} setValue={setValue} trigger={trigger} />
 					}

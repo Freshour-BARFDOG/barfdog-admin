@@ -1,5 +1,6 @@
 import { DiscountUnitType, SelectOption } from "@/types/common";
 import { format } from "date-fns";
+import { toLabelValueList } from "@/utils/toLabelValueList";
 
 const PAGE_SIZE = {
   COMMON: 10,
@@ -37,11 +38,9 @@ const AREA = {
   ALL: "전체",
   METRO: "수도권",
   NON_METRO: "비수도권",
-};
-const AREA_LIST = Object.entries(AREA).map(([value, label]) => ({
-  label,
-  value,
-}));
+} as const;
+
+const AREA_LIST = toLabelValueList(AREA);
 
 const NONE_VALUE = "NONE";
 
@@ -50,10 +49,7 @@ const STATUS = {
   HIDDEN: "N",
 } as const;
 
-const STATUS_LIST = Object.entries(STATUS).map(([value, label]) => ({
-  label,
-  value,
-}));
+const STATUS_LIST = toLabelValueList(STATUS);
 
 export {
   PAGE_SIZE,

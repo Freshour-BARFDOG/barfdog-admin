@@ -4,7 +4,7 @@ import InputLabel from "@/components/common/inputLabel/InputLabel";
 import Divider from "@/components/common/divider/Divider";
 
 interface InputFieldGroupProps {
-  label: string;
+  label: string | ReactNode;
   children: ReactNode;
   divider?: boolean;
   dividerColor?: "gray200" | "gray300";

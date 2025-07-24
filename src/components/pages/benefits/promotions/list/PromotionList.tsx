@@ -125,7 +125,7 @@ export default function PromotionList() {
 
 	const columns: TableColumn<PromotionListData>[] = [
 		{ key: 'seq', header: '번호', width: '60px',
-			render: (row: PromotionListData, index: number) =>
+			render: (_, index) =>
 				getTableRowNumber({
 					totalElements: data?.page.totalElements as number,
 					currentPage: data?.page.number as number,
@@ -136,7 +136,7 @@ export default function PromotionList() {
 		{
 			key: 'id',
 			header: '상세보기',
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				<Link href={`/promotions/${row.promotionId}`} target="_blank">
 					<Text type="body3" color="red">상세보기</Text>
 				</Link>
@@ -144,7 +144,7 @@ export default function PromotionList() {
 		{
 			key: 'status',
 			header: '상태',
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				<Text 
 					type='body3' 
 					color={
@@ -162,13 +162,13 @@ export default function PromotionList() {
 		{
 			key: 'count',
 			header: '사용/발행/수량',
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				`${row.usedCount} / ${row.quantity - row.remaining} / ${row.quantity}`
 		},
 		{
 			key: 'expiredDate',
 			header: '기간',
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				<Text type='body3'>
 					{format(new Date(row.startDate), 'yyyy-MM-dd HH:mm:ss')}  ~<br/>
 					{format(new Date(row.expiredDate), 'yyyy-MM-dd HH:mm:ss')}<br/>
@@ -178,7 +178,7 @@ export default function PromotionList() {
 			key: 'info',
 			header: '쿠폰 정보 (코드/이름/사용처/혜택/한도)',
 			width: 400,
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				<div className={commonWrapper({ direction: 'col', align: 'center', gap: 4 })}>
 					<Text type='body3'>{row.code} / {row.name}</Text>
 					<Text type='body3' color='gray600' align='center'>
@@ -191,10 +191,10 @@ export default function PromotionList() {
 		{
 			key: 'id',
 			header: '삭제',
-			render: (row: PromotionListData) =>
+			render: (row) =>
 				<Button onClick={() => handleDeletePromotion(row.promotionId, row.status)} size='sm'>삭제</Button>
 		},
-	] as TableColumn<PromotionListData>[];
+	];
 
 	if(!data) return null;
 	return (
@@ -206,7 +206,7 @@ export default function PromotionList() {
 				onReset={onReset}
 			/>
 			<TableSection
-				data={data?.promotionList as PromotionListData[]}
+				data={data?.promotionList}
 				columns={columns}
 				page={page}
 				onPageChange={onChangePage}

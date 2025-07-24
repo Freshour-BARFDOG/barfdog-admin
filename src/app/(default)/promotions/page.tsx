@@ -6,7 +6,7 @@ import Loader from "@/components/common/loader/Loader";
 import PromotionList from "@/components/pages/benefits/promotions/list/PromotionList";
 import { prefetchGetPromotionList } from "@/api/promotions/queries/usePrefetchGetPromotionList";
 
-export default async function CouponsPage() {
+export default async function PromotionPage() {
   const queryClient = new QueryClient();
   await prefetchGetPromotionList(queryClient);
   const dehydrateState = dehydrate(queryClient);

@@ -1,6 +1,6 @@
 "use client";
 
-import { commonWrapper } from "@/styles/common.css";
+import { commonWrapper, pointColor } from "@/styles/common.css";
 import { ChangeEvent, ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -29,13 +29,15 @@ import {
 import { SelectOption } from "@/types/common";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { ProductVisibilityStatus } from "@/types/products";
 import { BOOLEAN_OPTIONS, ITEM_STATUS_OPTIONS } from "@/constants/products";
 import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
 
 interface InputFieldItem {
   name: RawProductFormKeys;
-  label: string;
+  label: string | ReactNode;
+  isRequired?: boolean;
   render: (
     field: ControllerRenderProps<RawProductFormValues, RawProductFormKeys>
   ) => ReactNode;
@@ -167,7 +169,18 @@ export default function RawProductForm({
     },
     {
       name: "descriptionForSurvey",
-      label: "추천 문구",
+      label: (
+        <TooltipInfo
+          title={(
+            <>추천 문구 <span className={pointColor}>*</span></>
+          )}
+        >
+          노출 위치<br/>
+          1. 설문조사 ‘특별히 챙겨주고 싶은 부분’<br/>
+          2. 플랜, 레시피 선택페이지의 설문결과 설명란
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
         <InputField value={field.value as string} onChange={field.onChange} />
       ),
@@ -205,7 +218,16 @@ export default function RawProductForm({
     },
     {
       name: "leaked",
-      label: "노출 여부",
+      label: (
+        <TooltipInfo
+          title={(
+            <>노출 여부 <span className={pointColor}>*</span></>
+          )}
+        >
+          플랜,레시피 페이지의 목록에 노출합니다.
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
         <LabeledRadioButtonGroup<ProductVisibilityStatus>
           options={ITEM_STATUS_OPTIONS}
@@ -216,7 +238,19 @@ export default function RawProductForm({
     },
     {
       name: "inStock",
-      label: "재고 여부",
+      label: (
+        <TooltipInfo
+          title={(
+            <>재고 여부 <span className={pointColor}>*</span></>
+          )}
+        >
+          1. 품절된 레시피는 신규설문조사에서 구입 불가능합니다.<br/>
+          2. 품절된 레시피를 구독 중인 고객은 결제 중지됩니다.<br/>
+          3. 알림톡으로 품절안내 메시지가 전송됩니다.<br/>
+          4. 유저는 사이트 접속 시, 안내창을 통해 품절상태를 확인하게 됩니다.
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
         <div>
           <LabeledRadioButtonGroup<boolean>
@@ -235,7 +269,16 @@ export default function RawProductForm({
   const imageList = [
     {
       title: "recipeThumb",
-      label: "레시피 이미지",
+      label: (
+        <TooltipInfo
+          title={(
+            <>레시피 이미지 <span className={pointColor}>*</span></>
+          )}
+        >
+          1. 썸네일 상단의 글자는 이미지로 삽입해야합니다.
+          2. 플랜, 레시피 페이지의 레시피 썸네일에 노출
+        </TooltipInfo>
+      ),
       linkName: "recipeLinkUrl",
       defaultImageUrl: defaultRecipeUrl ?? "",
       imageName: recipeFileName ?? "",
@@ -246,7 +289,15 @@ export default function RawProductForm({
     },
     {
       title: "surveyResult",
-      label: "설문 이미지",
+      label: (
+        <TooltipInfo
+          title={(
+            <>설문 이미지 <span className={pointColor}>*</span></>
+          )}
+        >
+          플랜, 레시피 페이지의 설문결과에 노출
+        </TooltipInfo>
+      ),
       linkName: "surveyLinkUrl",
       defaultImageUrl: defaultSurveyUrl ?? "",
       imageName: surveyFileName ?? "",
@@ -269,6 +320,7 @@ export default function RawProductForm({
               render={({ field }) => (
                 <InputFieldGroup
                   label={input.label}
+                  isLabelRequired={input.isRequired === undefined}
                   divider={index !== InputFieldList.length - 1}
                 >
                   {input.render(field)}
@@ -279,7 +331,7 @@ export default function RawProductForm({
           <Divider thickness={1} color="gray200" />
 
           {imageList.map((image, index) => (
-            <InputFieldGroup label={image.label} divider key={image.label}>
+            <InputFieldGroup label={image.label} isLabelRequired={false} divider key={image.title}>
               <FileUpload
                 inputId={`file-input-${image.title.toLowerCase()}`}
                 onFileChange={image.onFileChange}

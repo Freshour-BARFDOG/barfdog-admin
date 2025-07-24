@@ -1,14 +1,14 @@
 'use client';
-import BannerCreate from "@/components/pages/banners/common/BannerCreate";
+import CreateBanner from "@/components/pages/banners/common/CreateBanner";
 import PopupForm from "@/components/pages/banners/popup/form/PopupForm";
 import { queryKeys } from "@/constants/queryKeys";
 import { useCreatePopup } from "@/api/banners/mutations/useCreatePopup";
 
-export default function PopupCreate() {
+export default function CreatePopup() {
 	const { mutate } = useCreatePopup();
 
 	return (
-		<BannerCreate
+		<CreateBanner
 			title='팝업'
 			FormComponent={PopupForm}
 			mutationFn={mutate}
