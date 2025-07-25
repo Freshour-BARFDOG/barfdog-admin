@@ -106,7 +106,7 @@ type Plan = "FULL" | "HALF" | "TOPPING";
 
 interface UpdatePlanAndRecipeRequest {
   plan: Plan;
-  recipeIds: number[];
+  recipeIdList: number[];
   nextPaymentPrice: number;
 }
 

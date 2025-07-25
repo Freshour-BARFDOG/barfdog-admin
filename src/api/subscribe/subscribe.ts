@@ -44,14 +44,14 @@ const updatePlanAndRecipe = async ({
 
 const updateNextPaymentPrice = async ({
   subscribeId,
-  nextPaymentPrice,
+  newPaymentPrice,
 }: {
   subscribeId: number;
-  nextPaymentPrice: number;
+  newPaymentPrice: number;
 }) => {
   const { data } = await axiosInstance.patch(
     `/api/admin/${subscribeId}/nextPaymentPrice`,
-    { nextPaymentPrice }
+    { newPaymentPrice }
   );
   return data;
 };

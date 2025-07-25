@@ -7,7 +7,6 @@ import {
   Dog,
   GalleryVertical,
   LayoutDashboard,
-  MessageCircle,
   SendToBack,
   Settings,
   ShoppingBasket,
@@ -277,23 +276,6 @@ export const MENU_ITEMS: MenuItem[] = [
             href: "/alliance/sales",
           },
         ],
-      },
-    ],
-  },
-  {
-    key: "messenger",
-    label: "메신저 관리",
-    icon: MessageCircle,
-    children: [
-      {
-        key: "friendTalk",
-        label: "친구톡",
-        href: "/messenger/friendTalk",
-      },
-      {
-        key: "channelTalk",
-        label: "채널톡",
-        href: "/messenger/channelTalk",
       },
     ],
   },
