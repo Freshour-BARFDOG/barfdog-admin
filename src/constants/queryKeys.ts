@@ -75,7 +75,13 @@ const queryKeys = {
     GET_DOG_LIST: "getDogList",
     GET_DOG_DETAIL: "getDogDetail",
   },
-  
+  POLICIES: {
+    BASE: "policies",
+    GET_POLICIES: "getPolicies",
+    GET_AUTO_COUPONS: "getAutoCoupons",
+    GET_COUPON_POLICY: "getCouponPolicy",
+    GET_PLAN_DISCOUNT: "getPlanDiscount",
+  },
 } as const;
 
 export { queryKeys };

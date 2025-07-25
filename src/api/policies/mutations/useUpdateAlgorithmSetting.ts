@@ -1,0 +1,19 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UseMutationCustomOptions } from "@/types/common";
+import { queryKeys } from "@/constants/queryKeys";
+import { updateAlgorithmSetting } from "../policies";
+
+export function useUpdateAlgorithmSetting(
+  mutationOptions?: UseMutationCustomOptions
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateAlgorithmSetting,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [queryKeys.POLICIES.BASE, queryKeys.POLICIES.GET_POLICIES],
+      });
+    },
+    ...mutationOptions,
+  });
+}

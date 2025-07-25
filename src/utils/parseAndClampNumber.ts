@@ -6,7 +6,7 @@ export interface ParseAndClampNumberProps {
   /** 숫자 처리 모드 ("normal" | "discount") */
   mode: NumberFieldMode;
   /** 할인 타입 ("FIXED_RATE" | "FLAT_RATE") */
-  discountType: "FIXED_RATE" | "FLAT_RATE";
+  discountType?: "FIXED_RATE" | "FLAT_RATE";
   /** 원가 (FLAT_RATE 모드에서 상한으로 사용, 없으면 상한 무제한) */
   originalPrice?: number;
 }
@@ -17,7 +17,7 @@ export interface ParseAndClampNumberProps {
 export function parseAndClampNumber({
   rawInput,
   mode,
-  discountType,
+  discountType = "FLAT_RATE",
   originalPrice,
 }: ParseAndClampNumberProps): number {
   // 1) 쉼표 제거 + 숫자 파싱

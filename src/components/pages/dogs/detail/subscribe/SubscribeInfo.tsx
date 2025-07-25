@@ -26,6 +26,7 @@ import {
   formatNumberWithComma,
   unformatCommaNumber,
 } from "@/utils/formatNumber";
+import { useMutationToast } from "@/hooks/useMutaionToast";
 
 interface SubscribeInfoProps {
   subscribeId: number;
@@ -70,25 +71,11 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
     }));
   }, [recipeDtoList]);
 
-  // 공통 업데이트 핸들러
-  const createUpdateHandler = <T,>(
-    mutateFn: (
-      vars: T,
-      options: { onSuccess: () => void; onError: () => void }
-    ) => void,
-    vars: T,
-    successMsg: string,
-    errorMsg: string
-  ) => {
-    mutateFn(vars, {
-      onSuccess: () => addToast(successMsg),
-      onError: () => addToast(errorMsg),
-    });
-  };
+  const mutateToast = useMutationToast();
 
   const handleUpdateNextPaymentDate = () => {
     if (!nextPaymentDate) return;
-    createUpdateHandler(
+    mutateToast(
       updateNextPaymentDate,
       {
         subscribeId,
@@ -100,7 +87,7 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
   };
 
   const handleUpdateNextPaymentPrice = () => {
-    createUpdateHandler(
+    mutateToast(
       updateNextPaymentPrice,
       { subscribeId, nextPaymentPrice },
       "다음 결제 원금이 변경되었습니다.",
@@ -109,7 +96,7 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
   };
 
   const handleUpdateGrams = () => {
-    createUpdateHandler(
+    mutateToast(
       updateGrams,
       { subscribeId, grams: grams.join(",") },
       "그램수가 변경되었습니다.",
@@ -118,7 +105,7 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
   };
 
   const handleUpdatePlanAndRecipe = () => {
-    createUpdateHandler(
+    mutateToast(
       updatePlanAndRecipe,
       {
         subscribeId,
