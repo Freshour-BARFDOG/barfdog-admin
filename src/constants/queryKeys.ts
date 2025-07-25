@@ -90,6 +90,7 @@ const queryKeys = {
     GET_REVIEW_LIST: "getReviewList",
     GET_REVIEW_DETAIL: "getReviewDetail",
     GET_BEST_REVIEW_LIST: "getBestReviewList",
+    GET_PRODUCT_ITEM_LIST: "getProductItemList",
   }
   
 } as const;

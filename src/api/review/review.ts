@@ -4,13 +4,14 @@ import { cleanQueryParams } from "@/utils/cleanQueryParams";
 import { PAGE_SIZE } from "@/constants/common";
 import { REVIEW_ACTION_MAP, REVIEW_LIST_INITIAL_SEARCH_VALUES } from "@/constants/review";
 import {
-	BestReviewData,
+	BestReviewData, ProductItem, ProductItemType,
 	ReviewActionPayloadMap,
 	ReviewActionType,
-	ReviewDetailResponse,
+	ReviewDetailResponse, ReviewFormValues,
 	ReviewListResponse,
 	ReviewListSearchParams,
 } from "@/types/review";
+import { SelectOption } from "@/types/common";
 
 // 리뷰 목록 조회
 const getReviewList = async (
@@ -70,9 +71,31 @@ const getBestReviewList = async (instance: AxiosInstance = axiosInstance): Promi
 	}
 }
 
+const getProductItemList = async (type: ProductItemType, instance: AxiosInstance = axiosInstance): Promise<SelectOption<number>[]> => {
+	try {
+		const key = type === 'recipes' ? 'reviewRecipesDtoList' : 'reviewItemsDtoList';
+
+		const { data } = await instance.get(`/api/admin/reviews/${type !== 'recipes' ? 'items/' : ''}${type}`);
+		return data?._embedded?.[key].map((item: ProductItem) => ({ label: item.name, value: item.id })) || [];
+	} catch (error) {
+		throw error;
+	}
+}
+
+const createReview = async (body: ReviewFormValues) => {
+	try {
+		const { data } = await axiosInstance.post(`/api/admin/reviews`, body);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
 export {
 	getReviewList,
 	getReviewDetail,
 	performReviewAction,
 	getBestReviewList,
+	getProductItemList,
+	createReview,
 }

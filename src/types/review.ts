@@ -1,5 +1,6 @@
-import { REVIEW_STATUS } from "@/constants/review";
+import { REVIEW_STATUS, REVIEW_TYPE } from "@/constants/review";
 import { ImageFile, Page } from "@/types/common";
+import { GeneralProductType } from "@/types/products";
 
 // 공통 -------------------------------
 type ReviewActionType =
@@ -87,18 +88,43 @@ interface BestReviewData extends BestReviewLeakedOrder {
 	email: string;
 }
 
+// 리뷰 생성 -------------------------------
+type ProductItemType = GeneralProductType & 'recipes';
+
+interface ProductItem {
+	id: number;
+	name: string;
+}
+
+type ReviewType = keyof typeof REVIEW_TYPE;
+
+interface ReviewFormValues {
+	type: ReviewType | null;
+	id: number | null,
+	writtenDate: string;
+	star: number;
+	contents: string;
+	username: string;
+	reviewImageIdList: number[] | ImageFile[];
+}
+
 export type {
 	ReviewActionType,
 	ReviewActionPayloadMap,
 	ReviewActionMeta,
 	ReviewStatus,
-	
+
 	ReviewListSearchParams,
 	ReviewListData,
-	
+
 	ReviewListResponse,
 	ReviewDetailResponse,
-	
+
 	BestReviewLeakedOrder,
 	BestReviewData,
-}
+
+	ProductItemType,
+	ProductItem,
+	ReviewType,
+	ReviewFormValues,
+};

@@ -55,7 +55,7 @@ export default function ReviewList() {
 	// 전체 선택된 항목이 모두 요청 상태(REQUEST)인지 확인
 	const allSelectedAreRequest = selectedReviews.length > 0 && selectedReviews.every(r => r.status === 'REQUEST');
 	// 전체 선택된 항목이 모두 승인 상태(APPROVAL)인지 확인
-	const allSelectedAreApproval = selectedReviews.length > 0 && selectedReviews.every(r => r.status === 'APPROVAL');
+	const allSelectedAreApproval = selectedReviews.length > 0 && selectedReviews.every(r => r.status === 'APPROVAL' || r.status === 'ADMIN');
 
 	// 리뷰 상태 업데이트 핸들러
 	const { handleAction } = useReviewAction({
