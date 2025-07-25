@@ -1,4 +1,5 @@
 import { globalStyle } from "@vanilla-extract/css";
+import { themeVars } from "@/styles/theme.css";
 
 globalStyle("*", {
   boxSizing: "border-box",
@@ -14,3 +15,11 @@ globalStyle("html, body", {
 globalStyle("button", {
   cursor: 'pointer',
 });
+
+globalStyle('.swiper-button-prev, .swiper-button-next', {
+  color: `${themeVars.colors.gray.gray0} !important`,
+})
+
+globalStyle('.swiper-button-next:after, .swiper-button-prev:after', {
+  fontSize: '30px !important',
+})
