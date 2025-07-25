@@ -1,6 +1,6 @@
 import * as styles from './DateRangeFilter.css';
 import { ChangeEvent, useEffect, useState } from "react";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { OLDEST_DATE } from "@/constants/common";
 import DatePicker from "@/components/common/datePicker/DatePicker";
 

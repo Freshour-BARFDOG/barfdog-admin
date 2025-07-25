@@ -1,12 +1,12 @@
 import * as styles from "./AlertModal.css";
-import { useCallback, useMemo } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import ModalBackground from "../modalBackground/ModalBackground";
 import Button from "../../button/Button";
 import Text from "@/components/common/text/Text";
 
 interface ModalProps {
   title?: string;
-  content: string;
+  content: string | ReactNode;
   buttonType?: "default" | "text";
   confirmText?: string;
   cancelText?: string;
@@ -15,6 +15,7 @@ interface ModalProps {
   onCancel?: () => void;
   isOpen: boolean;
   onClose: () => void;
+  isConfirmDisabled?: boolean;
 }
 
 export default function AlertModal({
@@ -28,6 +29,7 @@ export default function AlertModal({
   onCancel,
   isOpen,
   onClose,
+  isConfirmDisabled,
 }: ModalProps) {
   const handleConfirm = useCallback(() => {
     onConfirm?.();
@@ -64,7 +66,10 @@ export default function AlertModal({
       <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalContentWrapper}>
           {title && <Text type="title4">{title}</Text>}
-          <Text type="body2" align='center' className={styles.modalContent}>{content}</Text>
+          {typeof content === 'string'
+            ? <Text type="body2" align='center' className={styles.modalContent}>{content}</Text>
+            : content
+          }
         </div>
         <div className={styles.modalButtonWrapper}>
           {cancelText && (
@@ -83,6 +88,7 @@ export default function AlertModal({
               variant={confirmVariant}
               onClick={handleConfirm}
               fullWidth={buttonPosition === "center"}
+              disabled={isConfirmDisabled}
             >
               {confirmText}
             </Button>

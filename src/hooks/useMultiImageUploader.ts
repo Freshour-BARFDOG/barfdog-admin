@@ -1,7 +1,6 @@
-import { ImageFile } from "@/types/common";
+import { ImageFile, UploadResponse } from "@/types/common";
 import { Path, PathValue, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { useToastStore } from "@/store/useToastStore";
-import { UploadResponse } from "@/types/community";
 
 interface UseMultiImageUploaderProps<T extends Record<string, any>> {
 	uploadFn: (file: File) => Promise<UploadResponse>;

@@ -103,6 +103,12 @@ interface TableItem {
   fullWidth?: boolean;
   align?: "center" | "start";
 }
+
+interface UploadResponse {
+	id: number;
+	url: string;
+}
+
 export type {
   MenuItem,
   TableColumn,
@@ -121,4 +127,5 @@ export type {
   StatusType,
   DogGender,
   TableItem,
+  UploadResponse,
 };

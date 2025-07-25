@@ -220,19 +220,19 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: Star,
     children: [
       {
-        key: "bestReview",
-        label: "베스트 리뷰",
-        href: "/review/bestReview",
-      },
-      {
         key: "review",
-        label: "리뷰",
+        label: "리뷰 조회",
         href: "/review",
       },
       {
         key: "create",
         label: "리뷰 생성",
         href: "/review/create",
+      },
+      {
+        key: "bestReview",
+        label: "베스트 리뷰",
+        href: "/review/best-review",
       },
     ],
   },
