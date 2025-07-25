@@ -6,12 +6,12 @@ import DateTimePicker from "@/components/common/dateTimePicker/DateTimePicker";
 import { OLDEST_DATE, TODAY } from "@/constants/common";
 
 const ExDatePicker = () => {
-	const [range, setRange] = useState<{ startDate: Date | null; endDate: Date | null }>({
+	const [range, setRange] = useState<{ startDate: string | null; endDate: string | null }>({
 		startDate: null,
 		endDate: null
 	});
 
-	const handleRangeChange = (newRange: { startDate: Date | null; endDate: Date | null }) => {
+	const handleRangeChange = (newRange: { startDate: string | null; endDate: string | null }) => {
 		setRange(newRange);
 	};
 	const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
@@ -21,11 +21,21 @@ const ExDatePicker = () => {
 			<div>
 				<Text type='title3'>DatePicker 예시</Text>
 				<DateRangeFilter
+					value={range}
+					onChangeRange={(range) => {
+						const { startDate, endDate } = range;
+						setRange({
+							startDate,
+							endDate
+						})
+					}}
+				/>
+				<DateRangeFilter
 					value={{
 						startDate: OLDEST_DATE,
 						endDate: TODAY,
 					}}
-					onChangeRange={} />
+					onChangeRange={handleRangeChange} />
 			</div>
 			<div>
 				<DateTimePicker
