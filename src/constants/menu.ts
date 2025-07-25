@@ -8,7 +8,6 @@ import {
   GalleryVertical,
   LayoutDashboard,
   MessageCircle,
-  Puzzle,
   SendToBack,
   Settings,
   ShoppingBasket,
@@ -238,41 +237,46 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
   {
-    key: "allianceCoupon",
-    label: "제휴사 쿠폰 관리",
-    icon: Puzzle,
-    children: [
-      {
-        key: "alliance",
-        label: "제휴사 관리",
-        href: "/alliance",
-      },
-      {
-        key: "coupon",
-        label: "제휴사 쿠폰 내역",
-        href: "/alliance/coupon",
-      },
-      {
-        key: "create",
-        label: "제휴사 쿠폰 생성",
-        href: "/alliance/coupon/create",
-      },
-    ],
-  },
-  {
-    key: "allianceSales",
-    label: "제휴사 매출 관리",
+    key: "alliance",
+    label: "제휴사 관리",
     icon: BadgeDollarSign,
     children: [
       {
-        key: "member",
-        label: "제휴사 유입 가입자",
-        href: "/alliance/sales/member",
+        key: "coupon",
+        label: "난수 쿠폰 관리",
+        children: [
+          {
+            key: "create",
+            label: "쿠폰 생성",
+            href: "/alliance/coupon/create",
+          },
+          {
+            key: "coupon-list",
+            label: "쿠폰 내역",
+            href: "/alliance/coupon",
+          },
+        ],
       },
       {
-        key: "sales",
-        label: "제휴사 매출",
-        href: "/alliance/sales",
+        key: "overview",
+        label: "제휴사 현황",
+        children: [
+          {
+            key: "alliance-list",
+            label: "제휴사 목록",
+            href: "/alliance/management",
+          },
+          {
+            key: "member",
+            label: "가입자 내역",
+            href: "/alliance/member",
+          },
+          {
+            key: "sales",
+            label: "매출 내역",
+            href: "/alliance/sales",
+          },
+        ],
       },
     ],
   },

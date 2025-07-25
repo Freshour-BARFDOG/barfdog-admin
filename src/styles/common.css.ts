@@ -309,3 +309,7 @@ export const discountUnitButton = recipe({
     }
   }
 })
+
+export const fullWidth = style({
+  width: '100%',
+})

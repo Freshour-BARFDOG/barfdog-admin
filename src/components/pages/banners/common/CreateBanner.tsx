@@ -28,7 +28,7 @@ interface BannerCreateProps<TFormValues> {
 	redirectPath: string;
 }
 
-export default function BannerCreate<TFormValues>({
+export default function CreateBanner<TFormValues>({
 	FormComponent,
 	mutationFn,
 	queryKeyToInvalidate,

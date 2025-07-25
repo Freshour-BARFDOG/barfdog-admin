@@ -10,6 +10,7 @@ import SelectBox from "@/components/common/selectBox/SelectBox";
 import DatePicker from "@/components/common/datePicker/DatePicker";
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useGetMemberCouponList } from "@/api/coupons/queries/useGetMemberCouponList";
@@ -79,10 +80,6 @@ export default function MemberCouponList() {
 		row: MemberCouponListData,
 		key: K
 	): MemberCouponListData[K] => {
-		// const formattedValue = (data) => key === 'expiredDate' ? format(new Date(data[key]), 'yyyy-MM-dd') : data[key];
-		// return selectedCoupon && selectedCoupon.id === row.id
-		// 	? formattedValue(selectedCoupon)
-		// 	: formattedValue(row);
 		const formattedValue = (data: MemberCouponListData): MemberCouponListData[K] =>
 			key === 'expiredDate'
 				? (format(new Date(data[key] as string), 'yyyy-MM-dd') as MemberCouponListData[K])
@@ -107,15 +104,23 @@ export default function MemberCouponList() {
 
 	const filters: SearchFilterItem[] = [
 		{
-			label: '발급 기간',
+			label: (
+				<TooltipInfo title='발급 기간'>
+					좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.
+				</TooltipInfo>
+			),
 			children: (
 				<DateRangeFilter
+					value={{
+						startDate: searchValues.createdDateFrom,
+						endDate: searchValues.createdDateTo
+					}}
 					onChangeRange={(value) => {
 						const { startDate, endDate } = value;
 						setSearchValues({
 							...searchValues,
-							createdDateFrom: format(startDate as Date, 'yyyy-MM-dd'),
-							createdDateTo: format(endDate as Date, 'yyyy-MM-dd'),
+							createdDateFrom: startDate as string,
+							createdDateTo: endDate as string,
 						})
 					}}
 				/>

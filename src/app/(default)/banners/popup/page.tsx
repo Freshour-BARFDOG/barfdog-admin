@@ -6,7 +6,7 @@ import Loader from "@/components/common/loader/Loader";
 import PopupList from "@/components/pages/banners/popup/list/PopupList";
 import { prefetchGetPopupList } from "@/api/banners/queries/usePrefetchGetPopupList";
 
-export default async function MainBannerPage() {
+export default async function PopupPage() {
   const queryClient = new QueryClient();
   await prefetchGetPopupList(queryClient);
   const dehydrateState = dehydrate(queryClient);

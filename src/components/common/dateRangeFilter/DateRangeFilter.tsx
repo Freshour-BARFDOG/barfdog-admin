@@ -1,8 +1,8 @@
 import * as styles from './DateRangeFilter.css';
 import { ChangeEvent, useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
-import DatePicker from "@/components/common/datePicker/DatePicker";
 import { OLDEST_DATE } from "@/constants/common";
+import DatePicker from "@/components/common/datePicker/DatePicker";
 
 const PRESETS = [
 	{ label: '전체', days: null },
@@ -15,65 +15,90 @@ const PRESETS = [
 ];
 
 interface DateRange {
-	startDate: Date | null;
-	endDate: Date | null;
+	startDate: string | null; // 'yyyy-MM-dd'
+	endDate: string | null;
 }
 
 type DateRangeFilterProps = {
+	value: DateRange;
 	onChangeRange: (range: DateRange) => void;
 };
 
-// 날짜 객체 → yyyy-MM-dd 문자열
-const formatDate = (date: Date | null): string =>
-	date ? format(date, 'yyyy-MM-dd') : '';
+const toString = (date: Date | null): string | null =>
+	date ? format(date, 'yyyy-MM-dd') : null;
 
-// yyyy-MM-dd 문자열 → Date 객체
-const parseDate = (str: string): Date => parseISO(str);
-
-export default function DateRangeFilter({ onChangeRange }: DateRangeFilterProps) {
-	const [startDate, setStartDate] = useState<Date | null>(null);
-	const [endDate, setEndDate] = useState<Date>(new Date());
+export default function DateRangeFilter({
+	value,
+	onChangeRange,
+}: DateRangeFilterProps) {
+	const todayStr = format(new Date(), 'yyyy-MM-dd');
 	const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
 
 	const applyPreset = (days: number | null) => {
 		const today = new Date();
-		let startDate: Date | null = null;
-		let endDate: Date | null = today;
+		const oldestDate = new Date(OLDEST_DATE);
+		let start: Date | null = null;
+		let end: Date | null = today;
 
 		if (days === null) {
-			startDate = OLDEST_DATE;
+			start = oldestDate;
 		} else if (days === 0) {
-			startDate = today;
-			endDate = today;
+			start = today;
+			end = today;
 		} else {
-			startDate = new Date(today);
-			startDate.setDate(today.getDate() - days);
+			start = new Date(today);
+			start.setDate(today.getDate() - days);
 		}
 
-		setStartDate(startDate);
-		setEndDate(endDate);
 		setSelectedPreset(days);
-		onChangeRange({ startDate, endDate });
+		onChangeRange({
+			startDate: toString(start),
+			endDate: toString(end),
+		});
 	};
 
 	const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const newStart = e.target.value ? parseDate(e.target.value) : null;
-		setStartDate(newStart);
-		setSelectedPreset(null); // 수동 조작 시 preset 해제
-		onChangeRange({ startDate: newStart, endDate });
+		setSelectedPreset(null); // 수동입력 시 preset 해제
+		onChangeRange({
+			startDate: e.target.value,
+			endDate: value.endDate,
+		});
 	};
 
 	const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const newEnd = e.target.value ? parseDate(e.target.value) : null;
-		if (newEnd) setEndDate(newEnd);
-		setSelectedPreset(null); // 수동 조작 시 preset 해제
-		onChangeRange({ startDate, endDate: newEnd });
+		setSelectedPreset(null);
+		onChangeRange({
+			startDate: value.startDate,
+			endDate: e.target.value,
+		});
 	};
 
 	useEffect(() => {
-		applyPreset(null); // 최초 로딩 시 전체 범위 적용
-	}, []);
+		// 외부 value가 preset과 일치하는지 계산
+		if (!value.startDate || !value.endDate) {
+			setSelectedPreset(null);
+			return;
+		}
 
+		const match = PRESETS.find(({ days }) => {
+			if (days === null) {
+				return (
+					value.startDate === format(OLDEST_DATE, 'yyyy-MM-dd') &&
+					value.endDate === todayStr
+				);
+			} else {
+				const expectedStart = new Date();
+				expectedStart.setDate(expectedStart.getDate() - days);
+				const expectedStartStr = format(expectedStart, 'yyyy-MM-dd');
+				return (
+					value.startDate === expectedStartStr &&
+					value.endDate === todayStr
+				);
+			}
+		});
+
+		setSelectedPreset(match?.days ?? null);
+	}, [value.startDate, value.endDate]);
 	return (
 		<div>
 			<div className={styles.presetButtonBox}>
@@ -89,15 +114,15 @@ export default function DateRangeFilter({ onChangeRange }: DateRangeFilterProps)
 			</div>
 			<div className={styles.dateRageBox}>
 				<DatePicker
-					value={formatDate(startDate)}
-					max={formatDate(endDate)}
+					value={value.startDate ?? ''}
+					max={value.endDate ?? ''}
 					onChange={handleStartDateChange}
 				/>
 				~
 				<DatePicker
-					value={formatDate(endDate)}
-					min={formatDate(startDate)}
-					max={formatDate(new Date())}
+					value={value.endDate ?? ''}
+					min={value.startDate ?? ''}
+					max={todayStr}
 					onChange={handleEndDateChange}
 				/>
 			</div>

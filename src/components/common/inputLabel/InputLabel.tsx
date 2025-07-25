@@ -1,9 +1,10 @@
+import { ReactNode } from 'react';
 import * as styles from './InputLabel.css';
 import { pointColor } from "@/styles/common.css";
 import Text from "@/components/common/text/Text";
 
 interface InputLabelProps {
-	label: string;
+	label: string | ReactNode;
 	labelColor: 'gray700' | 'gray800';
 	isRequired?: boolean;
 	className?: string;

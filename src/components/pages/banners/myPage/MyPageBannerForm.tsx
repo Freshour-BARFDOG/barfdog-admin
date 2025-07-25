@@ -10,6 +10,7 @@ import Text from "@/components/common/text/Text";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import FormControls from "@/components/common/formControls/FormControls";
 import InputField from "@/components/common/inputField/InputField";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { STATUS_LIST } from "@/constants/common";
 import { bannerSchema, defaultMyPageBannerFormValues } from "@/utils/validation/banners/banners";
 import { MyPageBannerFormValues } from "@/types/banners";
@@ -106,7 +107,15 @@ export default function MyPageBannerForm({
 								control={control}
 								name={image.linkName as keyof MyPageBannerFormValues}
 								render={({ field }) => (
-									<InputFieldGroup label='연결 링크' isLabelRequired={false} divider={index === 0}>
+									<InputFieldGroup
+										label={
+											<TooltipInfo title='연결 링크'>
+												* 링크가 없을 경우, 배너 클릭 이벤트가 발생하지 않습니다.
+											</TooltipInfo>
+										}
+										isLabelRequired={false}
+										divider={index === 0}
+									>
 										<InputField
 											placeholder='ex: https://barfdog.co.kr/path/1'
 											{...field}

@@ -1,5 +1,4 @@
 'use client';
-import * as styles from "@/components/pages/benefits/Benefits.css";
 import { pointColor } from "@/styles/common.css";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -8,13 +7,13 @@ import Card from "@/components/common/card/Card";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import Text from "@/components/common/text/Text";
-import Button from "@/components/common/button/Button";
 import LabeledRadioButton from "@/components/common/labeledRadioButton/LabeledRadioButton";
 import DateTimePicker from "@/components/common/dateTimePicker/DateTimePicker";
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import FormControls from "@/components/common/formControls/FormControls";
+import LabeledInput from "@/components/common/labeledInput/LabeledInput";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
 import useModal from "@/hooks/useModal";
 import { useFormHandler } from "@/hooks/useFormHandler";
@@ -118,7 +117,6 @@ export default function PromotionForm({
 									}
 									onChange={(value) => setValue('couponId', value as number)}
 									disabled={!!couponDetail}
-									fullWidth
 								/>
 							</InputFieldGroup>
 						)}
@@ -128,25 +126,23 @@ export default function PromotionForm({
 						name='quantity'
 						render={({ field }) => (
 							<InputFieldGroup label='수량'>
-								<div className={styles.benefitInputBox}>
-									<div className={styles.benefitInput({ width: 'auto' })}>
-										<InputField
-											value={formatNumberWithComma(field.value)}
-											onChange={(e) => {
-												const raw = unformatCommaNumber(e.target.value);
-												field.onChange(raw);
-											}}
-											name={field.name}
-										/>
-									</div>
-									<Text type='body3'>개</Text>
-									{couponDetail?.quantity && couponDetail?.remaining &&
-                  <>
-                    <Text type='caption2'>발행됨 <span className={pointColor}>{couponDetail.quantity - couponDetail.remaining}</span>개</Text>
-                    <Text type='caption2'>잔여수량 <span className={pointColor}>{couponDetail.remaining}</span>개</Text>
-                  </>
-									}
-								</div>
+								<LabeledInput label='개'>
+									<InputField
+										width={170}
+										value={formatNumberWithComma(field.value)}
+										onChange={(e) => {
+											const raw = unformatCommaNumber(e.target.value);
+											field.onChange(raw);
+										}}
+										name={field.name}
+									/>
+								</LabeledInput>
+								{couponDetail?.quantity && couponDetail?.remaining &&
+	                <>
+	                  <Text type='caption2'>발행됨 <span className={pointColor}>{couponDetail.quantity - couponDetail.remaining}</span>개</Text>
+	                  <Text type='caption2'>잔여수량 <span className={pointColor}>{couponDetail.remaining}</span>개</Text>
+	                </>
+								}
 							</InputFieldGroup>
 						)}
 					/>

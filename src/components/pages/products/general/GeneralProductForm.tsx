@@ -1,7 +1,7 @@
 "use client";
 
 import * as styles from "./GeneralProduct.css";
-import { commonWrapper } from "@/styles/common.css";
+import { commonWrapper, pointColor } from "@/styles/common.css";
 import { ChangeEvent, ReactNode, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -53,6 +53,7 @@ import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import MultiFileUploader from "@/components/common/multiFileUploader/MultiFileUploader";
 import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
 import { UploadResponse } from "@/types/community";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 
 interface InputFieldItem {
   name: GeneralProductFormKeys;
@@ -338,7 +339,20 @@ export default function GeneralProductForm({
               })}
             </div>
           </InputFieldGroup>
-          <InputFieldGroup label="재고여부" divider>
+          <InputFieldGroup
+            label={(
+              <TooltipInfo
+                title={(
+                  <>재고 여부 <span className={pointColor}>*</span></>
+                )}
+              >
+                1. 품절된 상품은 아이템리스트 내에 품절처리 UI로 나타납니다.<br/>
+                2. 품절된 상품은 상세페이지로 접근할 수 없습니다.
+              </TooltipInfo>
+            )}
+            isLabelRequired={false}
+            divider
+          >
             <div
               className={commonWrapper({
                 direction: "col",
@@ -376,7 +390,15 @@ export default function GeneralProductForm({
               )}
             </div>
           </InputFieldGroup>
-          <InputFieldGroup label="옵션 추가" divider isLabelRequired={false}>
+          <InputFieldGroup
+            label={(
+              <TooltipInfo title='옵션 추가'>
+                1. 옵션명, 재고수량은 필수항목입니다.<br/>
+                2. 사용하지 않는 옵션항목은 삭제하세요
+              </TooltipInfo>
+            )}
+            isLabelRequired={false}
+          >
             <OptionField
               isEdit={isEdit}
               control={control}
@@ -412,7 +434,18 @@ export default function GeneralProductForm({
               name={input.name}
               render={({ field }) => (
                 <InputFieldGroup
-                  label={input.label}
+                  label={input.name === 'itemIcons'
+                    ? (
+                      <TooltipInfo
+                        title={(
+                          <>상품 아이콘 <span className={pointColor}>*</span></>
+                        )}
+                      >
+                        일반상품리스트 썸네일 상단에 노출된 아이콘입니다.
+                      </TooltipInfo>
+                    ) : input.label
+                  }
+                  isLabelRequired={input.name !== 'itemIcons'}
                   divider={index !== InputFieldList.length - 1}
                 >
                   {input.render(field)}

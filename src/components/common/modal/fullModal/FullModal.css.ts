@@ -8,7 +8,7 @@ export const modalContainer = style({
 	justifyContent: 'flex-start',
 	alignItems: 'center',
 	maxWidth: "600px",
-	width: '100%',
+	width: 'auto',
 	overflowY: 'auto'
 })
 

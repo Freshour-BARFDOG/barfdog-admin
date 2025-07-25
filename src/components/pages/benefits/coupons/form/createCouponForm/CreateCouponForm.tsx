@@ -1,47 +1,36 @@
 "use client";
-import * as styles from "../../../Benefits.css";
-import { discountUnitButton } from "@/styles/common.css";
-import { ChangeEvent, ReactNode, useEffect } from "react";
+import {commonWrapper, pointColor} from "@/styles/common.css";
+import { ChangeEvent, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import { Controller, ControllerRenderProps } from "react-hook-form";
+import { Controller, ControllerRenderProps, useWatch } from "react-hook-form";
 import Card from "@/components/common/card/Card";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
-import Text from "@/components/common/text/Text";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
+import DiscountControl from "@/components/common/discountControl/DiscountControl";
+import LabeledInput from "@/components/common/labeledInput/LabeledInput";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import FormControls from "@/components/common/formControls/FormControls";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { useFormHandler } from "@/hooks/useFormHandler";
-import {
-  unformatCommaNumber,
-  formatNumberWithComma,
-} from "@/utils/formatNumber";
-import { useCreateCoupon } from "@/api/coupons/mutations/useCreateCoupon";
+import { unformatCommaNumber, formatNumberWithComma } from "@/utils/formatNumber";
 import { useToastStore } from "@/store/useToastStore";
 import { queryKeys } from "@/constants/queryKeys";
-import { CreateCouponFormValues } from "@/types/benefits/coupons";
-import {
-  CREATE_COUPON_TARGET_LIST,
-  CREATE_COUPON_TYPE_LIST,
-} from "@/constants/benefits/coupons";
-import {
-  DISCOUNT_UNIT_TYPE,
-  DISCOUNT_UNIT_TYPE_LIST,
-  UNLIMITED_VALUE,
-} from "@/constants/common";
-import {
-  createCouponSchema,
-  defaultCreateCouponValues,
-} from "@/utils/validation/benefits/coupon/createCoupon";
+import { CREATE_COUPON_TARGET_LIST, CREATE_COUPON_TYPE_LIST } from "@/constants/benefits/coupons";
+import { DISCOUNT_UNIT_TYPE_LIST, UNLIMITED_VALUE } from "@/constants/common";
+import { createCouponSchema, defaultCreateCouponValues } from "@/utils/validation/benefits/coupon/createCoupon";
+import { CreateCouponFormValues, CreateCouponType } from "@/types/benefits/coupons";
+import { useCreateCoupon } from "@/api/coupons/mutations/useCreateCoupon";
 
 type CreateCouponFieldName = keyof CreateCouponFormValues;
 
 interface InputFieldItem {
   name: CreateCouponFieldName;
-  label: string;
+  label: string | ReactNode;
+  isRequired?: boolean;
   render: (
     field: ControllerRenderProps<CreateCouponFormValues, CreateCouponFieldName>
   ) => ReactNode;
@@ -49,7 +38,7 @@ interface InputFieldItem {
 
 export default function CreateCouponForm() {
   const router = useRouter();
-  const { control, handleSubmit, setValue, watch, isValid } =
+  const { control, handleSubmit, setValue, isValid } =
     useFormHandler<CreateCouponFormValues>(
       createCouponSchema,
       defaultCreateCouponValues,
@@ -60,14 +49,9 @@ export default function CreateCouponForm() {
   const { mutate } = useCreateCoupon();
   const { addToast } = useToastStore();
 
-  const discountType = watch("discountType");
-  const discountDegree = watch("discountDegree");
-
-  useEffect(() => {
-    if (discountType === "FIXED_RATE" && discountDegree > 100) {
-      setValue("discountDegree", 100);
-    }
-  }, [discountType, discountDegree, setValue]);
+  const discountType = useWatch({ control, name: "discountType" });
+  const couponType = useWatch({ control, name: "couponType" });
+  const amount = useWatch({ control, name: "amount" });
 
   const handleChangeNumberType = (
     e: ChangeEvent<HTMLInputElement>,
@@ -93,9 +77,7 @@ export default function CreateCouponForm() {
             ],
           });
           addToast("쿠폰 등록이 완료되었습니다!");
-          setTimeout(() => {
-            router.push(`/coupons?couponType=${data.couponType}`);
-          }, 200);
+          router.push(`/coupons?couponType=${data.couponType}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {
@@ -114,14 +96,23 @@ export default function CreateCouponForm() {
   const InputFieldList: InputFieldItem[] = [
     {
       name: "couponType",
-      label: "쿠폰 타입",
+      label: (
+        <TooltipInfo
+          title={(
+            <>쿠폰 타입 <span className={pointColor}>*</span></>
+          )}
+        >
+          '프로모션' 타입: 프로모션 생성 페이지에서 발급 가능
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
         <LabeledRadioButtonGroup
           value={field.value ?? ""}
           onChange={(value) => {
             field.onChange(value);
             if (value === "GENERAL_PUBLISHED") {
-              setValue("code", "");
+              setValue("code", "", { shouldValidate: true });
             }
           }}
           options={CREATE_COUPON_TYPE_LIST}
@@ -157,97 +148,98 @@ export default function CreateCouponForm() {
       name: "code",
       label: "쿠폰 코드",
       render: (field) => (
-        <div className={styles.benefitInputBox}>
-          <div className={styles.benefitInput({})}>
-            <InputField
-              value={field.value}
-              onChange={field.onChange}
-              disabled={watch("couponType") === "GENERAL_PUBLISHED"}
-            />
-          </div>
-        </div>
+        <InputField
+          width={170}
+          value={field.value}
+          onChange={field.onChange}
+          disabled={couponType as CreateCouponType === "GENERAL_PUBLISHED"}
+        />
       ),
     },
     {
       name: "discountDegree",
-      label: "할인율",
+      label: (
+        <TooltipInfo
+          title={(
+            <>할인율 <span className={pointColor}>*</span></>
+          )}
+        >
+          쿠폰코드 규칙<br/>
+          1. 문자열 15자 이내 (영문 대소문자)<br/>
+          2. 회원 마이페이지에서 쿠폰코드 후 사용가능<br/>
+          3. 동일한 쿠폰에 대하여 1회 사용가능<br/>
+          4. 공란으로 입력하면 일반쿠폰이 생성
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
-        <div className={styles.benefitInputBox}>
-          <div className={styles.benefitInput({})}>
-            <InputField
-              value={formatNumberWithComma(field.value)}
-              onChange={(e) => handleChangeNumberType(e, field)}
-            />
-          </div>
-          <div>
-            {DISCOUNT_UNIT_TYPE_LIST.map((unit) => (
-              <button
-                key={unit.value}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setValue("discountType", unit.value);
-                }}
-                className={discountUnitButton({
-                  active: String(unit.value === watch("discountType")),
-                })}
-              >
-                {unit.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <DiscountControl
+          value={field.value as number}
+          onValueChange={field.onChange}
+          options={DISCOUNT_UNIT_TYPE_LIST}
+          selected={discountType}
+          onToggleChange={(value) => {
+            setValue('discountType', value);
+          }}
+          discountType={discountType}
+        />
       ),
     },
     {
       name: "availableMaxDiscount",
       label: "최대 할인 금액",
       render: (field) => (
-        <div className={styles.benefitInputBox}>
-          <div className={styles.benefitInput({})}>
-            <InputField
-              value={formatNumberWithComma(field.value)}
-              onChange={(e) => handleChangeNumberType(e, field)}
-            />
-          </div>
-          <Text type="body3">원 할인</Text>
-        </div>
+        <LabeledInput label='원 할인'>
+          <InputField
+            width={170}
+            value={formatNumberWithComma(field.value)}
+            onChange={(e) => handleChangeNumberType(e, field)}
+          />
+        </LabeledInput>
       ),
     },
     {
       name: "availableMinPrice",
       label: "최소 사용 금액",
       render: (field) => (
-        <div className={styles.benefitInputBox}>
-          <div className={styles.benefitInput({})}>
-            <InputField
-              value={formatNumberWithComma(field.value)}
-              onChange={(e) => handleChangeNumberType(e, field)}
-            />
-          </div>
-          <Text type="body3">원 이상</Text>
-        </div>
+        <LabeledInput label='원 이상'>
+          <InputField
+            width={170}
+            value={formatNumberWithComma(field.value)}
+            onChange={(e) => handleChangeNumberType(e, field)}
+          />
+        </LabeledInput>
       ),
     },
     {
       name: "amount",
-      label: "사용한도(횟수)",
+      label: (
+        <TooltipInfo
+          title={(
+            <>사용한도(횟수) <span className={pointColor}>*</span></>
+          )}
+        >
+          사용한도가 9999회 이상일 경우, 무제한 체크박스를 활용하세요.
+        </TooltipInfo>
+      ),
+      isRequired: false,
       render: (field) => (
-        <div className={styles.benefitInputBox}>
-          <div className={styles.benefitInput({})}>
+        <div className={commonWrapper({ align: 'center', justify: 'start', gap: 8 })}>
+          <LabeledInput label='회'>
             <InputField
+              width={170}
               value={formatNumberWithComma(field.value)}
               onChange={(e) => handleChangeNumberType(e, field)}
             />
-          </div>
-          <Text type="body3">회</Text>
+          </LabeledInput>
           <LabeledCheckbox
             label="무제한"
             value={UNLIMITED_VALUE}
-            isChecked={watch("amount") === UNLIMITED_VALUE}
+            isChecked={amount as number === UNLIMITED_VALUE}
             onToggle={() =>
-              watch("amount") !== UNLIMITED_VALUE
-                ? setValue("amount", UNLIMITED_VALUE)
-                : setValue("amount", 0)
+              amount as number !== UNLIMITED_VALUE
+                ? setValue("amount", UNLIMITED_VALUE, { shouldValidate: true })
+                : setValue("amount", 0, { shouldValidate: true })
             }
           />
         </div>
@@ -264,14 +256,19 @@ export default function CreateCouponForm() {
               control={control}
               key={input.name}
               name={input.name}
-              render={({ field }) => (
-                <InputFieldGroup
-                  label={input.label}
-                  divider={index !== InputFieldList.length - 1}
-                >
-                  {input.render(field)}
-                </InputFieldGroup>
-              )}
+              render={({ field }) => {
+                const isLabelRequired = input.isRequired === undefined ? true : input.isRequired;
+                console.log(isLabelRequired)
+                return (
+                  <InputFieldGroup
+                    label={input.label}
+                    isLabelRequired={isLabelRequired}
+                    divider={index !== InputFieldList.length - 1}
+                  >
+                    {input.render(field)}
+                  </InputFieldGroup>
+                )
+              }}
             />
           ))}
         </Form>

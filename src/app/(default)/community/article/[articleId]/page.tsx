@@ -6,13 +6,13 @@ import Loader from "@/components/common/loader/Loader";
 import ArticleDetail from "@/components/pages/community/article/detail/ArticleDetail";
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
 
-interface UpdateNoticePageProps {
+interface ArticleDetailPageProps {
   params: {
     articleId: string;
   }
 }
 
-export default async function UpdateNoticePage({ params }: UpdateNoticePageProps) {
+export default async function ArticleDetailPage({ params }: ArticleDetailPageProps) {
   const articleId = Number(params.articleId);
 
   const queryClient = new QueryClient();

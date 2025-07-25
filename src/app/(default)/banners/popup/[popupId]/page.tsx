@@ -6,13 +6,13 @@ import Loader from "@/components/common/loader/Loader";
 import PopupDetail from "@/components/pages/banners/popup/detail/PopupDetail";
 import { prefetchGetPopupDetail } from "@/api/banners/queries/usePrefetchGetPopupDetail";
 
-interface UpdateMainBannerPageProps {
+interface PopupDetailPageProps {
   params: {
     popupId: string;
   }
 }
 
-export default async function UpdatePopupPage({ params }: UpdateMainBannerPageProps) {
+export default async function PopupDetailPage({ params }: PopupDetailPageProps) {
   const popupId = Number(params.popupId);
 
   const queryClient = new QueryClient();

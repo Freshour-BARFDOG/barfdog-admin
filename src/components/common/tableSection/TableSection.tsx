@@ -7,7 +7,7 @@ import Pagination from "@/components/common/pagination/Pagination";
 import Card from "@/components/common/card/Card";
 
 interface TableSectionProps<T> {
-	title?: string;
+	title?: string | ReactNode;
 	data: T[];
 	columns: TableColumn<T>[];
 	emptyText?: string;
@@ -18,6 +18,8 @@ interface TableSectionProps<T> {
 	className?: string;
 	padding?: 'none' | 20 | 40;
 	getRowStyle?: (row: T, rowIndex: number) => CSSProperties;
+	showDivider?: boolean;
+	borderRadius?: "none" | 8 | 12 | 16;
 }
 
 export default function TableSection<T>({
@@ -32,13 +34,17 @@ export default function TableSection<T>({
 	className = '',
 	padding = 40,
 	getRowStyle,
+	showDivider = true,
+	borderRadius = 8,
 }: TableSectionProps<T>) {
 	return (
-		<Card shadow='none' padding={padding} align='start' gap={16} className={className}>
+		<Card shadow='none' padding={padding} align='start' gap={16} borderRadius={borderRadius} className={className}>
 			{title && (
 				<>
 				<Text type='title4'>{title}</Text>
-				<Divider thickness={1} color='gray300' />
+				{showDivider &&
+					<Divider thickness={1} color='gray300' />
+				}
 				</>
 			)}
 			{action && action}
