@@ -6,7 +6,7 @@ import CheckedSquare from "/public/images/icons/checked_square.svg";
 import UnCheckedSquare from "/public/images/icons/unchecked_square.svg";
 import Text from "@/components/common/text/Text";
 
-export interface LabeledCheckboxProps<T extends string | number = string> {
+export interface LabeledCheckboxProps<T extends string | number | boolean = string> {
   label?: string;
   iconSize?: number;
   value: T;
@@ -15,9 +15,10 @@ export interface LabeledCheckboxProps<T extends string | number = string> {
   onToggle: (value: T) => void;
   className?: string;
   iconClick?: boolean;
+  disabled?: boolean;
 }
 
-export default function LabeledCheckbox<T extends string | number = string>({
+export default function LabeledCheckbox<T extends string | number | boolean = string>({
   label,
   iconSize = 24,
   value,
@@ -26,6 +27,7 @@ export default function LabeledCheckbox<T extends string | number = string>({
   onToggle,
   className,
   iconClick = false,
+  disabled = false,
 }: LabeledCheckboxProps<T>) {
   const iconMapping = {
     circle: {
@@ -39,8 +41,9 @@ export default function LabeledCheckbox<T extends string | number = string>({
   };
   const icon = iconMapping[iconType][isChecked ? "true" : "false"];
   return (
-    <div
-      className={`${styles.labelCheckedBoxContainer} ${className || ""}`}
+    <button
+      disabled={disabled}
+      className={`${styles.labelCheckedBoxContainer({ disabled })} ${className || ""}`}
       onClick={() => (!iconClick ? onToggle(value) : undefined)}
     >
       <SvgIcon
@@ -49,6 +52,6 @@ export default function LabeledCheckbox<T extends string | number = string>({
         onClick={() => (iconClick ? onToggle(value) : undefined)}
       />
       {label && <Text type="body3">{label}</Text>}
-    </div>
+    </button>
   );
 }

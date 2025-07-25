@@ -3,11 +3,6 @@ import { ARTICLE_CATEGORY, INQUIRY_CATEGORY, INQUIRY_STATUS } from "@/constants/
 
 type CommunityType = 'notices' | 'events' | 'article' | 'questions';
 
-interface UploadResponse {
-	id: number;
-	url: string;
-}
-
 interface CommunityListData {
 	id: number;
 	title: string;
@@ -223,7 +218,6 @@ interface CreateAnswerBody extends Omit<CreateAnswerFormValues, 'questionImgIdLi
 
 export type {
 	CommunityType,
-	UploadResponse,
 	CommunityListData,
 	CommunityListResponse,
 	ImageOrderData,

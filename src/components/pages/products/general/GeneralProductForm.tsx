@@ -52,7 +52,7 @@ import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import MultiFileUploader from "@/components/common/multiFileUploader/MultiFileUploader";
 import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
-import { UploadResponse } from "@/types/community";
+import { UploadResponse } from "@/types/common";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 
 interface InputFieldItem {

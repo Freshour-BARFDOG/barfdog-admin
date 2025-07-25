@@ -92,6 +92,14 @@ const queryKeys = {
     GET_ALLIANCE_COUPON_DETAIL: "getAllianceCouponDetail",
     GET_ALLIANCE_EVENT_LIST: "getAllianceEventList",
   },
+  REVIEW: {
+    BASE: "review",
+    GET_REVIEW_LIST: "getReviewList",
+    GET_REVIEW_DETAIL: "getReviewDetail",
+    GET_BEST_REVIEW_LIST: "getBestReviewList",
+    GET_PRODUCT_ITEM_LIST: "getProductItemList",
+  }
+  
 } as const;
 
 export { queryKeys };

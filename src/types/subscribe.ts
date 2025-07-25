@@ -81,6 +81,7 @@ interface SubscribeRecipeDto {
 
 interface MemberCouponDto {
   // 추후에 추가
+  id?: number;
 }
 
 interface RecipeDto {

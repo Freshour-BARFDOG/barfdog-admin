@@ -36,7 +36,7 @@ export default function SelectBox<T extends string | number>({
         value={value ?? ""}
         className={`${styles.select({ fullWidth })} ${className}`}
         onChange={(e) => {
-          const selectedValue = options.find(
+          const selectedValue = options?.find(
             (opt) => String(opt.value) === e.target.value
           )?.value;
           if (selectedValue !== undefined) {
@@ -51,7 +51,7 @@ export default function SelectBox<T extends string | number>({
             {placeholder}
           </option>
         )}
-        {options.map(({ label, value }) => (
+        {options?.map(({ label, value }) => (
           <option key={String(value)} value={String(value)}>
             {label}
           </option>

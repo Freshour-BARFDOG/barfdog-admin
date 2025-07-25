@@ -149,7 +149,7 @@ interface SelectOptionDto {
 }
 
 /** 공통 결제 정보 */
-interface CommonPaymentDto {
+interface GeneralPaymentDto {
   orderPrice: number;
   discountGrade: number;
   deliveryPrice: number;
@@ -163,10 +163,10 @@ interface CommonPaymentDto {
 }
 
 /** 일반 결제 DTO (Search 등에서 쓰는) */
-interface GeneralPaymentDto extends CommonPaymentDto {}
+// interface GeneralPaymentDto extends CommonPaymentDto { }
 
 /** 구독 상세 결제 DTO */
-interface SubscribePaymentDto extends CommonPaymentDto {
+interface SubscribePaymentDto extends GeneralPaymentDto {
   couponName: string | null;
   impUid: string | null;
   customerUid: string;
@@ -287,7 +287,7 @@ export type {
   SubscribePaymentDto,
   DeliveryDto,
   SubscribeDto,
-  CommonPaymentDto,
+  // CommonPaymentDto,
   PaymentMethod,
   SalesRecipient,
   UpdateSalesDeliveryRequest,

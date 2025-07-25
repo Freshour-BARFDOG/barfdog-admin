@@ -1,5 +1,5 @@
 import { Path, PathValue, UseFormSetValue } from "react-hook-form";
-import { UploadResponse } from "@/types/community";
+import { UploadResponse } from "@/types/common";
 import { useToastStore } from "@/store/useToastStore";
 
 type ThumbnailUploaderFields = {
