@@ -17,13 +17,22 @@ interface MenuItemProps {
 }
 
 const isActive = (item: MenuItemType, pathname: string): boolean => {
-	if (
-		item.href &&
-		(pathname === item.href || pathname.startsWith(item.href + '/'))
-	) {
-		return true;
+	if (item.href) {
+		const segments = item.href.split("/").filter(Boolean); // ['', 'coupons'] → ['coupons']
+
+		if (segments.length <= 1) {
+			// ex) '/', '/coupons' 같은 목록 페이지
+			return pathname === item.href;
+		} else {
+			// ex) '/coupons/create' 같은 하위 페이지
+			return pathname.startsWith(item.href);
+		}
 	}
-	if (item.children) return item.children.some(child => isActive(child, pathname));
+
+	if (item.children) {
+		return item.children.some(child => isActive(child, pathname));
+	}
+
 	return false;
 };
 
@@ -84,9 +93,9 @@ const MenuItem = ({
 								<li>
 									<Link href={child.href ?? '#'} className={styles.subMenuLink}>
 										<MenuLabel
-											active={pathname === child.href}
+											active={isActive(child, pathname)}
 											label={child.label}
-											className={styles.menuItem({ active: pathname === child.href })}
+											className={styles.menuItem({ active: isActive(child, pathname) })}
 											onClick={isMobile ? closeSidebarMobile : undefined}
 										/>
 									</Link>
@@ -95,16 +104,19 @@ const MenuItem = ({
 								<li className={styles.submenuChildren}>
 									<MenuLabel active={false} label={child.label} />
 									<ul className={styles.submenuChildrenList}>
-										{child.children.map((sub) => (
-											<Link key={sub.key} href={sub.href ?? '#'}>
-												<MenuLabel
-													active={pathname === sub.href}
-													label={sub.label}
-													className={styles.menuItem({ active: pathname === sub.href })}
-													onClick={isMobile ? closeSidebarMobile : undefined}
-												/>
-											</Link>
-										))}
+										{child.children.map((sub) => {
+											console.log('isActive(sub, pathname)', isActive(sub, pathname))
+											return (
+												<Link key={sub.key} href={sub.href ?? '#'}>
+													<MenuLabel
+														active={isActive(sub, pathname)}
+														label={sub.label}
+														className={styles.menuItem({ active: isActive(sub, pathname) })}
+														onClick={isMobile ? closeSidebarMobile : undefined}
+													/>
+												</Link>
+											)
+										})}
 									</ul>
 								</li>
 							)}
