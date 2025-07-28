@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import CouponList from "@/components/pages/benefits/coupons/list/couponList/CouponList";
-import { prefetchGetCouponList } from "@/api/coupons/queries/usePrefetchGetCouponList";
+import { prefetchGetCouponList } from "@/api/coupons/queries/prefetchGetCouponList";
 
 export default async function CouponsPage() {
   const queryClient = new QueryClient();

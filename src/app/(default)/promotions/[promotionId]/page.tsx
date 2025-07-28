@@ -7,7 +7,7 @@ import PromotionDetail from "@/components/pages/benefits/promotions/detail/Promo
 import {
   prefetchGetPromotionDetail,
   prefetchGetPromotionMemberList
-} from "@/api/promotions/queries/usePrefetchGetPromotionDetail";
+} from "@/api/promotions/queries/prefetchGetPromotionDetail";
 import { PageProps } from "@/types/common";
 
 type Params = { promotionId: string };

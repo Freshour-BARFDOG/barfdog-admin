@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
-import { prefetchGetMemberList } from "@/api/member/queries/usePrefetchGetMemberList";
+import { prefetchGetMemberList } from "@/api/member/queries/prefetchGetMemberList";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import MemberList from "@/components/pages/member/list/MemberList";
 import Loader from "@/components/common/loader/Loader";
