@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import PopupList from "@/components/pages/banners/popup/list/PopupList";
-import { prefetchGetPopupList } from "@/api/banners/queries/usePrefetchGetPopupList";
+import { prefetchGetPopupList } from "@/api/banners/queries/prefetchGetPopupList";
 
 export default async function PopupPage() {
   const queryClient = new QueryClient();

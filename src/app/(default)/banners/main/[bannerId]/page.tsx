@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import MainBannerDetail from "@/components/pages/banners/main/detail/MainBannerDetail";
-import { prefetchGetMainBannerDetail } from "@/api/banners/queries/usePrefetchGetMainBannerDetail";
+import { prefetchGetMainBannerDetail } from "@/api/banners/queries/prefetchGetMainBannerDetail";
 import { PageProps } from "@/types/common";
 
 type Params = { bannerId: number };

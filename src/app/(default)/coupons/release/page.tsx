@@ -4,8 +4,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import Loader from "@/components/common/loader/Loader";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
-import { prefetchGetPublicationCouponList } from "@/api/coupons/queries/usePrefetchGetPublicationCouponList";
-import { prefetchGetMemberList } from "@/api/member/queries/usePrefetchGetMemberList";
+import { prefetchGetPublicationCouponList } from "@/api/coupons/queries/prefetchGetPublicationCouponList";
+import { prefetchGetMemberList } from "@/api/member/queries/prefetchGetMemberList";
 
 export default async function ReleaseCouponPage() {
 	const queryClient = new QueryClient();
