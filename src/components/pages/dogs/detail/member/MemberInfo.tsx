@@ -1,4 +1,3 @@
-import { useGetDogDetail } from "@/api/dogs/queries/useGetDogDetail";
 import { useGetMemberDetail } from "@/api/member/queries/useGetMemberDetail";
 import DetailTable from "@/components/common/detailTable/DetailTable";
 import { TableItem } from "@/types/common";

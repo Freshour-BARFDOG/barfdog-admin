@@ -1,17 +1,19 @@
+import { Suspense } from "react";
+import Loader from "@/components/common/loader/Loader";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import GeneralProductEdit from "@/components/pages/products/general/GeneralProductEdit";
+import { PageProps } from "@/types/common";
 
-interface PageProps {
-  params: {
-    itemId: string;
-  };
-}
+type Params = { itemId: string };
 
-export default function GeneralProductCreatePage({ params }: PageProps) {
-  const itemId = Number(params.itemId);
+export default async function GeneralProductCreatePage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const itemId = Number(resolvedParams.itemId);
   return (
-    <Wrapper title="일반 상품 수정">
-      <GeneralProductEdit itemId={itemId} />
-    </Wrapper>
+    <Suspense fallback={<Loader fullscreen />}>
+      <Wrapper title="일반 상품 수정">
+        <GeneralProductEdit itemId={itemId} />
+      </Wrapper>
+    </Suspense>
   );
 }

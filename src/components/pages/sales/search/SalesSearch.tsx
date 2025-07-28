@@ -70,9 +70,9 @@ export default function SalesSearch() {
       onSuccess: (data) => {
         downloadBlobFile(data as Blob, `판매 관리_${today}.xlsx`);
       },
-      onError: (err) => {
+      onError: (error) => {
         addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
-        console.log(err);
+        console.log(error);
       },
     });
   };

@@ -5,15 +5,13 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import EventDetail from "@/components/pages/community/event/detail/EventDetail";
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
+import { PageProps } from "@/types/common";
 
-interface EventDetailPageProps {
-  params: {
-    eventId: string;
-  }
-}
+type Params = { eventId: string };
 
-export default async function EventDetailPage({ params }: EventDetailPageProps) {
-  const eventId = Number(params.eventId);
+export default async function EventDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const eventId = Number(resolvedParams.eventId);
 
   const queryClient = new QueryClient();
   await prefetchCommunityDetail('events', eventId, queryClient);

@@ -6,9 +6,7 @@ import Button from "@/components/common/button/Button";
 import Card from "@/components/common/card/Card";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
-import Text from "@/components/common/text/Text";
 import {
-  DELIVERY_FEE_FIELDS,
   ORDER_DEADLINE_OPTIONS,
 } from "@/constants/policies";
 import { useMutationToast } from "@/hooks/useMutaionToast";

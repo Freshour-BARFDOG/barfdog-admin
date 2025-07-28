@@ -1,7 +1,7 @@
-import {useToastStore} from "@/store/useToastStore";
-import {usePerformReviewAction} from "@/api/review/mutations/usePerformReviewAction";
-import {ReviewActionPayloadMap, ReviewActionType} from "@/types/review";
-import {REVIEW_ACTION_LABEL_MAP} from "@/constants/review";
+import { useToastStore } from "@/store/useToastStore";
+import { usePerformReviewAction } from "@/api/review/mutations/usePerformReviewAction";
+import { ReviewActionPayloadMap, ReviewActionType } from "@/types/review";
+import { REVIEW_ACTION_LABEL_MAP } from "@/constants/review";
 
 interface UseReviewActionProps {
 	onSuccess?: () => void;
@@ -22,7 +22,8 @@ export default function useReviewAction({
 		const actionLabel = REVIEW_ACTION_LABEL_MAP[action];
 		const caseParticle = ['approve', 'selectBest', 'reorderBest'].includes(action) ? '이' : '가';
 
-		if (payload.ids) {
+		// payload에 ids가 있는 경우에만 처리
+		if ('ids' in payload && Array.isArray(payload.ids)) {
 			const isBulk = payload.ids.length > 1;
 
 			const confirmed = window.confirm(
@@ -34,7 +35,8 @@ export default function useReviewAction({
 		}
 
 		mutate({
-			action, payload
+			action, 
+			payload
 		}, {
 			onSuccess: () => {
 				addToast(`${actionLabel}${caseParticle} 완료되었습니다.`);

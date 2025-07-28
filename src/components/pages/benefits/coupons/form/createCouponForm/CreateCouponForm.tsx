@@ -258,7 +258,6 @@ export default function CreateCouponForm() {
               name={input.name}
               render={({ field }) => {
                 const isLabelRequired = input.isRequired === undefined ? true : input.isRequired;
-                console.log(isLabelRequired)
                 return (
                   <InputFieldGroup
                     label={input.label}

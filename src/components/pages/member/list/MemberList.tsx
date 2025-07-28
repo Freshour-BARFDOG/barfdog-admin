@@ -43,9 +43,9 @@ const MemberList = () => {
 			onSuccess: (data) => {
 				downloadBlobFile(data as Blob, '회원목록.xlsx');
 			},
-			onError: (err) => {
+			onError: (error) => {
 				addToast('엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.')
-				console.log(err)
+				console.log(error)
 			}
 		})
 	}

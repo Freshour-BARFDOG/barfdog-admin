@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { commonWrapper } from "@/styles/common.css";
 import { inquiryContent } from "@/components/pages/community/inquiry/detail/InquiryDetail.css";
 import Chips from "@/components/common/chips/Chips";
-import DetailTable, { TableItem } from "@/components/common/detailTable/DetailTable";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 import Text from "@/components/common/text/Text";
 import FileDownloadItem from "@/components/common/fileDownloadItem/FileDownloadItem";
 import Card from "@/components/common/card/Card";
@@ -10,6 +10,7 @@ import ImageCarousel from "@/components/common/imageCarousel/ImageCarousel";
 import { INQUIRY_STATUS } from "@/constants/community";
 import { InquiryQuestionData } from "@/types/community";
 import { downloadFile } from "@/api/community/community";
+import { TableItem } from "@/types/common";
 
 interface InquiryQuestionProps {
 	question: InquiryQuestionData

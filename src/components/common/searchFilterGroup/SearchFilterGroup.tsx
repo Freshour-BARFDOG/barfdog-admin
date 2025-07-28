@@ -18,8 +18,8 @@ export default function SearchFilterGroup({
 }: SearchFilterGroupProps) {
 	return (
 		<Card shadow='none' padding={40} gap={16} align='start'>
-			{items.map(({ label, children, align = 'center' }) => (
-				<div key={label} className={styles.searchItemBox}>
+			{items.map(({ label, children, align = 'center' }, index) => (
+				<div key={index} className={styles.searchItemBox}>
 					<div className={styles.searchItem({ align })}>
 						<InputLabel label={label} labelColor="gray800" className={styles.searchItemLabel} />
 						<div className={styles.searchItemInput}>

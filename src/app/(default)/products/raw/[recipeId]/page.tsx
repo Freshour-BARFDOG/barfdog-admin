@@ -1,14 +1,12 @@
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import RawProductEdit from "@/components/pages/products/raw/RawProductEdit";
+import { PageProps } from "@/types/common";
 
-interface PageProps {
-  params: {
-    recipeId: string;
-  };
-}
+type Params = { recipeId: string };
 
-export default function RawProductCreatePage({ params }: PageProps) {
-  const recipeId = Number(params.recipeId);
+export default async function RawProductCreatePage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const recipeId = Number(resolvedParams.recipeId);
   return (
     <Wrapper title="레시피 수정">
       <RawProductEdit recipeId={recipeId} />

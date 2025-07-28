@@ -7,7 +7,7 @@ export function usePerformReviewAction(mutationOptions?: UseMutationCustomOption
 	return useMutation({
 		mutationFn: ({ action, payload  }: {
 			action: ReviewActionType,
-			payload: { ids: number[], reason?: string }
+			payload: any,
 		}) => performReviewAction(action, payload),
 		...mutationOptions,
 	})

@@ -26,7 +26,6 @@ export default function GeneralProductEdit({
 }: GeneralProductEditProps) {
   const router = useRouter();
   const { data } = useGetGeneralProductDetail(itemId);
-  console.log("data", data);
 
   const { addToast } = useToastStore();
   const { mutate } = useUpdateGeneralProduct(itemId);

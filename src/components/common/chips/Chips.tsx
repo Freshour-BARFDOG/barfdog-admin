@@ -41,7 +41,11 @@ export default function Chips({
   className,
   icon,
 }: ChipsProps) {
-  const colorStyle = color ? chipVariantStyles[variant as 'solid' | 'outlined'][color] : "";
+  // color가 chipVariantStyles[variant]에 존재하는지 타입 안전하게 확인
+  const variantStyles = chipVariantStyles[variant as 'solid' | 'outlined'];
+  const colorStyle = (color && variantStyles && Object.prototype.hasOwnProperty.call(variantStyles, color))
+    ? variantStyles[color as keyof typeof variantStyles]
+    : "";
 
   return (
     <span
@@ -58,7 +62,14 @@ export default function Chips({
     style={style}
     >
       {tailVisible &&
-        <span className={`${chipsTailStyle} ${chipsTailPosition[tailPosition]} ${chipsTailColor[color]} ${chipsTailSize[tailPosition][size]}`} />
+        <span
+          className={`
+            ${chipsTailStyle}
+            ${chipsTailPosition[tailPosition]}
+            ${(chipsTailColor as Record<string, string>)[color] || ''}
+            ${chipsTailSize[tailPosition][size]}
+          `}
+        />
       }
       {icon && <SvgIcon src={icon} color='white' />}
       {children}

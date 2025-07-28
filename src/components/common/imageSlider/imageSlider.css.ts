@@ -36,7 +36,7 @@ export const image = style({
 })
 
 export const imageCountChip = style({
-	position: 'absolute !important',
+	position: 'absolute',
 	top: '16px',
 	right: '16px',
 })

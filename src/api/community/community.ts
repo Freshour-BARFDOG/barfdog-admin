@@ -53,7 +53,7 @@ const uploadCommunityImage = async (
 
 // 목록 조회
 const getCommunityList = async(
-	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article' | 'questions'>,
 	key: string,
 	page: number,
 	size: number,
@@ -71,7 +71,7 @@ const getCommunityList = async(
 };
 
 // 목록 삭제
-const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'events' | 'article'>, id: number) => {
+const deleteCommunity = async (type: Extract<CommunityType, 'notices' | 'events' | 'article' | 'questions'>, id: number) => {
 	try {
 		const { data } = await axiosInstance.delete(`/api/admin/${convertArticleToBlogType(type)}/${id}`);
 		return data;
@@ -96,7 +96,7 @@ const createCommunity = async (
 
 // 수정
 const updateCommunity = async (
-	type: Extract<CommunityType, 'notices' | 'events' | 'article'>,
+	type: Extract<CommunityType, 'notices' | 'events' | 'article' | 'questions'>,
 	body: object,
 	id: number,
 ) => {

@@ -58,8 +58,6 @@ export default function InquiryList() {
 	const [selectedType, setSelectedType] = useState<'title' | 'email' | 'name'>('title');
 	const flatData = flattenInquiryList(data?.inquiryList ?? []);
 
-	console.log(data);
-	
 	const {
 		selectedIds: deleteSelectedIds,
 		toggleSelect,
@@ -154,7 +152,6 @@ export default function InquiryList() {
 					value={allSelected}
 					isChecked={allSelected}
 					onToggle={(value) => {
-						console.log('value1', value)
 						selectAll(!value)
 					}}
 				/>

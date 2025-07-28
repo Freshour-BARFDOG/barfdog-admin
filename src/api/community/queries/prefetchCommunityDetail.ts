@@ -1,7 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createSSRRequest } from "@/api/withAuthSSR";
 import { queryKeys } from "@/constants/queryKeys";
-import { CommunityType } from "@/types/community";
 
 const apiMap = {
   notices: (id: number, axios: any) => import("@/api/community/community").then(m => m.getNoticeDetail(id, axios)),
@@ -16,7 +15,7 @@ const keyMap = {
 };
 
 export async function prefetchCommunityDetail<T>(
-  type: CommunityType,
+  type: keyof typeof apiMap,
   id: number,
   queryClient: QueryClient
 ) {

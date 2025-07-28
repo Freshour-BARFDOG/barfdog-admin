@@ -6,7 +6,6 @@ import Button from "@/components/common/button/Button";
 import Card from "@/components/common/card/Card";
 import InputField from "@/components/common/inputField/InputField";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
-import Text from "@/components/common/text/Text";
 import { DELIVERY_FEE_FIELDS } from "@/constants/policies";
 import { useMutationToast } from "@/hooks/useMutaionToast";
 import { commonWrapper } from "@/styles/common.css";

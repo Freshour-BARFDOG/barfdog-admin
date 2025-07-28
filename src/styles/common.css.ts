@@ -297,13 +297,13 @@ export const discountUnitButton = recipe({
       true: {
         border: `1px solid ${themeVars.colors.red.red}`,
         color: themeVars.colors.red.red,
-        '&:first-child': {
-          borderRight: `1px solid ${themeVars.colors.red.red}`,
-        },
-      },
-      false: {
-        '&:last-child': {
-          borderLeft: 0,
+        selectors: {
+          '&:first-child': {
+            borderRight: `1px solid ${themeVars.colors.red.red}`,
+          },
+          '&:last-child': {
+            borderLeft: 0,
+          },
         },
       },
     }

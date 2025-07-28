@@ -5,15 +5,13 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import MainBannerDetail from "@/components/pages/banners/main/detail/MainBannerDetail";
 import { prefetchGetMainBannerDetail } from "@/api/banners/queries/usePrefetchGetMainBannerDetail";
+import { PageProps } from "@/types/common";
 
-interface MainBannerDetailPageProps {
-  params: {
-    bannerId: string;
-  }
-}
+type Params = { bannerId: number };
 
-export default async function MainBannerDetailPage({ params }: MainBannerDetailPageProps) {
-  const bannerId = Number(params.bannerId);
+export default async function MainBannerDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const bannerId = Number(resolvedParams.bannerId);
 
   const queryClient = new QueryClient();
   await prefetchGetMainBannerDetail(bannerId, queryClient);

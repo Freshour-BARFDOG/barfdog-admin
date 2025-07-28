@@ -5,15 +5,14 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import AllianceDetail from "@/components/pages/alliance/management/detail/AllianceDetail";
 import { prefetchAllianceDetail } from "@/api/alliance/queries/prefetchAllianceDetail";
+import { PageProps } from "@/types/common";
 
-interface AllianceDetailPageProps {
-  params: {
-    allianceId: string;
-  }
-}
+type Params = { allianceId: string };
 
-export default async function AllianceDetailPage({ params }: AllianceDetailPageProps) {
-  const allianceId = Number(params.allianceId);
+export default async function AllianceDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const allianceId = Number(resolvedParams.allianceId);
+
   const queryClient = new QueryClient();
   await prefetchAllianceDetail(allianceId, queryClient)
   const dehydrateState = dehydrate(queryClient);

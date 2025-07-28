@@ -50,7 +50,6 @@ export default function EventDetail({ eventId }: EventDetailProps) {
 		})
 	}
 
-	console.log(data)
 	return (
 		<EventForm
 			onSubmit={onSubmit}

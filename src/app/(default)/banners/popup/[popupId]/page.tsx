@@ -5,15 +5,13 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import PopupDetail from "@/components/pages/banners/popup/detail/PopupDetail";
 import { prefetchGetPopupDetail } from "@/api/banners/queries/usePrefetchGetPopupDetail";
+import { PageProps } from "@/types/common";
 
-interface PopupDetailPageProps {
-  params: {
-    popupId: string;
-  }
-}
+type Params = { popupId: string };
 
-export default async function PopupDetailPage({ params }: PopupDetailPageProps) {
-  const popupId = Number(params.popupId);
+export default async function PopupDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const popupId = Number(resolvedParams.popupId);
 
   const queryClient = new QueryClient();
   await prefetchGetPopupDetail(popupId, queryClient);

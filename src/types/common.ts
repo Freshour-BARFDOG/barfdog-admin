@@ -109,6 +109,11 @@ interface UploadResponse {
 	url: string;
 }
 
+type PageProps<P extends object = object, S extends object = object> = {
+  params: Promise<P>;
+  searchParams: Promise<S>;
+};
+
 export type {
   MenuItem,
   TableColumn,
@@ -128,4 +133,5 @@ export type {
   DogGender,
   TableItem,
   UploadResponse,
+  PageProps,
 };

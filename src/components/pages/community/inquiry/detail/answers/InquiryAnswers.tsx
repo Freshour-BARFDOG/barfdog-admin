@@ -3,7 +3,7 @@ import { commonWrapper } from "@/styles/common.css";
 import { inquiryContent } from "@/components/pages/community/inquiry/detail/InquiryDetail.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import DetailTable, { TableItem } from "@/components/common/detailTable/DetailTable";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 import Text from "@/components/common/text/Text";
 import FileDownloadItem from "@/components/common/fileDownloadItem/FileDownloadItem";
 import Card from "@/components/common/card/Card";
@@ -15,6 +15,7 @@ import { useToastStore } from "@/store/useToastStore";
 import { InquiryAnswerData } from "@/types/community";
 import { downloadFile } from "@/api/community/community";
 import { useDeleteInquiry } from "@/api/community/mutations/useDeleteInquiry";
+import { TableItem } from "@/types/common";
 
 interface InquiryAnswersProps {
 	inquiryId: number;

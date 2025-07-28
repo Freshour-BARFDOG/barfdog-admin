@@ -5,15 +5,14 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import ReviewDetail from "@/components/pages/review/detail/ReviewDetail";
 import { prefetchReviewDetail } from "@/api/review/queries/prefetchReviewDetail";
+import { PageProps } from "@/types/common";
 
-interface ReviewDetailPageProps {
-  params: {
-    reviewId: string;
-  }
-}
+type Params = { reviewId: string };
 
-export default async function ReviewDetailPage({ params }: ReviewDetailPageProps) {
-  const reviewId = Number(params.reviewId);
+export default async function ReviewDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const reviewId = Number(resolvedParams.reviewId);
+
   const queryClient = new QueryClient();
   await prefetchReviewDetail(reviewId, queryClient)
   const dehydrateState = dehydrate(queryClient);

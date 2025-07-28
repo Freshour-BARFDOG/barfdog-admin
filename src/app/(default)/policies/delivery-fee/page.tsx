@@ -1,6 +1,8 @@
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import DeliveryFeePolicy from "@/components/pages/policies/deliveryFee/DeliveryFeePolicy";
 
+export const dynamic = 'force-dynamic';
+
 export default function CouponPolicyPage() {
   return (
     <Wrapper title="배송비 정책">

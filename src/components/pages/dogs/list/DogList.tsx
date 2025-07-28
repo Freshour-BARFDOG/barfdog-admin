@@ -64,9 +64,9 @@ export default function DogList() {
       onSuccess: (data) => {
         downloadBlobFile(data as Blob, `반려견_리스트_${today}.xlsx`);
       },
-      onError: (err) => {
+      onError: (error) => {
         addToast("엑셀 다운로드에 실패했습니다");
-        console.log(err);
+        console.log(error);
       },
     });
   };

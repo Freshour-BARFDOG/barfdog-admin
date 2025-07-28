@@ -5,23 +5,22 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import AllianceCouponDetail from "@/components/pages/alliance/coupon/detail/AllianceCouponDetail";
 import { prefetchAllianceCouponDetail } from "@/api/alliance/queries/prefetchAllianceCouponDetail";
+import { PageProps } from "@/types/common";
 
-interface AllianceDetailPageProps {
-  params: {
-    bundle: string;
-  }
-}
+type Params = { bundle: string };
 
-export default async function AllianceCouponDetailPage({ params }: AllianceDetailPageProps) {
+export default async function Page({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+
   const queryClient = new QueryClient();
-  await prefetchAllianceCouponDetail(params.bundle, queryClient)
+  await prefetchAllianceCouponDetail(resolvedParams.bundle, queryClient)
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>
       <ErrorBoundary fallback={<div>쿠폰 상세 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
           <Wrapper title='쿠폰 상세'>
-            <AllianceCouponDetail bundle={params.bundle} />
+            <AllianceCouponDetail bundle={resolvedParams.bundle} />
           </Wrapper>
         </Suspense>
       </ErrorBoundary>

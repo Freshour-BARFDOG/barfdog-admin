@@ -5,6 +5,7 @@ import OrderStatusInfo from "@/components/pages/member/detail/orderStatusInfo/Or
 import LoginInfo from "@/components/pages/member/detail/loginInfo/LoginInfo";
 import SubscriptionInfo from "@/components/pages/member/detail/subscriptionInfo/SubscriptionInfo";
 import { useGetMemberDetail } from "@/api/member/queries/useGetMemberDetail";
+import { GradeType } from '@/types/common';
 
 interface MemberDetailProps {
 	memberId: number;
@@ -33,10 +34,10 @@ export default function MemberDetail({ memberId }: MemberDetailProps) {
 				data={{
 					accumulatedAmount: detail.accumulatedAmount,
 					accumulatedSubscribe: detail.accumulatedSubscribe,
-					grade: detail.grade,
+					grade: detail.grade as GradeType,
 					subscribe: detail.subscribe,
 					dogNames: dogNames,
-					alliance: detail.alliance,
+					alliance: detail.alliance as 'cb',
 				}}
 			/>
 			<LoginInfo
