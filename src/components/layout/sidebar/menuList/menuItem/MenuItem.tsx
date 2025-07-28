@@ -105,7 +105,6 @@ const MenuItem = ({
 									<MenuLabel active={false} label={child.label} />
 									<ul className={styles.submenuChildrenList}>
 										{child.children.map((sub) => {
-											console.log('isActive(sub, pathname)', isActive(sub, pathname))
 											return (
 												<Link key={sub.key} href={sub.href ?? '#'}>
 													<MenuLabel
