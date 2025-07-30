@@ -3,8 +3,6 @@ import { AUTH_CONFIG } from "@/constants/auth";
 import { isAuthenticated } from "./utils/auth/isAuthenticated";
 
 export async function middleware(req: NextRequest) {
-  console.log("요청된 URL:", req.url);
-
   const token = req.cookies.get(AUTH_CONFIG.ACCESS_TOKEN_COOKIE)?.value;
   const isAuth = isAuthenticated(token);
   const { pathname } = new URL(req.url);

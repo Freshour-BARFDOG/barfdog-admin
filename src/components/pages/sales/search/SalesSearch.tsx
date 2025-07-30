@@ -56,8 +56,6 @@ export default function SalesSearch() {
 
   const { data } = useGetSearchSales(params);
 
-  console.log("data", data);
-
   const { mutate: excelDownload } = useExcelDownloadSearchSales();
   const { addToast } = useToastStore();
 
@@ -94,7 +92,7 @@ export default function SalesSearch() {
             setSearchValues({
               ...searchValues,
               from: startDate as string,
-							to: endDate as string,
+              to: endDate as string,
             });
           }}
         />

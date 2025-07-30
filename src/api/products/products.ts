@@ -84,7 +84,6 @@ const makeRecipeFormData = (
     "requestDto",
     new Blob([JSON.stringify(body)], { type: "application/json" })
   );
-  console.log("surveyFile>>>>>>>>>", surveyFile);
 
   if (surveyFile) formData.append("file1", surveyFile);
   if (recipeFile) formData.append("file2", recipeFile);

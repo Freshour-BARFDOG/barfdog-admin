@@ -1,21 +1,20 @@
-// components/GeneralProductEdit.tsx
 "use client";
 import React, { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useToastStore } from "@/store/useToastStore";
 import { useGetGeneralProductDetail } from "@/api/products/queries/useGetGeneralProductDetail";
-import { useGetAllianceList } from "@/api/products/queries/useGetAllianceList";
+import { useAllianceOptions } from "@/hooks/useAllianceOptions";
 import {
   generalProductFormSchema,
   defaultGeneralProductFormValues,
   GeneralProductFormValues,
 } from "@/utils/validation/products/generalProduct";
 import { yupResolver } from "@hookform/resolvers/yup";
-import GeneralProductForm from "./GeneralProductForm";
 import { buildGeneralProductFormValues } from "@/utils/products/buildGeneralProductFormValues";
 import { useUpdateGeneralProduct } from "@/api/products/mutations/useUpdateGeneralProduct";
 import { buildUpdateGeneralPayload } from "@/utils/products/buildGeneralProductPayload";
+import GeneralProductForm from "./GeneralProductForm";
 
 interface GeneralProductEditProps {
   itemId: number;
@@ -29,7 +28,8 @@ export default function GeneralProductEdit({
 
   const { addToast } = useToastStore();
   const { mutate } = useUpdateGeneralProduct(itemId);
-  const { data: allianceData } = useGetAllianceList();
+  const { allianceOptions, isLoading: isAllianceLoading } =
+    useAllianceOptions();
 
   const defaultValues = useMemo<GeneralProductFormValues>(() => {
     return data
@@ -68,10 +68,7 @@ export default function GeneralProductEdit({
     <GeneralProductForm
       form={form}
       mode="edit"
-      allianceOptions={(allianceData ?? []).map((a) => ({
-        value: a.allianceId,
-        label: a.allianceName,
-      }))}
+      allianceOptions={allianceOptions}
       onSubmit={onSubmit}
     />
   );

@@ -10,7 +10,6 @@ interface DogDetailProps {
 
 export default function DogDetail({ dogId }: DogDetailProps) {
   const { data } = useGetDogDetail(dogId);
-  console.log("Dog Detail Data:", data);
 
   return (
     <div>
