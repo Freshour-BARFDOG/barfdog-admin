@@ -74,7 +74,6 @@ const updateSalesDelivery = async ({
     `/api/admin/deliveries/${orderId}/recipientAndRequest`,
     body
   );
-  console.log("data", data);
 
   return data;
 };

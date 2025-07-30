@@ -66,8 +66,6 @@ export default function AllianceDiscountField({
     [onTypeChange, onDegreeChange]
   );
 
-  console.log(allianceName, "all");
-
   return (
     <div className={styles.allianceDiscountFieldContainer}>
       <div className={commonWrapper({ justify: "between", align: "start" })}>

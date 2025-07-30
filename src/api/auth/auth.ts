@@ -1,19 +1,15 @@
 import axiosInstance from "@/api/axiosInstance";
 
 const login = async (formData: { email: string; password: string }) => {
-	const response = await axiosInstance.post("/api/login", formData);
-	console.log("login response", response);
+  const response = await axiosInstance.post("/api/login", formData);
 
-	return response;
+  return response;
 };
 
 const logout = async () => {
-	const response = await axiosInstance.get("/api/logout");
+  const response = await axiosInstance.get("/api/logout");
 
-	return response;
+  return response;
 };
 
-export {
-	login,
-	logout,
-};
+export { login, logout };

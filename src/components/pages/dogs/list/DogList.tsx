@@ -52,8 +52,6 @@ export default function DogList() {
 
   const { data } = useGetDogList(params);
 
-  console.log("data", data);
-
   const { mutate: excelDownload } = useExcelDownloadDogs();
   const { addToast } = useToastStore();
 

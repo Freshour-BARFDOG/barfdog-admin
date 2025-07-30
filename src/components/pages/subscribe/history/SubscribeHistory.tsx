@@ -44,8 +44,6 @@ export default function SubscribeHistory() {
 
   const { data } = useGetSubscribeHistory(params);
 
-  console.log("data", data);
-
   const [selectedCategory, setSelectedCategory] =
     useState<keyof SubscribeHistoryRequest>("memberName");
 

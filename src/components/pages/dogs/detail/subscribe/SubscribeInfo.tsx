@@ -34,6 +34,7 @@ interface SubscribeInfoProps {
 export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
   // API 훅
   const { data } = useGetSubscribeDetail(subscribeId);
+
   const { mutate: updateGrams } = useUpdateGrams(subscribeId);
   const { mutate: updatePlanAndRecipe } = useUpdatePlanAndRecipe(subscribeId);
   const { mutate: updateNextPaymentPrice } =
@@ -62,7 +63,6 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
     useState<number[]>(initialRecipes);
   const [plan, setPlan] = useState<Plan>(subscribeDto.plan);
   const [grams, setGrams] = useState<number[]>(initialGrams);
-  console.log(grams);
 
   // 레시피 옵션 생성
   const recipeOptions = useMemo(() => {
@@ -153,18 +153,21 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
     },
     {
       label: "다음 결제 원금",
-      value: (
-        <InputField
-          value={formatNumberWithComma(newPaymentPrice)}
-          onChange={(e) =>
-            setNewPaymentPrice(unformatCommaNumber(e.target.value))
-          }
-          unit="원"
-          confirmButton
-          confirmButtonText="변경"
-          onSubmit={handleUpdateNextPaymentPrice}
-        />
-      ),
+      value:
+        subscribeDto.subscribeStatus === "SUBSCRIBING" ? (
+          <InputField
+            value={formatNumberWithComma(newPaymentPrice)}
+            onChange={(e) =>
+              setNewPaymentPrice(unformatCommaNumber(e.target.value))
+            }
+            unit="원"
+            confirmButton
+            confirmButtonText="변경"
+            onSubmit={handleUpdateNextPaymentPrice}
+          />
+        ) : (
+          "-"
+        ),
     },
     {
       label: "등급 할인 금액",
@@ -190,72 +193,78 @@ export default function SubscribeInfo({ subscribeId }: SubscribeInfoProps) {
     },
     {
       label: "구독 그램수",
-      value: (
-        <div
-          className={commonWrapper({
-            gap: 12,
-            direction: "col",
-            align: "start",
-          })}
-        >
-          {subscribeRecipeDtoList.map((rec, idx) => (
-            <div
-              key={rec.recipeId}
-              className={commonWrapper({ gap: 8, justify: "start" })}
-            >
-              <Text type="body3" noShrink>
-                {rec.recipeName}
-              </Text>
-              <InputField
-                value={String(grams[idx])}
-                onChange={(e) => {
-                  const v = parseFloat(e.target.value) || 0;
-                  setGrams((prev) => {
-                    const next = [...prev];
-                    next[idx] = v;
-                    return next;
-                  });
-                }}
-                unit="g"
-              />
-            </div>
-          ))}
-          <Button size="sm" variant="outline" onClick={handleUpdateGrams}>
-            변경
-          </Button>
-        </div>
-      ),
+      value:
+        subscribeDto.subscribeStatus === "SUBSCRIBING" ? (
+          <div
+            className={commonWrapper({
+              gap: 12,
+              direction: "col",
+              align: "start",
+            })}
+          >
+            {subscribeRecipeDtoList.map((rec, idx) => (
+              <div
+                key={rec.recipeId}
+                className={commonWrapper({ gap: 8, justify: "start" })}
+              >
+                <Text type="body3" noShrink>
+                  {rec.recipeName}
+                </Text>
+                <InputField
+                  value={String(grams[idx])}
+                  onChange={(e) => {
+                    const v = parseFloat(e.target.value) || 0;
+                    setGrams((prev) => {
+                      const next = [...prev];
+                      next[idx] = v;
+                      return next;
+                    });
+                  }}
+                  unit="g"
+                />
+              </div>
+            ))}
+            <Button size="sm" variant="outline" onClick={handleUpdateGrams}>
+              변경
+            </Button>
+          </div>
+        ) : (
+          "-"
+        ),
     },
     {
       label: "플랜/레시피",
-      value: (
-        <div
-          className={commonWrapper({
-            gap: 8,
-            direction: "col",
-            align: "start",
-          })}
-        >
-          <LabeledRadioButtonGroup<Plan>
-            options={PLAN_OPTIONS}
-            value={plan}
-            onChange={(value) => setPlan(value)}
-          />
-          <Divider color="gray300" thickness={1} />
-          <LabeledCheckboxGroup<number>
-            options={recipeOptions}
-            selectedValues={selectedRecipe}
-            onChange={(value) => setSelectedRecipe(value)}
-          />
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handleUpdatePlanAndRecipe}
+      value:
+        subscribeDto.subscribeStatus === "SUBSCRIBING" ? (
+          <div
+            className={commonWrapper({
+              gap: 8,
+              direction: "col",
+              align: "start",
+            })}
           >
-            변경
-          </Button>
-        </div>
-      ),
+            <LabeledRadioButtonGroup<Plan>
+              options={PLAN_OPTIONS}
+              value={plan}
+              onChange={(value) => setPlan(value)}
+            />
+            <Divider color="gray300" thickness={1} />
+            <LabeledCheckboxGroup<number>
+              options={recipeOptions}
+              selectedValues={selectedRecipe}
+              onChange={(value) => setSelectedRecipe(value)}
+            />
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleUpdatePlanAndRecipe}
+            >
+              변경
+            </Button>
+          </div>
+        ) : (
+          "-"
+        ),
       fullWidth: true,
     },
   ];

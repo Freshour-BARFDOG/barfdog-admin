@@ -82,9 +82,6 @@ export default function RawProductForm({
     watch,
     formState: { isValid, errors },
   } = form;
-  console.log("watch", watch());
-  console.log("errors", errors);
-  console.log("isValid", isValid);
 
   const handleChangeNumberType = (
     e: ChangeEvent<HTMLInputElement>,
@@ -171,12 +168,16 @@ export default function RawProductForm({
       name: "descriptionForSurvey",
       label: (
         <TooltipInfo
-          title={(
-            <>추천 문구 <span className={pointColor}>*</span></>
-          )}
+          title={
+            <>
+              추천 문구 <span className={pointColor}>*</span>
+            </>
+          }
         >
-          노출 위치<br/>
-          1. 설문조사 ‘특별히 챙겨주고 싶은 부분’<br/>
+          노출 위치
+          <br />
+          1. 설문조사 ‘특별히 챙겨주고 싶은 부분’
+          <br />
           2. 플랜, 레시피 선택페이지의 설문결과 설명란
         </TooltipInfo>
       ),
@@ -220,9 +221,11 @@ export default function RawProductForm({
       name: "leaked",
       label: (
         <TooltipInfo
-          title={(
-            <>노출 여부 <span className={pointColor}>*</span></>
-          )}
+          title={
+            <>
+              노출 여부 <span className={pointColor}>*</span>
+            </>
+          }
         >
           플랜,레시피 페이지의 목록에 노출합니다.
         </TooltipInfo>
@@ -240,13 +243,18 @@ export default function RawProductForm({
       name: "inStock",
       label: (
         <TooltipInfo
-          title={(
-            <>재고 여부 <span className={pointColor}>*</span></>
-          )}
+          title={
+            <>
+              재고 여부 <span className={pointColor}>*</span>
+            </>
+          }
         >
-          1. 품절된 레시피는 신규설문조사에서 구입 불가능합니다.<br/>
-          2. 품절된 레시피를 구독 중인 고객은 결제 중지됩니다.<br/>
-          3. 알림톡으로 품절안내 메시지가 전송됩니다.<br/>
+          1. 품절된 레시피는 신규설문조사에서 구입 불가능합니다.
+          <br />
+          2. 품절된 레시피를 구독 중인 고객은 결제 중지됩니다.
+          <br />
+          3. 알림톡으로 품절안내 메시지가 전송됩니다.
+          <br />
           4. 유저는 사이트 접속 시, 안내창을 통해 품절상태를 확인하게 됩니다.
         </TooltipInfo>
       ),
@@ -271,12 +279,14 @@ export default function RawProductForm({
       title: "recipeThumb",
       label: (
         <TooltipInfo
-          title={(
-            <>레시피 이미지 <span className={pointColor}>*</span></>
-          )}
+          title={
+            <>
+              레시피 이미지 <span className={pointColor}>*</span>
+            </>
+          }
         >
-          1. 썸네일 상단의 글자는 이미지로 삽입해야합니다.
-          2. 플랜, 레시피 페이지의 레시피 썸네일에 노출
+          1. 썸네일 상단의 글자는 이미지로 삽입해야합니다. 2. 플랜, 레시피
+          페이지의 레시피 썸네일에 노출
         </TooltipInfo>
       ),
       linkName: "recipeLinkUrl",
@@ -291,9 +301,11 @@ export default function RawProductForm({
       title: "surveyResult",
       label: (
         <TooltipInfo
-          title={(
-            <>설문 이미지 <span className={pointColor}>*</span></>
-          )}
+          title={
+            <>
+              설문 이미지 <span className={pointColor}>*</span>
+            </>
+          }
         >
           플랜, 레시피 페이지의 설문결과에 노출
         </TooltipInfo>
@@ -331,7 +343,12 @@ export default function RawProductForm({
           <Divider thickness={1} color="gray200" />
 
           {imageList.map((image, index) => (
-            <InputFieldGroup label={image.label} isLabelRequired={false} divider key={image.title}>
+            <InputFieldGroup
+              label={image.label}
+              isLabelRequired={false}
+              divider
+              key={image.title}
+            >
               <FileUpload
                 inputId={`file-input-${image.title.toLowerCase()}`}
                 onFileChange={image.onFileChange}

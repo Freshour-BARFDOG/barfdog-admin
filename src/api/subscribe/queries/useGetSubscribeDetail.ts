@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
 import { SubscribeDetailResponse } from "@/types/subscribe";
 import { getSubscribeDetail } from "../subscribe";
