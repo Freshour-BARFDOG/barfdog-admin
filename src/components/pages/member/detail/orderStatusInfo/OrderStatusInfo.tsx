@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { infoItemValue } from "@/components/pages/member/detail/MemberDetail.css";
-import InfoList from "@/components/common/infoList/InfoList";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 import Button from "@/components/common/button/Button";
 import Chips from "@/components/common/chips/Chips";
 import useModal from "@/hooks/useModal";
@@ -8,7 +8,7 @@ import UpdateGradeModal from "@/components/common/modal/updateGradeModal/UpdateG
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
 import { useUpdateMemberGrade } from "@/api/member/mutations/useUpdateMemberGrade";
-import { GradeType } from "@/types/common";
+import { GradeType, TableItem } from "@/types/common";
 
 interface SubscriptionInfoData {
 	accumulatedAmount: number;
@@ -54,8 +54,12 @@ export default function OrderStatusInfo({
 		})
 	}
 
-	const subscriptionInfo = [
-		{ label: '누적 구매 금액', value: `${data.accumulatedAmount.toLocaleString()}원` },
+	const subscriptionInfo: TableItem[] = [
+		{
+			label: '누적 구매 금액',
+			value: `${data.accumulatedAmount.toLocaleString()}원`,
+			align: 'center',
+		},
 		{
 			label: '등급',
 			value: (
@@ -63,6 +67,7 @@ export default function OrderStatusInfo({
 					{data.grade}<Button onClick={onToggleUpdateGradeModal} variant='outline' size='sm'>변경</Button>
 				</div>
 			),
+			align: 'center',
 		},
 		{
 			label: '정기 구독 여부',
@@ -88,11 +93,7 @@ export default function OrderStatusInfo({
 	];
 	return (
 		<>
-			<InfoList
-				title='구매 현황'
-				items={subscriptionInfo}
-				width='calc(40% - 10px)'
-			/>
+			<DetailTable items={subscriptionInfo} columns={2} title='구매 현황' />
 			{isOpenUpdateGradeModal &&
 	      <UpdateGradeModal
 	        isOpen={isOpenUpdateGradeModal}

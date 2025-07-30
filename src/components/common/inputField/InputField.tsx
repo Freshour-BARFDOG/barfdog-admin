@@ -216,7 +216,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             <Button
               variant={confirmButtonVariant}
               onClick={handleSubmit}
-              size="sm"
+              size="inputButton"
               className={confirmButtonStyle}
               disabled={confirmButtonDisabled}
             >

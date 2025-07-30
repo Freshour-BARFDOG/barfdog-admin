@@ -1,11 +1,14 @@
-import {style} from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 
 export const detailInfoList = style({
-	width: '100%',
-	display: 'flex',
-	flexWrap: 'wrap',
-	alignItems: 'flex-start',
-	gap: '20px',
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gap: "20px",
+	"@media": {
+		"screen and (max-width: 1300px)": {
+			gridTemplateColumns: "1fr",
+		},
+	},
 })
 
 export const infoItemValue = style({
