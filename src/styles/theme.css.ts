@@ -81,6 +81,12 @@ export const [themeClass, themeVars] = createTheme({
     },
     kakao: "#FDDC3F",
     naver: "#00C73C",
+    chart: {
+      orange: "#ff7300",
+      red: "#ff2600",
+      blue: "#413ea0",
+      purple: "#8884d8",
+    }
   },
   // ------------------ colors 디자인 시스템 ------------------
 
