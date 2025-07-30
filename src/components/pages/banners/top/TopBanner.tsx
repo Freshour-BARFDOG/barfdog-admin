@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import Card from "@/components/common/card/Card";
 import Form from "@/components/common/form/Form";
@@ -39,8 +39,11 @@ export default function TopBanner() {
 		control,
 		handleSubmit,
 		isValid,
-		watch,
 	} = useFormHandler<TopBannerFormValues>(bannerSchema, defaultBannerFormValues, 'all');
+
+	const name = useWatch({ control, name: "name" });
+	const backgroundColor = useWatch({ control, name: "backgroundColor" });
+	const fontColor = useWatch({ control, name: "fontColor" });
 
 	const { mutate } = useUpdateTopBanner();
 	const { addToast } = useToastStore();
@@ -140,10 +143,10 @@ export default function TopBanner() {
 					/>
 					<InputFieldGroup label='미리보기'>
 						<PreviewBanner
-							htmlText={watch('name')}
+							htmlText={name}
 							height={38}
-							backgroundColor={watch('backgroundColor')}
-							fontColor={watch('fontColor')}
+							backgroundColor={backgroundColor}
+							fontColor={fontColor}
 						/>
 					</InputFieldGroup>
 
