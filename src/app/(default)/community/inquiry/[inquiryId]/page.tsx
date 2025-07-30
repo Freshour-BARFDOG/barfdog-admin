@@ -5,15 +5,14 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import InquiryDetail from "@/components/pages/community/inquiry/detail/InquiryDetail";
 import { prefetchInquiryDetail } from "@/api/community/queries/prefetchInquiryDetail";
+import { PageProps } from "@/types/common";
 
-interface InquiryDetailPageProps {
-  params: {
-    inquiryId: string;
-  }
-}
+type Params = { inquiryId: string };
 
-export default async function InquiryDetailPage({ params }: InquiryDetailPageProps) {
-  const inquiryId = Number(params.inquiryId);
+export default async function InquiryDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const inquiryId = Number(resolvedParams.inquiryId);
+
   const queryClient = new QueryClient();
   await prefetchInquiryDetail(inquiryId, queryClient);
   const dehydrateState = dehydrate(queryClient);

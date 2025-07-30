@@ -5,24 +5,22 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import CreateAnswer from "@/components/pages/community/inquiry/create/CreateAnswer";
 import { prefetchInquiryDetail } from "@/api/community/queries/prefetchInquiryDetail";
+import { PageProps } from "@/types/common";
 
-interface CreateAnswerPageProps {
-  params: {
-    inquiryId: string;
-  }
-}
+type Params = { inquiryId: string };
 
-export default async function CreateAnswerPage({ params }: CreateAnswerPageProps) {
-  const inquiryId = Number(params.inquiryId);
+export default async function CreateAnswerPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const inquiryId = Number(resolvedParams.inquiryId);
   const queryClient = new QueryClient();
-  console.log(inquiryId)
+  
   await prefetchInquiryDetail(inquiryId, queryClient);
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>
       <ErrorBoundary fallback={<div>1:1문의 상세 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
-          <Wrapper title='1:1 문의 답글 작성'>
+          <Wrapper>
             <CreateAnswer inquiryId={inquiryId} />
           </Wrapper>
         </Suspense>

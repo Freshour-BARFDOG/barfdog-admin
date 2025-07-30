@@ -32,6 +32,10 @@ const queryKeys = {
     BASE: "products",
     GET_GENERAL_PRODUCT_LIST: "getGeneralProductList",
     GET_ALLIANCE_LIST: "getAllianceList",
+    GET_GENERAL_PRODUCT_DETAIL: "getGeneralProductDetail",
+    GET_RECIPE_LIST: "getRecipeList",
+    GET_INGREDIENT_LIST: "getIngredientList",
+    GET_RECIPE_DETAIL: "getRecipeDetail",
   },
   PROMOTIONS: {
     BASE: "promotion",
@@ -60,7 +64,46 @@ const queryKeys = {
     GET_EVENT_DETAIL: "getEventDetail",
     GET_INQUIRY_LIST: "getInquiryList",
     GET_INQUIRY_DETAIL: "getInquiryDetail",
+  },
+  SUBSCRIBE: {
+    BASE: "subscribe",
+    GET_SUBSCRIBE_HISTORY: "getSubscribeHistory",
+    GET_SUBSCRIBE_DETAIL: "getSubscribeDetail",
+  },
+  DOGS: {
+    BASE: "dogs",
+    GET_DOG_LIST: "getDogList",
+    GET_DOG_DETAIL: "getDogDetail",
+  },
+  POLICIES: {
+    BASE: "policies",
+    GET_POLICIES: "getPolicies",
+    GET_AUTO_COUPONS: "getAutoCoupons",
+    GET_COUPON_POLICY: "getCouponPolicy",
+    GET_PLAN_DISCOUNT: "getPlanDiscount",
+  },
+  ALLIANCE: {
+    BASE: "alliance",
+    GET_ALLIANCE_MEMBER_LIST: "getAllianceMemberList",
+    GET_ALLIANCE_SALES_LIST: "getAllianceSalesList",
+    GET_ALLIANCE_MANAGEMENT: "getAllianceManagement",
+    GET_ALLIANCE_DETAIL: "getAllianceDetail",
+    GET_ALLIANCE_COUPON_LIST: "getAllianceCouponList",
+    GET_ALLIANCE_COUPON_DETAIL: "getAllianceCouponDetail",
+    GET_ALLIANCE_EVENT_LIST: "getAllianceEventList",
+  },
+  REVIEW: {
+    BASE: "review",
+    GET_REVIEW_LIST: "getReviewList",
+    GET_REVIEW_DETAIL: "getReviewDetail",
+    GET_BEST_REVIEW_LIST: "getBestReviewList",
+    GET_PRODUCT_ITEM_LIST: "getProductItemList",
+  },
+  DASHBOARD: {
+    BASE: "dashboard",
+    GET_STATS_DATA: "getStatsData",
   }
+  
 } as const;
 
 export { queryKeys };

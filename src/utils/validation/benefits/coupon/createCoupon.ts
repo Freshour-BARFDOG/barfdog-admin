@@ -10,11 +10,13 @@ export const createCouponSchema = yup.object().shape({
     .string()
     .oneOf(["ALL", "SUBSCRIBE", "GENERAL"], "유효한 쿠폰 대상이어야 합니다.")
     .required("쿠폰 대상은 필수입니다."),
-  code: yup.string().when("couponType", {
-    is: "CODE_PUBLISHED",
-    then: (schema) => schema.required("코드는 필수입니다."),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+  code: yup.string()
+    .when("couponType", {
+      is: "CODE_PUBLISHED",
+      then: (schema) => schema.required("코드는 필수입니다."),
+      otherwise: (schema) => schema.notRequired(),
+    }
+  ),
   couponType: yup
     .string()
     .oneOf(

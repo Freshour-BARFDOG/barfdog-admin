@@ -5,7 +5,7 @@ interface CardProps {
   direction?: "row" | "col";
   justify?: "start" | "center" | "end" | "between";
   align?: "start" | "center" | "end" | "between";
-  width?: "full" | "auto";
+  width?: "full" | "auto" | "half";
   height?: "full" | "auto";
   shadow?: "light" | "normal" | "strong" | "none";
   padding?: "none" | 12 | 16 | 20 | 32 | 40 | "20/16";

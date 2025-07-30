@@ -1,6 +1,9 @@
-import { themeVars } from '@/styles/theme.css';
-import { style } from '@vanilla-extract/css';
+import { themeVars } from "@/styles/theme.css";
+import { style } from "@vanilla-extract/css";
+import { recipe } from "@vanilla-extract/recipes";
+import { P } from "node_modules/framer-motion/dist/types.d-B_QPEvFK";
 
+// 텍스트 스타일 정의
 export const textStyles = {
   display1: style({
     fontWeight: themeVars.typography.display.display1.fontWeight,
@@ -14,7 +17,6 @@ export const textStyles = {
     lineHeight: themeVars.typography.display.display2.lineHeight,
     letterSpacing: themeVars.typography.display.display2.letterSpacing,
   }),
-
   title1: style({
     fontWeight: themeVars.typography.title.title1.fontWeight,
     fontSize: themeVars.typography.title.title1.fontSize,
@@ -39,7 +41,6 @@ export const textStyles = {
     lineHeight: themeVars.typography.title.title4.lineHeight,
     letterSpacing: themeVars.typography.title.title4.letterSpacing,
   }),
-
   headline1: style({
     fontWeight: themeVars.typography.headline.headline1.fontWeight,
     fontSize: themeVars.typography.headline.headline1.fontSize,
@@ -64,7 +65,6 @@ export const textStyles = {
     lineHeight: themeVars.typography.headline.headline4.lineHeight,
     letterSpacing: themeVars.typography.headline.headline4.letterSpacing,
   }),
-
   label1: style({
     fontWeight: themeVars.typography.label.label1.fontWeight,
     fontSize: themeVars.typography.label.label1.fontSize,
@@ -89,7 +89,6 @@ export const textStyles = {
     lineHeight: themeVars.typography.label.label4.lineHeight,
     letterSpacing: themeVars.typography.label.label4.letterSpacing,
   }),
-
   body1: style({
     fontWeight: themeVars.typography.body.body1.fontWeight,
     fontSize: themeVars.typography.body.body1.fontSize,
@@ -145,20 +144,43 @@ export const fontColors = {
   blue600: style({ color: themeVars.colors.blue.blue600 }),
 };
 
-export const alignStyles = {
-  left: style({ textAlign: 'left' }),
-  center: style({ textAlign: 'center' }),
-  right: style({ textAlign: 'right' }),
+const alignStyles = {
+  left: style({ textAlign: "left" }),
+  center: style({ textAlign: "center" }),
+  right: style({ textAlign: "right" }),
 };
 
-export const blockStyles = {
-  true: style({ display: 'block' }),
-}
-
-export const preLineStyles = {
-  true: style({ whiteSpace: 'pre-line' }),
-}
-
-export const underline = style({
-  textDecoration: "underline",
+export const textRecipe = recipe({
+  base: {},
+  variants: {
+    align: alignStyles,
+    block: {
+      true: {
+        display: "block",
+      },
+    },
+    underLine: {
+      true: {
+        textDecoration: "underline",
+      },
+    },
+    preLine: {
+      true: {
+        whiteSpace: "pre-line",
+      },
+    },
+    applyLineHeight: {
+      false: {
+        lineHeight: "normal",
+      },
+    },
+    noShrink: {
+      true: {
+        flexShrink: 0,
+      },
+    },
+  },
+  defaultVariants: {
+    align: "left",
+  },
 });

@@ -24,16 +24,6 @@ export const previewImage = style({
 	objectFit: 'cover',
 })
 
-export const thumbnail = style({
-	background: themeVars.colors.red.red,
-	color: themeVars.colors.gray.gray0,
-	borderRadius: '6.667px 0px',
-	position: 'absolute !important',
-	left: 0,
-	top: 0,
-	padding: '3px 6.67px',
-})
-
 export const removeButton = style({
 	position: 'absolute',
 	right: '4px',

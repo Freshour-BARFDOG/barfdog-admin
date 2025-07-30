@@ -4,9 +4,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import PromotionList from "@/components/pages/benefits/promotions/list/PromotionList";
-import { prefetchGetPromotionList } from "@/api/promotions/queries/usePrefetchGetPromotionList";
+import { prefetchGetPromotionList } from "@/api/promotions/queries/prefetchGetPromotionList";
 
-export default async function CouponsPage() {
+export default async function PromotionPage() {
   const queryClient = new QueryClient();
   await prefetchGetPromotionList(queryClient);
   const dehydrateState = dehydrate(queryClient);

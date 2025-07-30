@@ -9,17 +9,19 @@ interface SearchFilterGroupProps {
 	items: SearchFilterItem[];
 	onSubmit: () => void;
 	onReset: () => void;
+	disabled?: boolean;
 }
 
 export default function SearchFilterGroup({
 	items,
 	onSubmit,
 	onReset,
+	disabled = false,
 }: SearchFilterGroupProps) {
 	return (
 		<Card shadow='none' padding={40} gap={16} align='start'>
-			{items.map(({ label, children, align = 'center' }) => (
-				<div key={label} className={styles.searchItemBox}>
+			{items.map(({ label, children, align = 'center' }, index) => (
+				<div key={index} className={styles.searchItemBox}>
 					<div className={styles.searchItem({ align })}>
 						<InputLabel label={label} labelColor="gray800" className={styles.searchItemLabel} />
 						<div className={styles.searchItemInput}>
@@ -30,8 +32,8 @@ export default function SearchFilterGroup({
 				</div>
 			))}
 			<div className={styles.searchButtonControls}>
-				<Button fullWidth onClick={onSubmit}>검색</Button>
-				<Button fullWidth variant='outline' type='assistive' onClick={onReset}>초기화</Button>
+				<Button disabled={disabled} fullWidth onClick={onSubmit}>검색</Button>
+				<Button disabled={disabled} fullWidth variant='outline' type='assistive' onClick={onReset}>초기화</Button>
 			</div>
 		</Card>
 	);

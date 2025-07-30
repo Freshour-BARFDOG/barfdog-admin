@@ -19,17 +19,17 @@ interface TableColumn<T> {
   key: keyof T | string;
   header: ReactNode | string;
   width?: string | number;
-  backgroundColor?: 'gray0' | 'gray50';
+  backgroundColor?: "gray0" | "gray50";
   render?: (value: T, index: number) => ReactNode;
 }
 
-interface SelectOption<T extends string | number | boolean> {
+interface SelectOption<T extends string | number | boolean | null> {
   label: string;
   value: T;
 }
 
 interface SearchFilterItem {
-  label: string;
+  label: string | ReactNode;
   children: ReactNode;
   align?: "start" | "center";
 }
@@ -94,6 +94,26 @@ interface ImageFile {
 
 type StatusType = keyof typeof STATUS;
 
+type DogGender = "MALE" | "FEMALE";
+
+interface TableItem {
+  label: string;
+  value: React.ReactNode;
+  /** true 면 해당 페어(dt+dd)를 전체 폭으로 차지 */
+  fullWidth?: boolean;
+  align?: "center" | "start";
+}
+
+interface UploadResponse {
+	id: number;
+	url: string;
+}
+
+type PageProps<P extends object = object, S extends object = object> = {
+  params: Promise<P>;
+  searchParams: Promise<S>;
+};
+
 export type {
   MenuItem,
   TableColumn,
@@ -110,4 +130,8 @@ export type {
   DiscountUnitType,
   ImageFile,
   StatusType,
+  DogGender,
+  TableItem,
+  UploadResponse,
+  PageProps,
 };

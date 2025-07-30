@@ -5,17 +5,16 @@ import Loader from "@/components/common/loader/Loader";
 import SalesDetailGeneral from "@/components/pages/sales/detail/SalesDetailGeneral";
 import SalesDetailSubscribe from "@/components/pages/sales/detail/SalesDetailSubscribe";
 import { OrderTypeResponse } from "@/types/sales";
+import { PageProps } from "@/types/common";
 
-interface SalesDetailPageProps {
-  params: {
-    orderType: OrderTypeResponse;
-    orderId: string;
-  };
-}
+type Params = {
+  orderType: OrderTypeResponse;
+  orderId: string;
+};
 
 export default async function SalesDetailPage({
   params,
-}: SalesDetailPageProps) {
+}: PageProps<Params>) {
   const { orderType, orderId } = await params;
   const id = Number(orderId);
   return (

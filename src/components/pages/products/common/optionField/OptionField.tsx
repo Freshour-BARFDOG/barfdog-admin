@@ -1,7 +1,13 @@
 "use client";
 
 import React from "react";
-import { useFieldArray, Controller, Control } from "react-hook-form";
+import {
+  useFieldArray,
+  Controller,
+  Control,
+  UseFormSetValue,
+  useWatch,
+} from "react-hook-form";
 import InputField from "@/components/common/inputField/InputField";
 import Button from "@/components/common/button/Button";
 import {
@@ -10,22 +16,61 @@ import {
 } from "@/utils/formatNumber";
 import * as styles from "./OptionField.css";
 import { commonWrapper } from "@/styles/common.css";
+import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
 
 interface OptionFieldProps {
-  control: Control<any>;
+  isEdit: boolean;
+  control: Control<GeneralProductFormValues>;
+  setValue: UseFormSetValue<GeneralProductFormValues>;
 }
 
-export default function OptionField({ control }: OptionFieldProps) {
-  const { fields, append, remove } = useFieldArray({
+/**
+ * OptionField 컴포넌트 (Controller 사용, useWatch 적용)
+ * - 등록: itemOptionSaveDtoList
+ * - 수정:
+ *   • itemOptionSaveDtoList: 새로 추가된 옵션
+ *   • itemOptionUpdateDtoList: 기존 옵션 유지/수정
+ *   • deleteOptionIdList: 삭제된 옵션 ID
+ */
+export default function OptionField({
+  isEdit,
+  control,
+  setValue,
+}: OptionFieldProps) {
+  // 신규 옵션 배열
+  const saveFA = useFieldArray({
     control,
     name: "itemOptionSaveDtoList",
   });
+  // 기존 옵션(수정 모드)
+  const updateFA = useFieldArray({
+    control,
+    name: "itemOptionUpdateDtoList",
+  });
+  // 삭제된 옵션 ID 리스트
+  const deleteIds = useWatch({
+    control,
+    name: "deleteOptionIdList",
+  }) as number[] | undefined;
+
+  const removeSave = (idx: number) => {
+    saveFA.remove(idx);
+  };
+
+  const removeUpdate = (idx: number) => {
+    const removed = updateFA.fields[idx];
+    setValue(
+      "deleteOptionIdList",
+      Array.from(new Set([...(deleteIds || []), removed.id]))
+    );
+    updateFA.remove(idx);
+  };
 
   return (
     <div
       className={commonWrapper({ direction: "col", align: "start", gap: 8 })}
     >
-      {fields.length > 0 && (
+      {(isEdit ? updateFA.fields.length > 0 : saveFA.fields.length > 0) && (
         <table className={styles.optionTable}>
           <thead>
             <tr>
@@ -36,12 +81,66 @@ export default function OptionField({ control }: OptionFieldProps) {
             </tr>
           </thead>
           <tbody>
-            {fields.map((field, idx) => (
+            {isEdit &&
+              updateFA.fields.map((field, idx) => (
+                <tr key={field.id}>
+                  <td className={styles.td}>
+                    <Controller
+                      control={control}
+                      name={`itemOptionUpdateDtoList.${idx}.name`}
+                      render={({ field }) => (
+                        <InputField
+                          placeholder="옵션명"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+                  </td>
+                  <td className={styles.td}>
+                    <Controller
+                      control={control}
+                      name={`itemOptionUpdateDtoList.${idx}.price`}
+                      render={({ field }) => (
+                        <InputField
+                          value={formatNumberWithComma(field.value)}
+                          onChange={(e) =>
+                            field.onChange(unformatCommaNumber(e.target.value))
+                          }
+                          unit="원"
+                        />
+                      )}
+                    />
+                  </td>
+                  <td className={styles.td}>
+                    <Controller
+                      control={control}
+                      name={`itemOptionUpdateDtoList.${idx}.remaining`}
+                      render={({ field }) => (
+                        <InputField
+                          value={String(field.value)}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          unit="개"
+                        />
+                      )}
+                    />
+                  </td>
+                  <td className={styles.td}>
+                    <Button size="sm" onClick={() => removeUpdate(idx)}>
+                      삭제
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+
+            {saveFA.fields.map((field, idx) => (
               <tr key={field.id}>
                 <td className={styles.td}>
                   <Controller
-                    name={`itemOptionSaveDtoList.${idx}.name`}
                     control={control}
+                    name={`itemOptionSaveDtoList.${idx}.name`}
                     render={({ field }) => (
                       <InputField
                         placeholder="옵션명"
@@ -53,8 +152,8 @@ export default function OptionField({ control }: OptionFieldProps) {
                 </td>
                 <td className={styles.td}>
                   <Controller
-                    name={`itemOptionSaveDtoList.${idx}.price`}
                     control={control}
+                    name={`itemOptionSaveDtoList.${idx}.price`}
                     render={({ field }) => (
                       <InputField
                         value={formatNumberWithComma(field.value)}
@@ -68,8 +167,8 @@ export default function OptionField({ control }: OptionFieldProps) {
                 </td>
                 <td className={styles.td}>
                   <Controller
-                    name={`itemOptionSaveDtoList.${idx}.remaining`}
                     control={control}
+                    name={`itemOptionSaveDtoList.${idx}.remaining`}
                     render={({ field }) => (
                       <InputField
                         value={String(field.value)}
@@ -80,7 +179,7 @@ export default function OptionField({ control }: OptionFieldProps) {
                   />
                 </td>
                 <td className={styles.td}>
-                  <Button size="sm" onClick={() => remove(idx)}>
+                  <Button size="sm" onClick={() => removeSave(idx)}>
                     삭제
                   </Button>
                 </td>
@@ -89,10 +188,11 @@ export default function OptionField({ control }: OptionFieldProps) {
           </tbody>
         </table>
       )}
+
       <Button
         size="sm"
         variant="outline"
-        onClick={() => append({ name: "", price: 0, remaining: 0 })}
+        onClick={() => saveFA.append({ name: "", price: 0, remaining: 0 })}
       >
         옵션추가
       </Button>

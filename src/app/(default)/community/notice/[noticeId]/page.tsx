@@ -5,15 +5,13 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import NoticeDetail from "@/components/pages/community/notice/detail/NoticeDetail";
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
+import { PageProps } from "@/types/common";
 
-interface UpdateNoticePageProps {
-  params: {
-    noticeId: string;
-  }
-}
+type Params = { noticeId: string };
 
-export default async function NoticeDetailPage({ params }: UpdateNoticePageProps) {
-  const noticeId = Number(params.noticeId);
+export default async function NoticeDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const noticeId = Number(resolvedParams.noticeId);
 
   const queryClient = new QueryClient();
   await prefetchCommunityDetail('notices', noticeId, queryClient);

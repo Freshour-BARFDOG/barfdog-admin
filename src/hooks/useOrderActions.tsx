@@ -21,8 +21,7 @@ import { useGoodsFlowCancelOrder } from "@/api/goodsflow/mutations/useCancelOrde
 import useModal from "./useModal";
 import { getSalesDetailGeneral } from "@/api/sales/sales";
 import openPopup from "@/utils/openPopup";
-import { TableItem } from "@/components/common/detailTable/DetailTable";
-import axiosInstance from "@/api/axiosInstance";
+import { TableItem } from "@/types/common";
 
 export function useOrderActions(
   allOrders: SalesBaseRow[],

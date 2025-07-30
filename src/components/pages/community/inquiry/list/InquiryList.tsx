@@ -58,8 +58,6 @@ export default function InquiryList() {
 	const [selectedType, setSelectedType] = useState<'title' | 'email' | 'name'>('title');
 	const flatData = flattenInquiryList(data?.inquiryList ?? []);
 
-	console.log(data);
-	
 	const {
 		selectedIds: deleteSelectedIds,
 		toggleSelect,
@@ -101,12 +99,16 @@ export default function InquiryList() {
 			label: '조회 기간',
 			children: (
 				<DateRangeFilter
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
 					onChangeRange={(value) => {
 						const { startDate, endDate } = value;
 						setSearchValues({
 							...searchValues,
-							from: format(startDate as Date, 'yyyy-MM-dd'),
-							to: format(endDate as Date, 'yyyy-MM-dd'),
+							from: startDate as string,
+							to: endDate as string,
 						})
 					}}
 				/>
@@ -150,7 +152,6 @@ export default function InquiryList() {
 					value={allSelected}
 					isChecked={allSelected}
 					onToggle={(value) => {
-						console.log('value1', value)
 						selectAll(!value)
 					}}
 				/>

@@ -13,6 +13,7 @@ interface FullModalProps {
   className?: string;
   title?: string;
   padding?: 'none' | 16 | 20;
+  width?: number;
 }
 
 export default function FullModal({
@@ -23,6 +24,7 @@ export default function FullModal({
   className,
   title,
   padding = 'none',
+  width,
 }: FullModalProps) {
   return (
     isVisible && (
@@ -31,7 +33,7 @@ export default function FullModal({
         onClose={handleClose || handleGoBack}
         closeOnBackgroundClick={false}
       >
-        <Card shadow='none' className={`${styles.modalContainer} ${className || ""}`}>
+        <Card shadow='none' style={{ width: width }} className={`${styles.modalContainer} ${className || ""}`}>
           {title &&
             <div className={styles.modalHeader}>
               <Text type='title3' color='white'>{title}</Text>

@@ -4,20 +4,18 @@ import { ErrorBoundary } from "react-error-boundary";
 import {
   prefetchGetMemberDetail,
   prefetchGetMemberSubscriptionList
-} from "@/api/member/queries/usePrefetchGetMemberDetail";
+} from "@/api/member/queries/prefetchGetMemberDetail";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import MemberDetail from "@/components/pages/member/detail/MemberDetail";
+import { PageProps } from "@/types/common";
 
-interface MemberDetailPageProps {
-  params: {
-    memberId: string;
-  }
-}
+type Params = { memberId: string };
 
-export default async function MemberDetailPage({ params }: MemberDetailPageProps) {
-  const { memberId } = await params;
-  const numMemberId = Number(memberId);
+export default async function MemberDetailPage({ params }: PageProps<Params>) {
+  const resolvedParams = await params;
+  const numMemberId = Number(resolvedParams.memberId);
+
   const queryClient = new QueryClient();
   await prefetchGetMemberDetail(numMemberId, queryClient);
   await prefetchGetMemberSubscriptionList(numMemberId, queryClient);

@@ -5,12 +5,12 @@ import {
   OrderTypeRequest,
   OrderTypeResponse,
   PaymentMethod,
-  ProductType,
+  PurchaseType,
 } from "@/types/sales";
-import { TODAY } from "./common";
+import { OLDEST_DATE, TODAY } from "./common";
 
 const INITIAL_SEARCH_REQUEST = {
-  from: "2001-01-01",
+  from: OLDEST_DATE,
   to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
@@ -22,7 +22,7 @@ const INITIAL_SEARCH_REQUEST = {
 };
 
 const INITIAL_ORDERS_REQUEST = {
-  from: "2001-01-01",
+  from: OLDEST_DATE,
   to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
@@ -34,7 +34,7 @@ const INITIAL_ORDERS_REQUEST = {
 };
 
 const INITIAL_DELIVERY_REQUEST = {
-  from: "2001-01-01",
+  from: OLDEST_DATE,
   to: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
@@ -70,7 +70,7 @@ const ORDER_TYPE_LABEL_MAP: Record<OrderTypeResponse, string> = {
   subscribe: "구독",
 };
 
-const PRODUCT_TYPE: Record<ProductType, string> = {
+const PRODUCT_TYPE: Record<PurchaseType, string> = {
   GENERAL: "general",
   SUBSCRIBE: "subscribe",
 };

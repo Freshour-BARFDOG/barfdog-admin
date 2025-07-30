@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { UseQueryCustomOptions } from "@/types/common";
 import { getArticleDetail, getEventDetail, getNoticeDetail } from "../community";
 import { queryKeys } from "@/constants/queryKeys";
-import { CommunityType } from "@/types/community";
 
 const apiMap = {
   notices: getNoticeDetail,
@@ -17,7 +16,7 @@ const keyMap = {
 };
 
 export function useGetCommunityDetail<T>(
-  type: CommunityType,
+  type: keyof typeof apiMap,
   id: number,
   queryOptions?: UseQueryCustomOptions<T>
 ) {

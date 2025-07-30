@@ -28,6 +28,7 @@ export const select = recipe({
     fontSize: themeVars.fontSize["text-sm"],
     color: themeVars.colors.gray.gray900,
     backgroundColor: themeVars.colors.gray.gray0,
+    minWidth: 170,
   },
   variants: {
     fullWidth: {

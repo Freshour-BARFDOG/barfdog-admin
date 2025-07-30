@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Loader from "@/components/common/loader/Loader";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import ReleaseRewardForm from "@/components/pages/benefits/rewards/form/ReleaseRewardForm";
-import { prefetchGetMemberList } from "@/api/member/queries/usePrefetchGetMemberList";
+import { prefetchGetMemberList } from "@/api/member/queries/prefetchGetMemberList";
 
 export default async function ReleaseRewardPage() {
 	const queryClient = new QueryClient();

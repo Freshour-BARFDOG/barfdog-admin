@@ -30,8 +30,6 @@ const submitBanner = async (
 	id?: number
 ) => {
 	const formData = createBannerFormData(body, pcFile, mobileFile);
-	console.log('type', type)
-	console.log('id', id)
 	const url = `/api/banners/${type as string}${id ? `/${id}` : ''}`;
 	try {
 		const { data } = await axiosInstance.post(url, formData, {

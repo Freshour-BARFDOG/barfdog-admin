@@ -5,7 +5,6 @@ import { UseQueryCustomOptions } from "@/types/common";
 import {
   GeneralProductListParams,
   GeneralProductListResponse,
-  GeneralProductType,
 } from "@/types/products";
 import { getGeneralProductList } from "../products";
 

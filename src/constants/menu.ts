@@ -7,8 +7,6 @@ import {
   Dog,
   GalleryVertical,
   LayoutDashboard,
-  MessageCircle,
-  Puzzle,
   SendToBack,
   Settings,
   ShoppingBasket,
@@ -144,16 +142,22 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
   {
-    key: "dog",
+    key: "dogs",
     label: "반려견 관리",
-    href: "/dog",
+    href: "/dogs",
     icon: Dog,
   },
   {
-    key: "subscription",
-    label: "구독 히스토리",
-    href: "/subscription",
+    key: "subscribe",
+    label: "구독 관리",
     icon: CalendarCheck,
+    children: [
+      {
+        key: "history",
+        label: "히스토리",
+        href: "/subscribe/history",
+      },
+    ],
   },
   {
     key: "banners",
@@ -215,13 +219,8 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: Star,
     children: [
       {
-        key: "bestReview",
-        label: "베스트 리뷰",
-        href: "/review/bestReview",
-      },
-      {
         key: "review",
-        label: "리뷰",
+        label: "리뷰 조회",
         href: "/review",
       },
       {
@@ -229,93 +228,86 @@ export const MENU_ITEMS: MenuItem[] = [
         label: "리뷰 생성",
         href: "/review/create",
       },
-    ],
-  },
-  {
-    key: "allianceCoupon",
-    label: "제휴사 쿠폰 관리",
-    icon: Puzzle,
-    children: [
       {
-        key: "alliance",
-        label: "제휴사 관리",
-        href: "/alliance",
-      },
-      {
-        key: "coupon",
-        label: "제휴사 쿠폰 내역",
-        href: "/alliance/coupon",
-      },
-      {
-        key: "create",
-        label: "제휴사 쿠폰 생성",
-        href: "/alliance/coupon/create",
+        key: "bestReview",
+        label: "베스트 리뷰",
+        href: "/review/best-review",
       },
     ],
   },
   {
-    key: "allianceSales",
-    label: "제휴사 매출 관리",
+    key: "alliance",
+    label: "제휴사 관리",
     icon: BadgeDollarSign,
     children: [
       {
-        key: "member",
-        label: "제휴사 유입 가입자",
-        href: "/alliance/sales/member",
+        key: "coupon",
+        label: "난수 쿠폰 관리",
+        children: [
+          {
+            key: "create",
+            label: "쿠폰 생성",
+            href: "/alliance/coupon/create",
+          },
+          {
+            key: "coupon-list",
+            label: "쿠폰 내역",
+            href: "/alliance/coupon",
+          },
+        ],
       },
       {
-        key: "sales",
-        label: "제휴사 매출",
-        href: "/alliance/sales",
+        key: "overview",
+        label: "제휴사 현황",
+        children: [
+          {
+            key: "alliance-list",
+            label: "제휴사 목록",
+            href: "/alliance/management",
+          },
+          {
+            key: "member",
+            label: "가입자 내역",
+            href: "/alliance/member",
+          },
+          {
+            key: "sales",
+            label: "매출 내역",
+            href: "/alliance/sales",
+          },
+        ],
       },
     ],
   },
   {
-    key: "messenger",
-    label: "메신저 관리",
-    icon: MessageCircle,
-    children: [
-      {
-        key: "friendTalk",
-        label: "친구톡",
-        href: "/messenger/friendTalk",
-      },
-      {
-        key: "channelTalk",
-        label: "채널톡",
-        href: "/messenger/channelTalk",
-      },
-    ],
-  },
-  {
-    key: "settings",
-    label: "설정",
+    key: "policies",
+    label: "정책 관리",
     icon: Settings,
     children: [
       {
         key: "algorithm",
-        label: "알고리즘",
-        href: "/settings/algorithm",
+        label: "알고리즘 설정",
+        href: "/policies/algorithm",
       },
       {
-        key: "delivery",
-        label: "배송 정책",
-        href: "/settings/delivery",
+        key: "delivery-fee",
+        label: "배송비 정책",
+        href: "/policies/delivery-fee",
       },
       {
         key: "coupon",
         label: "쿠폰 정책",
-        href: "/settings/coupon",
+        href: "/policies/coupon",
       },
       {
-        key: "price",
-        label: "가격 정책",
-        href: "/settings/price",
+        key: "discount",
+        label: "할인 정책",
+        href: "/policies/discount",
       },
       {
         key: "orderDeadline",
-        label: "주문 마감일 변경",
-        href: "/settings/order-deadline",
+        label: "주문 마감일 정책",
+        href: "/policies/order-deadline",
       },
     ],
   },

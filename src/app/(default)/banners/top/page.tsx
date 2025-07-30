@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
 import TopBanner from "@/components/pages/banners/top/TopBanner";
-import { prefetchGetTopBanner } from "@/api/banners/queries/usePrefetchGetTopBanner";
+import { prefetchGetTopBanner } from "@/api/banners/queries/prefetchGetTopBanner";
 
 export default async function TopBannerPage() {
   const queryClient = new QueryClient();

@@ -10,6 +10,7 @@ import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import FormControls from "@/components/common/formControls/FormControls";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { PopupFormValues } from "@/types/banners";
 import {
@@ -124,16 +125,24 @@ export default function PopupForm({
 								control={control}
 								name={image.linkName as keyof PopupFormValues}
 								render={({ field }) => (
-									<>
-										<InputFieldGroup label='연결 링크' isLabelRequired={false} divider={index === 0}>
-											<div className={commonWrapper({ width: 'full', direction: 'col', gap: 4, align: 'start' })}>
-												<InputField
-													placeholder='ex: https://barfdog.co.kr/path/1'
-													{...field}
-												/>
-											</div>
-										</InputFieldGroup>
-									</>
+									<InputFieldGroup
+										label={
+											<TooltipInfo
+												title='연결 링크'
+											>
+												* 링크가 없을 경우, 배너 클릭 이벤트가 발생하지 않습니다.
+											</TooltipInfo>
+										}
+										isLabelRequired={false}
+										divider={index === 0}
+									>
+										<div className={commonWrapper({ width: 'full', direction: 'col', gap: 4, align: 'start' })}>
+											<InputField
+												placeholder='ex: https://barfdog.co.kr/path/1'
+												{...field}
+											/>
+										</div>
+									</InputFieldGroup>
 								)}
 							/>
 						</div>

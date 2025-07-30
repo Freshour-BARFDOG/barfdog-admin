@@ -1,4 +1,5 @@
 'use client';
+import { pointColor } from "@/styles/common.css";
 import { useRouter } from "next/navigation";
 import { Controller, useWatch } from "react-hook-form";
 import { useFormHandler } from "@/hooks/useFormHandler";
@@ -10,6 +11,7 @@ import FormControls from "@/components/common/formControls/FormControls";
 import PreviewBanner from "@/components/pages/banners/top/previewBanner/PreviewBanner";
 import SimpleTextEditor from "@/components/pages/banners/top/simpleTextEditor/SimpleTextEditor";
 import InputField from "@/components/common/inputField/InputField";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { STATUS_LIST } from "@/constants/common";
 import { queryKeys } from "@/constants/queryKeys";
 import { useToastStore } from "@/store/useToastStore";
@@ -67,6 +69,17 @@ export default function TopBanner() {
 			}
 		})
 	}
+
+	const linkInputFieldList = [
+		{
+			name: 'pcLinkUrl',
+			label: '연결 링크 (PC)',
+		},
+		{
+			name: 'mobileLinkUrl',
+			label: '연결 링크 (Mobile)',
+		},
+	]
 	return (
 		<>
 			<Card shadow='none' padding={20}>
@@ -75,7 +88,18 @@ export default function TopBanner() {
 						control={control}
 						name="name"
 						render={({ field }) => (
-							<InputFieldGroup label="배너 이름">
+							<InputFieldGroup
+								label={
+									<TooltipInfo
+										title={(
+											<>배너 이름 <span className={pointColor}>*</span></>
+										)}
+									>
+										띠 배너에 삽입될 텍스트입니다.
+									</TooltipInfo>
+								}
+								isLabelRequired={false}
+							>
 								<SimpleTextEditor
 									value={field.value}
 									onChange={field.onChange}
@@ -111,24 +135,29 @@ export default function TopBanner() {
 							</InputFieldGroup>
 						)}
 					/>
-					<Controller
-						control={control}
-						name='pcLinkUrl'
-						render={({ field }) => (
-							<InputFieldGroup label='연결 링크(PC)'>
-								<InputField {...field} />
-							</InputFieldGroup>
-						)}
-					/>
-					<Controller
-						control={control}
-						name='mobileLinkUrl'
-						render={({ field }) => (
-							<InputFieldGroup label='연결 링크(PC)'>
-								<InputField {...field} />
-							</InputFieldGroup>
-						)}
-					/>
+					{linkInputFieldList.map(link => (
+						<Controller
+							key={link.name}
+							control={control}
+							name={link.name as "pcLinkUrl" | "mobileLinkUrl"}
+							render={({ field }) => (
+								<InputFieldGroup
+									label={
+										<TooltipInfo
+											title={(
+												<>{link.label} <span className={pointColor}>*</span></>
+											)}
+										>
+											* 링크가 없을 경우, 배너 클릭 이벤트가 발생하지 않습니다.
+										</TooltipInfo>
+									}
+									isLabelRequired={false}
+								>
+									<InputField {...field} />
+								</InputFieldGroup>
+							)}
+						/>
+					))}
 					<Controller
 						control={control}
 						name='status'

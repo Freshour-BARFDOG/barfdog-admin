@@ -7,27 +7,25 @@ import PromotionDetail from "@/components/pages/benefits/promotions/detail/Promo
 import {
   prefetchGetPromotionDetail,
   prefetchGetPromotionMemberList
-} from "@/api/promotions/queries/usePrefetchGetPromotionDetail";
+} from "@/api/promotions/queries/prefetchGetPromotionDetail";
+import { PageProps } from "@/types/common";
 
-interface PromotionDetailPageProps {
-  params: {
-    promotionId: string;
-  }
-}
+type Params = { promotionId: string };
 
-export default async function PromotionDetailPage({ params }: PromotionDetailPageProps) {
-  const { promotionId } = await params;
-  const numPromotionId = Number(promotionId);
+export default async function PromotionDetailPage({ params }: PageProps<Params>) {;
+  const resolvedParams = await params;
+  const promotionId = Number(resolvedParams.promotionId);
+
   const queryClient = new QueryClient();
-  await prefetchGetPromotionDetail(numPromotionId, queryClient);
-  await prefetchGetPromotionMemberList(numPromotionId, queryClient);
+  await prefetchGetPromotionDetail(promotionId, queryClient);
+  await prefetchGetPromotionMemberList(promotionId, queryClient);
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>
       <ErrorBoundary fallback={<div>회원 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
           <Wrapper>
-            <PromotionDetail promotionId={numPromotionId} />
+            <PromotionDetail promotionId={promotionId} />
           </Wrapper>
         </Suspense>
       </ErrorBoundary>

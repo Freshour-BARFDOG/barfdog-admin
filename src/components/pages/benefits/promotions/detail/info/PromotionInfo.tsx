@@ -58,7 +58,6 @@ export default function PromotionInfo({ data }: PromotionInfoProps) {
 		{ label: '최소 사용 금액', value: `${data.availableMinPrice.toLocaleString()}원` },
 		{ label: '최대 할인 금액', value: `${data.availableMaxDiscount.toLocaleString()}원` },
 	]
-	console.log('promotionInfo', data)
 	return (
 		<Card shadow='none' padding={20}>
 			<div className={commonWrapper({ direction: 'col', gap: 20 })}>

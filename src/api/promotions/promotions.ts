@@ -27,7 +27,7 @@ const getPromotionList = async (
 
 	try {
 		const { data } = await instance.get(`/api/admin/promotions?page=${page}&size=${PAGE_SIZE.REWARDS.PROMOTION}&${query}`);
-		console.log('data', data)
+
 		return {
 			page: data.page,
 			promotionList: data?._embedded?.queryAdminPromotionsDtoList

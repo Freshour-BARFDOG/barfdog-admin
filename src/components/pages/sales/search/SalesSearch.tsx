@@ -56,8 +56,6 @@ export default function SalesSearch() {
 
   const { data } = useGetSearchSales(params);
 
-  console.log("data", data);
-
   const { mutate: excelDownload } = useExcelDownloadSearchSales();
   const { addToast } = useToastStore();
 
@@ -70,9 +68,9 @@ export default function SalesSearch() {
       onSuccess: (data) => {
         downloadBlobFile(data as Blob, `판매 관리_${today}.xlsx`);
       },
-      onError: (err) => {
+      onError: (error) => {
         addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
-        console.log(err);
+        console.log(error);
       },
     });
   };
@@ -85,12 +83,16 @@ export default function SalesSearch() {
       label: "조회기간",
       children: (
         <DateRangeFilter
+          value={{
+            startDate: searchValues.from,
+            endDate: searchValues.to,
+          }}
           onChangeRange={(value) => {
             const { startDate, endDate } = value;
             setSearchValues({
               ...searchValues,
-              from: format(startDate as Date, "yyyy-MM-dd"),
-              to: format(endDate as Date, "yyyy-MM-dd"),
+              from: startDate as string,
+              to: endDate as string,
             });
           }}
         />

@@ -5,10 +5,7 @@ import InputField from "@/components/common/inputField/InputField";
 import Text from "@/components/common/text/Text";
 import { commonWrapper } from "@/styles/common.css";
 import { formatNumberWithComma } from "@/utils/formatNumber";
-import {
-  parseAndClampNumber,
-  NumberFieldMode,
-} from "@/utils/parseAndClampNumber";
+import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 import * as styles from "./DiscountControl.css";
 import { DiscountUnitType, SelectOption } from "@/types/common";
 
@@ -25,7 +22,7 @@ interface DiscountControlProps {
   onToggleChange: (next: DiscountUnitType) => void;
   /** discountType 에 해당하는 DiscountUnitType */
   discountType: DiscountUnitType;
-  originalPrice: number;
+  originalPrice?: number;
 }
 
 export default function DiscountControl<T extends string>({

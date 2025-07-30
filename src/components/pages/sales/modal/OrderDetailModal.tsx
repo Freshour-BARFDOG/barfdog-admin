@@ -1,10 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import ModalBackground from "@/components/common/modal/modalBackground/ModalBackground";
-import DetailTable, {
-  TableItem,
-} from "@/components/common/detailTable/DetailTable";
-import { commonWrapper } from "@/styles/common.css";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 import { orderDetailModalContainer } from "./Modal.css";
+import { TableItem } from "@/types/common";
 
 interface OrderDetailModalProps {
   isOpen: boolean;

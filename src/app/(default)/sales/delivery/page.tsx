@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import Loader from "@/components/common/loader/Loader";
-import SalesOrders from "@/components/pages/sales/orders/SalesOrders";
 import SalesDelivery from "@/components/pages/sales/delivery/SalesDelivery";
 
 export default async function SalesDeliveryPage() {

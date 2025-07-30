@@ -41,9 +41,9 @@ export default function RewardList() {
 			onSuccess: (data) => {
 				downloadBlobFile(data as Blob, '적립금 목록.xlsx');
 			},
-			onError: (err) => {
+			onError: (error) => {
 				addToast('엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.')
-				console.log(err)
+				console.log(error)
 			}
 		})
 	}
@@ -53,12 +53,16 @@ export default function RewardList() {
 			label: '조회 기간',
 			children: (
 				<DateRangeFilter
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
 					onChangeRange={(value) => {
 						const { startDate, endDate } = value;
 						setSearchValues({
 							...searchValues,
-							from: format(startDate as Date, 'yyyy-MM-dd'),							
-							to: format(endDate as Date, 'yyyy-MM-dd'),
+							from: startDate as string,
+							to: endDate as string,
 						})
 					}}
 				/>

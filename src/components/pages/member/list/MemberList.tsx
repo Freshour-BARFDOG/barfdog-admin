@@ -1,7 +1,6 @@
 'use client';
 import * as styles from './MemberList.css';
 import { useState } from "react";
-import { format } from "date-fns";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
@@ -11,6 +10,7 @@ import SearchFilterGroup from '@/components/common/searchFilterGroup/SearchFilte
 import useSearchValues from "@/hooks/useSearchValues";
 import Loader from "@/components/common/loader/Loader";
 import MemberTable from "@/components/pages/member/table/MemberTable";
+import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { MemberListSearchParams } from "@/types/member";
 import { GradeType, SearchFilterItem } from "@/types/common";
@@ -43,24 +43,32 @@ const MemberList = () => {
 			onSuccess: (data) => {
 				downloadBlobFile(data as Blob, '회원목록.xlsx');
 			},
-			onError: (err) => {
+			onError: (error) => {
 				addToast('엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.')
-				console.log(err)
+				console.log(error)
 			}
 		})
 	}
 
 	const filters: SearchFilterItem[] = [
 		{
-			label: '조회 기간',
+			label: (
+				<TooltipInfo title='조회 기간'>
+					좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.
+				</TooltipInfo>
+			),
 			children: (
 				<DateRangeFilter
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
 					onChangeRange={(value) => {
 						const { startDate, endDate } = value;
 						setSearchValues({
 							...searchValues,
-							from: format(startDate as Date, 'yyyy-MM-dd'),
-							to: format(endDate as Date, 'yyyy-MM-dd'),
+							from: startDate as string,
+							to: endDate as string,
 						})
 					}}
 				/>

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Loader from "@/components/common/loader/Loader";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import CreatePromotion from "@/components/pages/benefits/promotions/create/CreatePromotion";
-import { prefetchGetPromotionCouponList } from "@/api/promotions/queries/usePrefetchGetPromotionCouponList";
+import { prefetchGetPromotionCouponList } from "@/api/promotions/queries/prefetchGetPromotionCouponList";
 
 export default async function CreatePromotionPage() {
 	const queryClient = new QueryClient();

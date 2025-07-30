@@ -7,6 +7,7 @@ interface FormProps {
 	onCancel?: () => void;
 	onConfirm?: () => void;
 	isConfirmDisabled?: boolean;
+	fullWidth?: boolean;
 }
 
 export default function FormControls({
@@ -15,14 +16,15 @@ export default function FormControls({
 	onCancel,
 	onConfirm,
 	isConfirmDisabled = false,
+	fullWidth = false,
 }: FormProps) {
 	return (
 		<div className={styles.formControls}>
 			{onCancel &&
-				<Button onClick={onCancel} variant='outline' type='assistive'>{cancelText}</Button>
+				<Button onClick={onCancel} variant='outline' type='assistive' fullWidth={fullWidth}>{cancelText}</Button>
 			}
 			{onConfirm &&
-				<Button onClick={onConfirm} disabled={isConfirmDisabled}>{confirmText}</Button>
+				<Button onClick={onConfirm} disabled={isConfirmDisabled} fullWidth={fullWidth}>{confirmText}</Button>
 			}
 		</div>
 	);

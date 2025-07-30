@@ -1,5 +1,5 @@
 import { Path, PathValue, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { UploadResponse } from "@/types/community";
+import { UploadResponse } from "@/types/common";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useToastStore } from "@/store/useToastStore";
 
