@@ -8,8 +8,9 @@ export default function PieChartLabel(props: PieLabelProps) {
 
 	// 중간 각도(rad) 계산
 	const RADIAN = Math.PI / 180;
-	const x = cx + radius * Math.cos(-!midAngle * RADIAN);
-	const y = cy + radius * Math.sin(-!midAngle * RADIAN);
+	if (typeof midAngle !== "number" || typeof cx !== "number" || typeof cy !== "number") return null;
+	const x = cx + radius * Math.cos(-midAngle * RADIAN);
+	const y = cy + radius * Math.sin(-midAngle * RADIAN);
 	if (value === 0) return null;
 	return (
 		<text
