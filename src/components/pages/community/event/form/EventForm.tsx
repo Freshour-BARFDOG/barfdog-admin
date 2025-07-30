@@ -42,6 +42,7 @@ export default function EventForm({
 	const thumbnailUrl = useWatch({ control, name: "thumbnailUrl" });
 	const filename = useWatch({ control, name: "filename" });
 	const url = useWatch({ control, name: "url" });
+	const imageOrderDtoList = useWatch({ control, name: "imageOrderDtoList" });
 
 	const eventImageList = defaultUpdateFormValue.imageOrderDtoList ?? [];
 
@@ -57,9 +58,9 @@ export default function EventForm({
 		deleteImageIdKey: 'deleteImageIdList',
 		setValue,
 		watch,
-		imageList: eventImageList,
+		imageList: imageOrderDtoList,
+		// imageList: eventImageList,
 	});
-
 
 	return (
 		<>

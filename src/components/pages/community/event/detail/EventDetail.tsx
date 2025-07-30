@@ -27,7 +27,8 @@ export default function EventDetail({ eventId }: EventDetailProps) {
 			thumbnailId: data.thumbnailId,
 			imageOrderDtoList: data.imageOrderDtoList,
 			addImageIdList: data.addImageIdList,
-			deleteImageIdList: data.deleteImageIdList,
+			// deleteImageIdList: data.deleteImageIdList,
+			deleteImageIdList: [],
 		}
 		mutate({
 			body,
