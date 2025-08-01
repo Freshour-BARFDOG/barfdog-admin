@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { data } = await goodsflowAxios.post(
-      `otps/partner/${process.env.NEXT_PUBLIC_GOODSFLOW_PARTNERCODE}`
+      `/otps/partner/${process.env.NEXT_PUBLIC_GOODSFLOW_PARTNERCODE}`
     );
     return NextResponse.json(data);
   } catch (err) {

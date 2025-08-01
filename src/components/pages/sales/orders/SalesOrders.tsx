@@ -123,7 +123,7 @@ export default function SalesOrders() {
             setSearchValues({
               ...searchValues,
               from: startDate as string,
-							to: endDate as string,
+              to: endDate as string,
             });
           }}
         />
@@ -198,7 +198,7 @@ export default function SalesOrders() {
         <LabeledCheckbox<number>
           value={row.id}
           isChecked={selectedIds.includes(row.id)}
-          onToggle={(id) => handleSelectOne(id, !selectedIds.includes(id))}
+          onToggle={(id) => handleSelectOne(id, !selectedIds.includes(row.id))}
           iconType="square"
           iconSize={18}
         />
