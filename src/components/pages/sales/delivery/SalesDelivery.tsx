@@ -14,6 +14,7 @@ import {
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS_LABEL_MAP,
+  ORDERS_ORDER_STATUS,
   INITIAL_DELIVERY_REQUEST,
   ORDERS_DELIVERY_STATUS,
 } from "@/constants/sales";
@@ -64,12 +65,13 @@ export default function SalesDelivery() {
     useState<SalesSearchCategory>("memberName");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const { handleReprintInvoice } = useOrderActions(
-    orderData,
-    selectedIds,
-    setSelectedIds,
-    searchValues.orderType as OrderTypeRequest
-  );
+  const { handleReprintInvoice, handleForcedDeliveryComplete } =
+    useOrderActions(
+      orderData,
+      selectedIds,
+      setSelectedIds,
+      searchValues.orderType as OrderTypeRequest
+    );
   // → 2) 전체선택 체크박스 상태 계산
   const allSelected = useMemo(
     () => orderData.length > 0 && selectedIds.length === orderData.length,
@@ -260,6 +262,14 @@ export default function SalesDelivery() {
               disabled={isDisableAction}
             >
               송장 재출력
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleForcedDeliveryComplete}
+              disabled={isDisableAction}
+            >
+              강제 배송완료
             </Button>
           </div>
         }

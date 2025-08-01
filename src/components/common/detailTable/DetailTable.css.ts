@@ -7,9 +7,8 @@ export const tableContainer = style({
 });
 
 export const tableTitle = style({
-  marginBottom: '8px',
+  marginBottom: "8px",
 });
-
 export const table = recipe({
   base: {
     display: "grid",
@@ -19,6 +18,13 @@ export const table = recipe({
     backgroundColor: themeVars.colors.gray.gray400,
     borderRadius: "6px",
     outline: `1px solid ${themeVars.colors.gray.gray400}`,
+
+    // 600px 이하에서는 무조건 columns=1 레이아웃 적용
+    "@media": {
+      "screen and (max-width: 600px)": {
+        gridTemplateColumns: "max-content 1fr",
+      },
+    },
   },
   variants: {
     columns: {
@@ -66,12 +72,11 @@ export const fullValue = style({
 
 // dd, dt align 추가
 export const align = recipe({
-  base: { display: 'flex' },
+  base: { display: "flex" },
   variants: {
     align: {
-      center: { alignItems: 'center' },
-      start: { alignItems: 'flex-start' }
-    }
-  }
-
+      center: { alignItems: "center" },
+      start: { alignItems: "flex-start" },
+    },
+  },
 });

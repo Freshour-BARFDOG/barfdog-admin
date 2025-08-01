@@ -20,9 +20,9 @@ export const orderDetailModalContainer = style({
   backgroundColor: themeVars.colors.gray.gray0,
   borderRadius: "8px",
   padding: "20px",
-  width: "50%",
+  width: "550px",
   height: "60%",
   overflowY: "auto",
-  gap: "20px",
+  gap: "12px",
   position: "relative",
 });
