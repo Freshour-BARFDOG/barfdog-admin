@@ -33,6 +33,7 @@ import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { ProductVisibilityStatus } from "@/types/products";
 import { BOOLEAN_OPTIONS, ITEM_STATUS_OPTIONS } from "@/constants/products";
 import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
+import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 interface InputFieldItem {
   name: RawProductFormKeys;
@@ -79,7 +80,6 @@ export default function RawProductForm({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { isValid, errors },
   } = form;
 
@@ -87,7 +87,7 @@ export default function RawProductForm({
     e: ChangeEvent<HTMLInputElement>,
     field: { onChange: (value: number) => void }
   ) => {
-    const raw = unformatCommaNumber(e.target.value);
+    const raw = parseAndClampNumber({ rawInput: e.target.value });
     field.onChange(raw);
   };
 
