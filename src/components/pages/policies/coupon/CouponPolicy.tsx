@@ -10,6 +10,7 @@ import { EVENT_COUPON_NAMES, GRADE_COUPON_NAMES } from "@/constants/policies";
 import { useMutationToast } from "@/hooks/useMutaionToast";
 import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
+import { DiscountUnitType } from "@/types/common";
 import { formatNumberWithComma } from "@/utils/formatNumber";
 import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 import { buildCouponPolicyPayload } from "@/utils/policies/buildCouponPolicyPayload";
@@ -123,7 +124,7 @@ export default function CouponPolicy() {
                       const num = parseAndClampNumber({
                         rawInput: e.target.value,
                         mode: "discount",
-                        discountType: "FIXED_RATE",
+                        discountType: coupon.discountType as DiscountUnitType,
                       });
                       field.onChange(num);
                     }}

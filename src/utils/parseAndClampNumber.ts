@@ -1,3 +1,5 @@
+import { DiscountUnitType } from "@/types/common";
+
 export type NumberFieldMode = "normal" | "discount";
 
 export interface ParseAndClampNumberProps {
@@ -6,7 +8,7 @@ export interface ParseAndClampNumberProps {
   /** 숫자 처리 모드 ("normal" | "discount") */
   mode?: NumberFieldMode;
   /** 할인 타입 ("FIXED_RATE" | "FLAT_RATE") */
-  discountType?: "FIXED_RATE" | "FLAT_RATE";
+  discountType?: DiscountUnitType;
   /** 원가 (FLAT_RATE 모드에서 상한으로 사용, 없으면 상한 무제한) */
   originalPrice?: number;
 }
