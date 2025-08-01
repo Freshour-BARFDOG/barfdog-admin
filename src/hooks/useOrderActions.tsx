@@ -386,7 +386,7 @@ export function useOrderActions(
       });
       if (printData) {
         openPopup(
-          `/bf-admin/sell/delivery/print?data=${encodeURIComponent(printData)}`
+          `/sales/delivery/print?data=${encodeURIComponent(printData)}`
         );
       }
 
