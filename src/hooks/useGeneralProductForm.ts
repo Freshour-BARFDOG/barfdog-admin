@@ -8,12 +8,11 @@ import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
 import { UploadResponse } from "@/types/common";
-import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 export const useGeneralProductForm = (
   form: UseFormReturn<GeneralProductFormValues>
 ) => {
-  const { setValue, watch, control } = form;
+  const { setValue, watch, control, trigger } = form;
   const { addToast } = useToastStore();
 
   const { mutateAsync: uploadContentsAsync } = useUploadImage(
@@ -43,17 +42,14 @@ export const useGeneralProductForm = (
       e: ChangeEvent<HTMLInputElement>,
       field: { onChange: (value: number) => void }
     ) => {
-      const raw = parseAndClampNumber({
-        rawInput: e.target.value,
-        mode: "normal",
-      });
+      const raw = unformatCommaNumber(e.target.value);
       field.onChange(raw);
     },
     []
   );
 
   // 이미지 업로더
-  const { handleFileUpload, handleFileRemove } =
+  const { handleFileUpload: rawFileUpload, handleFileRemove: rawFileRemove } =
     useMultiImageUploader<GeneralProductFormValues>({
       uploadFn: (file: File) =>
         uploadImage({ file }) as Promise<UploadResponse>,
@@ -64,6 +60,25 @@ export const useGeneralProductForm = (
       watch,
       imageList: watchedValues.imageOrderDtoList,
     });
+
+  // 파일 업로드 후 즉시 검증 트리거
+  const handleFileUpload = useCallback(
+    async (files: File[]) => {
+      await rawFileUpload(files);
+      // 이미지 관련 필드 재검증
+      await trigger(["addImageIdList", "deleteImageIdList"]);
+    },
+    [rawFileUpload, trigger]
+  );
+
+  // 파일 삭제 후 즉시 검증 트리거
+  const handleFileRemove = useCallback(
+    async (...args: Parameters<typeof rawFileRemove>) => {
+      rawFileRemove(...args);
+      await trigger(["addImageIdList", "deleteImageIdList"]);
+    },
+    [rawFileRemove, trigger]
+  );
 
   // 컨텐츠 변경 핸들러
   const onContentChange = useCallback(
