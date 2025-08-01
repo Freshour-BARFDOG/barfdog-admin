@@ -15,7 +15,7 @@ export function isAuthenticated(token?: string): boolean {
   if (!token || token.trim() === "") {
     return false;
   }
-  
+
   try {
     const decoded = jwtDecode<JwtPayload>(token);
     const currentTime = Date.now();
@@ -24,6 +24,8 @@ export function isAuthenticated(token?: string): boolean {
     }
     return true;
   } catch (error) {
+    console.error(error);
+
     return false;
   }
 }

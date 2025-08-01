@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development next dev -p 4002",
-    "build": "GENERATE_SOURCEMAP=false NODE_ENV=production next build",
+    "build": "cross-env NODE_ENV=production GENERATE_SOURCEMAP=false next build",
     "start": "next start -p 4001",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"

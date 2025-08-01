@@ -148,7 +148,7 @@ interface SelectOptionDto {
   amount: number; // 수량
 }
 
-/** 공통 결제 정보 */
+/** 공통 결제 정보(일반 상세 결제) */
 interface GeneralPaymentDto {
   orderPrice: number;
   discountGrade: number;
@@ -161,9 +161,6 @@ interface GeneralPaymentDto {
   orderStatus: OrderStatus;
   orderConfirmDate: string | null;
 }
-
-/** 일반 결제 DTO (Search 등에서 쓰는) */
-// interface GeneralPaymentDto extends CommonPaymentDto { }
 
 /** 구독 상세 결제 DTO */
 interface SubscribePaymentDto extends GeneralPaymentDto {
@@ -287,7 +284,6 @@ export type {
   SubscribePaymentDto,
   DeliveryDto,
   SubscribeDto,
-  // CommonPaymentDto,
   PaymentMethod,
   SalesRecipient,
   UpdateSalesDeliveryRequest,
