@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
@@ -35,6 +35,7 @@ export default function NoticeForm({
 		setValue,
 		watch,
 	} = useFormHandler<NoticeFormValues>(noticeSchema, defaultUpdateFormValue, 'all');
+	const contents = useWatch({ control, name: "contents" });
 
 	const { handleContentChange, handleImageUpload } = useContentEditor(
 		setValue, 
@@ -71,7 +72,7 @@ export default function NoticeForm({
 				/>
 				<InputFieldGroup label='내용' align='start' divider={false}>
 					<TiptapEditor
-						content={watch('contents')}
+						content={contents}
 						onUpdate={handleContentChange}
 						onImageUpload={handleImageUpload}
 					/>

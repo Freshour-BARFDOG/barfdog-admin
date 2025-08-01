@@ -40,6 +40,7 @@ export default function MemberDetail({ memberId }: MemberDetailProps) {
 					alliance: detail.alliance as 'cb',
 				}}
 			/>
+			<SubscriptionInfo memberId={memberId} />
 			<LoginInfo
 				data={{
 					longUnconnected: detail.longUnconnected,
@@ -47,7 +48,6 @@ export default function MemberDetail({ memberId }: MemberDetailProps) {
 					withdrawal: detail.withdrawal,
 				}}
 			/>
-			<SubscriptionInfo memberId={memberId} />
 		</div>
 		</>
 	);

@@ -3,7 +3,7 @@ import { infoItemValue } from "@/components/pages/member/detail/MemberDetail.css
 import { useState } from "react";
 import { format, parse } from "date-fns";
 import { useQueryClient } from "@tanstack/react-query";
-import InfoList from "@/components/common/infoList/InfoList";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 import DatePicker from "@/components/common/datePicker/DatePicker";
 import Button from "@/components/common/button/Button";
 import InputField from "@/components/common/inputField/InputField";
@@ -15,7 +15,7 @@ import { AddressData } from "@/types/member";
 import { queryKeys } from "@/constants/queryKeys";
 import { useUpdateMemberBirthday } from "@/api/member/mutations/useUpdateMemberBirthday";
 import { useUpdateMemberAddress } from "@/api/member/mutations/useUpdateMemberAddress";
-import { infoItem } from '@/types/common';
+import { TableItem } from '@/types/common';
 
 interface DefaultInfoData {
 	name: string;
@@ -92,16 +92,17 @@ export default function DefaultInfo({
 		})
 	}
 
-	const defaultInfo: infoItem[] = [
-		{ label: '이름', value: data.name },
+	const defaultInfo: TableItem[] = [
+		{ label: '이름', value: data.name, align: 'center' },
 		{
 			label: '생년월일',
 			value: (
 				<div className={infoItemValue}>
 					<DatePicker value={newBirthday} onChange={(e) => setNewBirthday(e.target.value)} />
-					<Button onClick={handleUpdateBirthday} variant='outline' size='sm'>변경</Button>
+					<Button onClick={handleUpdateBirthday} variant='outline' size='inputButton'>변경</Button>
 				</div>
 			),
+			align: 'center'
 		},
 		{ label: '아이디', value: data.email },
 		{ label: '연락처', value: formatPhoneNumber(data.phoneNumber) },
@@ -129,17 +130,14 @@ export default function DefaultInfo({
 					</div>
 				</>
 			),
-			align: 'start',
+			fullWidth: true,
+			align: 'center',
 		},
 	];
 
 	return (
 		<>
-			<InfoList
-				title='기본 정보'
-				items={defaultInfo}
-				width='calc(60% - 10px)'
-			/>
+			<DetailTable items={defaultInfo} columns={2} title='기본 정보' />
 			{isOpenAddressModal &&
 	    	<AddressModal
 	        isOpen={isOpenAddressModal}

@@ -98,6 +98,10 @@ const queryKeys = {
     GET_REVIEW_DETAIL: "getReviewDetail",
     GET_BEST_REVIEW_LIST: "getBestReviewList",
     GET_PRODUCT_ITEM_LIST: "getProductItemList",
+  },
+  DASHBOARD: {
+    BASE: "dashboard",
+    GET_STATS_DATA: "getStatsData",
   }
   
 } as const;

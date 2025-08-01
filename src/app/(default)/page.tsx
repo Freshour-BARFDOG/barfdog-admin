@@ -1,26 +1,25 @@
-import ExTable from "@/components/common/ex/ExTable";
-import ExLabeledCheckBox from "@/components/common/ex/ExLabeledCheckBox";
-import ExLabeledRadioButton from "@/components/common/ex/ExLabeledRadioButton";
-import ExPagination from "@/components/common/ex/ExPagination";
-import ExDatePicker from "@/components/common/ex/ExDatePicker";
-import Card from "@/components/common/card/Card";
-import ExInput from "@/components/common/ex/ExInput";
-import ExSelectBox from "@/components/common/ex/ExSelectBox";
-import ExTextArea from "@/components/common/ex/ExTextArea";
+import { Suspense } from "react";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
+import Loader from "@/components/common/loader/Loader";
+import Wrapper from "@/components/layout/wrapper/Wrapper";
+import Dashboard from "@/components/pages/dashboard/Dashboard";
+import { prefetchGetStatsData } from "@/api/dashboard/queries/prefetchGetStatsData";
 
-export default function Home() {
+export default async function Home() {
+  const queryClient = new QueryClient();
+  await prefetchGetStatsData(queryClient);
+  const dehydrateState = dehydrate(queryClient);
+
   return (
-    <section>
-      <Card shadow='none' gap={32} padding={20} align='start'>
-        <ExTextArea />
-        <ExSelectBox />
-        <ExInput />
-        <ExDatePicker />
-        <ExLabeledRadioButton />
-        <ExLabeledCheckBox />
-        <ExTable />
-        <ExPagination />
-      </Card>
-    </section>
+    <HydrationBoundary state={dehydrateState}>
+      <ErrorBoundary fallback={<div>대시보드 정보가 없습니다.</div>}>
+        <Suspense fallback={<Loader fullscreen />}>
+          <Wrapper title='대시보드'>
+            <Dashboard />
+          </Wrapper>
+        </Suspense>
+      </ErrorBoundary>
+    </HydrationBoundary>
   );
 }

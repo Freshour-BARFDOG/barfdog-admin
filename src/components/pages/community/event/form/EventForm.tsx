@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
@@ -38,6 +38,12 @@ export default function EventForm({
 		watch,
 	} = useFormHandler<EventFormValues>(eventSchema, defaultUpdateFormValue, 'all');
 
+	const thumbnailId = useWatch({ control, name: "thumbnailId" });
+	const thumbnailUrl = useWatch({ control, name: "thumbnailUrl" });
+	const filename = useWatch({ control, name: "filename" });
+	const url = useWatch({ control, name: "url" });
+	const imageOrderDtoList = useWatch({ control, name: "imageOrderDtoList" });
+
 	const eventImageList = defaultUpdateFormValue.imageOrderDtoList ?? [];
 
 	const { handleThumbnailChange } = useThumbnailUploader(
@@ -52,9 +58,9 @@ export default function EventForm({
 		deleteImageIdKey: 'deleteImageIdList',
 		setValue,
 		watch,
-		imageList: eventImageList,
+		imageList: imageOrderDtoList,
+		// imageList: eventImageList,
 	});
-
 
 	return (
 		<>
@@ -84,9 +90,9 @@ export default function EventForm({
 					)}
 				/>
 				<ThumbnailImage
-					thumbnailId={watch('thumbnailId')}
-					thumbnailUrl={watch('url') ?? watch('thumbnailUrl')}
-					filename={watch('filename')}
+					thumbnailId={thumbnailId}
+					thumbnailUrl={url ?? thumbnailUrl}
+					filename={filename}
 					imageSize={{
 						top: {
 							width: 'full',

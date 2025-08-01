@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import InputField from "@/components/common/inputField/InputField";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
@@ -41,6 +41,11 @@ export default function ArticleForm({
 		setValue,
 		watch,
 	} = useFormHandler<ArticleFormValues>(articleSchema, defaultUpdateFormValue, 'all');
+
+	const thumbnailId = useWatch({ control, name: "thumbnailId" });
+	const thumbnailUrl = useWatch({ control, name: "thumbnailUrl" });
+	const filename = useWatch({ control, name: "filename" });
+	const contents = useWatch({ control, name: "contents" });
 
 	const { handleContentChange, handleImageUpload } = useContentEditor(
 		setValue, 
@@ -93,9 +98,9 @@ export default function ArticleForm({
 					)}
 				/>
 				<ThumbnailImage
-					thumbnailId={watch('thumbnailId')}
-					thumbnailUrl={watch('thumbnailUrl')}
-					filename={watch('filename')}
+					thumbnailId={thumbnailId}
+					thumbnailUrl={thumbnailUrl}
+					filename={filename}
 					imageSize={{
 						top: {
 							width: 400,
@@ -115,7 +120,7 @@ export default function ArticleForm({
 				/>
 				<InputFieldGroup label='내용' align='start' divider={false}>
 					<TiptapEditor
-						content={watch('contents')}
+						content={contents}
 						onUpdate={handleContentChange}
 						onImageUpload={handleImageUpload}
 					/>

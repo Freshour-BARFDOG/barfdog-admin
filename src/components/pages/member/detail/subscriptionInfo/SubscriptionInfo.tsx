@@ -1,11 +1,8 @@
-import * as styles from './SubscriptionInfo.css';
-import Card from "@/components/common/card/Card";
-import Accordion from "@/components/common/accordion/Accordion";
-import Text from "@/components/common/text/Text";
-import InfoList from "@/components/common/infoList/InfoList";
+import { commonWrapper } from "@/styles/common.css";
 import { format } from "date-fns";
 import { MemberSubscriptionData } from '@/types/member';
 import { useGetMemberSubscriptionList } from "@/api/member/queries/useGetMemberSubscriptionList";
+import DetailTable from "@/components/common/detailTable/DetailTable";
 
 interface SubscriptionInfoProps {
 	memberId: number;
@@ -42,21 +39,15 @@ export default function SubscriptionInfo({ memberId }: SubscriptionInfoProps) {
 
 	if (!subscriptionList || subscriptionList.length < 1) return null;
 	return (
-		<Card shadow='light'>
-			<Accordion
-				title={<Text type='headline1'>구독 정보</Text>}
-				buttonClassName={styles.subscriptionListButton}
-				contentClassName={styles.subscriptionList}
-			>
-				{subscriptionList.map((subscription, index) => (
-					<InfoList
-						key={index}
-						direction='row'
-						backgroundColor='gray50'
-						items={subscriptionDetailInfo(subscription.data, subscription.recipeNames)}
-					/>
-				))}
-			</Accordion>
-		</Card>
+		<div className={commonWrapper({ direction: 'col', gap: 16 })}>
+			{subscriptionList.map((subscription, index) => (
+				<DetailTable
+					key={index}
+					columns={2}
+					title={index === 0 ? '구독 정보' : ''}
+					items={subscriptionDetailInfo(subscription.data, subscription.recipeNames)}
+				/>
+			))}
+		</div>
 	);
 }
