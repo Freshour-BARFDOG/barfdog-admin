@@ -1,14 +1,14 @@
 import { queryKeys } from "@/constants/queryKeys";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { UseSuspenseQueryCustomOptions } from "@/types/common";
+import { useQuery } from "@tanstack/react-query";
+import { UseQueryCustomOptions } from "@/types/common";
 import { GeneralProductDetailResponse } from "@/types/products";
 import { getGeneralProductDetail } from "../products";
 
 export function useGetGeneralProductDetail(
   itemId: number,
-  queryOptions?: UseSuspenseQueryCustomOptions<GeneralProductDetailResponse>
+  queryOptions?: UseQueryCustomOptions<GeneralProductDetailResponse>
 ) {
-  return useSuspenseQuery<GeneralProductDetailResponse>({
+  return useQuery<GeneralProductDetailResponse>({
     queryKey: [
       queryKeys.PRODUCTS.BASE,
       queryKeys.PRODUCTS.GET_GENERAL_PRODUCT_DETAIL,

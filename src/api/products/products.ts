@@ -46,9 +46,10 @@ const getAllianceList = async (): Promise<GetAllianceListResponse[]> => {
 };
 
 const getGeneralProductDetail = async (
-  itemId: number
+  itemId: number,
+  instance: AxiosInstance = axiosInstance
 ): Promise<GeneralProductDetailResponse> => {
-  const { data } = await axiosInstance.get(`/api/admin/items/${itemId}`);
+  const { data } = await instance.get(`/api/admin/items/${itemId}`);
   return data;
 };
 

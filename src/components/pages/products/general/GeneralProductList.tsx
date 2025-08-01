@@ -122,7 +122,7 @@ export default function GeneralProductList() {
     {
       key: "discount",
       header: "일반할인",
-      render: (row) => (row.discount === "0원" ? "-" : row.allianceDiscount),
+      render: (row) => (row.discount === "0원" ? "-" : row.discount),
     },
     {
       key: "allianceDiscount",
