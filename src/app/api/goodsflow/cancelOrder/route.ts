@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   const { transUniqueCd } = await req.json();
   try {
     const { data } = await goodsflowAxios.post(
-      `/orders/${transUniqueCd}/cancel`
+      `orders/${transUniqueCd}/cancel`
     );
     return NextResponse.json(data);
   } catch (err) {

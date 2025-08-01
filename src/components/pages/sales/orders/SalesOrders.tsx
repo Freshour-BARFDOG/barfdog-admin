@@ -109,6 +109,16 @@ export default function SalesOrders() {
     );
   };
 
+  const handleFilterSubmit = () => {
+    setSelectedIds([]); // 선택 초기화
+    onSubmit(); // 원래 onSubmit 호출
+  };
+
+  const handleFilterReset = () => {
+    setSelectedIds([]); // 선택 초기화
+    onReset(); // 원래 onReset 호출
+  };
+
   const filters: SearchFilterItem[] = [
     {
       label: "조회기간",
@@ -261,8 +271,8 @@ export default function SalesOrders() {
     <div className={commonWrapper({ direction: "col", gap: 20 })}>
       <SearchFilterGroup
         items={filters}
-        onSubmit={onSubmit}
-        onReset={onReset}
+        onSubmit={handleFilterSubmit}
+        onReset={handleFilterReset}
       />
       <TableSection
         data={data?.orders as SearchSalesData[]}
