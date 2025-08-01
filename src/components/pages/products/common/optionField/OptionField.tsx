@@ -17,6 +17,7 @@ import {
 import * as styles from "./OptionField.css";
 import { commonWrapper } from "@/styles/common.css";
 import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
+import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 interface OptionFieldProps {
   isEdit: boolean;
@@ -114,7 +115,12 @@ export default function OptionField({
                         <InputField
                           value={formatNumberWithComma(field.value)}
                           onChange={(e) =>
-                            field.onChange(unformatCommaNumber(e.target.value))
+                            field.onChange(
+                              parseAndClampNumber({
+                                rawInput: e.target.value,
+                                mode: "normal",
+                              })
+                            )
                           }
                           unit="원"
                         />

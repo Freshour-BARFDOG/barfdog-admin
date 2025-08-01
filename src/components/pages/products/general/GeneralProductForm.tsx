@@ -140,7 +140,6 @@ export default function GeneralProductForm({
                 onChange={(e) => handlers.handleChangeNumberType(e, field)}
               />
             </div>
-            <Text type="body3">원 이상</Text>
           </div>
         ),
       },
