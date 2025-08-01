@@ -14,7 +14,6 @@ import {
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS_LABEL_MAP,
-  ORDERS_ORDER_STATUS,
   INITIAL_DELIVERY_REQUEST,
   ORDERS_DELIVERY_STATUS,
 } from "@/constants/sales";
@@ -103,7 +102,7 @@ export default function SalesDelivery() {
             setSearchValues({
               ...searchValues,
               from: startDate as string,
-							to: endDate as string,
+              to: endDate as string,
             });
           }}
         />
@@ -261,14 +260,6 @@ export default function SalesDelivery() {
               disabled={isDisableAction}
             >
               송장 재출력
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {}}
-              disabled={isDisableAction}
-            >
-              강제 배송완료
             </Button>
           </div>
         }
