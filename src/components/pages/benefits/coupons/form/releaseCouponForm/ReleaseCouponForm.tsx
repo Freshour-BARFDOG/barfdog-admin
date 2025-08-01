@@ -12,6 +12,7 @@ import PersonalTarget from "@/components/pages/benefits/common/personalTarget/Pe
 import BenefitTargetSelector from "@/components/pages/benefits/common/BenefitTargetSelector";
 import FormControls from "@/components/common/formControls/FormControls";
 import Form from '@/components/common/form/Form';
+import Loader from "@/components/common/loader/Loader";
 import { useFormHandler } from "@/hooks/useFormHandler";
 import { ReleaseCouponFormValues, ReleaseCouponTarget } from "@/types/benefits/coupons";
 import { RELEASE_COUPON_TARGET_LIST, RELEASE_COUPON_TYPE_LIST} from "@/constants/benefits/coupons";
@@ -36,7 +37,7 @@ export default function ReleaseCouponForm() {
 	} = useFormHandler<ReleaseCouponFormValues>(schema, defaultValues, 'all');
 
 	const { data: publicationCouponList } = useGetPublicationCouponList(getValues('couponType'));
-	const { mutate } = useReleaseCoupon();
+	const { mutate, isPending,  } = useReleaseCoupon();
 	const { addToast } = useToastStore();
 
 	useEffect(() => {
@@ -173,10 +174,10 @@ export default function ReleaseCouponForm() {
 			</Card>
 			<FormControls
 				cancelText='취소'
-				confirmText='쿠폰 발행'
+				confirmText={!isPending ? '쿠폰 발행' : <Loader size={24} />}
 				onCancel={() => router.back()}
 				onConfirm={handleSubmit(onSubmit)}
-				isConfirmDisabled={!isValid}
+				isConfirmDisabled={!isValid || isPending}
 			/>
 		</>
 	);

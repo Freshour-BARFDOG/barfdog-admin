@@ -82,7 +82,9 @@ const getPublicationCouponList = async (couponType: ReleaseCouponType, instance:
 
 const releaseCoupon = async (couponTarget: ReleaseCouponTarget, body: ReleaseCouponRequestBody) => {
 	try {
-		const { data } = await axiosInstance.post(`/api/admin/coupons/${couponTarget.toLocaleLowerCase()}`, body);
+		const { data } = await axiosInstance.post(`/api/admin/coupons/${couponTarget.toLocaleLowerCase()}`, body, {
+			timeout: 60000,
+		});
 		return data;
 	} catch (error) {
 		throw error;
