@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   const { otp, id } = await req.json();
   try {
     const { data } = await goodsflowPrintAxios.post(
-      "/dlvmgr.aspx",
+      "dlvmgr.aspx",
       qs.stringify({
         OTP: otp,
         responseURL: `${process.env.NEXT_PUBLIC_API_URL_PRODUCT}/api/goodsFlow/postTraceResult`,
