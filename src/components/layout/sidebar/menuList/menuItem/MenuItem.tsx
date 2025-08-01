@@ -18,17 +18,33 @@ interface MenuItemProps {
 
 const isActive = (item: MenuItemType, pathname: string): boolean => {
 	if (item.href) {
-		const segments = item.href.split("/").filter(Boolean); // ['', 'coupons'] → ['coupons']
+		const itemHref = item.href.replace(/\/$/, '');
+		const currentPath = pathname.replace(/\/$/, '');
 
-		if (segments.length <= 1) {
-			// ex) '/', '/coupons' 같은 목록 페이지
-			return pathname === item.href;
-		} else {
-			// ex) '/coupons/create' 같은 하위 페이지
-			return pathname.startsWith(item.href);
+		// 루트 경로('/')
+		if (itemHref === '') {
+			return currentPath === '/';
 		}
-	}
 
+		// 정확히 일치
+		if (currentPath === itemHref) return true;
+
+		// 상세 페이지 조건:
+		// - currentPath가 itemHref 하위 경로 시작
+		// - 마지막 segment가 'create' 등의 고정 키워드가 아님
+		const segments = currentPath.split('/');
+		const lastSegment = segments[segments.length - 1];
+
+		const excludedKeywords = ['create'];
+		if (
+			currentPath.startsWith(`${itemHref}/`) &&
+			!excludedKeywords.includes(lastSegment)
+		) {
+			return true;
+		}
+
+		return false;
+	}
 	if (item.children) {
 		return item.children.some(child => isActive(child, pathname));
 	}
