@@ -35,10 +35,13 @@ const isActive = (item: MenuItemType, pathname: string): boolean => {
 		const segments = currentPath.split('/');
 		const lastSegment = segments[segments.length - 1];
 
-		const excludedKeywords = ['create'];
+		const excludedKeywords = ['create', 'release', 'usage', 'best-review'];
+		const exceptionPaths = ['banners', 'community', 'alliance'];
+		const isExceptionPath = exceptionPaths.some(path => itemHref.includes(path));
+
 		if (
 			currentPath.startsWith(`${itemHref}/`) &&
-			!excludedKeywords.includes(lastSegment)
+			(!isExceptionPath ? !excludedKeywords.includes(lastSegment) : true)
 		) {
 			return true;
 		}
