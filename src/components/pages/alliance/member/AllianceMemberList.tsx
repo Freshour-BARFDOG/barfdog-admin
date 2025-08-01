@@ -3,6 +3,7 @@ import Link from "next/link";
 import Text from "@/components/common/text/Text";
 import TableSection from "@/components/common/tableSection/TableSection";
 import AllianceSearchFilterGroup from "@/components/pages/alliance/common/searchFilterGroup/AllianceSearchFilterGroup";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { INITIAL_ALLIANCE_SEARCH_VALUES } from "@/constants/alliance";
@@ -72,7 +73,7 @@ export default function AllianceMemberList() {
 
 	if (!data) return null;
 	return (
-		<div>
+		<ListLayout>
 			<AllianceSearchFilterGroup
 				type='member'
 				searchValues={searchValues}
@@ -89,6 +90,6 @@ export default function AllianceMemberList() {
 				title='가입자 목록'
 				emptyText='가입자 목록 데이터가 없습니다.'
 			/>
-		</div>
+		</ListLayout>
 	);
 }

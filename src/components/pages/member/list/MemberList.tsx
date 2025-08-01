@@ -1,5 +1,4 @@
 'use client';
-import * as styles from './MemberList.css';
 import { useState } from "react";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
@@ -11,6 +10,7 @@ import useSearchValues from "@/hooks/useSearchValues";
 import Loader from "@/components/common/loader/Loader";
 import MemberTable from "@/components/pages/member/table/MemberTable";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { MemberListSearchParams } from "@/types/member";
 import { GradeType, SearchFilterItem } from "@/types/common";
@@ -120,7 +120,7 @@ const MemberList = () => {
 
 	if(!data) return null
 	return (
-		<div className={styles.memberListContainer}>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -154,7 +154,7 @@ const MemberList = () => {
 					</Button>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 };
 

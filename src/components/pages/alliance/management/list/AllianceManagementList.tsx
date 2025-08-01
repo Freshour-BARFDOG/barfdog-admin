@@ -10,6 +10,7 @@ import useItemSelection from "@/hooks/useItemSelection";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Button from "@/components/common/button/Button";
 import Tooltip from "@/components/common/tooltip/Tooltip";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { queryKeys } from "@/constants/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -149,7 +150,7 @@ export default function AllianceManagementList() {
 	]
 
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -184,6 +185,6 @@ export default function AllianceManagementList() {
 					</div>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 }

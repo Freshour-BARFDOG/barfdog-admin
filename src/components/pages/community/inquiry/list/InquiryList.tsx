@@ -14,6 +14,7 @@ import Text from "@/components/common/text/Text";
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useItemSelection from "@/hooks/useItemSelection";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
@@ -241,7 +242,7 @@ export default function InquiryList() {
 	] as TableColumn<InquiryListData>[];
 
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -266,6 +267,6 @@ export default function InquiryList() {
 					</Button>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 }

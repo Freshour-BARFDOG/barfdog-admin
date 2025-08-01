@@ -7,6 +7,7 @@ import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilte
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { PAGE_SIZE } from "@/constants/common";
 import {
   GENERAL_PRODUCT_CATEGORY_OPTIONS,
@@ -16,7 +17,6 @@ import {
 
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
-import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   GeneralProductBaseRow,
@@ -168,7 +168,7 @@ export default function GeneralProductList() {
   ];
 
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <SearchFilterGroup
         items={filters}
         onSubmit={onSubmit}
@@ -183,6 +183,6 @@ export default function GeneralProductList() {
         title="목록"
         emptyText="상품 관리 데이터가 없습니다."
       />
-    </div>
+    </ListLayout>
   );
 }

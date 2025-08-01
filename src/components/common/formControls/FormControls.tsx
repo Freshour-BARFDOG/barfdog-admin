@@ -1,9 +1,10 @@
 import * as styles from './FormControls.css';
 import Button from "@/components/common/button/Button";
+import { ReactNode } from "react";
 
 interface FormProps {
 	cancelText?: string;
-	confirmText?: string;
+	confirmText?: string | ReactNode;
 	onCancel?: () => void;
 	onConfirm?: () => void;
 	isConfirmDisabled?: boolean;

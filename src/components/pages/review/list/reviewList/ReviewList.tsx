@@ -11,6 +11,7 @@ import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Text from "@/components/common/text/Text";
 import Tooltip from "@/components/common/tooltip/Tooltip";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useItemSelection from "@/hooks/useItemSelection";
 import useSearchValues from "@/hooks/useSearchValues";
 import useReviewAction from "@/hooks/useReviewAction";
@@ -175,7 +176,7 @@ export default function ReviewList() {
 	if(!data) return null;
 
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -218,6 +219,6 @@ export default function ReviewList() {
 					</div>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 }

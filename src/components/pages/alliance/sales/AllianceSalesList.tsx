@@ -2,6 +2,7 @@
 import { format } from "date-fns";
 import TableSection from "@/components/common/tableSection/TableSection";
 import AllianceSearchFilterGroup from "@/components/pages/alliance/common/searchFilterGroup/AllianceSearchFilterGroup";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { ALLIANCE_NAMES, INITIAL_ALLIANCE_SEARCH_VALUES } from "@/constants/alliance";
 import { ORDER_STATUS, ORDER_TYPE_LABEL_MAP } from "@/constants/sales";
@@ -67,7 +68,7 @@ export default function AllianceSalesList() {
 
 	if (!data) return null;
 	return (
-		<div>
+		<ListLayout>
 			<AllianceSearchFilterGroup
 				type='sales'
 				searchValues={searchValues}
@@ -84,6 +85,6 @@ export default function AllianceSalesList() {
 				title='매출 목록'
 				emptyText='매출 목록 데이터가 없습니다.'
 			/>
-		</div>
+		</ListLayout>
 	);
 }

@@ -5,8 +5,8 @@ import { useGetRecipeList } from "@/api/products/queries/useGetRecipeList";
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { useToastStore } from "@/store/useToastStore";
-import { commonWrapper } from "@/styles/common.css";
 import { TableColumn } from "@/types/common";
 import { RecipeListResponse, RecipeDto } from "@/types/products";
 import { truncateText } from "@/utils/truncateText";
@@ -95,13 +95,13 @@ export default function RawProductList() {
     },
   ];
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <TableSection
         data={data as RecipeListResponse}
         columns={columns}
         title="레시피 목록"
         emptyText="레시피 데이터가 없습니다."
       />
-    </div>
+    </ListLayout>
   );
 }

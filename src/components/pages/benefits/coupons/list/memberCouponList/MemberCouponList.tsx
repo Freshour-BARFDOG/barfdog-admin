@@ -12,6 +12,7 @@ import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useGetMemberCouponList } from "@/api/coupons/queries/useGetMemberCouponList";
 import { useUpdateMemberCoupon } from "@/api/coupons/mutations/useUpdateMemberCoupon";
@@ -235,7 +236,7 @@ export default function MemberCouponList() {
 	]
 
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -250,6 +251,6 @@ export default function MemberCouponList() {
 				title='멤버 쿠폰 목록'
 				emptyText='멤버 쿠폰 목록 데이터가 없습니다.'
 			/>
-		</div>
+		</ListLayout>
 	);
 }

@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import CancelOrderModal from "../modal/CancelOrderModal";
 import OrderDetailModal from "../modal/OrderDetailModal";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 
 export default function SalesOrders() {
   const {
@@ -268,7 +269,7 @@ export default function SalesOrders() {
   ];
 
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <SearchFilterGroup
         items={filters}
         onSubmit={handleFilterSubmit}
@@ -356,6 +357,6 @@ export default function SalesOrders() {
           </div>
         }
       />
-    </div>
+    </ListLayout>
   );
 }

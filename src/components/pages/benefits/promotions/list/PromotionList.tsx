@@ -12,6 +12,7 @@ import TableSection from "@/components/common/tableSection/TableSection";
 import LabeledRadioButton from "@/components/common/labeledRadioButton/LabeledRadioButton";
 import Text from "@/components/common/text/Text";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { useToastStore } from "@/store/useToastStore";
@@ -199,22 +200,22 @@ export default function PromotionList() {
 	if(!data) return null;
 	return (
 		<>
-		<section>
-			<SearchFilterGroup
-				items={filters}
-				onSubmit={onSubmit}
-				onReset={onReset}
-			/>
-			<TableSection
-				data={data?.promotionList}
-				columns={columns}
-				page={page}
-				onPageChange={onChangePage}
-				totalPages={data?.page?.totalPages ?? 0}
-				title='프로모션 목록'
-				emptyText='프로모션 목록 데이터가 없습니다.'
-			/>
-		</section>
+			<ListLayout>
+				<SearchFilterGroup
+					items={filters}
+					onSubmit={onSubmit}
+					onReset={onReset}
+				/>
+				<TableSection
+					data={data?.promotionList}
+					columns={columns}
+					page={page}
+					onPageChange={onChangePage}
+					totalPages={data?.page?.totalPages ?? 0}
+					title='프로모션 목록'
+					emptyText='프로모션 목록 데이터가 없습니다.'
+				/>
+			</ListLayout>
 			{isOpenDeleteConfirmModal &&
 				<AlertModal
 					title=''

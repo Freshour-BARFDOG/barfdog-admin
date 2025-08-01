@@ -10,6 +10,7 @@ import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useModal from "@/hooks/useModal";
 import useSearchValues from "@/hooks/useSearchValues";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
@@ -141,7 +142,7 @@ export default function CouponList() {
 	].filter(Boolean) as TableColumn<CouponListData>[];;
 
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -179,6 +180,6 @@ export default function CouponList() {
 					onConfirm={handleUpdateCouponInactive}
 				/>
 			}
-		</div>
+		</ListLayout>
 	);
 }

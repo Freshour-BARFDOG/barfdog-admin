@@ -1,5 +1,5 @@
 'use client';
-import { commonWrapper, fullWidth } from "@/styles/common.css";
+import { fullWidth } from "@/styles/common.css";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
@@ -7,6 +7,7 @@ import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilte
 import AllianceCouponTable from "@/components/pages/alliance/coupon/list/table/AllianceCouponTable";
 import AllianceCouponTab from "@/components/pages/alliance/coupon/list/tab/AllianceCouponTab";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { AllianceCouponListResponse, AllianceCouponListSearchParams, AllianceCouponSearchType, AllianceCouponTarget } from "@/types/alliance";
 import {
@@ -85,7 +86,7 @@ export default function AllianceCouponList() {
 	]
 
 	return (
-		<div className={commonWrapper({ direction: 'col', gap: 20, align: 'start' })}>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -104,6 +105,6 @@ export default function AllianceCouponList() {
 					submittedValues={submittedValues}
 				/>
 			</div>
-		</div>
+		</ListLayout>
 	);
 }

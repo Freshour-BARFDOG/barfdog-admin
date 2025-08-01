@@ -9,6 +9,7 @@ import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilte
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { PAGE_SIZE } from "@/constants/common";
 import {
   SALES_ORDER_TYPE,
@@ -19,7 +20,6 @@ import {
 } from "@/constants/sales";
 import { useOrderActions } from "@/hooks/useOrderActions";
 import useSearchValues from "@/hooks/useSearchValues";
-import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   SalesBaseRow,
@@ -237,7 +237,7 @@ export default function SalesDelivery() {
   ];
 
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <SearchFilterGroup
         items={filters}
         onSubmit={onSubmit}
@@ -264,6 +264,6 @@ export default function SalesDelivery() {
           </div>
         }
       />
-    </div>
+    </ListLayout>
   );
 }

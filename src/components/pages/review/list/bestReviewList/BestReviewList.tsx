@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import Button from "@/components/common/button/Button";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useReviewAction from "@/hooks/useReviewAction";
 import { queryKeys } from "@/constants/queryKeys";
 import { REVIEW_ACTION_LABEL_MAP } from "@/constants/review";
@@ -116,7 +117,7 @@ export default function BestReviewList() {
 	]
 
 	return (
-		<div>
+		<ListLayout>
 			<TableSection
 				data={data as BestReviewData[]}
 				columns={columns}
@@ -135,6 +136,6 @@ export default function BestReviewList() {
 					</Button>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 }

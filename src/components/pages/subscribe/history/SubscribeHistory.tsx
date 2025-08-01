@@ -4,6 +4,7 @@ import { useGetSubscribeHistory } from "@/api/subscribe/queries/useGetSubscribeH
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import TableSection from "@/components/common/tableSection/TableSection";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { PAGE_SIZE } from "@/constants/common";
 import {
   INITIAL_SUBSCRIBE_HISTORY_REQUEST,
@@ -11,7 +12,6 @@ import {
   SUBSCRIBE_STATUS,
 } from "@/constants/subscribe";
 import useSearchValues from "@/hooks/useSearchValues";
-import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   SubscribeHistoryDto,
@@ -191,7 +191,7 @@ export default function SubscribeHistory() {
   ];
 
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <SearchFilterGroup
         items={filters}
         onSubmit={onSubmit}
@@ -206,6 +206,6 @@ export default function SubscribeHistory() {
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
       />
-    </div>
+    </ListLayout>
   );
 }

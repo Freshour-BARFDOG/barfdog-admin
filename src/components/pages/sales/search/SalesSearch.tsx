@@ -10,6 +10,7 @@ import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchF
 import SelectBox from "@/components/common/selectBox/SelectBox";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { PAGE_SIZE } from "@/constants/common";
 import {
   INITIAL_SEARCH_REQUEST,
@@ -20,7 +21,6 @@ import {
 } from "@/constants/sales";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
-import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   SalesBaseRow,
@@ -202,7 +202,7 @@ export default function SalesSearch() {
   ];
 
   return (
-    <div className={commonWrapper({ direction: "col", gap: 20 })}>
+    <ListLayout>
       <SearchFilterGroup
         items={filters}
         onSubmit={onSubmit}
@@ -228,6 +228,6 @@ export default function SalesSearch() {
           </Button>
         }
       />
-    </div>
+    </ListLayout>
   );
 }

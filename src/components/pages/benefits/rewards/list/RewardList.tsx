@@ -8,6 +8,7 @@ import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilte
 import Button from "@/components/common/button/Button";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Loader from "@/components/common/loader/Loader";
+import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { downloadBlobFile } from "@/utils/downloadBlobFile";
@@ -121,7 +122,7 @@ export default function RewardList() {
 
 	if(!data) return null;
 	return (
-		<div>
+		<ListLayout>
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
@@ -147,6 +148,6 @@ export default function RewardList() {
 					</Button>
 				)}
 			/>
-		</div>
+		</ListLayout>
 	);
 }
