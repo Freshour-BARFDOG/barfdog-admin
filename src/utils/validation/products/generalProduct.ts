@@ -103,7 +103,7 @@ export const generalProductFormSchema = yup.object({
         remaining: yup.number().min(0).required(),
       })
     )
-    .ensure(),
+    .required(),
   // 변경되지 않은 옵션(수정)
   itemOptionUpdateDtoList: yup
     .array()
@@ -115,9 +115,9 @@ export const generalProductFormSchema = yup.object({
         remaining: yup.number().min(0).required(),
       })
     )
-    .ensure(),
+    .required(),
   // 옵션 삭제(수정)
-  deleteOptionIdList: yup.array().of(yup.number()).ensure(),
+  deleteOptionIdList: yup.array().of(yup.number().required()).notRequired(),
 });
 
 export type GeneralProductFormValues = yup.InferType<
