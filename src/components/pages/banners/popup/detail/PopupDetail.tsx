@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from "@tanstack/react-query";
 import BannerDetail from "@/components/pages/banners/common/BannerDetail";
 import PopupForm from "@/components/pages/banners/popup/form/PopupForm";
 import { queryKeys } from "@/constants/queryKeys";
@@ -11,6 +12,8 @@ interface MainBannerDetailProps {
 }
 
 export default function PopupDetail({ popupId }: MainBannerDetailProps) {
+	const queryClient = useQueryClient();
+
 	const { data } = useGetPopupDetail(popupId);
 	const { mutate } = useUpdatePopup();
 
@@ -31,12 +34,24 @@ export default function PopupDetail({ popupId }: MainBannerDetailProps) {
 				filenameMobile: data?.filenameMobile ?? '',
 			})}
 			mutateFn={({ id, body, pcFile, mobileFile }) =>
-				mutate({ popupId: id, body, pcFile, mobileFile })
+				mutate({ popupId: id, body, pcFile, mobileFile }, {
+					onSuccess: async () => {
+						const queryKeysToInvalidate = [
+							[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_LIST],
+							[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_DETAIL, popupId]
+						]
+						await Promise.all(
+							queryKeysToInvalidate.map((key) =>
+								queryClient.invalidateQueries({
+									queryKey: key as readonly unknown[]}),
+							),
+						);
+					},
+					onError: (error) => {
+						console.log(error);
+					}
+				})
 			}
-			queryKeysToInvalidate={[
-				[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_LIST],
-				[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_POPUP_DETAIL, popupId]
-			]}
 			FormComponent={PopupForm}
 		/>
 	);

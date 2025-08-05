@@ -26,6 +26,5 @@ export default async function MainBannerDetailPage({ params }: PageProps<Params>
         </Suspense>
       </ErrorBoundary>
     </HydrationBoundary>
-
   );
 }

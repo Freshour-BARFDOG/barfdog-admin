@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from "@tanstack/react-query";
 import BannerDetail from "@/components/pages/banners/common/BannerDetail";
 import MainBannerForm from "@/components/pages/banners/main/form/MainBannerForm";
 import { queryKeys } from "@/constants/queryKeys";
@@ -11,6 +12,8 @@ interface MainBannerDetailProps {
 }
 
 export default function MainBannerDetail({ bannerId }: MainBannerDetailProps) {
+	const queryClient = useQueryClient();
+
 	const { data } = useGetMainBannerDetail(bannerId);
 	const { mutate } = useUpdateMainBanner();
 
@@ -31,12 +34,24 @@ export default function MainBannerDetail({ bannerId }: MainBannerDetailProps) {
 				filenameMobile: data?.filenameMobile ?? '',
 			})}
 			mutateFn={({ id, body, pcFile, mobileFile }) =>
-				mutate({ bannerId: id, body, pcFile, mobileFile })
+				mutate({ bannerId: id, body, pcFile, mobileFile }, {
+					onSuccess: async () => {
+						const queryKeysToInvalidate = [
+							[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_LIST],
+							[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_DETAIL, bannerId]
+						]
+						await Promise.all(
+							queryKeysToInvalidate.map((key) =>
+								queryClient.invalidateQueries({
+									queryKey: key as readonly unknown[]}),
+							),
+						);
+					},
+					onError: (error) => {
+						console.log(error);
+					}
+				})
 			}
-			queryKeysToInvalidate={[
-				[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_LIST],
-				[queryKeys.BANNERS.BASE, queryKeys.BANNERS.GET_MAIN_BANNER_DETAIL, bannerId]
-			]}
 			FormComponent={MainBannerForm}
 		/>
 	);

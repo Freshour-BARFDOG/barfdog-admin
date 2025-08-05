@@ -9,7 +9,6 @@ interface BannerDetailProps<FormValues, DetailData> {
 	data: DetailData; 
 	defaultFormValues: (data: DetailData) => FormValues;
 	mutateFn: (params: { id: number; body: FormValues; pcFile: File | null; mobileFile: File | null }) => void;
-	queryKeysToInvalidate: unknown[];
 	FormComponent: ComponentType<{
 		defaultUpdateFormValue: FormValues;
 		onSubmit: (form: FormValues) => void;
@@ -25,7 +24,6 @@ export default function BannerDetail<FormValues, DetailData>({
 	data,
 	defaultFormValues,
 	mutateFn,
-	queryKeysToInvalidate,
 	FormComponent,
 }: BannerDetailProps<FormValues, DetailData>) {
 	const queryClient = useQueryClient();
@@ -43,12 +41,6 @@ export default function BannerDetail<FormValues, DetailData>({
 				pcFile,
 				mobileFile,
 			});
-
-			await Promise.all(
-				queryKeysToInvalidate.map((key) =>
-					queryClient.invalidateQueries({ queryKey: key as readonly unknown[] }),
-				),
-			);
 
 			setPcFile(null);
 			setMobileFile(null);
