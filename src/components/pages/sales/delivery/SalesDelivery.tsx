@@ -5,6 +5,7 @@ import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import Loader from "@/components/common/loader/Loader";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import TableSection from "@/components/common/tableSection/TableSection";
@@ -53,7 +54,7 @@ export default function SalesDelivery() {
   };
 
   // 통합 검색 API 훅
-  const { data } = useGetSearchSales(params);
+  const { data, isLoading } = useGetSearchSales(params);
 
   const orderData = data?.orders ?? [];
 
@@ -237,6 +238,10 @@ export default function SalesDelivery() {
       render: (row) => (row.packageDelivery ? "Y" : "N"),
     },
   ];
+
+  if (isLoading) {
+    return <Loader fullscreen />;
+  }
 
   return (
     <ListLayout>

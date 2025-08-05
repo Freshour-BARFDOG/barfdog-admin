@@ -5,6 +5,7 @@ import { useGetSearchSales } from "@/api/sales/queries/useGetSearchSales";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
+import Loader from "@/components/common/loader/Loader";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import SelectBox from "@/components/common/selectBox/SelectBox";
@@ -54,7 +55,7 @@ export default function SalesSearch() {
     size: PAGE_SIZE.SALES.ORDERS,
   };
 
-  const { data } = useGetSearchSales(params);
+  const { data, isLoading } = useGetSearchSales(params);
 
   const { mutate: excelDownload } = useExcelDownloadSearchSales();
   const { addToast } = useToastStore();
@@ -200,6 +201,10 @@ export default function SalesSearch() {
       render: (row) => (row.packageDelivery ? "Y" : "N"),
     },
   ];
+
+  if (isLoading) {
+    return <Loader fullscreen />;
+  }
 
   return (
     <ListLayout>

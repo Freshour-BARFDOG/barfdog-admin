@@ -9,6 +9,7 @@ import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchF
 import TableSection from "@/components/common/tableSection/TableSection";
 import Text from "@/components/common/text/Text";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
+import Loader from "@/components/common/loader/Loader";
 import { PAGE_SIZE } from "@/constants/common";
 import {
   DOGS_CATEGORY,
@@ -50,7 +51,7 @@ export default function DogList() {
     size: PAGE_SIZE.SALES.ORDERS,
   };
 
-  const { data } = useGetDogList(params);
+  const { data, isLoading } = useGetDogList(params);
 
   const { mutate: excelDownload } = useExcelDownloadDogs();
   const { addToast } = useToastStore();
@@ -206,6 +207,10 @@ export default function DogList() {
       render: (row) => (row.representative ? "Y" : "N"),
     },
   ];
+
+  if (isLoading) {
+    return <Loader fullscreen />;
+  }
 
   return (
     <ListLayout>

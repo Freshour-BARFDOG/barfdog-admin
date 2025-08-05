@@ -36,6 +36,7 @@ import { useMemo, useState } from "react";
 import CancelOrderModal from "../modal/CancelOrderModal";
 import OrderDetailModal from "../modal/OrderDetailModal";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
+import Loader from "@/components/common/loader/Loader";
 
 export default function SalesOrders() {
   const {
@@ -55,7 +56,7 @@ export default function SalesOrders() {
   };
 
   // 통합 검색 API 훅
-  const { data } = useGetSearchSales(params);
+  const { data, isLoading } = useGetSearchSales(params);
 
   const orderData = data?.orders ?? [];
 
@@ -267,6 +268,10 @@ export default function SalesOrders() {
       render: (row) => (row.packageDelivery ? "Y" : "N"),
     },
   ];
+
+  if (isLoading) {
+    return <Loader fullscreen />;
+  }
 
   return (
     <ListLayout>
