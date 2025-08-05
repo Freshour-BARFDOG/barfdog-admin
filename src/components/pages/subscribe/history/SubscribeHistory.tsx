@@ -29,7 +29,7 @@ export default function SubscribeHistory() {
     setSearchValues,
     submittedValues,
     page,
-    setPage,
+    onChangePage,
     onSubmit,
     onReset,
   } = useSearchValues<SubscribeHistoryRequest>(
@@ -201,7 +201,7 @@ export default function SubscribeHistory() {
         data={data?.history as SubscribeHistoryList}
         columns={columns}
         page={page}
-        onPageChange={setPage}
+        onPageChange={onChangePage}
         totalPages={data?.page?.totalPages ?? 0}
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."

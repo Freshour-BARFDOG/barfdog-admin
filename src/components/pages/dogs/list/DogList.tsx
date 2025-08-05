@@ -39,7 +39,7 @@ export default function DogList() {
     setSearchValues,
     submittedValues,
     page,
-    setPage,
+    onChangePage,
     onSubmit,
     onReset,
   } = useSearchValues<DogListRequest>(INITIAL_DOGS_REQUEST);
@@ -218,7 +218,7 @@ export default function DogList() {
         data={data?.dogs as DogDto[]}
         columns={columns}
         page={page}
-        onPageChange={setPage}
+        onPageChange={onChangePage}
         totalPages={data?.page?.totalPages ?? 0}
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
