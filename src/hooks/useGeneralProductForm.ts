@@ -8,6 +8,7 @@ import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";
 import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
 import { UploadResponse } from "@/types/common";
+import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 export const useGeneralProductForm = (
   form: UseFormReturn<GeneralProductFormValues>
@@ -42,7 +43,7 @@ export const useGeneralProductForm = (
       e: ChangeEvent<HTMLInputElement>,
       field: { onChange: (value: number) => void }
     ) => {
-      const raw = unformatCommaNumber(e.target.value);
+      const raw = parseAndClampNumber({ rawInput: e.target.value });
       field.onChange(raw);
     },
     []

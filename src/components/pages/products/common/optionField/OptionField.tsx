@@ -113,6 +113,7 @@ export default function OptionField({
                       name={`itemOptionUpdateDtoList.${idx}.price`}
                       render={({ field }) => (
                         <InputField
+                          type="number"
                           value={formatNumberWithComma(field.value)}
                           onChange={(e) =>
                             field.onChange(
@@ -133,9 +134,15 @@ export default function OptionField({
                       name={`itemOptionUpdateDtoList.${idx}.remaining`}
                       render={({ field }) => (
                         <InputField
+                          type="number"
                           value={String(field.value)}
                           onChange={(e) =>
-                            field.onChange(Number(e.target.value))
+                            field.onChange(
+                              parseAndClampNumber({
+                                rawInput: e.target.value,
+                                mode: "normal",
+                              })
+                            )
                           }
                           unit="개"
                         />
@@ -173,7 +180,12 @@ export default function OptionField({
                       <InputField
                         value={formatNumberWithComma(field.value)}
                         onChange={(e) =>
-                          field.onChange(unformatCommaNumber(e.target.value))
+                          field.onChange(
+                            parseAndClampNumber({
+                              rawInput: e.target.value,
+                              mode: "normal",
+                            })
+                          )
                         }
                         unit="원"
                       />
@@ -187,7 +199,14 @@ export default function OptionField({
                     render={({ field }) => (
                       <InputField
                         value={String(field.value)}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) =>
+                          field.onChange(
+                            parseAndClampNumber({
+                              rawInput: e.target.value,
+                              mode: "normal",
+                            })
+                          )
+                        }
                         unit="개"
                       />
                     )}
