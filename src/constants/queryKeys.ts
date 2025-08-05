@@ -1,4 +1,8 @@
 const queryKeys = {
+  AUTH: {
+    BASE: "auth",
+    GET_USER_DATA: "getUserData",
+  },
   COMMON: {
     BASE: "common",
     UPLOAD_IMAGE: "uploadImage",

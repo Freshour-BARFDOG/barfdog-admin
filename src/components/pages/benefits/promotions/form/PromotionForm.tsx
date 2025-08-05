@@ -1,5 +1,5 @@
 'use client';
-import { pointColor } from "@/styles/common.css";
+import { commonWrapper, pointColor } from "@/styles/common.css";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
@@ -39,7 +39,7 @@ export default function PromotionForm({
 	backgroundColor = 'gray0',
 }: PromotionFormProps) {
 	const router = useRouter();
-	const { isOpen: isOpenConfirmModal, onClose: onCloseConfirmModal, onToggle: onToggleConfirmModal } = useModal();
+	const { isOpen: isOpenConfirmModal, onToggle: onToggleConfirmModal } = useModal();
 	const { data: couponList, isLoading } = useGetPromotionCouponList();
 
 	const {
@@ -138,10 +138,10 @@ export default function PromotionForm({
 									/>
 								</LabeledInput>
 								{couponDetail?.quantity && couponDetail?.remaining &&
-	                <>
+	                <div className={commonWrapper({ gap: 8, padding: '0/20', width: 'auto', align: 'center' })}>
 	                  <Text type='caption2'>발행됨 <span className={pointColor}>{couponDetail.quantity - couponDetail.remaining}</span>개</Text>
 	                  <Text type='caption2'>잔여수량 <span className={pointColor}>{couponDetail.remaining}</span>개</Text>
-	                </>
+	                </div>
 								}
 							</InputFieldGroup>
 						)}
@@ -176,9 +176,9 @@ export default function PromotionForm({
 				<AlertModal
 					content={`프로모션을 생성하기 위한 쿠폰이 없습니다.\n쿠폰 생성 페이지에서 프로모션 쿠폰을 생성해주세요.`}
 					isOpen={isOpenConfirmModal}
-					onClose={onCloseConfirmModal}
 					onConfirm={() => router.replace('/coupons/create')}
 					confirmText='확인'
+					closeOnBackgroundClick={false}
 				/>
 			}
 		</>

@@ -17,6 +17,10 @@ export function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
         const token = result.headers.authorization;
         const data = result.data;
 
+        if (!data.roleList.includes("ADMIN")) {
+          throw new Error("관리자 권한이 없습니다.");
+        }
+
         if (!token) {
           throw new Error("토큰이 제공되지 않았습니다.");
         }
@@ -25,14 +29,17 @@ export function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
 
         return data;
       } catch (error) {
+        
         const errorMessage =
           axios.isAxiosError(error) && error.response
             ? error.response.data?.errors?.[0].defaultMessage ||
               "로그인에 실패했습니다."
-            : "네트워크 오류가 발생했습니다.";
+            : (typeof error === "object" && error !== null && "message" in error
+                ? (error as { message: string }).message
+                : "네트워크 오류가 발생했습니다.");
 
         alert(errorMessage);
-        throw new Error(String(error));
+        throw new Error(errorMessage);
       }
     },
     onSuccess: async (data) => {
