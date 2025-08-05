@@ -86,8 +86,8 @@ const makeRecipeFormData = (
     new Blob([JSON.stringify(body)], { type: "application/json" })
   );
 
-  if (surveyFile) formData.append("file1", surveyFile);
-  if (recipeFile) formData.append("file2", recipeFile);
+  if (recipeFile) formData.append("file1", recipeFile);
+  if (surveyFile) formData.append("file2", surveyFile);
   return formData;
 };
 

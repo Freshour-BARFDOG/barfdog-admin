@@ -117,7 +117,9 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       if (onKeyDown) {
         onKeyDown(e);
       }
-      if (e.key === "Enter" && onSubmit) {
+      // IME 조합 중에는 Enter 처리하지 않음
+      const isComposing = (e.nativeEvent as any).isComposing;
+      if (e.key === "Enter" && onSubmit && !isComposing) {
         e.preventDefault();
         onSubmit();
       }
@@ -182,11 +184,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
               onKeyDown={handleInternalKeyDown}
             />
             {unit && (
-              <Text
-                type="headline3"
-                color="gray900"
-                className={unitStyle}
-              >
+              <Text type="headline3" color="gray900" className={unitStyle}>
                 {unit}
               </Text>
             )}

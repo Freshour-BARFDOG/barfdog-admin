@@ -9,7 +9,6 @@ import {
   defaultRawProductFormValues,
   rawProductFormSchema,
 } from "@/utils/validation/products/rawProduct";
-import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
 import RawProductForm from "./RawProductForm";
 import { useGetRecipeDetail } from "@/api/products/queries/useGetRecipeDetail";
 import { useUpdateRecipe } from "@/api/products/mutations/useUpdateRecipe";
@@ -35,8 +34,8 @@ export default function RawProductEdit({ recipeId }: Props) {
   });
 
   const { mutate: updateRecipe } = useUpdateRecipe(recipeId);
-  const [surveyFile, setSurveyFile] = useState<File | null>(null);
   const [recipeFile, setRecipeFile] = useState<File | null>(null);
+  const [surveyFile, setSurveyFile] = useState<File | null>(null);
 
   // 페이지에 접근했을때 폼 리셋
   useEffect(() => {
@@ -46,7 +45,7 @@ export default function RawProductEdit({ recipeId }: Props) {
   const onSubmit = (data: RawProductFormValues) => {
     const body = buildRecipePayload(data);
     updateRecipe(
-      { recipeId, body, surveyFile, recipeFile },
+      { recipeId, body, recipeFile, surveyFile },
       {
         onSuccess: () => {
           addToast("레시피 수정에 성공했습니다");

@@ -76,20 +76,13 @@ export default function RawProductForm({
   const [ingredientOptions, setIngredientOptions] = useState<
     SelectOption<string>[]
   >((ingData ?? []).map((i) => ({ value: i, label: i })));
+  console.log("ingredientOptions", ingredientOptions);
 
   const {
     control,
     handleSubmit,
     formState: { isValid, errors },
   } = form;
-
-  const handleChangeNumberType = (
-    e: ChangeEvent<HTMLInputElement>,
-    field: { onChange: (value: number) => void }
-  ) => {
-    const raw = parseAndClampNumber({ rawInput: e.target.value });
-    field.onChange(raw);
-  };
 
   const handleAddIngredient = (newIng: string) => {
     if (ingredientOptions.some((o) => o.value === newIng)) return;
@@ -141,8 +134,9 @@ export default function RawProductForm({
         <div className={commonWrapper({ gap: 8, justify: "start" })}>
           <div className={inputFieldStyle}>
             <InputField
-              value={formatNumberWithComma(field.value as number)}
-              onChange={(e) => handleChangeNumberType(e, field)}
+              type="number"
+              value={field.value as number}
+              onChange={(e) => field.onChange(e.target.value)}
             />
           </div>
           <Text type="body3">원 / g</Text>
@@ -156,8 +150,9 @@ export default function RawProductForm({
         <div className={commonWrapper({ gap: 8, justify: "start" })}>
           <div className={inputFieldStyle}>
             <InputField
-              value={formatNumberWithComma(field.value as number)}
-              onChange={(e) => handleChangeNumberType(e, field)}
+              type="number"
+              value={field.value as number}
+              onChange={(e) => field.onChange(e.target.value)}
             />
           </div>
           <Text type="body3">g / Kcal</Text>

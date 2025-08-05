@@ -23,8 +23,8 @@ export default function RawProductCreate() {
   });
 
   const { mutate: createRecipe } = useCreateRecipe();
-  const [surveyFile, setSurveyFile] = useState<File | null>(null);
   const [recipeFile, setRecipeFile] = useState<File | null>(null);
+  const [surveyFile, setSurveyFile] = useState<File | null>(null);
 
   const onSubmit = (data: RawProductFormValues) => {
     if (!surveyFile || !recipeFile) {
@@ -34,7 +34,7 @@ export default function RawProductCreate() {
     const body = buildRecipePayload(data);
 
     createRecipe(
-      { body, surveyFile, recipeFile },
+      { body, recipeFile, surveyFile },
       {
         onSuccess: () => {
           addToast("레시피 등록에 성공했습니다");
