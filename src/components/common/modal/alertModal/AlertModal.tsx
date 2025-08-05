@@ -14,8 +14,9 @@ interface ModalProps {
   onConfirm?: () => void;
   onCancel?: () => void;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   isConfirmDisabled?: boolean;
+  closeOnBackgroundClick?: boolean;
 }
 
 export default function AlertModal({
@@ -30,15 +31,16 @@ export default function AlertModal({
   isOpen,
   onClose,
   isConfirmDisabled,
+  closeOnBackgroundClick = true,
 }: ModalProps) {
   const handleConfirm = useCallback(() => {
     onConfirm?.();
-    onClose();
+    onClose?.();
   }, [onConfirm, onClose]);
 
   const handleCancel = useCallback(() => {
     onCancel?.();
-    onClose();
+    onClose?.();
   }, [onCancel, onClose]);
 
   const { cancelType, cancelVariant, confirmType, confirmVariant } =
@@ -62,7 +64,7 @@ export default function AlertModal({
   if (!isOpen) return null;
 
   return (
-    <ModalBackground isVisible={isOpen} onClose={onClose}>
+    <ModalBackground isVisible={isOpen} onClose={onClose} closeOnBackgroundClick={closeOnBackgroundClick}>
       <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalContentWrapper}>
           {title && <Text type="title4">{title}</Text>}

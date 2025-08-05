@@ -12,11 +12,7 @@ import InputField from "@/components/common/inputField/InputField";
 import Button from "@/components/common/button/Button";
 import { useEmailLogin } from "@/api/auth/mutations/useEmailLogin";
 import { useFormHandler } from "@/hooks/useFormHandler";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import { LoginFormValues } from "@/types/auth";
 
 const loginSchema = yup.object().shape({
   email: yup
