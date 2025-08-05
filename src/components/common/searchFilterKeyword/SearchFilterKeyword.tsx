@@ -36,7 +36,7 @@ export default function SearchFilterKeyword<T extends string | number = string>(
 			/>
 			<div className={styles.searchFilterInput}>
 				<InputField
-					value={keyword}
+					value={keyword ?? ''}
 					onChange={(e) => onChangeKeyword(e.target.value)}
 					placeholder={placeholder}
 					disabled={disabled}

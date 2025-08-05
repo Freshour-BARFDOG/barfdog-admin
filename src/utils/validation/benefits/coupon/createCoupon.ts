@@ -26,10 +26,13 @@ export const createCouponSchema = yup.object().shape({
     .required("쿠폰 타입은 필수입니다."),
   discountDegree: yup
     .number()
+    .min(1, "할인율은 0 이상이어야 합니다.")
     .required()
     .when("discountType", {
       is: "FIXED_RATE",
-      then: (schema) => schema.max(100, "할인율은 최대 100까지 가능합니다."),
+      then: (schema) =>
+        schema
+          .max(101, "할인율은 최대 100까지 가능합니다."),
       otherwise: (schema) => schema,
     }),
   discountType: yup
@@ -60,5 +63,5 @@ export const defaultCreateCouponValues = {
   discountType: "FIXED_RATE" as keyof typeof DISCOUNT_UNIT_TYPE,
   availableMaxDiscount: 0,
   availableMinPrice: 0,
-  amount: 0,
+  amount: 1,
 };

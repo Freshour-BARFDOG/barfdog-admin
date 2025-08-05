@@ -20,6 +20,7 @@ import { SEARCH_CATEGORY } from "@/constants/common";
 import { useExcelDownloadMemberList } from "@/api/member/mutations/useExcelDownloadMemberList";
 import { downloadBlobFile } from '@/utils/downloadBlobFile';
 import { useToastStore } from "@/store/useToastStore";
+import { useSearchParams } from "next/navigation";
 
 const MemberList = () => {
 	const {
@@ -31,9 +32,10 @@ const MemberList = () => {
 		onSubmit,
 		onReset,
 	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
-
+	const searchParams = useSearchParams();
+	const category = searchParams?.has('name') ? 'name' : 'email';
 	const { data } = useGetMemberList(page,submittedValues ?? INITIAL_SEARCH_VALUES);
-	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>('email');
+	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>(category ?? 'email');
 
 	const { mutate: excelDownload, isPending: isExcelDownloading } = useExcelDownloadMemberList();
 	const { addToast } = useToastStore();
@@ -124,7 +126,10 @@ const MemberList = () => {
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
-				onReset={onReset}
+				onReset={() => {
+					onReset();
+					setSelectedCategory('email');
+				}}
 			/>
 			<MemberTable
 				data={data}
