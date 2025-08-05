@@ -122,6 +122,13 @@ const cancelOrderBySeller = async ({
   );
   return data;
 };
+const forcedDeliveryComplete = async (orderIdList: number[]) => {
+  const { data } = await axiosInstance.post(
+    "/api/admin/deliveries/forcedDeliveryComplete",
+    { orderIdList }
+  );
+  return data;
+};
 
 export {
   getSearchSales,
@@ -133,4 +140,5 @@ export {
   unConfirmOrder,
   registerDeliveryInfo,
   cancelOrderBySeller,
+  forcedDeliveryComplete,
 };

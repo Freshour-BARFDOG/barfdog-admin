@@ -9,6 +9,7 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
   width?: number;
   height?: number;
   className?: string;
+  onClick?: () => void;
 }
 
 const SvgIcon: FC<IconProps> = ({
@@ -18,6 +19,7 @@ const SvgIcon: FC<IconProps> = ({
   width,
   height,
   className,
+  onClick,
   ...rest
 }) => {
   return (
@@ -26,6 +28,7 @@ const SvgIcon: FC<IconProps> = ({
       height={height ?? size}
       style={{ color: COLORS[color] }}
       className={`${svgIconStyle} ${className || ""}`}
+      onClick={onClick}
       {...rest}
     />
   );

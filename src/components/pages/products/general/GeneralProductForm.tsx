@@ -4,7 +4,11 @@ import * as styles from "./GeneralProduct.css";
 import { commonWrapper, pointColor } from "@/styles/common.css";
 import { ReactNode, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Controller, ControllerRenderProps, UseFormReturn } from "react-hook-form";
+import {
+  Controller,
+  ControllerRenderProps,
+  UseFormReturn,
+} from "react-hook-form";
 import Card from "@/components/common/card/Card";
 import Button from "@/components/common/button/Button";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
@@ -45,7 +49,10 @@ interface InputFieldItem {
   name: GeneralProductFormKeys;
   label: string;
   render: (
-    field: ControllerRenderProps<GeneralProductFormValues, GeneralProductFormKeys>
+    field: ControllerRenderProps<
+      GeneralProductFormValues,
+      GeneralProductFormKeys
+    >
   ) => ReactNode;
 }
 
@@ -69,9 +76,14 @@ export default function GeneralProductForm({
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { isValid, errors },
   } = form;
 
+  console.log("errors", errors);
+  console.log("watch", watch());
+  console.log("isValid", isValid);
+  const hasErrors = Object.keys(errors).length > 0;
   const { watchedValues, handlers } = useGeneralProductForm(form);
 
   // 기본 필드들 (메모이제이션)
@@ -128,7 +140,6 @@ export default function GeneralProductForm({
                 onChange={(e) => handlers.handleChangeNumberType(e, field)}
               />
             </div>
-            <Text type="body3">원 이상</Text>
           </div>
         ),
       },
@@ -180,7 +191,6 @@ export default function GeneralProductForm({
     <>
       <Card shadow="none" padding={20}>
         <div className={commonWrapper({ direction: "col", gap: 12 })}>
-          {/* 기본 필드들 */}
           {basicFields.map((input, index) => (
             <Controller
               control={control}
@@ -201,7 +211,10 @@ export default function GeneralProductForm({
 
           {/* 할인 설정 */}
           <InputFieldGroup label="할인설정" divider>
-            <DiscountField control={control} originalPrice={watchedValues.originalPrice} />
+            <DiscountField
+              control={control}
+              originalPrice={watchedValues.originalPrice}
+            />
           </InputFieldGroup>
 
           {/* 제휴사 섹션 */}
@@ -216,12 +229,13 @@ export default function GeneralProductForm({
 
           {/* 옵션 섹션 */}
           <InputFieldGroup
-            label={(
+            label={
               <TooltipInfo title="옵션 추가">
-                1. 옵션명, 재고수량은 필수항목입니다.<br/>
+                1. 옵션명, 재고수량은 필수항목입니다.
+                <br />
                 2. 사용하지 않는 옵션항목은 삭제하세요
               </TooltipInfo>
-            )}
+            }
             isLabelRequired={false}
           >
             <OptionField
@@ -267,9 +281,11 @@ export default function GeneralProductForm({
                   label={
                     input.name === "itemIcons" ? (
                       <TooltipInfo
-                        title={(
-                          <>상품 아이콘 <span className={pointColor}>*</span></>
-                        )}
+                        title={
+                          <>
+                            상품 아이콘 <span className={pointColor}>*</span>
+                          </>
+                        }
                       >
                         일반상품리스트 썸네일 상단에 노출된 아이콘입니다.
                       </TooltipInfo>
@@ -296,8 +312,8 @@ export default function GeneralProductForm({
         >
           취소
         </Button>
-        <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
-          등록
+        <Button onClick={handleSubmit(onSubmit)} disabled={hasErrors}>
+          {isEdit ? "수정" : "등록"}
         </Button>
       </div>
     </>

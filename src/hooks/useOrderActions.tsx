@@ -22,6 +22,7 @@ import useModal from "./useModal";
 import { getSalesDetailGeneral } from "@/api/sales/sales";
 import openPopup from "@/utils/openPopup";
 import { TableItem } from "@/types/common";
+import { useForcedDeliveryComplete } from "@/api/sales/mutations/useForcedDeliveryComplete";
 
 export function useOrderActions(
   allOrders: SalesBaseRow[],
@@ -50,6 +51,7 @@ export function useOrderActions(
   const { mutate: unConfirmOrder } = useUnConfirmOrder();
   const { mutateAsync: registerDeliveryInfo } = useRegisterDeliveryInfo();
   const { mutate: cancelOrderBySeller } = useCancelOrderBySeller();
+  const { mutate: forcedDeliveryComplete } = useForcedDeliveryComplete();
 
   // goodsflow 훅
   const { mutateAsync: getOtp } = useGoodsFlowOtp();
@@ -57,6 +59,7 @@ export function useOrderActions(
   const { mutateAsync: registerGoodsFlowOrder } = useGoodsFlowOrderRegister();
   const { mutateAsync: printGoodsFlow } = useGoodsFlowPrint();
   const { mutateAsync: contractList } = useGoodsFlowContractList();
+
   // 재발송 처리시에 사용
   const { mutateAsync: cancelGoodsFlowOrder } = useGoodsFlowCancelOrder();
 
@@ -466,6 +469,28 @@ export function useOrderActions(
     }
   };
 
+  // 8) 강제 배송 완료
+  const handleForcedDeliveryComplete = () => {
+    if (selectedIds.length === 0) {
+      addToast("주문을 선택해주세요");
+      return;
+    }
+
+    if (
+      !confirm(`선택하신 ${selectedIds.length}개를 강제 배송완료 하시겠습니까?`)
+    )
+      return;
+
+    forcedDeliveryComplete(selectedIds, {
+      onSuccess: () => {
+        addToast("강제 배송완료 처리되었습니다");
+        setSelectedIds([]);
+      },
+      onError: () => {
+        addToast("강제 배송완료에 실패했습니다");
+      },
+    });
+  };
   return {
     handleConfirm,
     handleDeny,
@@ -486,5 +511,6 @@ export function useOrderActions(
     cancelReason,
     setCancelReason,
     onCancelModalClose,
+    handleForcedDeliveryComplete,
   };
 }

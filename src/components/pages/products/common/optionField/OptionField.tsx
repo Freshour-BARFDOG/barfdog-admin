@@ -17,6 +17,7 @@ import {
 import * as styles from "./OptionField.css";
 import { commonWrapper } from "@/styles/common.css";
 import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
+import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 interface OptionFieldProps {
   isEdit: boolean;
@@ -66,11 +67,20 @@ export default function OptionField({
     updateFA.remove(idx);
   };
 
+  const handleAddOption = () => {
+    console.log("클릭");
+    saveFA.append({ name: "", price: 0, remaining: 0 });
+  };
+
+  const hasOptions = isEdit
+    ? updateFA.fields.length > 0 || saveFA.fields.length > 0
+    : saveFA.fields.length > 0;
+
   return (
     <div
       className={commonWrapper({ direction: "col", align: "start", gap: 8 })}
     >
-      {(isEdit ? updateFA.fields.length > 0 : saveFA.fields.length > 0) && (
+      {hasOptions && (
         <table className={styles.optionTable}>
           <thead>
             <tr>
@@ -105,7 +115,12 @@ export default function OptionField({
                         <InputField
                           value={formatNumberWithComma(field.value)}
                           onChange={(e) =>
-                            field.onChange(unformatCommaNumber(e.target.value))
+                            field.onChange(
+                              parseAndClampNumber({
+                                rawInput: e.target.value,
+                                mode: "normal",
+                              })
+                            )
                           }
                           unit="원"
                         />
@@ -189,11 +204,7 @@ export default function OptionField({
         </table>
       )}
 
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => saveFA.append({ name: "", price: 0, remaining: 0 })}
-      >
+      <Button size="sm" variant="outline" onClick={handleAddOption}>
         옵션추가
       </Button>
     </div>
