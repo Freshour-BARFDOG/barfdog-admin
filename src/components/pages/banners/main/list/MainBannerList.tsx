@@ -12,6 +12,10 @@ import { useGetMainBannerList } from "@/api/banners/queries/useGetMainBannerList
 import { useUpdateMainBannerLeakedOrder } from "@/api/banners/mutations/useUpdateMainBannerLeakedOrder";
 import { useDeleteMainBanner } from "@/api/banners/mutations/useDeleteMainBanner";
 
+function removePrefixFromFilename(url: string): string {
+	return url.replace(/(filename=)s_/, '$1');
+}
+
 export default function MainBannerList() {
 	const router = useRouter();
 	const queryClient = useQueryClient();
@@ -65,7 +69,15 @@ export default function MainBannerList() {
 				{
 					key: 'thumbnail_pc',
 					header: '이미지',
-					render: (row: MainBannerListrData) => <Image src={row.thumbnail_pc} alt={row.name} width={279} height={49} />,
+					render: (row: MainBannerListrData) => (
+						<Image 
+							src={removePrefixFromFilename(row.thumbnail_pc)} 
+							alt={row.name} 
+							width={279} 
+							height={49} 
+							style={{ objectFit: 'contain' }} 
+						/>
+					),
 				},
 				{ key: 'targets', header: '노출 대상', render: (row: MainBannerListrData) => BANNER_TARGET[row.targets] },
 				{ key: 'createdDate', header: '등록일', render: (row: MainBannerListrData) => format(new Date(row.createdDate), 'yyyy-MM-dd') },

@@ -47,10 +47,10 @@ export function useMultiImageUploader<T extends Record<string, any>>({
 			if (addImageIdKey) {
 				const addImageId = addImageIdKey as Path<T>;
 				const currentAddIds = (watch(addImageId) ?? []) as unknown as number[];
-				setValue(addImageId, Array.from(new Set([...currentAddIds, ...newIds])) as PathValue<T, typeof addImageId>);
+				setValue(addImageId, Array.from(new Set([...currentAddIds, ...newIds])) as PathValue<T, typeof addImageId>, { shouldValidate: true });
 			}
 
-			setValue(imageOrder, [...currentOrderList, ...newOrderList] as PathValue<T, typeof imageOrder>);
+			setValue(imageOrder, [...currentOrderList, ...newOrderList] as PathValue<T, typeof imageOrder>, { shouldValidate: true });
 
 		} catch (err) {
 			console.error(err);
@@ -76,14 +76,14 @@ export function useMultiImageUploader<T extends Record<string, any>>({
 			const deleteImageId = deleteImageIdKey as Path<T>;
 
 			const currentDeleteIds = (watch(deleteImageId) ?? []) as unknown as number[];;
-			setValue(deleteImageId, [...currentDeleteIds, currentId] as PathValue<T, typeof deleteImageId>);
+			setValue(deleteImageId, [...currentDeleteIds, currentId] as PathValue<T, typeof deleteImageId>, { shouldValidate: true });
 		}
 
 		if (addImageIdKey && currentId !== undefined) {
 			const addImageId = addImageIdKey as Path<T>;
 
 			const currentAddIds = watch(addImageId) ?? [];
-			setValue(addImageId, (currentAddIds as number[]).filter((imgId: number) => imgId !== currentId) as PathValue<T, typeof addImageId>);
+			setValue(addImageId, (currentAddIds as number[]).filter((imgId: number) => imgId !== currentId) as PathValue<T, typeof addImageId>, { shouldValidate: true });
 		}
 
 		const updatedOrder = (watch(imageOrder) as ImageFile[] ?? [])
@@ -92,7 +92,7 @@ export function useMultiImageUploader<T extends Record<string, any>>({
 				...img,
 				leakOrder: idx + 1,
 			}));
-
+		
 		setValue(imageOrder, updatedOrder as PathValue<T, typeof imageOrder>, { shouldValidate: true });
 	};
 

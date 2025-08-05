@@ -5,11 +5,9 @@ import { Menu, X } from "lucide-react";
 import { useDeviceState } from "@/hooks/useDeviceState";
 import { useUIStore } from "@/store/uiStore";
 import Text from "@/components/common/text/Text";
-import Button from "@/components/common/button/Button";
 
 export default function Header() {
   const { isMobileWidth: isMobile } = useDeviceState();
-  console.log(isMobile);
 
   const {
     openSidebarMobile,

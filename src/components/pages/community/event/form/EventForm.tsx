@@ -19,11 +19,13 @@ import { useUploadEventImage } from "@/api/community/mutations/useUploadEventIma
 import { useMultiImageUploader } from "@/hooks/useMultiImageUploader";
 
 interface EventFormProps {
+	eventId?: number;
 	onSubmit: (data: EventFormValues) => void;
 	defaultUpdateFormValue: EventFormValues;
 }
 
 export default function EventForm({
+	eventId,
 	onSubmit,
 	defaultUpdateFormValue,
 }: EventFormProps) {
@@ -130,8 +132,8 @@ export default function EventForm({
 			</Form>
 		</Card>
 		<FormControls
-			cancelText={defaultUpdateFormValue ? '목록' : '취소'}
-			confirmText={defaultUpdateFormValue ? '수정' : '등록'}
+			cancelText={eventId ? '목록' : '취소'}
+			confirmText={eventId ? '수정' : '등록'}
 			onCancel={() => router.push('/community/event')}
 			onConfirm={handleSubmit(onSubmit)}
 			isConfirmDisabled={!isValid}
