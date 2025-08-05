@@ -1,5 +1,4 @@
 'use client';
-import { useState } from "react";
 import { format } from "date-fns";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
@@ -16,9 +15,10 @@ import { useToastStore } from "@/store/useToastStore";
 import { REWARD_LIST_INITIAL_SEARCH_VALUES, REWARD_STATUS, REWARD_TYPE, REWARD_TYPE_LIST } from "@/constants/benefits/rewards";
 import { SEARCH_CATEGORY } from "@/constants/common";
 import { RewardListData, RewardListSearchParams, RewardStatus, RewardType } from "@/types/benefits/rewards";
-import { SearchFilterItem, TableColumn } from "@/types/common";
+import { SearchFilterItem, SelectOption, TableColumn } from "@/types/common";
 import { useGetRewardList } from "@/api/rewards/queries/useGetRewardList";
 import { useExcelDownloadRewardList } from "@/api/rewards/mutations/useExcelDownloadRewardList";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 export default function RewardList() {
 	const {
@@ -30,9 +30,19 @@ export default function RewardList() {
 		onSubmit,
 		onReset,
 	} = useSearchValues<RewardListSearchParams>(REWARD_LIST_INITIAL_SEARCH_VALUES);
-	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>('email');
-
 	const { data } = useGetRewardList(page,submittedValues ?? REWARD_LIST_INITIAL_SEARCH_VALUES);
+
+	const {
+		keyword,
+		selectedCategory,
+		setSelectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<RewardListSearchParams, 'email' | 'name'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['email', 'name'],
+	});
 
 	const { mutate: excelDownload, isPending: isExcelDownloading } = useExcelDownloadRewardList();
 	const { addToast } = useToastStore();
@@ -74,13 +84,11 @@ export default function RewardList() {
 			label: '조건 검색',
 			children: (
 				<SearchFilterKeyword
-					categoryOptions={SEARCH_CATEGORY}
+					categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
 					selectedCategory={selectedCategory}
-					keyword={searchValues[selectedCategory]}
-					onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
-					onChangeKeyword={(keyword) => {
-						setSearchValues({...searchValues, [selectedCategory]: keyword});
-					}}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
 					onSubmit={onSubmit}
 				/>
 			),
@@ -126,7 +134,10 @@ export default function RewardList() {
 			<SearchFilterGroup
 				items={filters}
 				onSubmit={onSubmit}
-				onReset={onReset}
+				onReset={() => {
+					onReset();
+					setSelectedCategory('email');
+				}}
 			/>
 			<TableSection
 				data={data?.rewardList as RewardListData[]}

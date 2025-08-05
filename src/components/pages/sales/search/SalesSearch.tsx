@@ -20,12 +20,12 @@ import {
   ORDER_STATUS,
   ORDER_STATUS_LABEL_MAP,
 } from "@/constants/sales";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useToastStore } from "@/store/useToastStore";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   SalesBaseRow,
-  SalesSearchCategory,
   OrderStatus,
   OrderTypeRequest,
   SearchSalesData,
@@ -36,7 +36,6 @@ import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format } from "date-fns";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function SalesSearch() {
   const {
@@ -76,8 +75,17 @@ export default function SalesSearch() {
     });
   };
 
-  const [selectedCategory, setSelectedCategory] =
-    useState<SalesSearchCategory>("memberName");
+  const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<SearchSalesRequest, 'memberName' | 'memberEmail' | 'dogName' | 'merchantUid' | 'recipientName'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['memberName', 'memberEmail', 'dogName', 'merchantUid', 'recipientName'],
+	});
+
 
   const filters: SearchFilterItem[] = [
     {
@@ -106,12 +114,10 @@ export default function SalesSearch() {
         <SearchFilterKeyword
           categoryOptions={SALES_SEARCH_CATEGORY}
           selectedCategory={selectedCategory}
-          keyword={searchValues[selectedCategory] ?? ""}
-          onChangeCategory={(category) => setSelectedCategory(category)}
-          onChangeKeyword={(keyword) => {
-            setSearchValues({ ...searchValues, [selectedCategory]: keyword });
-          }}
-          onSubmit={onSubmit}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
+					onSubmit={onSubmit}
         />
       ),
     },

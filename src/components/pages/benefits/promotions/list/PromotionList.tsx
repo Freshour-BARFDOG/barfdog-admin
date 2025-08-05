@@ -2,7 +2,6 @@
 import { commonWrapper } from "@/styles/common.css";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { format } from "date-fns";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/LabeledCheckBoxGroup";
@@ -29,6 +28,7 @@ import { PromotionListData , PromotionListSearchParams, PromotionStatus} from "@
 import { useGetPromotionList } from "@/api/promotions/queries/useGetPromotionList";
 import { useDeletePromotion } from "@/api/promotions/mutations/useDeletePromotion";
 import { queryKeys } from "@/constants/queryKeys";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 export default function PromotionList() {
 	const queryClient = useQueryClient();
@@ -42,7 +42,17 @@ export default function PromotionList() {
 		onSubmit,
 		onReset,
 	} = useSearchValues<PromotionListSearchParams>(PROMOTION_LIST_INITIAL_SEARCH_VALUES);
-	const [selectedCategory, setSelectedCategory] = useState<'name'>('name');
+	
+	const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<PromotionListSearchParams, 'name'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['name'],
+	});
 
 	const { data } = useGetPromotionList(page,submittedValues ?? PROMOTION_LIST_INITIAL_SEARCH_VALUES);
 
@@ -113,11 +123,9 @@ export default function PromotionList() {
 				<SearchFilterKeyword
 					categoryOptions={[{ label: '이름', value: 'name' }]}
 					selectedCategory={selectedCategory}
-					keyword={searchValues[selectedCategory]}
-					onChangeCategory={(category) => setSelectedCategory(category as 'name')}
-					onChangeKeyword={(keyword) => {
-						setSearchValues({...searchValues, [selectedCategory]: keyword});
-					}}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
 					onSubmit={onSubmit}
 				/>
 			),

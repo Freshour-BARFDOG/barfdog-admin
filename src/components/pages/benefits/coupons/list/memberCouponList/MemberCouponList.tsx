@@ -16,7 +16,7 @@ import ListLayout from "@/components/layout/listLayout/ListLayout";
 import useSearchValues from "@/hooks/useSearchValues";
 import { useGetMemberCouponList } from "@/api/coupons/queries/useGetMemberCouponList";
 import { useUpdateMemberCoupon } from "@/api/coupons/mutations/useUpdateMemberCoupon";
-import { SearchFilterItem, TableColumn } from "@/types/common";
+import { SearchFilterItem, SelectOption, TableColumn } from "@/types/common";
 import { MemberCouponListBody, MemberCouponListData } from "@/types/benefits/coupons";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { useToastStore } from "@/store/useToastStore";
@@ -27,6 +27,7 @@ import {
 	MEMBER_COUPON_ROLE_LIST,
 	MEMBER_COUPON_SEARCH_CATEGORY
 } from "@/constants/benefits/coupons";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 export default function MemberCouponList() {
 	const queryClient = useQueryClient();
@@ -41,7 +42,17 @@ export default function MemberCouponList() {
 	} = useSearchValues<MemberCouponListBody>(MEMBER_COUPON_LIST_INITIAL_SEARCH_VALUES);
 	const { data } = useGetMemberCouponList(page,submittedValues ?? MEMBER_COUPON_LIST_INITIAL_SEARCH_VALUES);
 
-	const [selectedCategory, setSelectedCategory] = useState<'memberEmail' | 'memberName'>('memberEmail');
+	const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<MemberCouponListBody, 'memberEmail' | 'memberName'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['memberEmail', 'memberName'],
+	});
+
 	const [selectedCoupon, setSelectedCoupon] = useState<MemberCouponListData | null>(null);
 
 	const { mutate: updateMemberCoupon } = useUpdateMemberCoupon();
@@ -132,13 +143,11 @@ export default function MemberCouponList() {
 			label: '회원 검색',
 			children: (
 				<SearchFilterKeyword
-					categoryOptions={MEMBER_COUPON_SEARCH_CATEGORY}
+					categoryOptions={MEMBER_COUPON_SEARCH_CATEGORY as SelectOption<"memberEmail" | "memberName">[]}
 					selectedCategory={selectedCategory}
-					keyword={searchValues[selectedCategory]}
-					onChangeCategory={(category) => setSelectedCategory(category as 'memberEmail' | 'memberName')}
-					onChangeKeyword={(keyword) => {
-						setSearchValues({...searchValues, [selectedCategory]: keyword});
-					}}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
 					onSubmit={onSubmit}
 				/>
 			),
