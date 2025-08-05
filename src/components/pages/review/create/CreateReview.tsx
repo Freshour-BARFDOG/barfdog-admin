@@ -23,7 +23,7 @@ import { defaultReviewFormValues, reviewSchema } from "@/utils/validation/review
 import { GENERAL_PRODUCT_CATEGORY_OPTIONS } from "@/constants/products";
 import { REVIEW_TYPE_LIST } from "@/constants/review";
 import { ProductItemType, ReviewFormValues } from "@/types/review";
-import { UploadResponse } from "@/types/common";
+import { ImageFile, UploadResponse } from "@/types/common";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import { useCreateReview } from "@/api/review/mutations/useCreateReview";
 import { useGetProductItemList } from "@/api/review/queries/useGetProductItemList";
@@ -44,6 +44,7 @@ export default function CreateReview() {
 	} = useFormHandler<ReviewFormValues>(reviewSchema, defaultReviewFormValues, "all");
 
 	const reviewType = useWatch({ control, name: "type" });
+	const imageList = useWatch({ control, name: "reviewImageIdList" });
 
 	const { data: itemList } = useGetProductItemList(productItemType);
 	const { mutateAsync } = useUploadImage("/api/reviews/upload");
@@ -54,9 +55,9 @@ export default function CreateReview() {
 		imageOrderKey: 'reviewImageIdList',
 		setValue,
 		watch,
-		imageList: [],
+		imageList: imageList as ImageFile[],
 	});
-
+	
 	const onSubmit = (data: ReviewFormValues) => {
 		const { reviewImageIdList, ...rest } = data;
 		const body = {

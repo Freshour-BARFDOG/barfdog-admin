@@ -39,6 +39,11 @@ const isActive = (item: MenuItemType, pathname: string): boolean => {
 		const exceptionPaths = ['banners', 'community', 'alliance'];
 		const isExceptionPath = exceptionPaths.some(path => itemHref.includes(path));
 
+			// /alliance/coupon/create → 명시적 예외 처리
+		if (currentPath === '/alliance/coupon/create' && itemHref === '/alliance/coupon') {
+			return false;
+		}
+
 		if (
 			currentPath.startsWith(`${itemHref}/`) &&
 			(!isExceptionPath ? !excludedKeywords.includes(lastSegment) : true)
