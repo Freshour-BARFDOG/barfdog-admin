@@ -1,7 +1,6 @@
 import { ComponentType, Dispatch, SetStateAction, useState } from 'react';
-import Card from "@/components/common/card/Card";
-import { useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/useToastStore";
+import Card from "@/components/common/card/Card";
 
 interface BannerDetailProps<FormValues, DetailData> {
 	id: number;
@@ -26,7 +25,6 @@ export default function BannerDetail<FormValues, DetailData>({
 	mutateFn,
 	FormComponent,
 }: BannerDetailProps<FormValues, DetailData>) {
-	const queryClient = useQueryClient();
 	const { addToast } = useToastStore();
 
 	const [pcFile, setPcFile] = useState<File | null>(null);
