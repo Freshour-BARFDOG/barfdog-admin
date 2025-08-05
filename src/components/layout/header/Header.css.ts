@@ -48,3 +48,14 @@ export const menuButton = style({
 	height: 24,
 	cursor: 'pointer',
 });
+
+export const username = style({
+	height: 24,
+	display: 'flex',
+	alignItems: 'center',
+	gap: 8,
+});
+
+export const logout = style({
+	height: 20,
+});

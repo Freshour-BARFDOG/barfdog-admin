@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import { AxiosInstance } from "axios";
 
 const login = async (formData: { email: string; password: string }) => {
   const response = await axiosInstance.post("/api/login", formData);
@@ -12,4 +13,13 @@ const logout = async () => {
   return response;
 };
 
-export { login, logout };
+const getUserData = async (instance: AxiosInstance = axiosInstance) => {
+	try {
+		const { data } = await instance.get(`/api/members`);
+		return data;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export { login, logout, getUserData };
