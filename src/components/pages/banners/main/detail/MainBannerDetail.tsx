@@ -16,7 +16,9 @@ export default function MainBannerDetail({ bannerId }: MainBannerDetailProps) {
 
 	const { data } = useGetMainBannerDetail(bannerId);
 	const { mutate } = useUpdateMainBanner();
-
+	
+	
+	if(!data) return null;
 	return (
 		<BannerDetail
 			id={bannerId}

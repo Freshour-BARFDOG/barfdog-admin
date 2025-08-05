@@ -37,7 +37,7 @@ export default function AllianceManagementList() {
 		onReset,
 	} = useSearchValues<AllianceManagementSearchParams>(INITIAL_MANAGEMENT_SEARCH_VALUES);
 	const { data } = useGetAllianceManagement(page,submittedValues ?? INITIAL_MANAGEMENT_SEARCH_VALUES);
-
+	
 	const {
 		selectedIds: deleteSelectedIds,
 		toggleSelect,
@@ -129,13 +129,13 @@ export default function AllianceManagementList() {
 			render: (row) => {
 				return (
 					<div className={commonWrapper({ gap: 8, align: 'center' })}>
-						<Text type='label4'>{`${row.eventCount}건`}</Text>
+						<Text type='label4'>{`${row.eventInfos.length}건`}</Text>
 						{row.eventInfos.length > 0 &&
 							<Tooltip
                 position="bottom"
 							>
 								{row.eventInfos.map(event => (
-									<span key={event.allianceEventId}>- {event.eventName}</span>
+									<span key={event.allianceEventId}>- {event.eventName}<br/></span>
 								))}
 							</Tooltip>
 						}
