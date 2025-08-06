@@ -80,9 +80,6 @@ export default function GeneralProductForm({
     formState: { isValid, errors },
   } = form;
 
-  console.log("errors", errors);
-  console.log("watch", watch());
-  console.log("isValid", isValid);
   const hasErrors = Object.keys(errors).length > 0;
   const { watchedValues, handlers } = useGeneralProductForm(form);
 
