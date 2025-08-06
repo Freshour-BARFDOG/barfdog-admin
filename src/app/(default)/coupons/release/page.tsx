@@ -7,6 +7,10 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import { prefetchGetPublicationCouponList } from "@/api/coupons/queries/prefetchGetPublicationCouponList";
 import { prefetchGetMemberList } from "@/api/member/queries/prefetchGetMemberList";
 
+export const metadata = {
+  title: '관리자 | 쿠폰 발행',
+};
+
 export default async function ReleaseCouponPage() {
 	const queryClient = new QueryClient();
 	await prefetchGetPublicationCouponList(queryClient);

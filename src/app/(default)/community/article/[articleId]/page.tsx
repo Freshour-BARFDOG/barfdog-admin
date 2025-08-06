@@ -7,6 +7,10 @@ import ArticleDetail from "@/components/pages/community/article/detail/ArticleDe
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 아티클 상세',
+};
+
 type Params = { articleId: string };
 
 export default async function ArticleDetailPage({ params }: PageProps<Params>) {

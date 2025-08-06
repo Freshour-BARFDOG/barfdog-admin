@@ -8,6 +8,10 @@ import { prefetchCommunityList } from "@/api/community/queries/prefetchCommunity
 import { queryKeys } from "@/constants/queryKeys";
 import { PAGE_SIZE } from "@/constants/common";
 
+export const metadata = {
+  title: '관리자 | 공지사항',
+};
+
 export default async function NoticePage() {
   const queryClient = new QueryClient();
   await prefetchCommunityList({

@@ -16,7 +16,9 @@ function calcPaymentPrice (data: MemberSubscriptionData) {
 }
 
 export default function SubscriptionInfo({ memberId }: SubscriptionInfoProps) {
-	const { data: subscriptionList } = useGetMemberSubscriptionList(memberId);
+	const { data: rawSubscriptionList } = useGetMemberSubscriptionList(memberId);
+
+	const subscriptionList = rawSubscriptionList.filter(subscription => subscription.data.subscribeCount >= 1);
 
 	const subscriptionDetailInfo = (data: MemberSubscriptionData, recipeNames: string[]) => {
 		return [

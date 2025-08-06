@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import PopupList from "@/components/pages/banners/popup/list/PopupList";
 import { prefetchGetPopupList } from "@/api/banners/queries/prefetchGetPopupList";
 
+export const metadata = {
+  title: '관리자 | 팝업',
+};
+
 export default async function PopupPage() {
   const queryClient = new QueryClient();
   await prefetchGetPopupList(queryClient);

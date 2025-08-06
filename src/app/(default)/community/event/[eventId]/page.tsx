@@ -7,6 +7,10 @@ import EventDetail from "@/components/pages/community/event/detail/EventDetail";
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 이벤트 상세',
+};
+
 type Params = { eventId: string };
 
 export default async function EventDetailPage({ params }: PageProps<Params>) {

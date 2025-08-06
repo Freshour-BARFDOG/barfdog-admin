@@ -7,6 +7,10 @@ import NoticeDetail from "@/components/pages/community/notice/detail/NoticeDetai
 import { prefetchCommunityDetail } from "@/api/community/queries/prefetchCommunityDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 공지사항 상세',
+};
+
 type Params = { noticeId: string };
 
 export default async function NoticeDetailPage({ params }: PageProps<Params>) {

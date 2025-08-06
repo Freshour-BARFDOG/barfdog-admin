@@ -7,6 +7,10 @@ import MainBannerDetail from "@/components/pages/banners/main/detail/MainBannerD
 import { prefetchGetMainBannerDetail } from "@/api/banners/queries/prefetchGetMainBannerDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 메인 배너 상세',
+};
+
 type Params = { bannerId: number };
 
 export default async function MainBannerDetailPage({ params }: PageProps<Params>) {

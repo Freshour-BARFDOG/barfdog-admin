@@ -7,6 +7,10 @@ import InquiryDetail from "@/components/pages/community/inquiry/detail/InquiryDe
 import { prefetchInquiryDetail } from "@/api/community/queries/prefetchInquiryDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 1:1 문의 상세',
+};
+
 type Params = { inquiryId: string };
 
 export default async function InquiryDetailPage({ params }: PageProps<Params>) {

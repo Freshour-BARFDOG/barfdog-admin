@@ -6,6 +6,10 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import CreatePromotion from "@/components/pages/benefits/promotions/create/CreatePromotion";
 import { prefetchGetPromotionCouponList } from "@/api/promotions/queries/prefetchGetPromotionCouponList";
 
+export const metadata = {
+  title: '관리자 | 프로모션 생성',
+};
+
 export default async function CreatePromotionPage() {
 	const queryClient = new QueryClient();
 	await prefetchGetPromotionCouponList(queryClient);
@@ -20,6 +24,5 @@ export default async function CreatePromotionPage() {
 				</Suspense>
 			</ErrorBoundary>
 		</HydrationBoundary>
-
 	);
 }

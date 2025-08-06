@@ -7,6 +7,10 @@ import CreateAnswer from "@/components/pages/community/inquiry/create/CreateAnsw
 import { prefetchInquiryDetail } from "@/api/community/queries/prefetchInquiryDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 1:1 문의 답글 등록',
+};
+
 type Params = { inquiryId: string };
 
 export default async function CreateAnswerPage({ params }: PageProps<Params>) {

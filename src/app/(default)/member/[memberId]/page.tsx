@@ -10,6 +10,10 @@ import Loader from "@/components/common/loader/Loader";
 import MemberDetail from "@/components/pages/member/detail/MemberDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 회원 상세',
+};
+
 type Params = { memberId: string };
 
 export default async function MemberDetailPage({ params }: PageProps<Params>) {

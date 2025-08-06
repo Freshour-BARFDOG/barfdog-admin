@@ -7,6 +7,10 @@ import PopupDetail from "@/components/pages/banners/popup/detail/PopupDetail";
 import { prefetchGetPopupDetail } from "@/api/banners/queries/prefetchGetPopupDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 팝업 상세',
+};
+
 type Params = { popupId: string };
 
 export default async function PopupDetailPage({ params }: PageProps<Params>) {

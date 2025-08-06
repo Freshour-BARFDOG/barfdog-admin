@@ -7,6 +7,10 @@ import AllianceCouponDetail from "@/components/pages/alliance/coupon/detail/Alli
 import { prefetchAllianceCouponDetail } from "@/api/alliance/queries/prefetchAllianceCouponDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 제휴사 쿠폰 상세',
+};
+
 type Params = { bundle: string };
 
 export default async function Page({ params }: PageProps<Params>) {

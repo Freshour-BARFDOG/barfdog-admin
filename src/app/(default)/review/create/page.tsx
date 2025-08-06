@@ -7,6 +7,10 @@ import CreateReview from "@/components/pages/review/create/CreateReview";
 import { prefetchGetProductItemList } from "@/api/review/queries/prefetchGetProductItemList";
 import { ProductItemType } from "@/types/review";
 
+export const metadata = {
+  title: '관리자 | 리뷰 생성',
+};
+
 export default async function CreateReviewPage() {
   const queryClient = new QueryClient();
   await prefetchGetProductItemList('ALL' as ProductItemType, queryClient);

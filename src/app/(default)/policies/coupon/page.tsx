@@ -1,6 +1,10 @@
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import CouponPolicy from "@/components/pages/policies/coupon/CouponPolicy";
 
+export const metadata = {
+  title: '관리자 | 쿠폰 정책',
+};
+
 export const dynamic = 'force-dynamic';
 
 export default function CouponPolicyPage() {

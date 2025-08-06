@@ -6,6 +6,10 @@ import AllianceMemberList from "@/components/pages/alliance/member/AllianceMembe
 import Loader from "@/components/common/loader/Loader";
 import { prefetchGetAllianceMemberList } from "@/api/alliance/queries/prefetchGetAllianceMemberList";
 
+export const metadata = {
+  title: '관리자 | 제휴사 가입자 내역',
+};
+
 export default async function AllianceMemberListPage() {
   const queryClient = new QueryClient();
   await prefetchGetAllianceMemberList(queryClient);
