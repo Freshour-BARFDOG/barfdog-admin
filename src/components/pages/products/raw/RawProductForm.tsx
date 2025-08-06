@@ -76,7 +76,6 @@ export default function RawProductForm({
   const [ingredientOptions, setIngredientOptions] = useState<
     SelectOption<string>[]
   >((ingData ?? []).map((i) => ({ value: i, label: i })));
-  console.log("ingredientOptions", ingredientOptions);
 
   const {
     control,
