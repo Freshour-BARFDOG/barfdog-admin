@@ -38,7 +38,6 @@ import ListLayout from "@/components/layout/listLayout/ListLayout";
 import Loader from "@/components/common/loader/Loader";
 import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
-import useModal from "@/hooks/useModal";
 
 export default function SalesOrders() {
   const {
@@ -113,6 +112,8 @@ export default function SalesOrders() {
     searchValues.orderType as OrderTypeRequest
   );
 
+  console.log("submittedValues", submittedValues);
+
   // → 2) 전체선택 체크박스 상태 계산
   const allSelected = useMemo(
     () => orderData.length > 0 && selectedIds.length === orderData.length,
@@ -180,7 +181,9 @@ export default function SalesOrders() {
       children: (
         <LabeledRadioButtonGroup<OrderStatus>
           options={ORDERS_ORDER_STATUS}
-          value={searchValues.statusList?.[0] ?? "PAYMENT_DONE"}
+          value={
+            (searchValues.statusList?.[0] ?? "PAYMENT_DONE") as OrderStatus
+          }
           onChange={(value) =>
             setSearchValues({
               ...searchValues,

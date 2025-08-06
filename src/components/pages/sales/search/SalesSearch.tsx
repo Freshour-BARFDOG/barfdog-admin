@@ -48,11 +48,25 @@ export default function SalesSearch() {
     onReset,
   } = useSearchValues<SearchSalesRequest>(INITIAL_SEARCH_REQUEST);
 
+  const rawBody = submittedValues ?? INITIAL_SEARCH_REQUEST;
+
+  const body: SearchSalesRequest = {
+    ...rawBody,
+    statusList:
+      rawBody.statusList === null
+        ? null
+        : Array.isArray(rawBody.statusList)
+        ? rawBody.statusList
+        : [rawBody.statusList], // 문자열이면 배열로 감싸기
+  };
+
   const params: SearchSalesParams = {
-    body: submittedValues ?? INITIAL_SEARCH_REQUEST,
+    body,
     page,
     size: PAGE_SIZE.SALES.ORDERS,
   };
+
+  console.log("submittedValues", submittedValues);
 
   const { data, isLoading } = useGetSearchSales(params);
 
@@ -130,7 +144,7 @@ export default function SalesSearch() {
       children: (
         <SelectBox<OrderStatus>
           options={ORDER_STATUS}
-          value={searchValues.statusList?.[0] ?? "ALL"}
+          value={(searchValues.statusList ?? "ALL") as OrderStatus}
           onChange={(value) =>
             setSearchValues({
               ...searchValues,

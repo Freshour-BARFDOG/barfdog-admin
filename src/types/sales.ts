@@ -8,7 +8,7 @@ interface SearchSalesRequest {
   memberEmail: string | null; // 구매자 이메일(로그인 아이디)
   recipientName: string | null; // 수령자 이름
   dogName: string | null; // 반려견 이름
-  statusList: OrderStatus[] | null;
+  statusList: OrderStatus[] | OrderStatus | null;
   orderType: OrderTypeRequest;
 }
 
