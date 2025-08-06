@@ -11,6 +11,7 @@ import {
   SUBSCRIBE_HISTORY_CATEGORY,
   SUBSCRIBE_STATUS,
 } from "@/constants/subscribe";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 import useSearchValues from "@/hooks/useSearchValues";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
@@ -21,7 +22,6 @@ import {
 } from "@/types/subscribe";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format, parseISO } from "date-fns";
-import { useState } from "react";
 
 export default function SubscribeHistory() {
   const {
@@ -44,13 +44,16 @@ export default function SubscribeHistory() {
 
   const { data } = useGetSubscribeHistory(params);
 
-  const [selectedCategory, setSelectedCategory] =
-    useState<keyof SubscribeHistoryRequest>("memberName");
-
-  const handleChangeCategory = (category: keyof SubscribeHistoryRequest) => {
-    setSelectedCategory(category);
-    onReset();
-  };
+  const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<SubscribeHistoryRequest, 'dogName' | 'memberName' | 'email' | 'id'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['dogName', 'memberName', 'email', 'id'],
+	});
 
   const filters: SearchFilterItem[] = [
     {
@@ -59,12 +62,10 @@ export default function SubscribeHistory() {
         <SearchFilterKeyword
           categoryOptions={SUBSCRIBE_HISTORY_CATEGORY}
           selectedCategory={selectedCategory}
-          keyword={searchValues[selectedCategory] ?? ""}
-          onChangeCategory={(category) => handleChangeCategory(category)}
-          onChangeKeyword={(keyword) => {
-            setSearchValues({ ...searchValues, [selectedCategory]: keyword });
-          }}
-          onSubmit={onSubmit}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
+					onSubmit={onSubmit}
         />
       ),
     },

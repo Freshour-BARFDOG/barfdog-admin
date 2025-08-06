@@ -1,5 +1,4 @@
 import { commonWrapper, pointColor } from "@/styles/common.css";
-import { useState } from "react";
 import { format } from "date-fns";
 import Card from "@/components/common/card/Card";
 import Text from "@/components/common/text/Text";
@@ -9,9 +8,10 @@ import useSearchValues from "@/hooks/useSearchValues";
 import { useGetPromotionMemberList } from "@/api/promotions/queries/useGetPromotionDetail";
 import { PROMOTION_MEMBER_LIST_INITIAL_SEARCH_VALUES } from "@/constants/benefits/promotions";
 import { PromotionMemberListData, PromotionMemberListSearchParams } from "@/types/benefits/promotions";
-import { TableColumn } from "@/types/common";
+import { SelectOption, TableColumn } from "@/types/common";
 import { SEARCH_CATEGORY } from "@/constants/common";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 interface PromotionMemberTableProps {
 	promotionId: number;
@@ -26,7 +26,6 @@ export default function PromotionMemberTable({
 	remaining,
 	quantity,
 }: PromotionMemberTableProps) {
-	const [selectedCategory, setSelectedCategory] = useState<'name' | 'email'>('email');
 	const {
 		searchValues,
 		setSearchValues,
@@ -37,6 +36,17 @@ export default function PromotionMemberTable({
 	} = useSearchValues<PromotionMemberListSearchParams>(PROMOTION_MEMBER_LIST_INITIAL_SEARCH_VALUES);
 
 	const { data } = useGetPromotionMemberList(promotionId, page, submittedValues ?? PROMOTION_MEMBER_LIST_INITIAL_SEARCH_VALUES);
+
+	const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<PromotionMemberListSearchParams, 'email' | 'name'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['email', 'name'],
+	});
 
 	const columns: TableColumn<PromotionMemberListData>[] = [
 		{ key: 'seq', header: '번호', width: '60px',
@@ -84,13 +94,11 @@ export default function PromotionMemberTable({
 			</div>
 			<div className={commonWrapper({ align: 'center', gap: 8 })}>
 				<SearchFilterKeyword
-					categoryOptions={SEARCH_CATEGORY}
+					categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
 					selectedCategory={selectedCategory}
-					keyword={searchValues[selectedCategory]}
-					onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
-					onChangeKeyword={(keyword) => {
-						setSearchValues({...searchValues, [selectedCategory]: keyword});
-					}}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
 					onSubmit={onSubmit}
 					placeholder='검색어를 입력해주세요.'
 					showConfirmButton

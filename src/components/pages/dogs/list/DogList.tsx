@@ -24,7 +24,6 @@ import {
   DogDto,
   DogListParams,
   DogListRequest,
-  DogsCategory,
   DogsSubscribeStatus,
 } from "@/types/dog";
 
@@ -32,7 +31,7 @@ import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { format, formatDate, parseISO } from "date-fns";
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 export default function DogList() {
   const {
@@ -70,8 +69,16 @@ export default function DogList() {
     });
   };
 
-  const [selectedCategory, setSelectedCategory] =
-    useState<keyof DogsCategory>("dogName");
+  const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<DogListRequest, 'dogName' | 'memberName' | 'memberEmail'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['dogName', 'memberName', 'memberEmail'],
+	});
 
   const filters: SearchFilterItem[] = [
     {
@@ -80,12 +87,10 @@ export default function DogList() {
         <SearchFilterKeyword
           categoryOptions={DOGS_CATEGORY}
           selectedCategory={selectedCategory}
-          keyword={searchValues[selectedCategory] ?? ""}
-          onChangeCategory={(category) => setSelectedCategory(category)}
-          onChangeKeyword={(keyword) => {
-            setSearchValues({ ...searchValues, [selectedCategory]: keyword });
-          }}
-          onSubmit={onSubmit}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
+					onSubmit={onSubmit}
         />
       ),
     },

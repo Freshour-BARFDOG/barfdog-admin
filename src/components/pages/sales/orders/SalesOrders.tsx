@@ -23,7 +23,6 @@ import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
 import {
   SalesBaseRow,
-  SalesSearchCategory,
   OrderStatus,
   OrderTypeRequest,
   SearchSalesData,
@@ -37,6 +36,7 @@ import CancelOrderModal from "../modal/CancelOrderModal";
 import OrderDetailModal from "../modal/OrderDetailModal";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
 import Loader from "@/components/common/loader/Loader";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 export default function SalesOrders() {
   const {
@@ -64,8 +64,17 @@ export default function SalesOrders() {
   const isDisableAction = submittedValues.orderType === "ALL";
 
   // 조건검색 카테고리
-  const [selectedCategory, setSelectedCategory] =
-    useState<SalesSearchCategory>("memberName");
+  const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<SearchSalesRequest, 'memberName' | 'memberEmail' | 'dogName' | 'merchantUid' | 'recipientName'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['memberName', 'memberEmail', 'dogName', 'merchantUid', 'recipientName'],
+	});
+
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const {
@@ -148,12 +157,10 @@ export default function SalesOrders() {
         <SearchFilterKeyword
           categoryOptions={SALES_SEARCH_CATEGORY}
           selectedCategory={selectedCategory}
-          keyword={searchValues[selectedCategory] ?? ""}
-          onChangeCategory={(category) => setSelectedCategory(category)}
-          onChangeKeyword={(keyword) => {
-            setSearchValues({ ...searchValues, [selectedCategory]: keyword });
-          }}
-          onSubmit={onSubmit}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
+					onSubmit={onSubmit}
         />
       ),
     },

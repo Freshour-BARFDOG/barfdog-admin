@@ -1,5 +1,4 @@
 'use client';
-import { useState } from "react";
 import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
@@ -13,14 +12,14 @@ import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { MemberListSearchParams } from "@/types/member";
-import { GradeType, SearchFilterItem } from "@/types/common";
+import { GradeType, SearchFilterItem, SelectOption } from "@/types/common";
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 import { INITIAL_SEARCH_VALUES, SEARCH_GRADE_LIST, SEARCH_STATUS } from "@/constants/member";
 import { SEARCH_CATEGORY } from "@/constants/common";
 import { useExcelDownloadMemberList } from "@/api/member/mutations/useExcelDownloadMemberList";
 import { downloadBlobFile } from '@/utils/downloadBlobFile';
 import { useToastStore } from "@/store/useToastStore";
-import { useSearchParams } from "next/navigation";
+import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 
 const MemberList = () => {
 	const {
@@ -32,10 +31,21 @@ const MemberList = () => {
 		onSubmit,
 		onReset,
 	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
-	const searchParams = useSearchParams();
-	const category = searchParams?.has('name') ? 'name' : 'email';
+
+	
 	const { data } = useGetMemberList(page,submittedValues ?? INITIAL_SEARCH_VALUES);
-	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>(category ?? 'email');
+
+	const {
+		keyword,
+		selectedCategory,
+		setSelectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<MemberListSearchParams, 'email' | 'name'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['email', 'name'],
+	});
 
 	const { mutate: excelDownload, isPending: isExcelDownloading } = useExcelDownloadMemberList();
 	const { addToast } = useToastStore();
@@ -81,13 +91,11 @@ const MemberList = () => {
 			label: '회원 검색',
 			children: (
 				<SearchFilterKeyword
-					categoryOptions={SEARCH_CATEGORY}
+					categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
 					selectedCategory={selectedCategory}
-					keyword={searchValues[selectedCategory]}
-					onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
-					onChangeKeyword={(keyword) => {
-						setSearchValues({...searchValues, [selectedCategory]: keyword});
-					}}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
 					onSubmit={onSubmit}
 				/>
 			),

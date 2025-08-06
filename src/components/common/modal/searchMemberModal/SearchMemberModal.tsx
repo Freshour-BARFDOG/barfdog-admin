@@ -1,5 +1,4 @@
 import * as styles from './SearchMemberModal.css';
-import { useState } from "react";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Button from "@/components/common/button/Button";
@@ -12,6 +11,8 @@ import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 import { INITIAL_SEARCH_VALUES } from "@/constants/member";
 import { SEARCH_CATEGORY } from "@/constants/common";
 import { MemberListData, MemberListSearchParams} from "@/types/member";
+import { useSearchCategoryKeyword } from '@/hooks/useSearchCategoryKeyword';
+import { SelectOption } from '@/types/common';
 
 interface SearchMemberModalProps {
 	isOpen: boolean;
@@ -36,7 +37,17 @@ export default function SearchMemberModal({
 		onReset,
 	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
 	const { data } = useGetMemberList(page,submittedValues ?? INITIAL_SEARCH_VALUES);
-	const [selectedCategory, setSelectedCategory] = useState<'email' | 'name'>('email');
+	
+	const {
+		keyword,
+		selectedCategory,
+		onChangeCategory,
+		onChangeKeyword,
+	} = useSearchCategoryKeyword<MemberListSearchParams, 'email' | 'name'>({
+		searchValues,
+		setSearchValues,
+		initialCategoryOptions: ['email', 'name'],
+	});
 
 	const {
 		selectedIds,
@@ -82,13 +93,11 @@ export default function SearchMemberModal({
 			<div className={styles.searchMemberContent}>
 				<InputFieldGroup label='회원 검색' divider={false}>
 					<SearchFilterKeyword
-						categoryOptions={SEARCH_CATEGORY}
+						categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
 						selectedCategory={selectedCategory}
-						keyword={searchValues[selectedCategory]}
-						onChangeCategory={(category) => setSelectedCategory(category as 'email' | 'name')}
-						onChangeKeyword={(keyword) => {
-							setSearchValues({...searchValues, [selectedCategory]: keyword});
-						}}
+						keyword={keyword}
+						onChangeCategory={onChangeCategory}
+						onChangeKeyword={onChangeKeyword}
 						onSubmit={onSubmit}
 					/>
 				</InputFieldGroup>
