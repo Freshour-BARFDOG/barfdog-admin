@@ -67,7 +67,6 @@ export default function OptionField({
   };
 
   const handleAddOption = () => {
-    console.log("클릭");
     saveFA.append({ name: "", price: 0, remaining: 0 });
   };
 

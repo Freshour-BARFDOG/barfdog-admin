@@ -48,7 +48,6 @@ export default function GeneralProductList() {
 
   const { data } = useGetGeneralProductList(params);
   const { mutate } = useDeleteGeneralProduct();
-  console.log("data", data);
 
   const { addToast } = useToastStore();
   const handleDelete = async (itemId: number) => {
