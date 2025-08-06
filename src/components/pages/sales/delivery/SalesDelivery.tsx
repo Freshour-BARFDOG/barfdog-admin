@@ -137,7 +137,10 @@ export default function SalesDelivery() {
       children: (
         <LabeledRadioButtonGroup<OrderStatus>
           options={ORDERS_DELIVERY_STATUS}
-          value={searchValues.statusList?.[0] ?? "DELIVERY_BEFORE_COLLECTION"}
+          value={
+            (searchValues.statusList?.[0] ??
+              "DELIVERY_BEFORE_COLLECTION") as OrderStatus
+          }
           onChange={(value) =>
             setSearchValues({
               ...searchValues,
