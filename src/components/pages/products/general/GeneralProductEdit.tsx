@@ -50,8 +50,6 @@ export default function GeneralProductEdit({
   }, [itemId, data, form, defaultValues]);
 
   const onSubmit = async (formValues: GeneralProductFormValues) => {
-    console.log("formValues", formValues);
-
     const payload = buildUpdateGeneralPayload(formValues);
     mutate(
       { itemId, body: payload },
@@ -66,8 +64,6 @@ export default function GeneralProductEdit({
       }
     );
   };
-
-  console.log(form.watch());
 
   if (isLoading) {
     return <Loader fullscreen />;

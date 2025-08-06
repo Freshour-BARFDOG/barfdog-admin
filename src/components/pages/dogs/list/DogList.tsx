@@ -64,21 +64,20 @@ export default function DogList() {
       },
       onError: (error) => {
         addToast("엑셀 다운로드에 실패했습니다");
-        console.log(error);
+        console.error(error);
       },
     });
   };
 
-  const {
-		keyword,
-		selectedCategory,
-		onChangeCategory,
-		onChangeKeyword,
-	} = useSearchCategoryKeyword<DogListRequest, 'dogName' | 'memberName' | 'memberEmail'>({
-		searchValues,
-		setSearchValues,
-		initialCategoryOptions: ['dogName', 'memberName', 'memberEmail'],
-	});
+  const { keyword, selectedCategory, onChangeCategory, onChangeKeyword } =
+    useSearchCategoryKeyword<
+      DogListRequest,
+      "dogName" | "memberName" | "memberEmail"
+    >({
+      searchValues,
+      setSearchValues,
+      initialCategoryOptions: ["dogName", "memberName", "memberEmail"],
+    });
 
   const filters: SearchFilterItem[] = [
     {
@@ -87,10 +86,10 @@ export default function DogList() {
         <SearchFilterKeyword
           categoryOptions={DOGS_CATEGORY}
           selectedCategory={selectedCategory}
-					keyword={keyword}
-					onChangeCategory={onChangeCategory}
-					onChangeKeyword={onChangeKeyword}
-					onSubmit={onSubmit}
+          keyword={keyword}
+          onChangeCategory={onChangeCategory}
+          onChangeKeyword={onChangeKeyword}
+          onSubmit={onSubmit}
         />
       ),
     },

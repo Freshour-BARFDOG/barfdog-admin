@@ -70,22 +70,26 @@ export default function SalesSearch() {
       },
       onError: (error) => {
         addToast("엑셀 다운로드에 실패했습니다.\n관리자에게 문의해주세요.");
-        console.log(error);
+        console.error(error);
       },
     });
   };
 
-  const {
-		keyword,
-		selectedCategory,
-		onChangeCategory,
-		onChangeKeyword,
-	} = useSearchCategoryKeyword<SearchSalesRequest, 'memberName' | 'memberEmail' | 'dogName' | 'merchantUid' | 'recipientName'>({
-		searchValues,
-		setSearchValues,
-		initialCategoryOptions: ['memberName', 'memberEmail', 'dogName', 'merchantUid', 'recipientName'],
-	});
-
+  const { keyword, selectedCategory, onChangeCategory, onChangeKeyword } =
+    useSearchCategoryKeyword<
+      SearchSalesRequest,
+      "memberName" | "memberEmail" | "dogName" | "merchantUid" | "recipientName"
+    >({
+      searchValues,
+      setSearchValues,
+      initialCategoryOptions: [
+        "memberName",
+        "memberEmail",
+        "dogName",
+        "merchantUid",
+        "recipientName",
+      ],
+    });
 
   const filters: SearchFilterItem[] = [
     {
@@ -114,10 +118,10 @@ export default function SalesSearch() {
         <SearchFilterKeyword
           categoryOptions={SALES_SEARCH_CATEGORY}
           selectedCategory={selectedCategory}
-					keyword={keyword}
-					onChangeCategory={onChangeCategory}
-					onChangeKeyword={onChangeKeyword}
-					onSubmit={onSubmit}
+          keyword={keyword}
+          onChangeCategory={onChangeCategory}
+          onChangeKeyword={onChangeKeyword}
+          onSubmit={onSubmit}
         />
       ),
     },
