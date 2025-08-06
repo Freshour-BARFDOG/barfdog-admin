@@ -11,6 +11,10 @@ import {
 } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 
+export const metadata = {
+  title: '관리자 | 일반 상품 상세',
+};
+
 type Params = { itemId: string };
 
 export default async function GeneralProductCreatePage({

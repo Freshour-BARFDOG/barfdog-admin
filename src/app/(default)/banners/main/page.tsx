@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import MainBannerList from "@/components/pages/banners/main/list/MainBannerList";
 import { prefetchGetMainBannerList } from "@/api/banners/queries/prefetchGetMainBannerList";
 
+export const metadata = {
+  title: '관리자 | 메인 배너',
+};
+
 export default async function MainBannerPage() {
   const queryClient = new QueryClient();
   await prefetchGetMainBannerList(queryClient);

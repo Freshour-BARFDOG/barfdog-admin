@@ -7,6 +7,10 @@ import AllianceDetail from "@/components/pages/alliance/management/detail/Allian
 import { prefetchAllianceDetail } from "@/api/alliance/queries/prefetchAllianceDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 제휴사 상세',
+};
+
 type Params = { allianceId: string };
 
 export default async function AllianceDetailPage({ params }: PageProps<Params>) {

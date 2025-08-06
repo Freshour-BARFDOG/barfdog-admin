@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import BestReviewList from "@/components/pages/review/list/bestReviewList/BestReviewList";
 import { prefetchGetBestReviewList } from "@/api/review/queries/prefetchGetBestReviewList";
 
+export const metadata = {
+  title: '관리자 | 베스트 리뷰',
+};
+
 export default async function BestReviewPage() {
   const queryClient = new QueryClient();
   await prefetchGetBestReviewList(queryClient);

@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import PromotionList from "@/components/pages/benefits/promotions/list/PromotionList";
 import { prefetchGetPromotionList } from "@/api/promotions/queries/prefetchGetPromotionList";
 
+export const metadata = {
+  title: '관리자 | 프로모션',
+};
+
 export default async function PromotionPage() {
   const queryClient = new QueryClient();
   await prefetchGetPromotionList(queryClient);

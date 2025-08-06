@@ -7,6 +7,10 @@ import ReviewDetail from "@/components/pages/review/detail/ReviewDetail";
 import { prefetchReviewDetail } from "@/api/review/queries/prefetchReviewDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 리뷰 상세',
+};
+
 type Params = { reviewId: string };
 
 export default async function ReviewDetailPage({ params }: PageProps<Params>) {

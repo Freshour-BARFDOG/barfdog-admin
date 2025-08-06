@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import InquiryList from "@/components/pages/community/inquiry/list/InquiryList";
 import { prefetchGetInquiryList } from "@/api/community/queries/prefetchGetInquiryList";
 
+export const metadata = {
+  title: '관리자 | 1:1 문의',
+};
+
 export default async function InquiryPage() {
   const queryClient = new QueryClient();
   await prefetchGetInquiryList(queryClient);

@@ -1,6 +1,10 @@
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import DeliveryFeePolicy from "@/components/pages/policies/deliveryFee/DeliveryFeePolicy";
 
+export const metadata = {
+  title: '관리자 | 배송비 정책',
+};
+
 export const dynamic = 'force-dynamic';
 
 export default function CouponPolicyPage() {

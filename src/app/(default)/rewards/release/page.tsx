@@ -6,6 +6,10 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import ReleaseRewardForm from "@/components/pages/benefits/rewards/form/ReleaseRewardForm";
 import { prefetchGetMemberList } from "@/api/member/queries/prefetchGetMemberList";
 
+export const metadata = {
+  title: '관리자 | 적립금 발행',
+};
+
 export default async function ReleaseRewardPage() {
 	const queryClient = new QueryClient();
 	await prefetchGetMemberList(queryClient);

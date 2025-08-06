@@ -9,9 +9,9 @@ import ReactQueryProviders from "@/providers/ReactQueryProvider";
 import Toast from "@/components/common/toast/Toast";
 
 export const metadata: Metadata = {
-  title: "바프독",
+  title: "바프독 관리자",
   description: "바프독 관리자 페이지",
-  icons: "/images/icons/favicon-develop.png",
+  icons: "/images/icons/admin_favicon.svg",
 };
 
 const pretendard = localFont({

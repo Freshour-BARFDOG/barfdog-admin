@@ -6,6 +6,10 @@ import AllianceManagementList from "@/components/pages/alliance/management/list/
 import Loader from "@/components/common/loader/Loader";
 import { prefetchGetAllianceManagement } from "@/api/alliance/queries/prefetchGetAllianceManagement";
 
+export const metadata = {
+  title: '관리자 | 제휴사 목록',
+};
+
 export default async function AllianceManagementPage() {
   const queryClient = new QueryClient();
   await prefetchGetAllianceManagement(queryClient);

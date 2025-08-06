@@ -6,6 +6,10 @@ import Wrapper from "@/components/layout/wrapper/Wrapper";
 import MemberList from "@/components/pages/member/list/MemberList";
 import Loader from "@/components/common/loader/Loader";
 
+export const metadata = {
+  title: '관리자 | 회원 관리',
+};
+
 export default async function MemberPage() {
   const queryClient = new QueryClient();
   await prefetchGetMemberList(queryClient);

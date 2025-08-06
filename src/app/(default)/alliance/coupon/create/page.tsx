@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import CreateAllianceCoupon from "@/components/pages/alliance/coupon/create/CreateAllianceCoupon";
 import { prefetchGetAllianceEventList } from "@/api/alliance/queries/prefetchGetAllianceEventList";
 
+export const metadata = {
+  title: '관리자 | 난수 쿠폰 생성',
+};
+
 export default async function CreateAllianceCouponPage() {
 	const queryClient = new QueryClient();
 	await prefetchGetAllianceEventList(queryClient);

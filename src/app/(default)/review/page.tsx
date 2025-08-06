@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import ReviewList from "@/components/pages/review/list/reviewList/ReviewList";
 import { prefetchGetReviewList } from "@/api/review/queries/prefetchGetReviewList";
 
+export const metadata = {
+  title: '관리자 | 리뷰',
+};
+
 export default async function ReviewPage() {
   const queryClient = new QueryClient();
   await prefetchGetReviewList(queryClient);

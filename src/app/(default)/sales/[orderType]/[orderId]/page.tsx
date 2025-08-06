@@ -7,6 +7,10 @@ import SalesDetailSubscribe from "@/components/pages/sales/detail/SalesDetailSub
 import { OrderTypeResponse } from "@/types/sales";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 주문 상세',
+};
+
 type Params = {
   orderType: OrderTypeResponse;
   orderId: string;
@@ -18,7 +22,7 @@ export default async function SalesDetailPage({
   const { orderType, orderId } = await params;
   const id = Number(orderId);
   return (
-    <ErrorBoundary fallback={<div>판매 상세 정보가 없습니다.</div>}>
+    <ErrorBoundary fallback={<div>주문 상세 정보가 없습니다.</div>}>
       <Suspense fallback={<Loader fullscreen />}>
         <Wrapper title="주문 상세 정보">
           {orderType === "subscribe" ? (

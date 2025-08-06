@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import MyPageBanner from "@/components/pages/banners/myPage/MyPageBanner";
 import { prefetchGetMyPageBanner } from "@/api/banners/queries/prefetchGetMyPageBanner";
 
+export const metadata = {
+  title: '관리자 | 마이페이지 배너',
+};
+
 export default async function MyPageBannerPage() {
   const queryClient = new QueryClient();
   await prefetchGetMyPageBanner(queryClient);

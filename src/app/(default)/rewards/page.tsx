@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import RewardList from "@/components/pages/benefits/rewards/list/RewardList";
 import { prefetchGetRewardList } from "@/api/rewards/queries/prefetchGetRewardList";
 
+export const metadata = {
+  title: '관리자 | 적립금',
+};
+
 export default async function RewardPage() {
   const queryClient = new QueryClient();
   await prefetchGetRewardList(queryClient);

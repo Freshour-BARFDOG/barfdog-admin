@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import TopBanner from "@/components/pages/banners/top/TopBanner";
 import { prefetchGetTopBanner } from "@/api/banners/queries/prefetchGetTopBanner";
 
+export const metadata = {
+  title: '관리자 | 최상단 띠 배너',
+};
+
 export default async function TopBannerPage() {
   const queryClient = new QueryClient();
   await prefetchGetTopBanner(queryClient);

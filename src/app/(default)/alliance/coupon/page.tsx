@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import AllianceCouponList from "@/components/pages/alliance/coupon/list/AllianceCouponList";
 import { prefetchGetAllianceCouponList } from "@/api/alliance/queries/prefetchGetAllianceCouponList";
 
+export const metadata = {
+  title: '관리자 | 제휴사 쿠폰 내역',
+};
+
 export default async function AllianceCouponPage() {
   const queryClient = new QueryClient();
   await prefetchGetAllianceCouponList(queryClient);

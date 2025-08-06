@@ -6,6 +6,10 @@ import Loader from "@/components/common/loader/Loader";
 import MemberCouponList from "@/components/pages/benefits/coupons/list/memberCouponList/MemberCouponList";
 import { prefetchGetMemberCouponList } from "@/api/coupons/queries/prefetchGetMemberCouponList";
 
+export const metadata = {
+  title: '관리자 | 쿠폰 사용 현황',
+};
+
 export default async function MemberCouponsPage() {
   const queryClient = new QueryClient();
   await prefetchGetMemberCouponList(queryClient);

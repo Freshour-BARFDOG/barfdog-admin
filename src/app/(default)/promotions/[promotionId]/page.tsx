@@ -10,6 +10,10 @@ import {
 } from "@/api/promotions/queries/prefetchGetPromotionDetail";
 import { PageProps } from "@/types/common";
 
+export const metadata = {
+  title: '관리자 | 프로모션 상세',
+};
+
 type Params = { promotionId: string };
 
 export default async function PromotionDetailPage({ params }: PageProps<Params>) {;
@@ -22,7 +26,7 @@ export default async function PromotionDetailPage({ params }: PageProps<Params>)
   const dehydrateState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydrateState}>
-      <ErrorBoundary fallback={<div>회원 정보가 없습니다.</div>}>
+      <ErrorBoundary fallback={<div>프로모션 정보가 없습니다.</div>}>
         <Suspense fallback={<Loader fullscreen />}>
           <Wrapper>
             <PromotionDetail promotionId={promotionId} />
