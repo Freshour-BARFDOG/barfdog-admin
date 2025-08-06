@@ -29,6 +29,7 @@ export default function ImageCarousel({
     width,
     height,
   };
+
   return (
     <Swiper slidesPerView="auto" className={previewSlider}>
       {imageList.map((preview, index) => {
@@ -55,11 +56,11 @@ export default function ImageCarousel({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRemoveFile(preview.id, preview.filename)
+                  handleRemoveFile(preview.id, preview.filename);
                 }}
                 className={removeButton}
               >
-                <X size={20} color='gray' />
+                <X size={20} color="gray" />
               </button>
             )}
           </SwiperSlide>

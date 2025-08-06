@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { ChangeEvent } from "react";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
-import { unformatCommaNumber } from "@/utils/formatNumber";
 import { useToastStore } from "@/store/useToastStore";
 import { useUploadImage } from "@/api/common/mutations/useUploadImage";
 import { parseImageIdsFromContent } from "@/utils/parseImageIdsFromContent";

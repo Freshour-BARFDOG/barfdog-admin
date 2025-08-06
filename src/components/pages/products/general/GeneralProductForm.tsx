@@ -74,11 +74,9 @@ export default function GeneralProductForm({
 
   const {
     control,
-    handleSubmit,
     setValue,
-    watch,
     getValues,
-    formState: { isValid, errors },
+    formState: { errors },
   } = form;
 
   const hasErrors = Object.keys(errors).length > 0;
