@@ -77,6 +77,7 @@ export default function GeneralProductForm({
     handleSubmit,
     setValue,
     watch,
+    getValues,
     formState: { isValid, errors },
   } = form;
 
@@ -312,7 +313,7 @@ export default function GeneralProductForm({
         >
           취소
         </Button>
-        <Button onClick={handleSubmit(onSubmit)} disabled={hasErrors}>
+        <Button onClick={() => onSubmit(getValues())} disabled={hasErrors}>
           {isEdit ? "수정" : "등록"}
         </Button>
       </div>

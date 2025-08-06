@@ -10,10 +10,7 @@ import {
 } from "react-hook-form";
 import InputField from "@/components/common/inputField/InputField";
 import Button from "@/components/common/button/Button";
-import {
-  formatNumberWithComma,
-  unformatCommaNumber,
-} from "@/utils/formatNumber";
+import { formatNumberWithComma } from "@/utils/formatNumber";
 import * as styles from "./OptionField.css";
 import { commonWrapper } from "@/styles/common.css";
 import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
@@ -47,6 +44,7 @@ export default function OptionField({
   const updateFA = useFieldArray({
     control,
     name: "itemOptionUpdateDtoList",
+    keyName: "fieldId", // 내부 UUID 필드를 fieldId 로 분리
   });
   // 삭제된 옵션 ID 리스트
   const deleteIds = useWatch({
@@ -59,6 +57,7 @@ export default function OptionField({
   };
 
   const removeUpdate = (idx: number) => {
+    // removed.id 는 이제 form 데이터의 숫자 ID
     const removed = updateFA.fields[idx];
     setValue(
       "deleteOptionIdList",
@@ -93,7 +92,7 @@ export default function OptionField({
           <tbody>
             {isEdit &&
               updateFA.fields.map((field, idx) => (
-                <tr key={field.id}>
+                <tr key={field.fieldId}>
                   <td className={styles.td}>
                     <Controller
                       control={control}
