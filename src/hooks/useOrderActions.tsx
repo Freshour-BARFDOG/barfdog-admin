@@ -31,17 +31,28 @@ export function useOrderActions(
   orderTypeReq: OrderTypeRequest
 ) {
   const { addToast } = useToastStore();
+
+  // 판매 취소 모달
   const {
     isOpen: isCancelModalOpen,
     onClose: onCancelModalClose,
     onToggle: onCancelModalToggle,
   } = useModal();
 
+  // 일반 상품 상세 모달
   const {
     isOpen: isDetailModalOpen,
     onClose: onCloseDetailModal,
     onToggle: onToggleDetailModal,
   } = useModal();
+
+  // 주문 발송 묶음 배송 포함 알림 모달
+  const {
+    isOpen: isDeliveryAlertOpen,
+    onClose: onDeliveryAlertClose,
+    onToggle: onDeliveryAlertToggle,
+  } = useModal();
+
   const [detailData, setDetailData] = useState<
     Array<{ orderId: number; items: TableItem[] }>
   >([]);
@@ -55,7 +66,6 @@ export function useOrderActions(
 
   // goodsflow 훅
   const { mutateAsync: getOtp } = useGoodsFlowOtp();
-  const { mutateAsync: getContractList } = useGoodsFlowContractList();
   const { mutateAsync: registerGoodsFlowOrder } = useGoodsFlowOrderRegister();
   const { mutateAsync: printGoodsFlow } = useGoodsFlowPrint();
   const { mutateAsync: contractList } = useGoodsFlowContractList();
@@ -180,14 +190,21 @@ export function useOrderActions(
       setSelectedIds([]);
       return;
     }
-    if (
-      !window.confirm(
-        `선택하신 ${selectedIds.length}개를 발송처리 하시겠습니까?`
-      )
-    ) {
-      return;
-    }
 
+    // packageDelivery가 true인 항목이 있는지 체크
+    const hasPackageDelivery = selectedItems.some(
+      (item) => item.packageDelivery
+    );
+
+    if (hasPackageDelivery) {
+      onDeliveryAlertToggle();
+    } else {
+      executeDelivery();
+    }
+  };
+
+  // 실제 배송 처리 로직을 별도 함수로 분리
+  const executeDelivery = async () => {
     try {
       // 3-1) BE: 배송정보 조회, BE에서 orderId만 이용해서 조회함
       const orderListReq = selectedIds.map((orderId) => ({
@@ -236,6 +253,17 @@ export function useOrderActions(
     } catch (err: any) {
       addToast(`발송 처리 중 오류가 발생했습니다.\n${err.message || err}`);
     }
+  };
+
+  // AlertModal에서 확인 클릭 시
+  const handleDeliveryConfirm = async () => {
+    onDeliveryAlertClose();
+    await executeDelivery();
+  };
+
+  // AlertModal에서 취소 클릭 시
+  const handleDeliveryCancel = () => {
+    onDeliveryAlertClose();
   };
 
   // 4) 판매취소 - 모달 열기
@@ -512,5 +540,10 @@ export function useOrderActions(
     setCancelReason,
     onCancelModalClose,
     handleForcedDeliveryComplete,
+
+    // 배송 AlertModal
+    isDeliveryAlertOpen,
+    handleDeliveryConfirm,
+    handleDeliveryCancel,
   };
 }

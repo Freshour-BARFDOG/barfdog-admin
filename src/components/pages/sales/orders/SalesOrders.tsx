@@ -37,6 +37,8 @@ import OrderDetailModal from "../modal/OrderDetailModal";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
 import Loader from "@/components/common/loader/Loader";
 import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
+import AlertModal from "@/components/common/modal/alertModal/AlertModal";
+import useModal from "@/hooks/useModal";
 
 export default function SalesOrders() {
   const {
@@ -64,16 +66,21 @@ export default function SalesOrders() {
   const isDisableAction = submittedValues.orderType === "ALL";
 
   // 조건검색 카테고리
-  const {
-		keyword,
-		selectedCategory,
-		onChangeCategory,
-		onChangeKeyword,
-	} = useSearchCategoryKeyword<SearchSalesRequest, 'memberName' | 'memberEmail' | 'dogName' | 'merchantUid' | 'recipientName'>({
-		searchValues,
-		setSearchValues,
-		initialCategoryOptions: ['memberName', 'memberEmail', 'dogName', 'merchantUid', 'recipientName'],
-	});
+  const { keyword, selectedCategory, onChangeCategory, onChangeKeyword } =
+    useSearchCategoryKeyword<
+      SearchSalesRequest,
+      "memberName" | "memberEmail" | "dogName" | "merchantUid" | "recipientName"
+    >({
+      searchValues,
+      setSearchValues,
+      initialCategoryOptions: [
+        "memberName",
+        "memberEmail",
+        "dogName",
+        "merchantUid",
+        "recipientName",
+      ],
+    });
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -95,6 +102,10 @@ export default function SalesOrders() {
     setCancelReason,
     handleCancelConfirm,
     onCancelModalClose,
+    // 주문 발송 묶음 배송 모달
+    isDeliveryAlertOpen,
+    handleDeliveryConfirm,
+    handleDeliveryCancel,
   } = useOrderActions(
     orderData,
     selectedIds,
@@ -157,10 +168,10 @@ export default function SalesOrders() {
         <SearchFilterKeyword
           categoryOptions={SALES_SEARCH_CATEGORY}
           selectedCategory={selectedCategory}
-					keyword={keyword}
-					onChangeCategory={onChangeCategory}
-					onChangeKeyword={onChangeKeyword}
-					onSubmit={onSubmit}
+          keyword={keyword}
+          onChangeCategory={onChangeCategory}
+          onChangeKeyword={onChangeKeyword}
+          onSubmit={onSubmit}
         />
       ),
     },
@@ -323,6 +334,7 @@ export default function SalesOrders() {
               size="sm"
               variant="outline"
               onClick={handleDelivery}
+              // onClick={handleDeliveryClick}
               disabled={isDisableAction}
             >
               주문발송
@@ -368,6 +380,16 @@ export default function SalesOrders() {
             />
           </div>
         }
+      />
+      <AlertModal
+        title="주문 발송 처리 하시겠습니까?"
+        content="묶음 배송 상품이 포함되어 있습니다"
+        isOpen={isDeliveryAlertOpen}
+        onClose={handleDeliveryCancel}
+        cancelText="취소"
+        confirmText="주문 발송"
+        onConfirm={handleDeliveryConfirm}
+        onCancel={handleDeliveryCancel}
       />
     </ListLayout>
   );

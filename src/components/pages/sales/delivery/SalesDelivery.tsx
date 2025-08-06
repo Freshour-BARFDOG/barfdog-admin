@@ -58,8 +58,13 @@ export default function SalesDelivery() {
 
   const orderData = data?.orders ?? [];
 
-  // 주문유형 전체일때 액션 사용 불가능
-  const isDisableAction = submittedValues.orderType === "ALL";
+  // 주문유형 전체일때만 송장 재출력 비활성화
+  const isDisableReprint = submittedValues.orderType === "ALL";
+
+  // searchValues.statusList에 DELIVERY_DONE이 포함되어 있으면 비활성화
+  const isDisableForceComplete =
+    submittedValues.orderType === "ALL" ||
+    submittedValues.statusList?.includes("DELIVERY_DONE");
 
   // 조건검색 카테고리
   const [selectedCategory, setSelectedCategory] =
@@ -264,7 +269,7 @@ export default function SalesDelivery() {
               size="sm"
               variant="outline"
               onClick={handleReprintInvoice}
-              disabled={isDisableAction}
+              disabled={isDisableReprint}
             >
               송장 재출력
             </Button>
@@ -272,7 +277,7 @@ export default function SalesDelivery() {
               size="sm"
               variant="outline"
               onClick={handleForcedDeliveryComplete}
-              disabled={isDisableAction}
+              disabled={isDisableForceComplete}
             >
               강제 배송완료
             </Button>
