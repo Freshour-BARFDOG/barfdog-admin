@@ -66,8 +66,6 @@ export default function SalesSearch() {
     size: PAGE_SIZE.SALES.ORDERS,
   };
 
-  console.log("submittedValues", submittedValues);
-
   const { data, isLoading } = useGetSearchSales(params);
 
   const { mutate: excelDownload } = useExcelDownloadSearchSales();
