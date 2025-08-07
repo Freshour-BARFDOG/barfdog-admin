@@ -112,8 +112,6 @@ export default function SalesOrders() {
     searchValues.orderType as OrderTypeRequest
   );
 
-  console.log("submittedValues", submittedValues);
-
   // → 2) 전체선택 체크박스 상태 계산
   const allSelected = useMemo(
     () => orderData.length > 0 && selectedIds.length === orderData.length,

@@ -42,9 +42,9 @@ export function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
         throw new Error(errorMessage);
       }
     },
-    onSuccess: async (data) => {
-      console.log("로그인 성공", data);
-    },
+    // onSuccess: async (data) => {
+    //   console.log("로그인 성공", data);
+    // },
     onError: (error) => {
       console.log("로그인 실패", error);
     },
