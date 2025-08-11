@@ -102,7 +102,9 @@ export default function GeneralProductList() {
     {
       key: "name",
       header: "상품명",
-      render: (row) => truncateText(row.name, 10),
+      render: (row) => (
+        <span title={row.name}>{truncateText(row.name, 30)}</span>
+      ),
     },
     {
       key: "originalPrice",
