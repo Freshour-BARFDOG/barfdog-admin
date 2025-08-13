@@ -56,7 +56,7 @@ export default function GeneralProductEdit({
       {
         onSuccess: async () => {
           addToast("일반 상품 수정이 완료되었습니다");
-          router.push("/products/general");
+          router.back();
         },
         onError: () => {
           addToast("일반 상품 수정을 실패했습니다");

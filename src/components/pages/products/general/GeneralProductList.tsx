@@ -35,7 +35,7 @@ export default function GeneralProductList() {
     setSearchValues,
     submittedValues,
     page,
-    setPage,
+    onChangePage,
     onSubmit,
     onReset,
   } = useSearchValues<GeneralProductSearchValues>(INITIAL_PRODUCTS_REQUEST);
@@ -179,7 +179,7 @@ export default function GeneralProductList() {
         data={data?.items as GeneralProductItemList}
         columns={columns}
         page={page}
-        onPageChange={setPage}
+        onPageChange={onChangePage}
         totalPages={data?.page?.totalPages ?? 0}
         title="목록"
         emptyText="상품 관리 데이터가 없습니다."

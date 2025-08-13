@@ -302,7 +302,7 @@ export default function GeneralProductForm({
 
       <div className={commonWrapper({ gap: 8, padding: 20 })}>
         <Button
-          onClick={() => router.push("/products/general")}
+          onClick={() => router.back()}
           variant="outline"
           type="assistive"
         >
