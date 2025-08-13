@@ -69,8 +69,8 @@ const ICON_TYPE_OPTIONS: SelectOption<ItemIcons>[] = [
   { value: "NEW", label: "NEW" },
 ];
 const DELIVERY_FREE_OPTIONS: SelectOption<boolean>[] = [
-  { value: true, label: "유료" },
-  { value: false, label: "무료" },
+  { value: false, label: "유료" },
+  { value: true, label: "무료" },
 ];
 const ITEM_STATUS_OPTIONS: SelectOption<ProductVisibilityStatus>[] = [
   { value: "LEAKED", label: "노출" },
