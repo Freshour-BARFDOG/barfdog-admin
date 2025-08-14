@@ -83,7 +83,10 @@ const updateSalesDelivery = async ({
 const confirmOrder = async ({ orderType, body }: ConfirmOrderRequest) => {
   const { data } = await axiosInstance.post(
     `/api/admin/orders/${orderType}/orderConfirm`,
-    body
+    body,
+    {
+      timeout: 60000,
+    }
   );
   return data;
 };
@@ -97,7 +100,10 @@ const unConfirmOrder = async ({
 }) => {
   const { data } = await axiosInstance.post(
     `/api/admin/orders/${orderType}/orderConfirmCancel`,
-    { orderIdList }
+    { orderIdList },
+    {
+      timeout: 60000,
+    }
   );
   return data;
 };
@@ -118,7 +124,10 @@ const cancelOrderBySeller = async ({
 }) => {
   const { data } = await axiosInstance.post(
     `/api/admin/orders/${orderType}/orderCancel`,
-    body
+    body,
+    {
+      timeout: 60000,
+    }
   );
   return data;
 };
