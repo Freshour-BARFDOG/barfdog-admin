@@ -37,7 +37,7 @@ const excelDownloadSearchSales = async (
   const { data } = await axiosInstance.post(
     "/api/admin/orders/searchAll/excel",
     body,
-    { responseType: "blob" }
+    { responseType: "blob", timeout: 50000 }
   );
 
   return data;

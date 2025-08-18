@@ -32,7 +32,7 @@ const excelDownloadDogs = async (body: DogListRequest): Promise<Blob> => {
   const { data } = await axiosInstance.post(
     "/api/admin/dogs/excel-download",
     body,
-    { responseType: "blob" }
+    { responseType: "blob", timeout: 50000 }
   );
 
   return data;
