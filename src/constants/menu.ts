@@ -12,6 +12,7 @@ import {
   ShoppingBasket,
   Star,
   Users,
+  Stethoscope,
 } from "lucide-react";
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -232,6 +233,23 @@ export const MENU_ITEMS: MenuItem[] = [
         key: "bestReview",
         label: "베스트 리뷰",
         href: "/review/best-review",
+      },
+    ],
+  },
+  {
+    key: "diagnosis",
+    label: "진단 관리",
+    icon: Stethoscope,
+    children: [
+      {
+        key: "probiome",
+        label: "장내 미생물 진단",
+        href: "/diagnosis/probiome",
+      },
+      {
+        key: "kit",
+        label: "진단 키트 관리",
+        href: "/diagnosis/kit",
       },
     ],
   },
