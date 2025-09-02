@@ -23,7 +23,6 @@ import {
   ProbiomeListItem,
   ProbiomeListParams,
   ProbiomeListRequest,
-  ProbiomeListResponse,
   DiagnosisStatus,
 } from "@/types/diagnosis";
 import Chips from "@/components/common/chips/Chips";
