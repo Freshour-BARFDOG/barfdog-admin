@@ -20,12 +20,14 @@ import {
   PROBIOME_STATUS_CONFIG,
 } from "@/constants/diagnosis";
 import {
+  ProbiomeListItem,
+  ProbiomeListParams,
+  ProbiomeListRequest,
   ProbiomeListResponse,
-  ProbiomeParams,
-  ProbiomeRequest,
-  ProbiomeStatus,
+  DiagnosisStatus,
 } from "@/types/diagnosis";
 import Chips from "@/components/common/chips/Chips";
+import { useGetProbiomeList } from "@/api/diagnosis/queries/useGetProbiomeList";
 
 export default function ProbiomeDiagnosis() {
   const {
@@ -36,86 +38,23 @@ export default function ProbiomeDiagnosis() {
     onChangePage,
     onSubmit,
     onReset,
-  } = useSearchValues<ProbiomeRequest>(INITIAL_PROBIOME_REQUEST);
-
-  const params: ProbiomeParams = {
+  } = useSearchValues<ProbiomeListRequest>(INITIAL_PROBIOME_REQUEST);
+  const params: ProbiomeListParams = {
     body: submittedValues ?? INITIAL_PROBIOME_REQUEST,
     page,
     size: PAGE_SIZE.COMMON,
   };
 
-  // const { data, isLoading } = useGetSearchSales(params);
-  // 임시 mock 데이터
-  const data = {
-    probiomeDiagnosisList: [
-      {
-        id: 47,
-        memberName: "김철수",
-        phoneNumber: "010-1234-5678",
-        email: "kim@example.com",
-        status: "SUBMITTED" as ProbiomeStatus,
-        dogName: "두부",
-        serialNumber: "PB001234567",
-        submitDate: "2025-08-18",
-      },
-      {
-        id: 46,
-        memberName: "이영희",
-        phoneNumber: "010-9876-5432",
-        email: "lee@example.com",
-        status: "KIT_PICKUP_REQUESTED" as ProbiomeStatus,
-        dogName: "초코",
-        serialNumber: "PB001234566",
-        submitDate: "2025-08-17",
-      },
-      {
-        id: 45,
-        memberName: "박민수",
-        phoneNumber: "010-5555-1234",
-        email: "park@example.com",
-        status: "KIT_PICKUP_DONE" as ProbiomeStatus,
-        dogName: "베리",
-        serialNumber: "PB001234565",
-        submitDate: "2025-08-16",
-      },
-      {
-        id: 44,
-        memberName: "최지연",
-        phoneNumber: "010-7777-8888",
-        email: "choi@example.com",
-        status: "ANALYZING" as ProbiomeStatus,
-        dogName: "몽이",
-        serialNumber: "PB001234564",
-        submitDate: "2025-08-15",
-      },
-      {
-        id: 43,
-        memberName: "정수한",
-        phoneNumber: "010-3333-4444",
-        email: "jung@example.com",
-        status: "COMPLETED" as ProbiomeStatus,
-        dogName: "콩이",
-        serialNumber: "PB001234563",
-        submitDate: "2025-08-14",
-      },
-    ],
-    page: {
-      size: 10,
-      totalElements: 5,
-      totalPages: 1,
-      number: 0,
-    },
-  };
-
+  const { data } = useGetProbiomeList(params);
   // 조건검색 카테고리
   const { keyword, selectedCategory, onChangeCategory, onChangeKeyword } =
     useSearchCategoryKeyword<
-      ProbiomeRequest,
-      "memberName" | "dogName" | "serialNumber"
+      ProbiomeListRequest,
+      "memberName" | "petName" | "kitSerialNumber"
     >({
       searchValues,
       setSearchValues,
-      initialCategoryOptions: ["memberName", "dogName", "serialNumber"],
+      initialCategoryOptions: ["memberName", "petName", "kitSerialNumber"],
     });
 
   const handleFilterSubmit = () => {
@@ -132,15 +71,15 @@ export default function ProbiomeDiagnosis() {
       children: (
         <DateRangeFilter
           value={{
-            startDate: searchValues.from,
-            endDate: searchValues.to,
+            startDate: searchValues.fromDate,
+            endDate: searchValues.toDate,
           }}
           onChangeRange={(value) => {
             const { startDate, endDate } = value;
             setSearchValues({
               ...searchValues,
-              from: startDate as string,
-              to: endDate as string,
+              fromDate: startDate as string,
+              toDate: endDate as string,
             });
           }}
         />
@@ -163,13 +102,13 @@ export default function ProbiomeDiagnosis() {
     {
       label: "주문유형",
       children: (
-        <LabeledRadioButtonGroup<ProbiomeStatus>
+        <LabeledRadioButtonGroup<DiagnosisStatus | null>
           options={PROBIOME_STATUS}
-          value={searchValues.status}
+          value={searchValues.diagnosisStatus}
           onChange={(value) =>
             setSearchValues({
               ...searchValues,
-              status: value as ProbiomeStatus,
+              diagnosisStatus: value as DiagnosisStatus | null,
             })
           }
           optionType="radio"
@@ -178,16 +117,16 @@ export default function ProbiomeDiagnosis() {
     },
   ];
 
-  const columns: TableColumn<ProbiomeListResponse>[] = [
+  const columns: TableColumn<ProbiomeListItem>[] = [
     {
       key: "id",
       header: "번호",
       width: "60px",
       render: (row, index) =>
         getTableRowNumber({
-          totalElements: data?.page.totalElements as number,
-          currentPage: data?.page.number as number,
-          pageSize: data?.page.size as number,
+          totalElements: data?.pagination.totalCount as number,
+          currentPage: data?.pagination.page as number,
+          pageSize: data?.pagination.size as number,
           index,
         }).toString(),
     },
@@ -195,7 +134,7 @@ export default function ProbiomeDiagnosis() {
       key: "id",
       header: "상세보기",
       render: (row) => {
-        const diagnosisId = row.id;
+        const diagnosisId = row.diagnosisId;
         return (
           <Link href={`/diagnosis/probiome/${diagnosisId}`} target="_blank">
             <Text type="body3" color="red">
@@ -212,23 +151,23 @@ export default function ProbiomeDiagnosis() {
         return (
           <Chips
             variant="solid"
-            color={PROBIOME_STATUS_CONFIG[row.status].chipColor}
+            color={PROBIOME_STATUS_CONFIG[row.diagnosisStatus].chipColor}
           >
-            {PROBIOME_STATUS_CONFIG[row.status].label}
+            {PROBIOME_STATUS_CONFIG[row.diagnosisStatus].label}
           </Chips>
         );
       },
     },
     { key: "memberName", header: "견주 이름" },
     {
-      key: "dogName",
+      key: "petName",
       header: "반려견명",
-      render: (row) => (row.dogName ? row.dogName : "-"),
+      render: (row) => (row.petName ? row.petName : "-"),
     },
     { key: "phoneNumber", header: "연락처" },
     { key: "email", header: "이메일" },
-    { key: "serialNumber", header: "시리얼번호" },
-    { key: "submitDate", header: "문진 작성일" },
+    { key: "kitSerialNumber", header: "시리얼번호" },
+    { key: "diagnosisDate", header: "문진 작성일" },
   ];
 
   return (
@@ -239,11 +178,11 @@ export default function ProbiomeDiagnosis() {
         onReset={handleFilterReset}
       />
       <TableSection
-        data={data?.probiomeDiagnosisList as ProbiomeListResponse[]}
+        data={data?.diagnosisList as ProbiomeListItem[]}
         columns={columns}
         page={page}
         onPageChange={onChangePage}
-        totalPages={data?.page?.totalPages ?? 0}
+        totalPages={data?.pagination?.totalPages ?? 0}
         title="목록"
         emptyText="프로바이옴 진단 데이터가 없습니다."
       />

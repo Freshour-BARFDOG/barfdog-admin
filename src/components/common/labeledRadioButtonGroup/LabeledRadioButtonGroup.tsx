@@ -2,7 +2,9 @@ import { commonWrapper } from "@/styles/common.css";
 import { SelectOption } from "@/types/common";
 import LabeledRadioButton from "@/components/common/labeledRadioButton/LabeledRadioButton";
 
-interface LabeledRadioButtonGroupProps<T extends string | number | boolean> {
+interface LabeledRadioButtonGroupProps<
+  T extends string | number | boolean | null
+> {
   options: SelectOption<T>[];
   value: T;
   onChange: (value: T) => void;
@@ -12,7 +14,7 @@ interface LabeledRadioButtonGroupProps<T extends string | number | boolean> {
 }
 
 export default function LabeledRadioButtonGroup<
-  T extends string | number | boolean
+  T extends string | number | boolean | null
 >({
   options,
   value,

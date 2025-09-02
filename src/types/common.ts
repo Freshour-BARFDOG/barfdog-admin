@@ -47,6 +47,15 @@ interface Page {
   number: number;
 }
 
+interface Pagination {
+  page: number;
+  size: number;
+  totalPages: number;
+  totalCount: number;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+}
+
 interface PagePrams {
   page?: number;
   size?: number;
@@ -105,14 +114,31 @@ interface TableItem {
 }
 
 interface UploadResponse {
-	id: number;
-	url: string;
+  id: number;
+  url: string;
 }
 
 type PageProps<P extends object = object, S extends object = object> = {
   params: Promise<P>;
   searchParams: Promise<S>;
 };
+
+interface PaginatedData<T> {
+  pagination: Pagination;
+  items: T[];
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T | null;
+  message: string | null;
+  detailMessage: string | null;
+  errorCode: string | null;
+}
+
+type ApiPaginatedResponse<T> = ApiResponse<PaginatedData<T>>;
+
+type ValueOfTuple<T extends readonly unknown[]> = T[number];
 
 export type {
   MenuItem,
@@ -134,4 +160,9 @@ export type {
   TableItem,
   UploadResponse,
   PageProps,
+  Pagination,
+  ApiResponse,
+  ApiPaginatedResponse,
+  PaginatedData,
+  ValueOfTuple,
 };

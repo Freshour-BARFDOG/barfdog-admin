@@ -6,7 +6,7 @@ import SvgIcon from "../svgIcon/SvgIcon";
 import Text from "@/components/common/text/Text";
 
 export interface LabeledRadioButtonProps<
-  T extends string | number | boolean = string
+  T extends string | number | boolean | null = string
 > {
   label?: string;
   iconSize?: number;
@@ -18,7 +18,7 @@ export interface LabeledRadioButtonProps<
 }
 
 export default function LabeledRadioButton<
-  T extends string | number | boolean = string
+  T extends string | number | boolean | null = string
 >({
   label,
   iconSize = 24,

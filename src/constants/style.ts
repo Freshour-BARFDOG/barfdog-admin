@@ -15,6 +15,7 @@ export type Colors =
   | "gray100"
   | "gray50"
   | "gray0"
+  | "blue600"
   | "blue500"
   | "blue400"
   | "blue300"
@@ -39,6 +40,7 @@ const COLORS: Record<Colors, string> = {
   gray100: themeVars.colors.gray.gray100,
   gray50: themeVars.colors.gray.gray50,
   gray0: themeVars.colors.gray.gray0,
+  blue600: themeVars.colors.blue.blue600,
   blue500: themeVars.colors.blue.blue500,
   blue400: themeVars.colors.blue.blue400,
   blue300: themeVars.colors.blue.blue300,

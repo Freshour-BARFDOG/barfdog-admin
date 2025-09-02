@@ -86,7 +86,7 @@ export const [themeClass, themeVars] = createTheme({
       red: "#ff2600",
       blue: "#413ea0",
       purple: "#8884d8",
-    }
+    },
   },
   // ------------------ colors 디자인 시스템 ------------------
 

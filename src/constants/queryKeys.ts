@@ -106,8 +106,12 @@ const queryKeys = {
   DASHBOARD: {
     BASE: "dashboard",
     GET_STATS_DATA: "getStatsData",
-  }
-  
+  },
+  DIAGNOSIS: {
+    BASE: "diagnosis",
+    GET_LIST: "getList",
+    GET_PROBIOME_DETAIL: "getProbiomeDetail",
+  },
 } as const;
 
 export { queryKeys };
