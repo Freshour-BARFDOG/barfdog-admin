@@ -6,6 +6,14 @@ export const petDefecationImage = style({
   objectFit: "cover",
 });
 
+export const fileUploadInput = style({
+  display: "none",
+});
+
+export const fileDownloadLink = style({
+  textDecoration: "underline",
+});
+
 export const iconWrapper = style({
   display: "flex",
   alignItems: "flex-start",

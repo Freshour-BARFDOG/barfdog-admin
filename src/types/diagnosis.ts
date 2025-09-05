@@ -17,6 +17,8 @@ import type {
   HEALTH_CONCERNS,
   ACQUISITION_TYPES,
   LEVEL5,
+  DIAGNOSIS_KIT_TYPE,
+  DIAGNOSIS_KIT_GROUP_STATUS,
 } from "@/constants/diagnosis";
 
 type ProbiomeCategory = Exclude<
@@ -45,6 +47,7 @@ interface DiagnosisStatusConfig {
   description?: string;
   buttonText?: string;
   nextStatus: DiagnosisStatus;
+  // buttonColor?:
 }
 
 interface ProbiomeListItem {
@@ -83,6 +86,8 @@ type PetType = ValueOfTuple<typeof PET_TYPES>;
 type SupplementType = ValueOfTuple<typeof SUPPLEMENT_TYPES>;
 type HealthConcern = ValueOfTuple<typeof HEALTH_CONCERNS>;
 type AcquisitionType = ValueOfTuple<typeof ACQUISITION_TYPES>;
+type DiagnosisKitType = ValueOfTuple<typeof DIAGNOSIS_KIT_TYPE>;
+type DiagnosisKitGroupStatus = ValueOfTuple<typeof DIAGNOSIS_KIT_GROUP_STATUS>;
 
 // ===== VO =====
 interface UrlObject {
@@ -189,6 +194,42 @@ interface UpdateProbiomeStatusResponse {
   diagnosisStatus: DiagnosisStatus;
 }
 
+interface DiagnosisKitGroup {
+  kitGroupId: number;
+  kitGroupName: string;
+  kitType: DiagnosisKitType;
+  kitCount: number;
+  kitGroupStatus: DiagnosisKitGroupStatus;
+  manufacturer: string;
+  snGeneratedDate: string;
+  snIssuedDate: string | null;
+}
+
+interface DiagnosisKitListResponse {
+  pagination: Pagination;
+  diagnosisKitGroupList: DiagnosisKitGroup[];
+}
+
+interface CreateDiagnosisKitsRequest {
+  kitName: string;
+  manufacturer: string;
+  manufactureDate: string;
+  kitCount: number;
+  kitType: DiagnosisKitType;
+}
+
+interface CreateDiagnosisKitsResponse {
+  kitGroupId: number;
+  createKitCount: number;
+  kitType: DiagnosisKitType;
+}
+
+interface ProbiomeReportUploadResponse {
+  diagnosisId: number;
+  diagnosisStatus: DiagnosisStatus; // "REPORT_COMPLETED" 기대
+  downloadReportUrl: UrlObject; // { url: string }
+}
+
 export type {
   DiagnosisStatus,
   ProbiomeCategory,
@@ -225,4 +266,11 @@ export type {
   SurveyInfoType,
   ProbiomeDetailResponse,
   UpdateProbiomeStatusResponse,
+  DiagnosisKitListResponse,
+  DiagnosisKitGroup,
+  DiagnosisKitType,
+  DiagnosisKitGroupStatus,
+  CreateDiagnosisKitsRequest,
+  CreateDiagnosisKitsResponse,
+  ProbiomeReportUploadResponse,
 };

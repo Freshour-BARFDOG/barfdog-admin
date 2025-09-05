@@ -12,14 +12,17 @@ export default function TimeLineInfo({ timLineData }: TimeLineInfoProps) {
     {
       label: "결과지 업로드일",
       value: timLineData.reportCompletedDate ?? "-",
+      fullWidth: true,
     },
     {
       label: "분석 요청 완료일",
       value: timLineData.sentLabDate ?? "-",
+      fullWidth: true,
     },
     {
       label: "회수 완료일",
       value: timLineData.pickupCompletedDate ?? "-",
+      fullWidth: true,
     },
   ];
   return (

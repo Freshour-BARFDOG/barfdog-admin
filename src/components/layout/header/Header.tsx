@@ -27,13 +27,13 @@ export default function Header() {
   // const { mutate: logout } = useLogout();
 
   const handleLogout = () => {
-      const confirmed = window.confirm(`로그아웃 하시겠습니까?`);
-		if (!confirmed) return;
+    const confirmed = window.confirm(`로그아웃 하시겠습니까?`);
+    if (!confirmed) return;
 
     deleteCookie(AUTH_CONFIG.LOGIN_COOKIE);
     deleteCookie(AUTH_CONFIG.ACCESS_TOKEN_COOKIE);
     deleteCookie(AUTH_CONFIG.REFRESH_TOKEN_COOKIE);
-    window.location.pathname = '/login';
+    window.location.pathname = "/login";
 
     // logout(undefined, {
     //   onSuccess: () => {
@@ -77,15 +77,15 @@ export default function Header() {
             <Image src={Logo} alt="logo" width={180} height={32} />
           </div>
         )}
-        {data && 
+        {data && (
           <div className={styles.username}>
             <Text type="headline2">{data.name}</Text>
-            <DividerVertical thickness={1} color='gray200' />
+            <DividerVertical thickness={1} color="gray200" />
             <button onClick={handleLogout} className={styles.logout}>
               <LogOut size={20} />
             </button>
           </div>
-        }
+        )}
       </div>
     </header>
   );

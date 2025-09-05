@@ -20,8 +20,11 @@ import type {
   HealthConcern,
   AcquisitionType,
   Level5,
+  DiagnosisKitType,
+  DiagnosisKitGroupStatus,
 } from "@/types/diagnosis";
 import { OLDEST_DATE, TODAY } from "./common";
+import { SelectOption } from "@/types/common";
 
 const PROBIOME_CATEGORY: {
   label: string;
@@ -314,6 +317,25 @@ const HEALTH_CONCERNS = [
 
 /** 수령 경로 */
 const ACQUISITION_TYPES = ["EVENT", "PURCHASE"] as const;
+
+const DIAGNOSIS_KIT_TYPE = ["PROBIOME"] as const;
+const DIAGNOSIS_KIT_GROUP_STATUS = [
+  "SERIAL_NUM_GENERATED",
+  "SERIAL_NUM_ISSUED",
+] as const;
+
+const DIAGNOSIS_KIT_TYPE_LABEL = {
+  PROBIOME: "미생물 진단",
+} as const satisfies Record<DiagnosisKitType, string>;
+
+const DIAGNOSIS_KIT_TYPE_CATEGORY_OPTIONS: SelectOption<DiagnosisKitType>[] = (
+  Object.entries(DIAGNOSIS_KIT_TYPE_LABEL) as [DiagnosisKitType, string][]
+).map(([value, label]) => ({ value, label }));
+
+const DIAGNOSIS_KIT_GROUP_STATUS_LABEL = {
+  SERIAL_NUM_GENERATED: "생성",
+  SERIAL_NUM_ISSUED: "발행",
+} as const satisfies Record<DiagnosisKitGroupStatus, string>;
 
 const DIAGNOSIS_STATUS_LABEL = {
   SURVEY_SUBMITTED: "문진 작성 완료",
@@ -639,4 +661,9 @@ export {
   PET_TYPES_LABEL,
   ACQUISITION_TYPES_LABEL,
   DIAGNOSIS_STATUSES_LABEL,
+  DIAGNOSIS_KIT_TYPE,
+  DIAGNOSIS_KIT_TYPE_LABEL,
+  DIAGNOSIS_KIT_GROUP_STATUS,
+  DIAGNOSIS_KIT_GROUP_STATUS_LABEL,
+  DIAGNOSIS_KIT_TYPE_CATEGORY_OPTIONS,
 };

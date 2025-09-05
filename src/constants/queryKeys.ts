@@ -111,6 +111,7 @@ const queryKeys = {
     BASE: "diagnosis",
     GET_LIST: "getList",
     GET_PROBIOME_DETAIL: "getProbiomeDetail",
+    GET_KIT_LIST: "getKitList",
   },
 } as const;
 

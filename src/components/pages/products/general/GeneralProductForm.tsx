@@ -12,7 +12,6 @@ import {
 import Card from "@/components/common/card/Card";
 import Button from "@/components/common/button/Button";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
-import Text from "@/components/common/text/Text";
 import InputField from "@/components/common/inputField/InputField";
 import { formatNumberWithComma } from "@/utils/formatNumber";
 import {
