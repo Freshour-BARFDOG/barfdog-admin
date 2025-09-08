@@ -17,6 +17,7 @@ interface StatusInfoProps {
   memberName: string;
   onActions: () => void;
   onUploadReport: (file: File) => void;
+  onUpdateReport: (file: File) => void;
   onReportDownload: (url: string, memberName: string) => void;
 }
 
@@ -25,6 +26,7 @@ export default function StatusInfo({
   memberName,
   onActions,
   onUploadReport,
+  onUpdateReport,
   onReportDownload,
 }: StatusInfoProps) {
   const { status } = diagnosisData;
@@ -50,7 +52,13 @@ export default function StatusInfo({
 
   const onFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
-    if (file) onUploadReport(file);
+    if (file) {
+      if (status === "ANALYSIS_IN_PROGRESS") {
+        onUploadReport(file);
+      } else if (status === "REPORT_COMPLETED") {
+        onUpdateReport(file);
+      }
+    }
     // 동일 파일 재업로드 가능하도록 리셋
     e.currentTarget.value = "";
   };

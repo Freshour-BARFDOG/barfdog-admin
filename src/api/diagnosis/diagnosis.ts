@@ -103,7 +103,7 @@ const excelDownloadDiagnosisKits = async (
 
 const makeProbiomeReportFormData = (pdfFile: File): FormData => {
   const formData = new FormData();
-  formData.append("uploadReportFile", pdfFile);
+  formData.append("reportFile", pdfFile);
   return formData;
 };
 
@@ -122,6 +122,33 @@ const uploadProbiomeReport = async (params: {
 
   const { data } = await axiosInstance.put(
     `/api/v2/admin/probiome-diagnoses/${diagnosisId}/report`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  if (data.success) {
+    return data.data;
+  }
+  const message = data.detailMessage ?? "업로드에 실패했습니다.";
+  throw new Error(message);
+};
+
+const updateProbiomeReport = async (params: {
+  diagnosisId: number;
+  pdfFile: File;
+}): Promise<ProbiomeReportUploadResponse> => {
+  const { diagnosisId, pdfFile } = params;
+
+  // 클라이언트 방어: pdf만 허용
+  if (pdfFile && pdfFile.type && pdfFile.type !== "application/pdf") {
+    throw new Error("PDF 파일만 업로드할 수 있습니다.");
+  }
+
+  const formData = makeProbiomeReportFormData(pdfFile);
+
+  const { data } = await axiosInstance.put(
+    `/api/v2/admin/probiome-diagnoses/${diagnosisId}/report/replace`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -154,4 +181,5 @@ export {
   createDiagnosisKits,
   excelDownloadDiagnosisKits,
   downloadProbiomeReportByUrl,
+  updateProbiomeReport,
 };

@@ -15,6 +15,7 @@ import { useCallback } from "react";
 import { useDownloadProbiomeReport } from "@/api/diagnosis/mutations/useDownloadProbiomeReport";
 import { downloadBlobFile } from "@/utils/downloadBlobFile";
 import { useToastStore } from "@/store/useToastStore";
+import { useUpdateProbiomeReport } from "@/api/diagnosis/mutations/useUpdateProbiomeReport";
 
 interface ProbiomeDetailProps {
   diagnosisId: number;
@@ -26,6 +27,7 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
 
   const { mutate: updateProbiomeStatus } = useUpdateProbiomeStatus(diagnosisId);
   const { mutate: uploadReport } = useUploadProbiomeReport(diagnosisId);
+  const { mutate: updateReport } = useUpdateProbiomeReport(diagnosisId);
   const { mutate: downloadReport } = useDownloadProbiomeReport();
 
   const mutateToast = useMutationToast();
@@ -46,8 +48,20 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
       mutateToast(
         uploadReport,
         file,
-        "진단 상태가 변경되었습니다.",
-        "진단 상태 변경에 실패했습니다."
+        "결과지가 업로드 되었습니다.",
+        "결과지 업로드에 실패했습니다."
+      );
+    },
+    [mutateToast, uploadReport]
+  );
+
+  const handleUpdateReport = useCallback(
+    (file: File) => {
+      mutateToast(
+        updateReport,
+        file,
+        "결과지가 수정 되었습니다.",
+        "결과지 수정에 실패했습니다."
       );
     },
     [mutateToast, uploadReport]
@@ -57,11 +71,11 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
     downloadReport(url, {
       onSuccess: (blob) => {
         downloadBlobFile(blob, `Report_${memberName}.pdf`);
-        addToast("보고서 다운로드에 성공했습니다.");
+        addToast("결과지 다운로드에 성공했습니다.");
       },
       onError: (err) => {
         console.error(err);
-        addToast("보고서 다운로드에 실패했습니다.");
+        addToast("결과지 다운로드에 실패했습니다.");
       },
     });
   };
@@ -73,6 +87,7 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
         memberName={probiomeDetail.basicInfo.memberInfo.name}
         onActions={handleActions}
         onUploadReport={handleUploadReport}
+        onUpdateReport={handleUpdateReport}
         onReportDownload={handleReportDownload}
       />
       {probiomeDetail?.analysisTimelineInfo && (
