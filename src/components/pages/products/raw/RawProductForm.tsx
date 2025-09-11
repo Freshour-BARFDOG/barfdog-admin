@@ -1,7 +1,7 @@
 "use client";
 
 import { commonWrapper, pointColor } from "@/styles/common.css";
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Controller,
@@ -13,11 +13,6 @@ import Button from "@/components/common/button/Button";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import Text from "@/components/common/text/Text";
 import InputField from "@/components/common/inputField/InputField";
-import {
-  unformatCommaNumber,
-  formatNumberWithComma,
-} from "@/utils/formatNumber";
-
 import LabeledCheckboxGroup from "@/components/common/labeledCheckBoxGroup/LabeledCheckBoxGroup";
 import Divider from "@/components/common/divider/Divider";
 import Textarea from "@/components/common/textarea/Textarea";
@@ -33,7 +28,6 @@ import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { ProductVisibilityStatus } from "@/types/products";
 import { BOOLEAN_OPTIONS, ITEM_STATUS_OPTIONS } from "@/constants/products";
 import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
-import { parseAndClampNumber } from "@/utils/parseAndClampNumber";
 
 interface InputFieldItem {
   name: RawProductFormKeys;

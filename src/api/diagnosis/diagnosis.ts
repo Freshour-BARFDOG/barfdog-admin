@@ -162,13 +162,10 @@ const updateProbiomeReport = async (params: {
 };
 
 const downloadProbiomeReportByUrl = async (url: string): Promise<Blob> => {
-  const res = await axiosInstance.get(
-    "http://renewal-dev.barfdogserver.com/download/diagnoses/probiome-reports?filename=35e406b6-b847-4608-aec5-643b81433321.pdf",
-    {
-      responseType: "blob",
-      withCredentials: true,
-    }
-  );
+  const res = await axiosInstance.get(url, {
+    responseType: "blob",
+    withCredentials: true,
+  });
   return res.data;
 };
 
