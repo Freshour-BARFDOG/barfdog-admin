@@ -24,6 +24,7 @@ interface ProbiomeDetailProps {
 export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
   const { data: probiomeDetail } = useGetProbiomeDetail(diagnosisId);
   const { addToast } = useToastStore();
+  console.log("probiomeDetail", probiomeDetail);
 
   const { mutate: updateProbiomeStatus } = useUpdateProbiomeStatus(diagnosisId);
   const { mutate: uploadReport } = useUploadProbiomeReport(diagnosisId);
@@ -93,7 +94,9 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
       {probiomeDetail?.analysisTimelineInfo && (
         <TimeLineInfo timLineData={probiomeDetail?.analysisTimelineInfo} />
       )}
-      <PickupInfo pickupData={probiomeDetail?.pickupRequestInfo} />
+      {probiomeDetail.diagnosisInfo.status !== "SURVEY_SUBMITTED" && (
+        <PickupInfo pickupData={probiomeDetail?.pickupRequestInfo} />
+      )}
       <BasicInfo basicData={probiomeDetail?.basicInfo} />
       <SurveyInfo surveyData={probiomeDetail?.surveyInfo} />
     </ListLayout>
