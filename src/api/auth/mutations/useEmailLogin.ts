@@ -29,22 +29,18 @@ export function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
 
         return data;
       } catch (error) {
-        
         const errorMessage =
           axios.isAxiosError(error) && error.response
             ? error.response.data?.errors?.[0].defaultMessage ||
               "로그인에 실패했습니다."
-            : (typeof error === "object" && error !== null && "message" in error
-                ? (error as { message: string }).message
-                : "네트워크 오류가 발생했습니다.");
+            : typeof error === "object" && error !== null && "message" in error
+            ? (error as { message: string }).message
+            : "네트워크 오류가 발생했습니다.";
 
         alert(errorMessage);
         throw new Error(errorMessage);
       }
     },
-    // onSuccess: async (data) => {
-    //   console.log("로그인 성공", data);
-    // },
     onError: (error) => {
       console.log("로그인 실패", error);
     },
