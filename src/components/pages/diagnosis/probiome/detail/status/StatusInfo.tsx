@@ -15,15 +15,17 @@ import { useCallback, useMemo, useRef } from "react";
 interface StatusInfoProps {
   diagnosisData: DiagnosisInfo;
   memberName: string;
+  petName: string;
   onActions: () => void;
   onUploadReport: (file: File) => void;
   onUpdateReport: (file: File) => void;
-  onReportDownload: (url: string, memberName: string) => void;
+  onReportDownload: (url: string, memberName: string, petName: string) => void;
 }
 
 export default function StatusInfo({
   diagnosisData,
   memberName,
+  petName,
   onActions,
   onUploadReport,
   onUpdateReport,
@@ -93,14 +95,16 @@ export default function StatusInfo({
           <Button
             variant="text"
             size="sm"
-            onClick={() => onReportDownload(fixedReportUrl, memberName)}
+            onClick={() =>
+              onReportDownload(fixedReportUrl, memberName, petName)
+            }
           >
             <Text
               type="body3"
               color="blue500"
               className={styles.fileDownloadLink}
             >
-              Report_{memberName}.pdf
+              {memberName}_{petName}.pdf
             </Text>
           </Button>
         )}

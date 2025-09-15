@@ -67,10 +67,14 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
     [mutateToast, uploadReport]
   );
 
-  const handleReportDownload = (url: string, memberName: string) => {
+  const handleReportDownload = (
+    url: string,
+    memberName: string,
+    petName: string
+  ) => {
     downloadReport(url, {
       onSuccess: (blob) => {
-        downloadBlobFile(blob, `Report_${memberName}.pdf`);
+        downloadBlobFile(blob, `${memberName}_${petName}.pdf`);
         addToast("결과지 다운로드에 성공했습니다.");
       },
       onError: (err) => {
@@ -85,6 +89,7 @@ export default function ProbiomeDetail({ diagnosisId }: ProbiomeDetailProps) {
       <StatusInfo
         diagnosisData={probiomeDetail?.diagnosisInfo}
         memberName={probiomeDetail.basicInfo.memberInfo.name}
+        petName={probiomeDetail.basicInfo.petInfo.name}
         onActions={handleActions}
         onUploadReport={handleUploadReport}
         onUpdateReport={handleUpdateReport}
