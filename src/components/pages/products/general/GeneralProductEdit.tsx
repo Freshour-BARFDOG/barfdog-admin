@@ -15,7 +15,7 @@ import { buildGeneralProductFormValues } from "@/utils/products/buildGeneralProd
 import { useUpdateGeneralProduct } from "@/api/products/mutations/useUpdateGeneralProduct";
 import { buildUpdateGeneralPayload } from "@/utils/products/buildGeneralProductPayload";
 import GeneralProductForm from "./GeneralProductForm";
-import Loader from "@/components/common/loader/Loader";
+import Spinner from "@/components/common/spinner/Spinner";
 
 interface GeneralProductEditProps {
   itemId: number;
@@ -25,7 +25,7 @@ export default function GeneralProductEdit({
   itemId,
 }: GeneralProductEditProps) {
   const router = useRouter();
-  const { data, isLoading, isError } = useGetGeneralProductDetail(itemId);
+  const { data } = useGetGeneralProductDetail(itemId);
 
   const { addToast } = useToastStore();
   const { mutate } = useUpdateGeneralProduct(itemId);
@@ -64,14 +64,6 @@ export default function GeneralProductEdit({
       }
     );
   };
-
-  if (isLoading) {
-    return <Loader fullscreen />;
-  }
-
-  if (isError || !data) {
-    return <div>상품 정보를 불러오지 못했습니다.</div>;
-  }
 
   return (
     <GeneralProductForm
