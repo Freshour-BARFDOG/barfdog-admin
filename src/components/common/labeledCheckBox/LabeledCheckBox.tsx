@@ -44,7 +44,10 @@ export default function LabeledCheckbox<T extends string | number | boolean = st
     <button
       disabled={disabled}
       className={`${styles.labelCheckedBoxContainer({ disabled })} ${className || ""}`}
-      onClick={() => (!iconClick ? onToggle(value) : undefined)}
+      onClick={(e) => {
+        e.preventDefault();
+        return !iconClick ? onToggle(value) : undefined
+      }}
     >
       <SvgIcon
         src={icon}

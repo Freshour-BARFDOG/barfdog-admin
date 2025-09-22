@@ -2,6 +2,7 @@ import { useToastStore } from "@/store/useToastStore";
 import { usePerformReviewAction } from "@/api/review/mutations/usePerformReviewAction";
 import { ReviewActionPayloadMap, ReviewActionType } from "@/types/review";
 import { REVIEW_ACTION_LABEL_MAP } from "@/constants/review";
+import { AxiosError } from "axios";
 
 interface UseReviewActionProps {
 	onSuccess?: () => void;
@@ -43,8 +44,15 @@ export default function useReviewAction({
 				onSuccess?.();
 			},
 			onError: (error) => {
-				addToast(`${actionLabel}에 실패했습니다.\n관리자에게 문의해주세요.`);
+				let errorMessage = `${actionLabel}에 실패했습니다.\n관리자에게 문의해주세요.`;
+				const axiosError = error as AxiosError;
+				const responseData = axiosError?.response?.data as { errors?: { defaultMessage?: string }[] } | undefined;
+				if (responseData && Array.isArray(responseData.errors) && responseData.errors[0]?.defaultMessage) {
+					errorMessage = responseData.errors[0].defaultMessage;
+				}
+				addToast(errorMessage);
 				onError?.(error);
+				console.log(error);
 			}
 		})
 	}

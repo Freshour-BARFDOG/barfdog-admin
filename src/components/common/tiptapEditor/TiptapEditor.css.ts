@@ -20,7 +20,8 @@ export const tiptapEditor = style({
 });
 
 globalStyle(`${tiptapEditor} img`, {
-	width: '100%',
+	width: 'auto',
+	maxWidth: '100%',
 });
 
 globalStyle(`${tiptapEditor} .ProseMirror`, {
@@ -55,6 +56,10 @@ globalStyle(`${tiptapEditor} h2`, {
 
 globalStyle(`${tiptapEditor} p`, {
 	margin: '1rem 0',
+});
+
+globalStyle(`${tiptapEditor} a`, {
+	textDecoration: 'underline',
 });
 
 // blockquote 스타일 복구
