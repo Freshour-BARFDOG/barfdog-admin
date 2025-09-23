@@ -6,6 +6,8 @@ import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { Dropcursor } from "@tiptap/extensions";
+import HardBreak from "@tiptap/extension-hard-break";
+import Paragraph from "@tiptap/extension-paragraph";
 import MenuBar from "@/components/common/tiptapEditor/menuBar/MenuBar";
 import Divider from "@/components/common/divider/Divider";
 import Link from "@tiptap/extension-link";
@@ -82,6 +84,18 @@ export const CustomLink = Link.configure({
   },
 });
 
+// Enter 키를 눌렀을 때 줄바꿈(br) 처리가 되도록 하는 커스텀 Paragraph 확장
+export const CustomParagraph = Paragraph.extend({
+  addKeyboardShortcuts() {
+    return {
+      Enter: () => {
+        // Enter 키를 눌렀을 때 줄바꿈(br) 추가
+        return this.editor.commands.setHardBreak();
+      },
+    };
+  },
+});
+
 
 export interface TiptapEditorProps {
   content: string;
@@ -106,14 +120,27 @@ export default function TiptapEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        paragraph: false, // StarterKit의 기본 Paragraph 확장 비활성화
+      }),
+      CustomParagraph.configure({
+        HTMLAttributes: {
+          class: 'paragraph',
+        },
+      }),
       Dropcursor,
       TextStyleKit,
       TextAlign.configure({
         types: ["heading", "paragraph", "image"],
       }),
+      HardBreak.configure({
+        keepMarks: false,
+        HTMLAttributes: {
+          class: 'hard-break',
+        },
+      }),
       CustomImage,
-      CustomLink
+      CustomLink,
     ],
     content: initialContent,
     onUpdate: handleUpdate,

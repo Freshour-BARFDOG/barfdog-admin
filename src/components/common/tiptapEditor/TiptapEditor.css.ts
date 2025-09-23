@@ -77,3 +77,14 @@ globalStyle(`${tiptapEditor} code`, {
 	color: themeVars.colors.red.pastelRed,
 	background: themeVars.colors.gray.gray200,
 });
+
+// HardBreak (줄바꿈) 스타일
+globalStyle(`${tiptapEditor} .hard-break`, {
+	display: 'block',
+	margin: '0.5rem 0',
+});
+
+// Paragraph 스타일
+globalStyle(`${tiptapEditor} .paragraph`, {
+	margin: '1rem 0',
+});
