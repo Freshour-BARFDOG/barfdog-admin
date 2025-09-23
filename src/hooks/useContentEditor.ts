@@ -9,6 +9,14 @@ type ContentEditorFields = {
   deleteImageIdList: number[];
 };
 
+// TipTap 에디터에서 생성된 HTML을 정리하는 함수
+const cleanTiptapHTML = (html: string): string => {
+  return html
+    // 빈 paragraph 태그 정리
+    .replace(/<p><\/p>/g, '<br>')
+    .replace(/<p><br><\/p>/g, '<br>')
+};
+
 export function useContentEditor<T extends ContentEditorFields>(
 	setValue: UseFormSetValue<T>,
 	watch: UseFormWatch<T>,
@@ -22,11 +30,14 @@ export function useContentEditor<T extends ContentEditorFields>(
     const deleteImageIdList = "deleteImageIdList" as Path<T>;
 
     const prevContents = watch(contentsField);
-    if (prevContents !== html) {
-      setValue(contentsField, html as PathValue<T, typeof contentsField>, { shouldValidate: true });
+
+    const cleanedHtml = cleanTiptapHTML(html);
+
+    if (prevContents !== cleanedHtml) {
+      setValue(contentsField, cleanedHtml as PathValue<T, typeof contentsField>, { shouldValidate: true });
     }
 
-    const currentIds = parseImageIdsFromContent(html);
+    const currentIds = parseImageIdsFromContent(cleanedHtml);
     const prevAddList = watch(addImageIdList) ?? [];
     const deletedIds = (prevAddList as number[]).filter((id: number) => !currentIds.includes(id));
 
