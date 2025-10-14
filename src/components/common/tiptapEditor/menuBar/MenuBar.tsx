@@ -1,19 +1,17 @@
 import { useEditorState } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
 import * as styles from './MenuBar.css';
-import {
-	ImageIcon,
-} from "lucide-react";
 import { ChangeEvent, useCallback } from "react";
 import HeadingDropdown from "@/components/common/tiptapEditor/menuBar/headingDropdown/HeadingDropdown";
 import ColorControls from "@/components/common/tiptapEditor/menuBar/colorControls/ColorControls";
 import TextControls from "@/components/common/tiptapEditor/menuBar/textControls/TextControls";
 import AlignControls from "@/components/common/tiptapEditor/menuBar/alignControls/AlignControls";
-import {menuBarContainer} from "./MenuBar.css";
+import { ImageIcon } from "lucide-react";
 
 export interface EditorState {
 	backgroundColor?: string;
 	color?: string;
+	isLink: boolean;
 	isBold: boolean;
 	canBold: boolean;
 	isItalic: boolean;
@@ -51,6 +49,7 @@ export default function MenuBar({ editor, onImageUpload }: MenuBarProps) {
 			backgroundColor: ctx?.editor?.getAttributes("textStyle").backgroundColor,
 			color: ctx?.editor?.getAttributes("textStyle").color,
 			isBold: ctx?.editor?.isActive("bold"),
+			isLink: ctx?.editor?.isActive("link"),
 			canBold: ctx?.editor?.can().chain().focus().toggleBold().run(),
 			isItalic: ctx?.editor?.isActive("italic"),
 			canItalic: ctx?.editor?.can().chain().focus().toggleItalic().run(),
@@ -95,7 +94,6 @@ export default function MenuBar({ editor, onImageUpload }: MenuBarProps) {
 		},
 		[editor, onImageUpload]
 	);
-
 	return (
 		<div className={styles.menuBarContainer}>
 			<div className={styles.menuBar}>

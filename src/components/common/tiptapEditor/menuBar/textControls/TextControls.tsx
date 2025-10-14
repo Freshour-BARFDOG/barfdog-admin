@@ -4,6 +4,7 @@ import {
 	Braces,
 	Code,
 	Italic,
+	Link,
 	List,
 	ListOrdered,
 	MessageSquareQuote,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 import { Editor } from "@tiptap/react";
 import { EditorState } from "@/components/common/tiptapEditor/menuBar/MenuBar";
+import { useCallback } from "react";
 
 interface TextControlsProps {
 	editor: Editor;
@@ -20,6 +22,28 @@ interface TextControlsProps {
 }
 
 export default function TextControls({ editor, editorState }: TextControlsProps) {
+
+const toggleLink = useCallback(() => {
+  if (!editor) return;
+
+  // 현재 selection이 링크인지 확인
+  if (editor.isActive('link')) {
+    // 링크가 이미 걸려 있으면 해제
+    editor.chain().focus().unsetLink().run();
+  } else {
+    // 링크가 없으면 새로 추가
+    const url = window.prompt('URL');
+    if (!url) return;
+
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .setLink({ href: url })
+      .run();
+  }
+}, [editor]);
+
 	const controls = [
 		{
 			key: "Bold",
@@ -48,6 +72,13 @@ export default function TextControls({ editor, editorState }: TextControlsProps)
 			onClick: () => editor?.chain().focus().toggleCode().run(),
 			disabled: !editorState.canCode,
 			active: editorState.isCode,
+		},
+		{
+			key: "Link",
+			icon: <Link size={20} />,
+			onClick: toggleLink,
+			disabled: false,
+			active: editorState.isLink,
 		},
 		{
 			key: "Paragraph",
