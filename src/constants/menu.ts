@@ -113,6 +113,11 @@ export const MENU_ITEMS: MenuItem[] = [
         label: "배송 관리",
         href: "/sales/delivery",
       },
+      {
+        key: "cancel",
+        label: "취소 관리",
+        href: "/sales/cancel",
+      },
     ],
   },
   {

@@ -36,7 +36,7 @@ export default function SalesDetailSubscribe({
           orderStatus={orderStatus}
         />
       )}
-      <SubscribeInfo SubscribeDto={data.subscribeDto} />
+      <SubscribeInfo subscribeDto={data.subscribeDto} />
       <DogInfo dogDto={data.dogDto} />
       <DeliveryInfo
         orderId={data.subscribeOrderInfoDto.id}

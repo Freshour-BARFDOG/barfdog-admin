@@ -33,6 +33,18 @@ const INITIAL_ORDERS_REQUEST = {
   orderType: "ALL" as OrderTypeRequest,
 };
 
+const INITIAL_CANCEL_REQUEST = {
+  from: OLDEST_DATE,
+  to: TODAY,
+  merchantUid: null, // 주문번호
+  memberName: null, // 구매자 이름
+  memberEmail: null, // 구매자 이메일(로그인 아이디)
+  recipientName: null, // 수령자 이름
+  dogName: null, // 반려견 이름
+  statusList: ["CANCEL_REQUEST"] as OrderStatus[],
+  orderType: "ALL" as OrderTypeRequest,
+};
+
 const INITIAL_DELIVERY_REQUEST = {
   from: OLDEST_DATE,
   to: TODAY,
@@ -117,6 +129,13 @@ const ORDERS_ORDER_STATUS: SelectOption<OrderStatus>[] = ORDER_STATUS.filter(
     )
 );
 
+const ORDERS_CANCEL_STATUS: SelectOption<OrderStatus>[] = ORDER_STATUS.filter(
+  (opt) =>
+    ["CANCEL_REQUEST", "CANCEL_DONE_SELLER", "CANCEL_DONE_BUYER"].includes(
+      opt.value
+    )
+);
+
 const ORDERS_DELIVERY_STATUS: SelectOption<OrderStatus>[] = ORDER_STATUS.filter(
   (opt) =>
     ["DELIVERY_BEFORE_COLLECTION", "DELIVERY_START", "DELIVERY_DONE"].includes(
@@ -179,4 +198,6 @@ export {
   CANCEL_REASON,
   INITIAL_DELIVERY_REQUEST,
   ORDERS_DELIVERY_STATUS,
+  INITIAL_CANCEL_REQUEST,
+  ORDERS_CANCEL_STATUS,
 };

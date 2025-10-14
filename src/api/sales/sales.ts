@@ -139,6 +139,30 @@ const forcedDeliveryComplete = async (orderIdList: number[]) => {
   return data;
 };
 
+// ------ 취소 관리 --------
+
+const confirmCancelRequest = async ({
+  orderIdList,
+  orderType,
+}: {
+  orderIdList: number[];
+  orderType: OrderTypeResponse;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/admin/orders/${orderType}/cancelConfirm`,
+    { orderIdList }
+  );
+  return data;
+};
+
+const rejectCancelRequest = async (orderIdList: number[]) => {
+  const { data } = await axiosInstance.post(
+    "/api/admin/orders/cancelRequest/reject",
+    { orderIdList }
+  );
+  return data;
+};
+
 export {
   getSearchSales,
   excelDownloadSearchSales,
@@ -150,4 +174,6 @@ export {
   registerDeliveryInfo,
   cancelOrderBySeller,
   forcedDeliveryComplete,
+  confirmCancelRequest,
+  rejectCancelRequest,
 };
