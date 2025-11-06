@@ -65,6 +65,9 @@ const getRecipeList = async (): Promise<RecipeListResponse> => {
 
 const getIngredientList = async (): Promise<string[]> => {
   const { data } = await axiosInstance.get("/api/recipes/ingredients");
+  // TODO: 
+  // 1. stringList 에서 allergenFoodList 로 변경 될 사항 확인 필요 (renewal서버: allergenFoodList / 운영서버: stringList)
+  // 2. ENUM Type으로 적용 관련 논의 필요
   return data._embedded.stringList;
 };
 
