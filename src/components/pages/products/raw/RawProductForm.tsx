@@ -1,7 +1,7 @@
 "use client";
 
 import { commonWrapper, pointColor } from "@/styles/common.css";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   Controller,
@@ -21,14 +21,12 @@ import {
   RawProductFormKeys,
   RawProductFormValues,
 } from "@/utils/validation/products/rawProduct";
-import { SelectOption } from "@/types/common";
 import FileUpload from "@/components/common/fileUpload/FileUpload";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { ProductVisibilityStatus } from "@/types/products";
 import { BOOLEAN_OPTIONS, ITEM_STATUS_OPTIONS } from "@/constants/products";
 import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
-import Spinner from "@/components/common/spinner/Spinner";
 
 interface InputFieldItem {
   name: RawProductFormKeys;
@@ -66,11 +64,24 @@ export default function RawProductForm({
 }: RawProductFormProps) {
   const router = useRouter();
   const [newIngredientText, setNewIngredientText] = useState("");
+  const [customIngredients, setCustomIngredients] = useState<string[]>([]);
 
-  const { data: ingData, isLoading } = useGetIngredientList();
-  const [ingredientOptions, setIngredientOptions] = useState<
-    SelectOption<string>[]
-  >((ingData ?? []).map((i) => ({ value: i, label: i })));
+  const { data: ingData } = useGetIngredientList();
+
+  // 서버에서 받은 재료를 SelectOption으로 변환
+  const serverIngredientOptions = useMemo(() => {
+    return (ingData ?? []).map((i) => ({ value: i, label: i }));
+  }, [ingData]);
+
+  // 사용자가 추가한 재료를 SelectOption으로 변환
+  const customIngredientOptions = useMemo(() => {
+    return customIngredients.map((i) => ({ value: i, label: i }));
+  }, [customIngredients]);
+
+  // 서버 재료 + 사용자 추가 재료를 합친 최종 옵션
+  const ingredientOptions = useMemo(() => {
+    return [...serverIngredientOptions, ...customIngredientOptions];
+  }, [serverIngredientOptions, customIngredientOptions]);
 
   const {
     control,
@@ -79,8 +90,13 @@ export default function RawProductForm({
   } = form;
 
   const handleAddIngredient = (newIng: string) => {
-    if (ingredientOptions.some((o) => o.value === newIng)) return;
-    setIngredientOptions((prev) => [...prev, { value: newIng, label: newIng }]);
+    // 서버 재료나 이미 추가된 재료인지 확인
+    const allIngredients = [
+      ...(ingData ?? []),
+      ...customIngredients,
+    ];
+    if (allIngredients.includes(newIng)) return;
+    setCustomIngredients((prev) => [...prev, newIng]);
   };
 
   const canSubmit =
@@ -309,7 +325,6 @@ export default function RawProductForm({
     },
   ];
 
-  if (isLoading) return <Spinner />;
   return (
     <>
       <Card shadow="none" padding={20}>
