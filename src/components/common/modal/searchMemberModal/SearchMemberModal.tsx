@@ -12,7 +12,7 @@ import useSearchValues from "@/hooks/useSearchValues";
 import { useSearchCategoryKeyword } from '@/hooks/useSearchCategoryKeyword';
 import { INITIAL_SEARCH_VALUES } from "@/constants/member";
 import { SEARCH_CATEGORY } from "@/constants/common";
-import { MemberListData, MemberListSearchParams} from "@/types/member";
+import { MemberListData, MemberListSearchParams, MemberListResponse} from "@/types/member";
 import { SearchFilterItem, SelectOption } from '@/types/common';
 import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 
@@ -37,8 +37,8 @@ export default function SearchMemberModal({
 		onChangePage,
 		onSubmit,
 		onReset,
-	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
-	const { data } = useGetMemberList(page, submittedValues ?? INITIAL_SEARCH_VALUES, 20);
+	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES, { disableUrlSync: true });
+	const { data, isFetching } = useGetMemberList(page, submittedValues ?? INITIAL_SEARCH_VALUES, 20);
 
 	const {
 		keyword,
@@ -52,19 +52,23 @@ export default function SearchMemberModal({
 		initialCategoryOptions: ['email', 'name'],
 	});
 
+	const memberList = data?.memberList ?? [];
+	
 	const {
 		selectedIds,
 		toggleSelect,
 		selectAll,
 		isSelected,
 	} = useItemSelection(
-		data?.memberList ?? [], 
-		(member) => member.id,defaultSelected?.map((member) => member.id) ?? [] 
+		memberList, 
+		(member) => member.id,
+		defaultSelected?.map((member) => member.id) ?? [] 
 	);
 
-	const currentPageIds = data?.memberList.map((m) => m.id) ?? [];
+	const currentPageIds = memberList.map((m) => m.id) ?? [];
 	const allSelected = currentPageIds.length > 0 &&
 		currentPageIds.every((id) => selectedIds.includes(id));
+	const isSelectedIdsFromCurrentPage = Boolean(currentPageIds.filter(id => selectedIds.includes(id)).length > 0);
 
 	const handleClose = () => {
 		onClose();
@@ -75,7 +79,7 @@ export default function SearchMemberModal({
 		if (selectedIds.length < 1) return;
 
 		const selectedFromCurrentPage =
-			data?.memberList.filter(member => selectedIds.includes(member.id)) ?? [];
+			memberList.filter(member => selectedIds.includes(member.id)) ?? [];
 
 		const merged = [...defaultSelected, ...selectedFromCurrentPage];
 
@@ -128,7 +132,17 @@ export default function SearchMemberModal({
 		},
 	]
 
-	if (!data) return null;
+	// 데이터가 없을 때도 모달은 렌더링하되, 빈 데이터로 처리
+	const displayData: MemberListResponse = data ?? {
+		memberList: [],
+		page: {
+			totalPages: 0,
+			totalElements: 0,
+			number: 0,
+			size: 20,
+		},
+	};
+
 	return (
 		<FullModal
 			isVisible={isOpen}
@@ -142,7 +156,9 @@ export default function SearchMemberModal({
 					padding='none'
 				/>
 				<div className={styles.searchMemberControls}>
-					<Button onClick={onSubmit} size='sm'>검색</Button>
+					<Button onClick={onSubmit} size='sm' disabled={isFetching}>
+						{isFetching ? '검색 중...' : '검색'}
+					</Button>
 					<Button 
 						onClick={() => {
 							onReset();
@@ -150,13 +166,14 @@ export default function SearchMemberModal({
 						}} 
 						size='sm' 
 						variant='outline'
+						disabled={isFetching}
 					>
 						초기화
 					</Button>
 				</div>
 				<div>
 					<MemberTable
-						data={data}
+						data={displayData}
 						firstRow={{
 							key: 'id',
 							header: (
@@ -164,6 +181,7 @@ export default function SearchMemberModal({
 									value={allSelected}
 									isChecked={allSelected}
 									onToggle={(value) => selectAll(!value)}
+									disabled={isFetching}
 								/>
 							),
 							width: '60px',
@@ -172,6 +190,7 @@ export default function SearchMemberModal({
 									value={row.id}
 									isChecked={isSelected(row.id)}
 									onToggle={() => toggleSelect(row.id)}
+									disabled={isFetching}
 								/>
 							),
 						}}
@@ -180,7 +199,13 @@ export default function SearchMemberModal({
 						padding='none'
 					/>
 					<div className={styles.searchMemberButton}>
-						<Button onClick={handleSelect} disabled={selectedIds.length < 1} fullWidth>고객 추가</Button>
+						<Button 
+							onClick={handleSelect} 
+							disabled={selectedIds.length < 1 || isFetching || !isSelectedIdsFromCurrentPage} 
+							fullWidth
+						>
+							고객 추가
+						</Button>
 					</div>
 				</div>
 			</div>

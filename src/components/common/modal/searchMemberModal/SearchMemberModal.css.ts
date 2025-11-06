@@ -3,7 +3,7 @@ import { themeVars } from "@/styles/theme.css";
 
 export const searchMemberModalContainer = style({
 	minWidth: '70vw',
-	maxHeight: '90vh',
+	height: '90vh',
 	overflowY: 'scroll',
 	display: 'flex',
 	flexDirection: 'column',
