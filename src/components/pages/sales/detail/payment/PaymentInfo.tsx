@@ -1,7 +1,5 @@
-import Card from "@/components/common/card/Card";
 import {
   GeneralPaymentDto,
-  OrderInfoDto,
   SubscribePaymentDto,
 } from "@/types/sales";
 import React from "react";

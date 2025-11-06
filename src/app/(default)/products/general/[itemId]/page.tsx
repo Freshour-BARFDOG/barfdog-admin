@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Loader from "@/components/common/loader/Loader";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import GeneralProductEdit from "@/components/pages/products/general/GeneralProductEdit";
 import { PageProps } from "@/types/common";

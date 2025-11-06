@@ -1,5 +1,5 @@
 import { RawProductFormValues } from "@/utils/validation/products/rawProduct";
-import { RecipeDetailResponse, RecipeRequest } from "@/types/products";
+import { RecipeDetailResponse } from "@/types/products";
 
 export function buildRecipeFormValues(
   dto: RecipeDetailResponse

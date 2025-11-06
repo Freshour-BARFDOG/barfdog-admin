@@ -1,6 +1,5 @@
 import { queryKeys } from "@/constants/queryKeys";
 import { useQuery } from "@tanstack/react-query";
-import { getMemberList } from "@/api/member/member";
 import { UseQueryCustomOptions } from "@/types/common";
 import {
   GeneralProductListParams,

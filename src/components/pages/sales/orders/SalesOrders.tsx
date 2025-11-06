@@ -369,7 +369,6 @@ export default function SalesOrders() {
             <CancelOrderModal
               isOpen={isCancelModalOpen}
               reason={cancelReason}
-              selectedCount={selectedIds.length}
               onChangeReason={setCancelReason}
               onConfirm={handleCancelConfirm}
               onClose={onCancelModalClose}

@@ -1,5 +1,4 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { UseMutationCustomOptions } from "@/types/common";
 import { getGoodsFlowOtp } from "../goodsflow";
 
 export function useGoodsFlowOtp(

@@ -13,6 +13,10 @@ type ContentEditorFields = {
 const cleanTiptapHTML = (html: string): string => {
   return html
     // 빈 paragraph 태그 정리
+    .replace(/<p style=\"text-align: center;\"><\/p>/g, '<br>')
+    .replace(/<p style=\"text-align: right;\"><\/p>/g, '<br>')
+    .replace(/<p style=\"text-align: left;\"><\/p>/g, '<br>')
+    .replace(/<p style=\"text-align: justify;\"><\/p>/g, '<br>')
     .replace(/<p><\/p>/g, '<br>')
     .replace(/<p><br><\/p>/g, '<br>')
 };

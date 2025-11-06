@@ -1,6 +1,5 @@
 import Card from "@/components/common/card/Card";
 import DetailTable from "@/components/common/detailTable/DetailTable";
-import Text from "@/components/common/text/Text";
 import {
   ACQUISITION_TYPES_LABEL,
   ALLERGEN_FOOD_LABEL,
@@ -12,7 +11,6 @@ import {
   HEALTH_CONCERN_LABEL,
   INTAKE_STATUS_LABEL,
   LEVEL5_LABEL,
-  PET_GENDER_LABEL,
   PET_TYPES_LABEL,
   PREGNANCY_STATUS_LABEL,
   SUPPLEMENT_TYPE_LABEL,

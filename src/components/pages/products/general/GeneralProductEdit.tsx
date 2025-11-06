@@ -15,7 +15,6 @@ import { buildGeneralProductFormValues } from "@/utils/products/buildGeneralProd
 import { useUpdateGeneralProduct } from "@/api/products/mutations/useUpdateGeneralProduct";
 import { buildUpdateGeneralPayload } from "@/utils/products/buildGeneralProductPayload";
 import GeneralProductForm from "./GeneralProductForm";
-import Spinner from "@/components/common/spinner/Spinner";
 
 interface GeneralProductEditProps {
   itemId: number;
@@ -29,7 +28,7 @@ export default function GeneralProductEdit({
 
   const { addToast } = useToastStore();
   const { mutate } = useUpdateGeneralProduct(itemId);
-  const { allianceOptions, isLoading: isAllianceLoading } =
+  const { allianceOptions } =
     useAllianceOptions();
 
   const defaultValues = useMemo<GeneralProductFormValues>(() => {

@@ -4,10 +4,7 @@ import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import InputField from "@/components/common/inputField/InputField";
 import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
-import {
-  formatNumberWithComma,
-  unformatCommaNumber,
-} from "@/utils/formatNumber";
+import { formatNumberWithComma } from "@/utils/formatNumber";
 import { BOOLEAN_OPTIONS } from "@/constants/products";
 import { GeneralProductFormValues } from "@/utils/validation/products/generalProduct";
 import * as styles from "../GeneralProduct.css";

@@ -1,7 +1,6 @@
 import { themeVars } from "@/styles/theme.css";
 import { style } from "@vanilla-extract/css";
 import { recipe } from "@vanilla-extract/recipes";
-import { P } from "node_modules/framer-motion/dist/types.d-B_QPEvFK";
 
 // 텍스트 스타일 정의
 export const textStyles = {

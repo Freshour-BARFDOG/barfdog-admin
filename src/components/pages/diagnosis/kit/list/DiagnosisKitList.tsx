@@ -6,7 +6,7 @@ import { useGetDiagnosisKitList } from "@/api/diagnosis/queries/useGetDiagnosisK
 import { PAGE_SIZE } from "@/constants/common";
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import { TableColumn } from "@/types/common";
-import { DiagnosisKitGroup, DiagnosisKitType } from "@/types/diagnosis";
+import { DiagnosisKitGroup } from "@/types/diagnosis";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
 import TableSection from "@/components/common/tableSection/TableSection";
 import Button from "@/components/common/button/Button";

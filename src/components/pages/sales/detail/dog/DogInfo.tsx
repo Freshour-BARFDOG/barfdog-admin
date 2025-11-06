@@ -1,4 +1,4 @@
-import { DogDto, SubscribeDto } from "@/types/sales";
+import { DogDto } from "@/types/sales";
 import React from "react";
 import DetailTable from "@/components/common/detailTable/DetailTable";
 

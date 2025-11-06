@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { UseMutationCustomOptions } from "@/types/common";
-import { getContractList, registerGoodsFlowOrder } from "../goodsflow";
+import { registerGoodsFlowOrder } from "../goodsflow";
 import {
   GoodsFlowOrderRegisterRequest,
   GoodsFlowResponse,

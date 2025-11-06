@@ -1,5 +1,4 @@
 import { BANNER_TARGET, POPUP_POSITION } from "@/constants/banners";
-import { STATUS } from "@/constants/common";
 import { StatusType } from "@/types/common";
 
 type BannerTarget = keyof typeof BANNER_TARGET;

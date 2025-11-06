@@ -330,7 +330,7 @@ export default function RawProductForm({
           ))}
           <Divider thickness={1} color="gray200" />
 
-          {imageList.map((image, index) => (
+          {imageList.map((image) => (
             <InputFieldGroup
               label={image.label}
               isLabelRequired={false}

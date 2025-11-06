@@ -25,7 +25,7 @@ interface DiscountControlProps {
   originalPrice?: number;
 }
 
-export default function DiscountControl<T extends string>({
+export default function DiscountControl({
   value,
   onValueChange,
   options,

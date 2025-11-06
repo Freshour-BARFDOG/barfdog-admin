@@ -8,7 +8,6 @@ import InputField from "@/components/common/inputField/InputField";
 import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import { EVENT_COUPON_NAMES, GRADE_COUPON_NAMES } from "@/constants/policies";
 import { useMutationToast } from "@/hooks/useMutaionToast";
-import { useToastStore } from "@/store/useToastStore";
 import { commonWrapper } from "@/styles/common.css";
 import { DiscountUnitType } from "@/types/common";
 import { formatNumberWithComma } from "@/utils/formatNumber";

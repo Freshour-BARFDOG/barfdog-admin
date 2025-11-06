@@ -1,7 +1,7 @@
 "use client";
 
 import { DeliveryDto, SalesRecipient } from "@/types/sales";
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import DetailTable from "@/components/common/detailTable/DetailTable";
 import InputField from "@/components/common/inputField/InputField";
 import Button from "@/components/common/button/Button";
@@ -68,7 +68,7 @@ export default function DeliveryInfo({
       street: dto.street ?? "",
       detailAddress: dto.detailAddress ?? "",
       name: dto.recipientName ?? "",
-      phone: dto.recipientPhone ?? "",
+      phone: dto.recipientPhone ?? "",  
     },
     request: dto.request,
   }));

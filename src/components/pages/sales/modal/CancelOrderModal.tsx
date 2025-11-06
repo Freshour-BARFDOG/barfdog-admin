@@ -2,18 +2,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import ModalBackground from "@/components/common/modal/modalBackground/ModalBackground";
 import InputField from "@/components/common/inputField/InputField";
 import Text from "@/components/common/text/Text";
-import ButtonDocked from "@/components/common/buttonDocked/ButtonDocked";
-import {
-  cancelOrderModalContainer,
-  orderDetailModalContainer,
-} from "./Modal.css";
+import { cancelOrderModalContainer } from "./Modal.css";
 import { commonWrapper } from "@/styles/common.css";
 import Button from "@/components/common/button/Button";
 
 interface CancelOrderModalProps {
   isOpen: boolean;
   reason: string;
-  selectedCount: number;
   onChangeReason: (value: string) => void;
   onConfirm: () => void;
   onClose: () => void;
@@ -22,7 +17,6 @@ interface CancelOrderModalProps {
 export default function CancelOrderModal({
   isOpen,
   reason,
-  selectedCount,
   onChangeReason,
   onConfirm,
   onClose,

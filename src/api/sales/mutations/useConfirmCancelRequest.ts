@@ -1,6 +1,6 @@
 import { UseMutationCustomOptions } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { confirmCancelRequest, confirmOrder } from "../sales";
+import { confirmCancelRequest } from "../sales";
 import { queryKeys } from "@/constants/queryKeys";
 
 export function useConfirmCancelRequest(

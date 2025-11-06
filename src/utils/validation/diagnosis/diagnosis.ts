@@ -1,4 +1,3 @@
-import { ProductVisibilityStatus } from "@/types/products";
 import { DiagnosisKitType } from "@/types/diagnosis";
 import * as yup from "yup";
 

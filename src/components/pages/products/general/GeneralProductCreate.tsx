@@ -16,7 +16,7 @@ import GeneralProductForm from "./GeneralProductForm";
 
 export default function GeneralProductCreate() {
   const router = useRouter();
-  const { allianceOptions, isLoading: isAllianceLoading } =
+  const { allianceOptions } =
     useAllianceOptions();
   const { addToast } = useToastStore();
   const { mutate } = useCreateGeneralProduct();

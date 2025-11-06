@@ -9,7 +9,6 @@ import DividerVertical from "@/components/common/dividerVertical/DividerVertical
 import { useGetUserData } from "@/api/auth/query/useGetUserData";
 import { deleteCookie } from "@/utils/auth/cookie";
 import { AUTH_CONFIG } from "@/constants/auth";
-import { useLogout } from "@/api/auth/mutations/useLogout";
 
 export default function Header() {
   const { isMobileWidth: isMobile } = useDeviceState();

@@ -14,11 +14,9 @@ import {
   SALES_ORDER_TYPE,
   SALES_SEARCH_CATEGORY,
   ORDER_STATUS_LABEL_MAP,
-  INITIAL_ORDERS_REQUEST,
   ORDERS_CANCEL_STATUS,
   INITIAL_CANCEL_REQUEST,
 } from "@/constants/sales";
-import { useOrderActions } from "@/hooks/useOrderActions";
 import useSearchValues from "@/hooks/useSearchValues";
 import { commonWrapper } from "@/styles/common.css";
 import { SearchFilterItem, TableColumn } from "@/types/common";
@@ -33,12 +31,9 @@ import {
 import { getTableRowNumber } from "@/utils/getTableRowNumber";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import CancelOrderModal from "../modal/CancelOrderModal";
-import OrderDetailModal from "../modal/OrderDetailModal";
 import ListLayout from "@/components/layout/listLayout/ListLayout";
 import Loader from "@/components/common/loader/Loader";
 import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
-import AlertModal from "@/components/common/modal/alertModal/AlertModal";
 import { useCancelRequestActions } from "@/hooks/useCancelRequestActions";
 
 export default function SalesCancel() {
