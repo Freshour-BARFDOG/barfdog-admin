@@ -8,5 +8,5 @@ export const searchFilterKeyword = style({
 })
 
 export const searchFilterInput = style({
-	width: '30%',
+	width: '50%',
 })

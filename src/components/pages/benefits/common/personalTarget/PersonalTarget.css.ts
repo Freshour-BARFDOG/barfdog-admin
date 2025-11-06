@@ -11,7 +11,10 @@ export const personalTargetControls = style({
 
 export const personalTargetTable = style({
 	width: '100%',
-	maxHeight: '50vh',
+	maxHeight: '60vh',
 	overflowY: 'scroll',
 	borderRadius: '8px',
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '8px',
 })

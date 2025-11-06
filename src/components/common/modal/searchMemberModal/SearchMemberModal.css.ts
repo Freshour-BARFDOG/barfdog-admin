@@ -35,5 +35,5 @@ export const searchMemberControls = style({
 
 export const searchMemberButton = style({
 	width: '30%',
-	margin: '0 auto',
+	margin: '20px auto 0',
 })

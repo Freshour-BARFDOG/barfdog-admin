@@ -7,9 +7,10 @@ import { SearchFilterItem } from '@/types/common';
 
 interface SearchFilterGroupProps {
 	items: SearchFilterItem[];
-	onSubmit: () => void;
-	onReset: () => void;
+	onSubmit?: () => void;
+	onReset?: () => void;
 	disabled?: boolean;
+	padding?: 'none' | 40;
 }
 
 export default function SearchFilterGroup({
@@ -17,9 +18,10 @@ export default function SearchFilterGroup({
 	onSubmit,
 	onReset,
 	disabled = false,
+	padding = 40,
 }: SearchFilterGroupProps) {
 	return (
-		<Card shadow='none' padding={40} gap={16} align='start'>
+		<Card shadow='none' padding={padding} gap={16} align='start'>
 			{items.map(({ label, children, align = 'center' }, index) => (
 				<div key={index} className={styles.searchItemBox}>
 					<div className={styles.searchItem({ align })}>
@@ -31,10 +33,12 @@ export default function SearchFilterGroup({
 					<Divider thickness={1} color="gray200" />
 				</div>
 			))}
-			<div className={styles.searchButtonControls}>
-				<Button disabled={disabled} fullWidth onClick={onSubmit}>검색</Button>
-				<Button disabled={disabled} fullWidth variant='outline' type='assistive' onClick={onReset}>초기화</Button>
-			</div>
+			{(onSubmit || onReset) && (
+				<div className={styles.searchButtonControls}>
+					<Button disabled={disabled} fullWidth onClick={onSubmit}>검색</Button>
+					<Button disabled={disabled} fullWidth variant='outline' type='assistive' onClick={onReset}>초기화</Button>
+				</div>
+			)}
 		</Card>
 	);
 }

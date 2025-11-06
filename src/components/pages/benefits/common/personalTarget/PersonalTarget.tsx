@@ -10,6 +10,7 @@ import Tooltip from "@/components/common/tooltip/Tooltip";
 import useItemSelection from "@/hooks/useItemSelection";
 import { MemberListData } from "@/types/member";
 import { FieldValues, Path, PathValue, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import Text from '@/components/common/text/Text';
 
 interface PersonalTargetProps<TFormValues extends FieldValues> {
 	setValue: UseFormSetValue<TFormValues>;
@@ -58,6 +59,7 @@ export default function PersonalTarget<TFormValues extends FieldValues>({
 					</Tooltip>
 				</div>
 				<div className={styles.personalTargetTable}>
+					<Text type='headline2'>총 {selectedMember.length}명</Text>
 					<MemberTable
 						data={{ memberList: selectedMember }}
 						showTitle={false}

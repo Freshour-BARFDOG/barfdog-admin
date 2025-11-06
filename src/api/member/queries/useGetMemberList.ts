@@ -7,6 +7,7 @@ import { UseQueryCustomOptions } from "@/types/common";
 export function useGetMemberList(
 	page: number,
 	searchParams: MemberListSearchParams,
+	size: number = 10,
 	queryOptions?: UseQueryCustomOptions<MemberListResponse>,
 ) {
 	return useQuery<MemberListResponse>({
@@ -15,8 +16,9 @@ export function useGetMemberList(
 			queryKeys.MEMBER.GET_MEMBER_LIST,
 			page,
 			searchParams,
+			size,
 		],
-		queryFn: () => getMemberList(page, searchParams),
+		queryFn: () => getMemberList(page, searchParams, size),
 		keepPreviousData: true,
 		...queryOptions,
 	});

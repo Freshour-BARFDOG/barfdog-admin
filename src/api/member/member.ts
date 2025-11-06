@@ -7,15 +7,15 @@ import { INITIAL_SEARCH_VALUES } from "@/constants/member";
 const getMemberList = async (
 	page: number,
 	searchParams: MemberListSearchParams = INITIAL_SEARCH_VALUES,
+	size: number = 10,
 	instance: AxiosInstance = axiosInstance,
 ): Promise<MemberListResponse> => {
-	const memberListSize = 10;
 	const filtered = cleanQueryParams(searchParams);
 
 	const query = new URLSearchParams(filtered).toString();
 
 	try {
-		const { data } = await instance.get(`/api/admin/members?page=${page}&size=${memberListSize}&${query}`);
+		const { data } = await instance.get(`/api/admin/members?page=${page}&size=${size}&${query}`);
 		return {
 			page: data.page,
 			memberList: data?._embedded?.queryMembersDtoList || [],

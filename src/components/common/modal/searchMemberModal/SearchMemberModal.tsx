@@ -2,17 +2,19 @@ import * as styles from './SearchMemberModal.css';
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import LabeledCheckbox from "@/components/common/labeledCheckBox/LabeledCheckBox";
 import Button from "@/components/common/button/Button";
-import InputFieldGroup from "@/components/common/inputFieldGroup/InputFieldGroup";
 import MemberTable from "@/components/pages/member/table/MemberTable";
+import FullModal from "@/components/common/modal/fullModal/FullModal";
+import DateRangeFilter from '../../dateRangeFilter/DateRangeFilter';
+import TooltipInfo from '../../tooltip/TooltipInfo';
+import SearchFilterGroup from '../../searchFilterGroup/SearchFilterGroup';
 import useItemSelection from "@/hooks/useItemSelection";
 import useSearchValues from "@/hooks/useSearchValues";
-import FullModal from "@/components/common/modal/fullModal/FullModal";
-import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
+import { useSearchCategoryKeyword } from '@/hooks/useSearchCategoryKeyword';
 import { INITIAL_SEARCH_VALUES } from "@/constants/member";
 import { SEARCH_CATEGORY } from "@/constants/common";
 import { MemberListData, MemberListSearchParams} from "@/types/member";
-import { useSearchCategoryKeyword } from '@/hooks/useSearchCategoryKeyword';
-import { SelectOption } from '@/types/common';
+import { SearchFilterItem, SelectOption } from '@/types/common';
+import { useGetMemberList } from "@/api/member/queries/useGetMemberList";
 
 interface SearchMemberModalProps {
 	isOpen: boolean;
@@ -36,11 +38,12 @@ export default function SearchMemberModal({
 		onSubmit,
 		onReset,
 	} = useSearchValues<MemberListSearchParams>(INITIAL_SEARCH_VALUES);
-	const { data } = useGetMemberList(page,submittedValues ?? INITIAL_SEARCH_VALUES);
-	
+	const { data } = useGetMemberList(page, submittedValues ?? INITIAL_SEARCH_VALUES, 20);
+
 	const {
 		keyword,
 		selectedCategory,
+		setSelectedCategory,
 		onChangeCategory,
 		onChangeKeyword,
 	} = useSearchCategoryKeyword<MemberListSearchParams, 'email' | 'name'>({
@@ -54,7 +57,10 @@ export default function SearchMemberModal({
 		toggleSelect,
 		selectAll,
 		isSelected,
-	} = useItemSelection(data?.memberList ?? [], (member) => member.id,defaultSelected?.map((member) => member.id) ?? [] );
+	} = useItemSelection(
+		data?.memberList ?? [], 
+		(member) => member.id,defaultSelected?.map((member) => member.id) ?? [] 
+	);
 
 	const currentPageIds = data?.memberList.map((m) => m.id) ?? [];
 	const allSelected = currentPageIds.length > 0 &&
@@ -82,6 +88,46 @@ export default function SearchMemberModal({
 		handleClose();
 	}
 
+	const filters: SearchFilterItem[] = [
+		{
+			label: (
+				<TooltipInfo title='조회 기간'>
+					좌측 조회기간은 우측 조회기간보다 과거시점이어야 합니다.
+				</TooltipInfo>
+			),
+			children: (
+				<DateRangeFilter
+					value={{
+						startDate: searchValues.from,
+						endDate: searchValues.to,
+					}}
+					onChangeRange={(value) => {
+						const { startDate, endDate } = value;
+						setSearchValues({
+							...searchValues,
+							from: startDate as string,
+							to: endDate as string,
+						})
+					}}
+				/>
+			),
+			align: 'start'
+		},
+		{
+			label: '회원 검색',
+			children: (
+				<SearchFilterKeyword
+					categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
+					selectedCategory={selectedCategory}
+					keyword={keyword}
+					onChangeCategory={onChangeCategory}
+					onChangeKeyword={onChangeKeyword}
+					onSubmit={onSubmit}
+				/>
+			),
+		},
+	]
+
 	if (!data) return null;
 	return (
 		<FullModal
@@ -91,19 +137,22 @@ export default function SearchMemberModal({
 			className={styles.searchMemberModalContainer}
 		>
 			<div className={styles.searchMemberContent}>
-				<InputFieldGroup label='회원 검색' divider={false}>
-					<SearchFilterKeyword
-						categoryOptions={SEARCH_CATEGORY as SelectOption<'email' | 'name'>[]}
-						selectedCategory={selectedCategory}
-						keyword={keyword}
-						onChangeCategory={onChangeCategory}
-						onChangeKeyword={onChangeKeyword}
-						onSubmit={onSubmit}
-					/>
-				</InputFieldGroup>
+				<SearchFilterGroup
+					items={filters}
+					padding='none'
+				/>
 				<div className={styles.searchMemberControls}>
 					<Button onClick={onSubmit} size='sm'>검색</Button>
-					<Button onClick={onReset} size='sm' variant='outline'>초기화</Button>
+					<Button 
+						onClick={() => {
+							onReset();
+							setSelectedCategory('email');
+						}} 
+						size='sm' 
+						variant='outline'
+					>
+						초기화
+					</Button>
 				</div>
 				<div>
 					<MemberTable

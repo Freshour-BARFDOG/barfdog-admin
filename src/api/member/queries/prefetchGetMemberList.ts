@@ -10,6 +10,6 @@ export async function prefetchGetMemberList(queryClient: QueryClient) {
 	const ssrAxios = await createSSRRequest();
 	await queryClient.prefetchQuery<MemberListResponse>({
 		queryKey: [queryKeys.MEMBER.BASE, queryKeys.MEMBER.GET_MEMBER_LIST, 0, INITIAL_SEARCH_VALUES],
-		queryFn: () => getMemberList(0, INITIAL_SEARCH_VALUES, ssrAxios as AxiosInstance),
+		queryFn: () => getMemberList(0, INITIAL_SEARCH_VALUES, 10, ssrAxios as AxiosInstance),
 	})
 }
