@@ -28,6 +28,7 @@ import TooltipInfo from "@/components/common/tooltip/TooltipInfo";
 import { ProductVisibilityStatus } from "@/types/products";
 import { BOOLEAN_OPTIONS, ITEM_STATUS_OPTIONS } from "@/constants/products";
 import { useGetIngredientList } from "@/api/products/queries/useGetIngredientList";
+import Spinner from "@/components/common/spinner/Spinner";
 
 interface InputFieldItem {
   name: RawProductFormKeys;
@@ -66,7 +67,7 @@ export default function RawProductForm({
   const router = useRouter();
   const [newIngredientText, setNewIngredientText] = useState("");
 
-  const { data: ingData } = useGetIngredientList();
+  const { data: ingData, isLoading } = useGetIngredientList();
   const [ingredientOptions, setIngredientOptions] = useState<
     SelectOption<string>[]
   >((ingData ?? []).map((i) => ({ value: i, label: i })));
@@ -308,6 +309,7 @@ export default function RawProductForm({
     },
   ];
 
+  if (isLoading) return <Spinner />;
   return (
     <>
       <Card shadow="none" padding={20}>
