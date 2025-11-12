@@ -22,6 +22,22 @@ export default function PopupList() {
 
 	const { addToast } = useToastStore();
 
+	// COMMENTS: 11-12(수) thumbnail_pc의 filename 파라미터에서 s_ 접두사 제거 로직 추가 
+	// TODO: 백엔드 확인 필요
+	const removeSPrefixFromFilename = (url: string): string => {
+		try {
+			const urlObj = new URL(url);
+			const filename = urlObj.searchParams.get('filename');
+			if (filename && filename.startsWith('s_')) {
+				urlObj.searchParams.set('filename', filename.substring(2));
+				return urlObj.toString();
+			}
+			return url;
+		} catch {
+			return url;
+		}
+	};
+
 	return (
 		<BannerList
 			title="팝업"
@@ -64,7 +80,14 @@ export default function PopupList() {
 				{
 					key: 'thumbnail_pc',
 					header: '이미지',
-					render: (row: PopupListData) => <Image src={row.thumbnail_pc} alt={row.name} width={60} height={60} />
+					render: (row: PopupListData) => (
+						<Image 
+							src={removeSPrefixFromFilename(row.thumbnail_pc)} 
+							alt={row.name} 
+							width={60} 
+							height={60} 
+						/>
+					)
 				},
 				{ key: 'position', header: '위치', render: (row: PopupListData) => POPUP_POSITION[row.position] },
 				{ key: 'createdDate', header: '등록일', render: (row: PopupListData) => format(new Date(row.createdDate), 'yyyy-MM-dd') },
