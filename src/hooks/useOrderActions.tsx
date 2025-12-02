@@ -265,8 +265,6 @@ export function useOrderActions(
           paymentTypeCode: "SH",
         })),
       });
-      console.log("gfOrderRes", gfOrderRes);
-      console.log("deliveryInfos", deliveryInfos);
 
       if (!gfOrderRes.success) {
         throw new Error(
