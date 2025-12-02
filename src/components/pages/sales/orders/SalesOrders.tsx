@@ -38,6 +38,7 @@ import ListLayout from "@/components/layout/listLayout/ListLayout";
 import Loader from "@/components/common/loader/Loader";
 import { useSearchCategoryKeyword } from "@/hooks/useSearchCategoryKeyword";
 import AlertModal from "@/components/common/modal/alertModal/AlertModal";
+import PendingLoaderOverlay from "@/components/common/pendingLoaderOverlay/PendingLoaderOverlay";
 
 export default function SalesOrders() {
   const {
@@ -105,6 +106,8 @@ export default function SalesOrders() {
     isDeliveryAlertOpen,
     handleDeliveryConfirm,
     handleDeliveryCancel,
+
+    isPending,
   } = useOrderActions(
     orderData,
     selectedIds,
@@ -391,6 +394,7 @@ export default function SalesOrders() {
         onConfirm={handleDeliveryConfirm}
         onCancel={handleDeliveryCancel}
       />
+      {isPending && <PendingLoaderOverlay text="요청이 진행중입니다" />}
     </ListLayout>
   );
 }

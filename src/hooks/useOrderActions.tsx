@@ -58,20 +58,48 @@ export function useOrderActions(
   >([]);
 
   const [cancelReason, setCancelReason] = useState("");
-  const { mutate: confirmOrder } = useConfirmOrder();
-  const { mutate: unConfirmOrder } = useUnConfirmOrder();
-  const { mutateAsync: registerDeliveryInfo } = useRegisterDeliveryInfo();
-  const { mutate: cancelOrderBySeller } = useCancelOrderBySeller();
-  const { mutate: forcedDeliveryComplete } = useForcedDeliveryComplete();
+  const { mutate: confirmOrder, isPending: isConfirmPending } =
+    useConfirmOrder();
+  const { mutate: unConfirmOrder, isPending: isUnConfirmPending } =
+    useUnConfirmOrder();
+  const {
+    mutateAsync: registerDeliveryInfo,
+    isPending: isRegisterDeliveryPending,
+  } = useRegisterDeliveryInfo();
+  const { mutate: cancelOrderBySeller, isPending: isCancelPending } =
+    useCancelOrderBySeller();
+  const { mutate: forcedDeliveryComplete, isPending: isForcedCompletePending } =
+    useForcedDeliveryComplete();
 
   // goodsflow 훅
-  const { mutateAsync: getOtp } = useGoodsFlowOtp();
-  const { mutateAsync: registerGoodsFlowOrder } = useGoodsFlowOrderRegister();
-  const { mutateAsync: printGoodsFlow } = useGoodsFlowPrint();
-  const { mutateAsync: contractList } = useGoodsFlowContractList();
+  const { mutateAsync: getOtp, isPending: isOtpPending } = useGoodsFlowOtp();
+  const {
+    mutateAsync: registerGoodsFlowOrder,
+    isPending: isGoodsFlowRegisterPending,
+  } = useGoodsFlowOrderRegister();
+  const { mutateAsync: printGoodsFlow, isPending: isPrintPending } =
+    useGoodsFlowPrint();
+  const { mutateAsync: contractList, isPending: isContractListPending } =
+    useGoodsFlowContractList();
 
   // 재발송 처리시에 사용
-  const { mutateAsync: cancelGoodsFlowOrder } = useGoodsFlowCancelOrder();
+  const {
+    mutateAsync: cancelGoodsFlowOrder,
+    isPending: isCancelGoodsFlowPending,
+  } = useGoodsFlowCancelOrder();
+
+  // 모든 pending 상태를 하나로 통합
+  const isPending =
+    isConfirmPending ||
+    isUnConfirmPending ||
+    isRegisterDeliveryPending ||
+    isCancelPending ||
+    isForcedCompletePending ||
+    isOtpPending ||
+    isGoodsFlowRegisterPending ||
+    isPrintPending ||
+    isContractListPending ||
+    isCancelGoodsFlowPending;
 
   const orderType =
     orderTypeReq === "GENERAL"
@@ -237,6 +265,9 @@ export function useOrderActions(
           paymentTypeCode: "SH",
         })),
       });
+      console.log("gfOrderRes", gfOrderRes);
+      console.log("deliveryInfos", deliveryInfos);
+
       if (!gfOrderRes.success) {
         throw new Error(
           gfOrderRes.error?.message ?? "GoodsFlow 주문 등록에 실패했습니다."
@@ -545,5 +576,8 @@ export function useOrderActions(
     isDeliveryAlertOpen,
     handleDeliveryConfirm,
     handleDeliveryCancel,
+
+    // 로딩 상태
+    isPending,
   };
 }
