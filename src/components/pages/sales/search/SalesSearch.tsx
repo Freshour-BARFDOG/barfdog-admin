@@ -6,6 +6,7 @@ import Button from "@/components/common/button/Button";
 import DateRangeFilter from "@/components/common/dateRangeFilter/DateRangeFilter";
 import LabeledRadioButtonGroup from "@/components/common/labeledRadioButtonGroup/LabeledRadioButtonGroup";
 import Loader from "@/components/common/loader/Loader";
+import PendingLoaderOverlay from "@/components/common/pendingLoaderOverlay/PendingLoaderOverlay";
 import SearchFilterGroup from "@/components/common/searchFilterGroup/SearchFilterGroup";
 import SearchFilterKeyword from "@/components/common/searchFilterKeyword/SearchFilterKeyword";
 import SelectBox from "@/components/common/selectBox/SelectBox";
@@ -56,7 +57,7 @@ export default function SalesSearch() {
 
   const { data, isLoading } = useGetSearchSales(params);
 
-  const { mutate: excelDownload } = useExcelDownloadSearchSales();
+  const { mutate: excelDownload, isPending } = useExcelDownloadSearchSales();
   const { addToast } = useToastStore();
 
   const isDisableDownload = submittedValues.orderType === "ALL";
@@ -243,6 +244,7 @@ export default function SalesSearch() {
           </Button>
         }
       />
+      {isPending && <PendingLoaderOverlay text="요청이 진행중입니다" />}
     </ListLayout>
   );
 }
