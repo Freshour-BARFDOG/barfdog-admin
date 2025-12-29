@@ -111,7 +111,6 @@ export default function OptionField({
                       name={`itemOptionUpdateDtoList.${idx}.price`}
                       render={({ field }) => (
                         <InputField
-                          type="number"
                           value={formatNumberWithComma(field.value)}
                           onChange={(e) =>
                             field.onChange(
