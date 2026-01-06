@@ -403,14 +403,6 @@ export function useOrderActions(
         }
       }
 
-      // 6-2) GoodsFlow 기존 주문 취소
-      for (const info of deliveryInfos) {
-        const cancelRes = await cancelGoodsFlowOrder(info.transUniqueCd);
-        if (!cancelRes.success) {
-          console.error(`송장취소 실패: ${cancelRes.error?.message}`);
-        }
-      }
-
       // 6-3) GoodsFlow 재등록
       const gfOrderRes = await registerGoodsFlowOrder({
         items: deliveryInfos.map((info) => ({
