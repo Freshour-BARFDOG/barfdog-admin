@@ -91,10 +91,7 @@ export default function RawProductForm({
 
   const handleAddIngredient = (newIng: string) => {
     // 서버 재료나 이미 추가된 재료인지 확인
-    const allIngredients = [
-      ...(ingData ?? []),
-      ...customIngredients,
-    ];
+    const allIngredients = [...(ingData ?? []), ...customIngredients];
     if (allIngredients.includes(newIng)) return;
     setCustomIngredients((prev) => [...prev, newIng]);
   };
@@ -216,7 +213,7 @@ export default function RawProductForm({
           />
           <LabeledCheckboxGroup<string>
             options={ingredientOptions}
-            selectedValues={field.value as string[]}
+            selectedValues={(field.value as string[]) ?? []}
             onChange={field.onChange}
           />
         </div>
