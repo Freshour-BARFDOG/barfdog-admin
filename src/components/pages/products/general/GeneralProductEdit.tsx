@@ -28,8 +28,7 @@ export default function GeneralProductEdit({
 
   const { addToast } = useToastStore();
   const { mutate } = useUpdateGeneralProduct(itemId);
-  const { allianceOptions } =
-    useAllianceOptions();
+  const { allianceOptions } = useAllianceOptions();
 
   const defaultValues = useMemo<GeneralProductFormValues>(() => {
     return data
@@ -55,12 +54,12 @@ export default function GeneralProductEdit({
       {
         onSuccess: async () => {
           addToast("일반 상품 수정이 완료되었습니다");
-          router.back();
+          router.replace("/products/general");
         },
         onError: () => {
           addToast("일반 상품 수정을 실패했습니다");
         },
-      }
+      },
     );
   };
 

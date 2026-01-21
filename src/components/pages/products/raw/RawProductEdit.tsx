@@ -49,12 +49,12 @@ export default function RawProductEdit({ recipeId }: Props) {
       {
         onSuccess: () => {
           addToast("레시피 수정에 성공했습니다");
-          router.push("/products/raw");
+          router.replace("/products/raw");
         },
         onError: () => {
           addToast("레시피 수정에 성공했습니다");
         },
-      }
+      },
     );
   };
 
