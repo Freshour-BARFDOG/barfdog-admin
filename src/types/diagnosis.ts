@@ -169,7 +169,7 @@ interface SurveyInfoType {
   foodType: FoodType;
   feedType: FeedType;
   foodProduct?: string | null;
-  feedTime: FeedTime;
+  feedTimeList: FeedTime[];
   defecationHabit: DefecationHabit;
   snackLevel: Level5;
   cohabitingPetList: PetType[];

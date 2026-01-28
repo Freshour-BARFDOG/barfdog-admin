@@ -85,7 +85,13 @@ export default function SurveyInfo({ surveyData }: SurveyInfoProps) {
     },
     {
       label: "급여 시간",
-      value: FEED_TIME_LABEL[surveyData.feedTime],
+      value: (
+        <>
+          {surveyData.feedTimeList
+            .map((item) => FEED_TIME_LABEL[item])
+            .join(", ")}
+        </>
+      ),
     },
     {
       label: "배변습관",
