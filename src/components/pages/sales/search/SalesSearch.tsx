@@ -79,17 +79,11 @@ export default function SalesSearch() {
   const { keyword, selectedCategory, onChangeCategory, onChangeKeyword } =
     useSearchCategoryKeyword<
       SearchSalesRequest,
-      "memberName" | "memberEmail" | "dogName" | "merchantUid" | "recipientName"
+      "memberName" | "memberEmail" | "merchantUid"
     >({
       searchValues,
       setSearchValues,
-      initialCategoryOptions: [
-        "memberName",
-        "memberEmail",
-        "dogName",
-        "merchantUid",
-        "recipientName",
-      ],
+      initialCategoryOptions: ["memberName", "memberEmail", "merchantUid"],
     });
 
   const filters: SearchFilterItem[] = [
@@ -98,15 +92,15 @@ export default function SalesSearch() {
       children: (
         <DateRangeFilter
           value={{
-            startDate: searchValues.from,
-            endDate: searchValues.to,
+            startDate: searchValues.fromDate,
+            endDate: searchValues.toDate,
           }}
           onChangeRange={(value) => {
             const { startDate, endDate } = value;
             setSearchValues({
               ...searchValues,
-              from: startDate as string,
-              to: endDate as string,
+              fromDate: startDate as string,
+              toDate: endDate as string,
             });
           }}
         />
@@ -161,14 +155,14 @@ export default function SalesSearch() {
 
   const columns: TableColumn<SalesBaseRow>[] = [
     {
-      key: "id",
+      key: "orderId",
       header: "번호",
       width: "60px",
       render: (row, index) =>
         getTableRowNumber({
-          totalElements: data?.page.totalElements as number,
-          currentPage: data?.page.number as number,
-          pageSize: data?.page.size as number,
+          totalElements: data?.pagination.totalCount as number,
+          currentPage: data?.pagination.page as number,
+          pageSize: data?.pagination.size as number,
           index,
         }).toString(),
     },
@@ -176,8 +170,8 @@ export default function SalesSearch() {
       key: "detail",
       header: "상세보기",
       render: (row) => {
-        const orderId = row.id;
-        const orderType = row.orderType;
+        const orderId = row.orderId;
+        const orderType = row.orderType.toLowerCase();
         return (
           <Link href={`/sales/${orderType}/${orderId}`} target="_blank">
             <Text type="body3" color="red">
@@ -202,14 +196,9 @@ export default function SalesSearch() {
       header: "수령자",
     },
     {
-      key: "dogName",
-      header: "반려견명",
-      render: (row) => (row.dogName ? row.dogName : "-"),
-    },
-    {
-      key: "packageDelivery",
+      key: "isPackage",
       header: "묶음배송 여부",
-      render: (row) => (row.packageDelivery ? "Y" : "N"),
+      render: (row) => (row.isPackage ? "Y" : "N"),
     },
   ];
 
@@ -229,7 +218,7 @@ export default function SalesSearch() {
         columns={columns}
         page={page}
         onPageChange={onChangePage}
-        totalPages={data?.page?.totalPages ?? 0}
+        totalPages={data?.pagination?.totalPages ?? 0}
         title="목록"
         emptyText="판매 관리 데이터가 없습니다."
         action={

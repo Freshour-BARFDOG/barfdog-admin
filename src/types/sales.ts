@@ -1,13 +1,11 @@
-import { Page } from "./common";
+import { Pagination } from "./common";
 
 interface SearchSalesRequest {
-  from: string; // yyyy-MM-dd
-  to: string; // yyyy-MM-dd
+  fromDate: string; // yyyy-MM-dd
+  toDate: string; // yyyy-MM-dd
   merchantUid: string | null; // 주문번호
   memberName: string | null; // 구매자 이름
   memberEmail: string | null; // 구매자 이메일(로그인 아이디)
-  recipientName: string | null; // 수령자 이름
-  dogName: string | null; // 반려견 이름
   statusList: OrderStatus[] | null;
   orderType: OrderTypeRequest;
 }
@@ -23,11 +21,11 @@ interface SearchSalesParams {
 
 type SalesSearchCategory = Exclude<
   keyof SearchSalesRequest,
-  "from" | "to" | "statusList" | "orderType" // 이 두 필드는 검색 키가 아니므로 제외
+  "fromDate" | "toDate" | "statusList" | "orderType" // 이 필드들은 검색 키가 아니므로 제외
 >;
 
 interface SearchSalesData {
-  id: number;
+  orderId: number;
   orderType: OrderTypeResponse;
   merchantUid: string;
   // 회원 정보
@@ -37,32 +35,27 @@ interface SearchSalesData {
   // 수령인 정보
   recipientName: string;
   recipientPhoneNumber: string;
-  // 반려견 이름
-  dogName: string;
   // 주문/배송 상태
   orderStatus: OrderStatus;
   deliveryStatus: OrderStatus;
   // 배송 관련
-  packageDelivery: boolean;
+  isPackage: boolean;
   deliveryCode: string | null;
   deliveryNumber: string | null;
-  transUniqueCd: string; // 거래 고유 코드
-  // 취소 관련
-  cancelReason: string | null;
-  cancelDetailReason: string | null;
+  transUniqueCd: string | null; // 거래 고유 코드
   // 날짜
-  orderDate: string; // ISO 문자열
-  createdDate: string; // ISO 문자열
+  createdDate: string; // yyyy-MM-dd HH:mm:ss
+  paymentDate: string | null;
 }
 
 interface SearchSalesResult {
-  page: Page;
+  pagination: Pagination;
   orders: SearchSalesData[];
 }
 
 interface SalesBaseRow {
   /** 주문 고유 ID (상세조회 링크 등에 사용) */
-  id: number;
+  orderId: number;
   /** 주문번호 (merchantUid) */
   merchantUid: string;
   /** 주문 상태 */
@@ -73,10 +66,8 @@ interface SalesBaseRow {
   memberName: string;
   /** 수령인 이름 */
   recipientName: string;
-  /** 반려견 이름 */
-  dogName: string;
   /** 묶음배송 여부 */
-  packageDelivery: boolean;
+  isPackage: boolean;
   orderType: OrderTypeResponse;
 }
 
@@ -89,122 +80,105 @@ interface SalesDeliveryRow extends SalesBaseRow {
   trackingNumber: string;
 }
 
-interface SalesDetailGeneralResponse {
-  orderInfoDto: OrderInfoDto;
-  orderItemAndOptionDtoList: OrderItemAndOptionDto[];
-  paymentDto: GeneralPaymentDto;
-  deliveryDto: DeliveryDto;
-}
+// ─── 주문 상세 공통 타입 (v2 API) ────────────────────────────────────
 
-interface OrderInfoDto {
-  id: number;
+/** 주문 상세 - 주문 정보 */
+interface OrderDetailInfo {
+  orderId: number;
   merchantUid: string;
-  orderDate: string; // ISO 포맷
+  paymentDate: string; // yyyy-MM-dd HH:mm:ss
   orderType: OrderTypeResponse;
   memberName: string;
-  phoneNumber: string;
-  orderStatus: OrderStatus;
-  cancelRequestDate: string | null;
-  cancelConfirmDate: string | null;
-  cancelReason: string | null;
-  cancelDetailReason: string | null;
-  package: boolean;
-  email: string;
-  subscribe: boolean;
-}
-
-interface OrderItemAndOptionDto {
-  orderItemDto: OrderItemDto;
-  selectOptionDtoList: SelectOptionDto[];
-}
-
-interface OrderItemDto {
-  orderItemId: number;
-  itemName: string;
-  amount: number;
-  salePrice: number;
-  finalPrice: number;
-  couponName: string | null;
-  discountAmount: number;
-  status: OrderStatus;
-  cancelReason: string | null;
-  cancelDetailReason: string | null;
-  cancelRequestDate: string | null;
-  cancelConfirmDate: string | null;
-  returnReason: string | null;
-  returnDetailReason: string | null;
-  returnRequestDate: string | null;
-  returnConfirmDate: string | null;
-  exchangeReason: string | null;
-  exchangeDetailReason: string | null;
-  exchangeRequestDate: string | null;
-  exchangeConfirmDate: string | null;
-}
-
-interface SelectOptionDto {
-  optionId: number; // 옵션 고유 ID
-  optionName: string; // 옵션 이름
-  price: number; // 옵션 단가
-  amount: number; // 수량
-}
-
-/** 공통 결제 정보(일반 상세 결제) */
-interface GeneralPaymentDto {
-  orderPrice: number;
-  discountGrade: number;
-  deliveryPrice: number;
-  discountReward: number;
-  discountCoupon: number;
-  overDiscount: number;
-  paymentPrice: number;
-  paymentMethod: PaymentMethod;
+  memberPhoneNumber: string;
+  memberEmail: string | null;
   orderStatus: OrderStatus;
   orderConfirmDate: string | null;
+  cancelReason: string | null;
+  cancelDetailReason: string | null;
+  cancelRequestDate: string | null;
+  cancelConfirmDate: string | null;
+  package: boolean;
 }
 
-/** 구독 상세 결제 DTO */
-interface SubscribePaymentDto extends GeneralPaymentDto {
+/** 주문 상세 - 주문 상품 */
+interface OrderItemDetail {
+  orderItemId: number;
+  orderItemName: string;
+  amount: number;
+  salePrice: number;
+  itemOptionList: ItemOption[] | null;
+}
+
+interface ItemOption {
+  optionId: number;
+  optionName: string;
+  optionAmount: number;
+  optionPrice: number;
+}
+
+/** 주문 상세 - 결제 정보 */
+interface PaymentDetailInfo {
+  orderPrice: number;
+  paymentPrice: number;
+  discountGrade: number;
+  discountReward: number;
   couponName: string | null;
+  discountCoupon: number;
+  overDiscount: number;
+  deliveryPrice: number;
+  paymentMethod: PaymentMethod;
   impUid: string | null;
+}
+
+/** 주문 상세 - 배송 정보 */
+interface DeliveryDetailInfo {
+  trackingNumber: string | null;
+  carrierCode: string | null;
+  deliveryName: string | null;
+  recipientName: string;
+  phoneNumber: string;
+  street: string;
+  detailAddress: string;
+  request: string | null;
+  departureDateTime: string | null;
+  arrivalDateTime: string | null;
+}
+
+// ─── 일반 주문 상세 ────────────────────────────────────
+
+interface SalesDetailGeneralResponse {
+  orderInfo: OrderDetailInfo;
+  orderItemList: OrderItemDetail[];
+  paymentInfo: PaymentDetailInfo;
+  deliveryInfo: DeliveryDetailInfo;
+}
+
+// ─── 구독 주문 상세 (v2 API) ────────────────────────────────────
+
+interface RecipeInfo {
+  name: string;
+  pricePerGram: number;
+}
+
+/** 구독 상세 - 구독 정보 */
+interface SubscribeDetailInfo {
+  subscribeId: number;
+  petName: string;
+  subscribeCount: number;
+  plan: string;
+  recipeInfoList: RecipeInfo[];
+}
+
+/** 구독 상세 - 결제 정보 (PaymentDetailInfo + customerUid) */
+interface SubscribePaymentInfo extends PaymentDetailInfo {
   customerUid: string;
 }
 
-interface DeliveryDto {
-  recipientName: string;
-  recipientPhone: string;
-  zipcode: string;
-  street: string;
-  detailAddress: string;
-  departureDate: string | null;
-  arrivalDate: string | null;
-  deliveryNumber: string | null;
-  deliveryCode: string | null;
-  request: string | null;
-}
-
-/** 반려견 정보 */
-interface DogDto {
-  name: string;
-  inedibleFood: string;
-  inedibleFoodEtc: string;
-  caution: string;
-}
-
-/** 구독 상세 정보 */
-interface SubscribeDto {
-  id: number;
-  subscribeCount: number;
-  plan: string;
-  oneMealGramsPerRecipe: string;
-  recipeName: string;
-}
-
 interface SalesDetailSubscribeResponse {
-  subscribeOrderInfoDto: OrderInfoDto;
-  dogDto: DogDto;
-  subscribeDto: SubscribeDto;
-  subscribePaymentDto: SubscribePaymentDto;
-  subscribeDeliveryDto: DeliveryDto;
+  orderInfo: OrderDetailInfo;
+  subscribeInfo: SubscribeDetailInfo;
+  paymentInfo: SubscribePaymentInfo;
+  deliveryInfo: DeliveryDetailInfo;
 }
 
 interface SalesRecipient {
@@ -260,7 +234,7 @@ type OrderStatus =
   // — 구매 확정 목록 조회
   | "CONFIRM"; // 구매 확정
 
-type OrderTypeResponse = "general" | "subscribe";
+type OrderTypeResponse = "GENERAL" | "SUBSCRIBE";
 type OrderTypeRequest = "ALL" | "GENERAL" | "SUBSCRIBE";
 type PaymentMethod = "CREDIT_CARD" | "NAVER_PAY" | "KAKAO_PAY";
 type PurchaseType = Exclude<OrderTypeRequest, "ALL">;
@@ -275,18 +249,19 @@ export type {
   SalesSearchCategory,
   SearchSalesParams,
   SalesDetailGeneralResponse,
+  OrderDetailInfo,
+  OrderItemDetail,
+  ItemOption,
+  PaymentDetailInfo,
+  DeliveryDetailInfo,
   OrderTypeResponse,
   OrderTypeRequest,
   SalesDetailSubscribeResponse,
-  OrderInfoDto,
-  OrderItemAndOptionDto,
-  GeneralPaymentDto,
-  SubscribePaymentDto,
-  DeliveryDto,
-  SubscribeDto,
+  SubscribeDetailInfo,
+  SubscribePaymentInfo,
+  RecipeInfo,
   PaymentMethod,
   SalesRecipient,
   UpdateSalesDeliveryRequest,
-  DogDto,
   PurchaseType,
 };

@@ -3,7 +3,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import Wrapper from "@/components/layout/wrapper/Wrapper";
 import SalesDetailGeneral from "@/components/pages/sales/detail/SalesDetailGeneral";
 import SalesDetailSubscribe from "@/components/pages/sales/detail/SalesDetailSubscribe";
-import { OrderTypeResponse } from "@/types/sales";
 import { PageProps } from "@/types/common";
 import Spinner from "@/components/common/spinner/Spinner";
 
@@ -12,7 +11,7 @@ export const metadata = {
 };
 
 type Params = {
-  orderType: OrderTypeResponse;
+  orderType: string;
   orderId: string;
 };
 

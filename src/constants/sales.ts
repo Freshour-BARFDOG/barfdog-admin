@@ -10,49 +10,41 @@ import {
 import { OLDEST_DATE, TODAY } from "./common";
 
 const INITIAL_SEARCH_REQUEST = {
-  from: OLDEST_DATE,
-  to: TODAY,
+  fromDate: OLDEST_DATE,
+  toDate: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
-  recipientName: null, // 수령자 이름
-  dogName: null, // 반려견 이름
   statusList: null,
   orderType: "ALL" as OrderTypeRequest,
 };
 
 const INITIAL_ORDERS_REQUEST = {
-  from: OLDEST_DATE,
-  to: TODAY,
+  fromDate: OLDEST_DATE,
+  toDate: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
-  recipientName: null, // 수령자 이름
-  dogName: null, // 반려견 이름
   statusList: ["PAYMENT_DONE"] as OrderStatus[],
   orderType: "ALL" as OrderTypeRequest,
 };
 
 const INITIAL_CANCEL_REQUEST = {
-  from: OLDEST_DATE,
-  to: TODAY,
+  fromDate: OLDEST_DATE,
+  toDate: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
-  recipientName: null, // 수령자 이름
-  dogName: null, // 반려견 이름
   statusList: ["CANCEL_REQUEST"] as OrderStatus[],
   orderType: "ALL" as OrderTypeRequest,
 };
 
 const INITIAL_DELIVERY_REQUEST = {
-  from: OLDEST_DATE,
-  to: TODAY,
+  fromDate: OLDEST_DATE,
+  toDate: TODAY,
   merchantUid: null, // 주문번호
   memberName: null, // 구매자 이름
   memberEmail: null, // 구매자 이메일(로그인 아이디)
-  recipientName: null, // 수령자 이름
-  dogName: null, // 반려견 이름
   statusList: ["DELIVERY_BEFORE_COLLECTION"] as OrderStatus[],
   orderType: "ALL" as OrderTypeRequest,
 };
@@ -63,9 +55,7 @@ const SALES_SEARCH_CATEGORY: {
 }[] = [
   { label: "구매자 이름", value: "memberName" },
   { label: "구매자 ID", value: "memberEmail" },
-  { label: "반려견 이름", value: "dogName" },
   { label: "주문번호", value: "merchantUid" },
-  { label: "수령자 이름", value: "recipientName" },
 ];
 
 const SALES_ORDER_TYPE: {
@@ -78,13 +68,13 @@ const SALES_ORDER_TYPE: {
 ];
 
 const ORDER_TYPE_LABEL_MAP: Record<OrderTypeResponse, string> = {
-  general: "일반",
-  subscribe: "구독",
+  GENERAL: "일반",
+  SUBSCRIBE: "구독",
 };
 
 const PRODUCT_TYPE: Record<PurchaseType, string> = {
-  GENERAL: "general",
-  SUBSCRIBE: "subscribe",
+  GENERAL: "GENERAL",
+  SUBSCRIBE: "SUBSCRIBE",
 };
 
 const ORDER_STATUS: SelectOption<OrderStatus>[] = [

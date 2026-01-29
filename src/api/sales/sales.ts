@@ -6,14 +6,21 @@ import {
   SalesDetailSubscribeResponse,
   UpdateSalesDeliveryRequest,
   OrderTypeResponse,
+  SearchSalesData,
 } from "@/types/sales";
+import { Pagination } from "@/types/common";
 import axiosInstance from "../axiosInstance";
 import { AxiosInstance } from "axios";
 import {
-  ConfirmOrderRequest,
   RegisterDeliveryInfoResponse,
   RegisterDeliveryRequest,
 } from "@/types/sales/orders";
+import { validateApiResponse } from "@/utils/api/apiResponseUtils";
+
+interface SearchSalesApiResponse {
+  pagination: Pagination;
+  orderList: SearchSalesData[];
+}
 
 const getSearchSales = async ({
   body,
@@ -21,23 +28,25 @@ const getSearchSales = async ({
   size = 50,
 }: SearchSalesParams): Promise<SearchSalesResult> => {
   const { data } = await axiosInstance.post(
-    `/api/admin/orders/searchAll?page=${page}&size=${size}`,
-    body
+    `api/v2/admin/orders?page=${page}&size=${size}`,
+    body,
   );
 
+  const responseData = validateApiResponse<SearchSalesApiResponse>(data);
+
   return {
-    page: data.page,
-    orders: data?._embedded?.queryAdminOrdersAllInfoDtoList || [],
+    pagination: responseData.pagination,
+    orders: responseData.orderList || [],
   };
 };
 
 const excelDownloadSearchSales = async (
-  body: SearchSalesRequest
+  body: SearchSalesRequest,
 ): Promise<Blob> => {
   const { data } = await axiosInstance.post(
-    "/api/admin/orders/searchAll/excel",
+    "/api/v2/admin/orders/export",
     body,
-    { responseType: "blob", timeout: 100000 }
+    { responseType: "blob", timeout: 100000 },
   );
 
   return data;
@@ -45,20 +54,24 @@ const excelDownloadSearchSales = async (
 
 const getSalesDetailGeneral = async (
   orderId: number,
-  instance: AxiosInstance = axiosInstance
+  instance: AxiosInstance = axiosInstance,
 ): Promise<SalesDetailGeneralResponse> => {
-  const { data } = await instance.get(`/api/admin/orders/${orderId}/general`);
+  const { data } = await instance.get(
+    `/api/v2/admin/orders/general/${orderId}`,
+  );
 
-  return data;
+  return validateApiResponse<SalesDetailGeneralResponse>(data);
 };
 
 const getSalesDetailSubscribe = async (
   orderId: number,
-  instance: AxiosInstance = axiosInstance
+  instance: AxiosInstance = axiosInstance,
 ): Promise<SalesDetailSubscribeResponse> => {
-  const { data } = await instance.get(`/api/admin/orders/${orderId}/subscribe`);
+  const { data } = await instance.get(
+    `/api/v2/admin/orders/subscribe/${orderId}`,
+  );
 
-  return data;
+  return validateApiResponse<SalesDetailSubscribeResponse>(data);
 };
 
 interface UpdateSalesDeliveryParams {
@@ -72,7 +85,7 @@ const updateSalesDelivery = async ({
 }: UpdateSalesDeliveryParams): Promise<any> => {
   const { data } = await axiosInstance.put(
     `/api/admin/deliveries/${orderId}/recipientAndRequest`,
-    body
+    body,
   );
 
   return data;
@@ -80,36 +93,30 @@ const updateSalesDelivery = async ({
 
 // ------- 주문 관리 ---------
 
-const confirmOrder = async ({ orderType, body }: ConfirmOrderRequest) => {
-  const { data } = await axiosInstance.post(
-    `/api/admin/orders/${orderType}/orderConfirm`,
-    body,
-    {
-      timeout: 60000,
-    }
-  );
-  return data;
-};
-
-const unConfirmOrder = async ({
-  orderType,
-  orderIdList,
-}: {
-  orderType: OrderTypeResponse;
-  orderIdList: number[];
-}) => {
-  const { data } = await axiosInstance.post(
-    `/api/admin/orders/${orderType}/orderConfirmCancel`,
+const confirmOrder = async (orderIdList: number[]) => {
+  const { data } = await axiosInstance.put(
+    "/api/v2/admin/orders/fulfill",
     { orderIdList },
     {
       timeout: 60000,
-    }
+    },
   );
-  return data;
+  return validateApiResponse(data);
+};
+
+const unConfirmOrder = async (orderIdList: number[]) => {
+  const { data } = await axiosInstance.put(
+    "/api/v2/admin/orders/unfulfill",
+    { orderIdList },
+    {
+      timeout: 60000,
+    },
+  );
+  return validateApiResponse(data);
 };
 
 const registerDeliveryInfo = async (
-  body: RegisterDeliveryRequest
+  body: RegisterDeliveryRequest,
 ): Promise<RegisterDeliveryInfoResponse> => {
   const { data } = await axiosInstance.post("/api/admin/deliveries/info", body);
   return data._embedded.queryOrderInfoForDeliveryList;
@@ -127,14 +134,14 @@ const cancelOrderBySeller = async ({
     body,
     {
       timeout: 60000,
-    }
+    },
   );
   return data;
 };
 const forcedDeliveryComplete = async (orderIdList: number[]) => {
   const { data } = await axiosInstance.post(
     "/api/admin/deliveries/forcedDeliveryComplete",
-    { orderIdList }
+    { orderIdList },
   );
   return data;
 };
@@ -150,7 +157,7 @@ const confirmCancelRequest = async ({
 }) => {
   const { data } = await axiosInstance.post(
     `/api/admin/orders/${orderType}/cancelConfirm`,
-    { orderIdList }
+    { orderIdList },
   );
   return data;
 };
@@ -158,7 +165,7 @@ const confirmCancelRequest = async ({
 const rejectCancelRequest = async (orderIdList: number[]) => {
   const { data } = await axiosInstance.post(
     "/api/admin/orders/cancelRequest/reject",
-    { orderIdList }
+    { orderIdList },
   );
   return data;
 };

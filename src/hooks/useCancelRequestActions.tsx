@@ -16,9 +16,9 @@ export function useCancelRequestActions(
 
   const orderType =
     orderTypeReq === "GENERAL"
-      ? "general"
+      ? "GENERAL"
       : orderTypeReq === "SUBSCRIBE"
-      ? "subscribe"
+      ? "SUBSCRIBE"
       : (null as any as OrderTypeResponse);
 
   // 1) 취소 승인

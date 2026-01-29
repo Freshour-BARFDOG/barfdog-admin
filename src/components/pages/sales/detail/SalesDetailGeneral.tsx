@@ -21,29 +21,29 @@ export default function SalesDetailGeneral({
 }: SalesDetailGeneralProps) {
   const { data } = useGetSalesDetailGeneral(orderId);
   const isCanceled = CANCELED_ORDER_STATUS_SET.has(
-    data.orderInfoDto.orderStatus
+    data.orderInfo.orderStatus
   );
 
-  const orderStatus = ORDER_STATUS_LABEL_MAP[data.orderInfoDto.orderStatus];
+  const orderStatus = ORDER_STATUS_LABEL_MAP[data.orderInfo.orderStatus];
 
   return (
     <div className={salesDetailGridWrapper}>
-      <OrderInfo orderInfoDto={data.orderInfoDto} />
+      <OrderInfo orderInfo={data.orderInfo} />
       {isCanceled && (
         <CancelInfo
-          orderInfoDto={data.orderInfoDto}
+          orderInfo={data.orderInfo}
           orderStatus={orderStatus}
         />
       )}
       <OrderItemsInfo
-        orderItemAndOptionDtoList={data.orderItemAndOptionDtoList}
+        orderItemList={data.orderItemList}
         title={isCanceled ? "취소상품" : "주문상품"}
       />
-      <PaymentInfo paymentDto={data.paymentDto} />
+      <PaymentInfo paymentInfo={data.paymentInfo} />
       <DeliveryInfo
-        orderId={data.orderInfoDto.id}
-        deliveryDto={data.deliveryDto}
-        orderConfirmDate={data.paymentDto.orderConfirmDate}
+        orderId={data.orderInfo.orderId}
+        deliveryInfo={data.deliveryInfo}
+        orderConfirmDate={data.orderInfo.orderConfirmDate}
       />
     </div>
   );

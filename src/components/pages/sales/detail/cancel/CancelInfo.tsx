@@ -1,15 +1,15 @@
-import { OrderInfoDto } from "@/types/sales";
+import { OrderDetailInfo } from "@/types/sales";
 import React from "react";
 import DetailTable from "@/components/common/detailTable/DetailTable";
 import { format, parseISO } from "date-fns";
 
 interface CancelInfoProps {
-  orderInfoDto: OrderInfoDto;
+  orderInfo: OrderDetailInfo;
   orderStatus: string;
 }
 
 export default function CancelInfo({
-  orderInfoDto,
+  orderInfo,
   orderStatus,
 }: CancelInfoProps) {
   const infoList = [
@@ -20,24 +20,24 @@ export default function CancelInfo({
     },
     {
       label: "취소요청일",
-      value: orderInfoDto.cancelRequestDate
-        ? format(parseISO(orderInfoDto.cancelRequestDate), "yyyy-MM-dd HH:mm")
+      value: orderInfo.cancelRequestDate
+        ? format(parseISO(orderInfo.cancelRequestDate), "yyyy-MM-dd HH:mm")
         : "-",
     },
     {
       label: "취소승인일",
-      value: orderInfoDto.cancelConfirmDate
-        ? format(parseISO(orderInfoDto.cancelConfirmDate), "yyyy-MM-dd HH:mm")
+      value: orderInfo.cancelConfirmDate
+        ? format(parseISO(orderInfo.cancelConfirmDate), "yyyy-MM-dd HH:mm")
         : "-",
     },
     {
       label: "취소요청사유",
-      value: orderInfoDto.cancelReason,
+      value: orderInfo.cancelReason,
       fullWidth: true,
     },
     {
       label: "취소상세사유",
-      value: orderInfoDto.cancelDetailReason,
+      value: orderInfo.cancelDetailReason,
       fullWidth: true,
     },
   ];

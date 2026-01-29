@@ -1,8 +1,7 @@
 import { OrderTypeResponse } from "../sales";
 
 type ConfirmOrderBody = {
-  orderItemIdList?: number[];
-  orderIdList?: number[];
+  orderIdList: number[];
 };
 
 interface ConfirmOrderRequest {

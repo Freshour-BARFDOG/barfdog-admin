@@ -10,7 +10,6 @@ import { salesDetailGridWrapper } from "./SalesDetail.css";
 import PaymentInfo from "./payment/PaymentInfo";
 import CancelInfo from "./cancel/CancelInfo";
 import SubscribeInfo from "./subscribe/SubscribeInfo";
-import DogInfo from "./dog/DogInfo";
 import DeliveryInfo from "./delivery/DeliveryInfo";
 
 interface SalesDetailSubscribeProps {
@@ -22,26 +21,24 @@ export default function SalesDetailSubscribe({
 }: SalesDetailSubscribeProps) {
   const { data } = useGetSalesDetailSubscribe(orderId);
   const isCanceled = CANCELED_ORDER_STATUS_SET.has(
-    data.subscribePaymentDto.orderStatus
+    data.orderInfo.orderStatus
   );
-  const orderStatus =
-    ORDER_STATUS_LABEL_MAP[data.subscribePaymentDto.orderStatus];
+  const orderStatus = ORDER_STATUS_LABEL_MAP[data.orderInfo.orderStatus];
   return (
     <div className={salesDetailGridWrapper}>
-      <OrderInfo orderInfoDto={data.subscribeOrderInfoDto} />
-      <PaymentInfo paymentDto={data.subscribePaymentDto} />
+      <OrderInfo orderInfo={data.orderInfo} />
+      <PaymentInfo paymentInfo={data.paymentInfo} />
       {isCanceled && (
         <CancelInfo
-          orderInfoDto={data.subscribeOrderInfoDto}
+          orderInfo={data.orderInfo}
           orderStatus={orderStatus}
         />
       )}
-      <SubscribeInfo subscribeDto={data.subscribeDto} />
-      <DogInfo dogDto={data.dogDto} />
+      <SubscribeInfo subscribeInfo={data.subscribeInfo} />
       <DeliveryInfo
-        orderId={data.subscribeOrderInfoDto.id}
-        deliveryDto={data.subscribeDeliveryDto}
-        orderConfirmDate={data.subscribePaymentDto.orderConfirmDate}
+        orderId={data.orderInfo.orderId}
+        deliveryInfo={data.deliveryInfo}
+        orderConfirmDate={data.orderInfo.orderConfirmDate}
       />
     </div>
   );

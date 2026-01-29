@@ -28,7 +28,7 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
-export const authAxios: AxiosInstance = axios.create({
+export const publicAxios: AxiosInstance = axios.create({
   baseURL,
   timeout: 5000,
   withCredentials: true,
@@ -59,7 +59,7 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 /**
@@ -108,14 +108,13 @@ axiosInstance.interceptors.response.use(
           .catch((err) => Promise.reject(err));
       }
       isRefreshing = true;
-      return authAxios
+      return publicAxios
         .get(`/api/refresh`)
         .then(({ data }) => {
           const newToken: string = data.accessToken;
           setCookie(AUTH_CONFIG.ACCESS_TOKEN_COOKIE, newToken);
-          axiosInstance.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${newToken}`;
+          axiosInstance.defaults.headers.common["Authorization"] =
+            `Bearer ${newToken}`;
           processQueue(null, newToken);
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return axiosInstance(originalRequest);
@@ -129,7 +128,7 @@ axiosInstance.interceptors.response.use(
         });
     }
     return Promise.reject(error);
-  }
+  },
 );
 // }
 

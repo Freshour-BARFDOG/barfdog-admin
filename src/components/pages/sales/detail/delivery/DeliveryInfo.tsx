@@ -1,6 +1,6 @@
 "use client";
 
-import { DeliveryDto, SalesRecipient } from "@/types/sales";
+import { DeliveryDetailInfo, SalesRecipient } from "@/types/sales";
 import React, { useReducer } from "react";
 import DetailTable from "@/components/common/detailTable/DetailTable";
 import InputField from "@/components/common/inputField/InputField";
@@ -12,7 +12,7 @@ import { useUpdateSalesDelivery } from "@/api/sales/mutations/useUpdateSalesDeli
 import { useToastStore } from "@/store/useToastStore";
 
 interface DeliveryInfoProps {
-  deliveryDto: DeliveryDto;
+  deliveryInfo: DeliveryDetailInfo;
   orderConfirmDate: string | null;
   orderId: number;
 }
@@ -42,7 +42,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export default function DeliveryInfo({
-  deliveryDto,
+  deliveryInfo,
   orderConfirmDate,
   orderId,
 }: DeliveryInfoProps) {
@@ -61,17 +61,21 @@ export default function DeliveryInfo({
   });
   const { addToast } = useToastStore();
 
-  // useReducer(reducer, initialArg, init) 형태로 쓰면, init(deliveryDto)는 마운트 시 한 번만 실행
-  const [state, dispatch] = useReducer(reducer, deliveryDto, (dto) => ({
-    recipient: {
-      zipcode: dto.zipcode ?? "",
-      street: dto.street ?? "",
-      detailAddress: dto.detailAddress ?? "",
-      name: dto.recipientName ?? "",
-      phone: dto.recipientPhone ?? "",  
-    },
-    request: dto.request,
-  }));
+  // useReducer(reducer, initialArg, init) 형태로 쓰면, init(deliveryInfo)는 마운트 시 한 번만 실행
+  const [state, dispatch] = useReducer(
+    reducer,
+    deliveryInfo,
+    (dto) => ({
+      recipient: {
+        zipcode: "",
+        street: dto.street ?? "",
+        detailAddress: dto.detailAddress ?? "",
+        name: dto.recipientName ?? "",
+        phone: dto.phoneNumber ?? "",
+      },
+      request: dto.request,
+    })
+  );
 
   const handleUpdate = () => {
     updateDelivery({
@@ -99,10 +103,10 @@ export default function DeliveryInfo({
   };
 
   const infoList = [
-    { label: "수취인명", value: deliveryDto.recipientName },
+    { label: "수취인명", value: deliveryInfo.recipientName },
     {
       label: "연락처",
-      value: deliveryDto.recipientPhone,
+      value: deliveryInfo.phoneNumber,
     },
     {
       label: "배송지 주소",
@@ -146,10 +150,10 @@ export default function DeliveryInfo({
       ),
       fullWidth: true,
     },
-    { label: "발송처리일", value: deliveryDto.departureDate ?? "-" },
-    { label: "배송완료일", value: deliveryDto.arrivalDate ?? "-" },
-    { label: "송장번호", value: deliveryDto.deliveryNumber ?? "-" },
-    { label: "구매자ID", value: orderConfirmDate ?? "-" },
+    { label: "발송처리일", value: deliveryInfo.departureDateTime ?? "-" },
+    { label: "배송완료일", value: deliveryInfo.arrivalDateTime ?? "-" },
+    { label: "송장번호", value: deliveryInfo.trackingNumber ?? "-" },
+    { label: "구매확정일", value: orderConfirmDate ?? "-" },
   ];
   return (
     <>

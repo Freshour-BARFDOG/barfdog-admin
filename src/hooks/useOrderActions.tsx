@@ -103,14 +103,14 @@ export function useOrderActions(
 
   const orderType =
     orderTypeReq === "GENERAL"
-      ? "general"
+      ? "GENERAL"
       : orderTypeReq === "SUBSCRIBE"
-      ? "subscribe"
+      ? "SUBSCRIBE"
       : (null as any as OrderTypeResponse);
 
   // 선택된 주문 데이터만
   const selectedItems = useMemo(
-    () => allOrders.filter((o) => selectedIds.includes(o.id)),
+    () => allOrders.filter((o) => selectedIds.includes(o.orderId)),
     [allOrders, selectedIds]
   );
 
@@ -132,43 +132,15 @@ export function useOrderActions(
       return;
     }
 
-    try {
-      let confirmList: number[] = [];
-
-      if (orderTypeReq === "GENERAL") {
-        // GENERAL: orderItemIdList 를 위해 상세정보에서 orderItemId 들만 꺼내 모아줌
-        for (const orderId of selectedIds) {
-          const detail = await getSalesDetailGeneral(orderId);
-          const itemIds = detail.orderItemAndOptionDtoList.map(
-            (l) => l.orderItemDto.orderItemId
-          );
-          confirmList.push(...itemIds);
-        }
-      } else {
-        // SUBSCRIBE: orderIdList 에 그대로 사용
-        confirmList = [...selectedIds];
-      }
-
-      const body =
-        orderType === PRODUCT_TYPE.GENERAL
-          ? { orderItemIdList: confirmList }
-          : { orderIdList: confirmList };
-
-      confirmOrder(
-        { orderType, body },
-        {
-          onSuccess: () => {
-            addToast("주문확인 처리되었습니다.");
-            setSelectedIds([]);
-          },
-          onError: () => {
-            addToast("주문확인에 실패했습니다.");
-          },
-        }
-      );
-    } catch (err: any) {
-      addToast("주문확인 중 오류가 발생했습니다.");
-    }
+    confirmOrder(selectedIds, {
+      onSuccess: () => {
+        addToast("주문확인 처리되었습니다.");
+        setSelectedIds([]);
+      },
+      onError: () => {
+        addToast("주문확인에 실패했습니다.");
+      },
+    });
   };
 
   // 2) 확인취소
@@ -188,18 +160,15 @@ export function useOrderActions(
     if (!confirm(`선택하신 ${selectedIds.length}개를 확인취소 하시겠습니까?`))
       return;
 
-    unConfirmOrder(
-      { orderType, orderIdList: selectedIds },
-      {
-        onSuccess: () => {
-          addToast("확인취소 처리되었습니다");
-          setSelectedIds([]);
-        },
-        onError: () => {
-          addToast("확인취소에 실패했습니다");
-        },
-      }
-    );
+    unConfirmOrder(selectedIds, {
+      onSuccess: () => {
+        addToast("확인취소 처리되었습니다");
+        setSelectedIds([]);
+      },
+      onError: () => {
+        addToast("확인취소에 실패했습니다");
+      },
+    });
   };
 
   // 3) 주문발송
@@ -219,9 +188,9 @@ export function useOrderActions(
       return;
     }
 
-    // packageDelivery가 true인 항목이 있는지 체크
+    // isPackage가 true인 항목이 있는지 체크
     const hasPackageDelivery = selectedItems.some(
-      (item) => item.packageDelivery
+      (item) => item.isPackage
     );
 
     if (hasPackageDelivery) {
@@ -319,8 +288,8 @@ export function useOrderActions(
         const itemList: number[] = [];
         for (const orderId of selectedIds) {
           const detail = await getSalesDetailGeneral(orderId);
-          detail.orderItemAndOptionDtoList.forEach((o) =>
-            itemList.push(o.orderItemDto.orderItemId)
+          detail.orderItemList.forEach((o) =>
+            itemList.push(o.orderItemId)
           );
         }
         body = {
@@ -455,7 +424,7 @@ export function useOrderActions(
       return;
     }
 
-    if (orderType === "subscribe") {
+    if (orderType === "SUBSCRIBE") {
       addToast("일반 주문 확인만 가능합니다");
       setSelectedIds([]);
       return;
@@ -468,40 +437,38 @@ export function useOrderActions(
           orderId
         );
 
-        const { orderInfoDto, orderItemAndOptionDtoList, deliveryDto } = detail;
+        const { orderInfo, orderItemList, deliveryInfo } = detail;
         const items: TableItem[] = [
           {
             label: "주문일시",
-            value: format(parseISO(orderInfoDto.orderDate), "yyyy-MM-dd HH:mm"),
+            value: format(parseISO(orderInfo.paymentDate), "yyyy-MM-dd HH:mm"),
           },
-          { label: "주문자", value: orderInfoDto.memberName },
+          { label: "주문자", value: orderInfo.memberName },
           {
             label: "주소",
-            value: `${deliveryDto.street} ${deliveryDto.detailAddress}`,
+            value: `${deliveryInfo.street} ${deliveryInfo.detailAddress}`,
           },
           {
             label: "전화번호",
-            value: deliveryDto.recipientPhone,
+            value: deliveryInfo.phoneNumber,
           },
         ];
 
-        orderItemAndOptionDtoList.forEach(
-          ({ orderItemDto, selectOptionDtoList }) => {
-            items.push(
-              { label: "상품명", value: orderItemDto.itemName },
-              { label: "수량", value: orderItemDto.amount.toString() }
-            );
-            selectOptionDtoList.forEach((opt) =>
-              items.push({
-                label: `옵션`,
-                value: `옵션명: ${
-                  opt.optionName
-                } / 수량: ${opt.amount.toString()}개`,
-                fullWidth: true,
-              })
-            );
-          }
-        );
+        orderItemList.forEach((orderItem) => {
+          items.push(
+            { label: "상품명", value: orderItem.orderItemName },
+            { label: "수량", value: orderItem.amount.toString() }
+          );
+          orderItem.itemOptionList?.forEach((opt) =>
+            items.push({
+              label: `옵션`,
+              value: `옵션명: ${
+                opt.optionName
+              } / 수량: ${opt.optionAmount.toString()}개`,
+              fullWidth: true,
+            })
+          );
+        });
 
         results.push({
           orderId,
